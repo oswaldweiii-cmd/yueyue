@@ -637,7 +637,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 @media (prefers-reduced-motion:reduce){.hdsky .st,.hdsky svg g{animation:none}}
 
 @media (max-width:899px){
-  .player,.settitle,.radio,.hdsky,.ctrl,.quest,.tabs,.ridge{transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s}
+  .player,.settitle,.radio,.hdsky,.ctrl,.quest,.tabs,.ridge{transition:transform .2s cubic-bezier(.2,.8,.2,1),opacity .16s}
+  .app.panning .player,.app.panning .settitle,.app.panning .radio,.app.panning .hdsky,.app.panning .ctrl,.app.panning .quest,.app.panning .tabs,.app.panning .ridge{transition-duration:.28s,.22s}
   .app.panning .player,.app.panning .settitle,.app.panning .radio,.app.panning .hdsky,.app.panning .ctrl{transform:translateY(calc(-100% - var(--top) - 160px));opacity:0;pointer-events:none}
   .app.panning .settitle{transform:translate(-50%,calc(-100% - var(--top) - 160px))}
   .app.panning .quest,.app.panning .tabs,.app.panning .ridge{transform:translateY(calc(100% + 40px));opacity:0;pointer-events:none}
@@ -1683,13 +1684,14 @@ function setTab(t,fromHash){
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
 $('radio').onclick=()=>say('這是無線電廣播的範例。之後登入帳號，就能每週免費發一則，點廣播會打開對方的個人頁。');
 {const w=$('radio').querySelector('.rdw');const f=()=>{try{$('radioT').style.setProperty('--rdw',w.clientWidth+'px')}catch(e){}};f();window.addEventListener('resize',f)}
-{const app=$('app'),mw=$('mapwrap');let t=null,sx=0,sy=0,down=false;
+{const app=$('app'),mw=$('mapwrap');let t=null,sx=0,sy=0;const pts=new Set();
   const on=()=>{if(S.tab!=='map'||innerWidth>=900)return;app.classList.add('panning');clearTimeout(t)},
-        off=d=>{clearTimeout(t);t=setTimeout(()=>app.classList.remove('panning'),d)};
-  mw.addEventListener('pointerdown',e=>{down=true;sx=e.clientX;sy=e.clientY},{passive:true});
-  mw.addEventListener('pointermove',e=>{if(down&&Math.hypot(e.clientX-sx,e.clientY-sy)>8)on()},{passive:true});
-  addEventListener('pointerup',()=>{down=false;off(650)},{passive:true});addEventListener('pointercancel',()=>{down=false;off(650)},{passive:true});
-  mw.addEventListener('wheel',()=>{on();off(800)},{passive:true});}
+        off=d=>{clearTimeout(t);if(d)t=setTimeout(()=>app.classList.remove('panning'),d);else app.classList.remove('panning')};
+  mw.addEventListener('pointerdown',e=>{pts.add(e.pointerId);sx=e.clientX;sy=e.clientY},{passive:true});
+  mw.addEventListener('pointermove',e=>{if(pts.size&&(pts.size>1||Math.hypot(e.clientX-sx,e.clientY-sy)>8))on()},{passive:true});
+  const up=e=>{pts.delete(e.pointerId);if(!pts.size)off(0)};
+  addEventListener('pointerup',up,{passive:true});addEventListener('pointercancel',up,{passive:true});
+  mw.addEventListener('wheel',()=>{on();off(220)},{passive:true});}
 $('setT').onclick=()=>setSet(SETS[(SETS.indexOf(S.set)+1)%3]);
 $('player').onclick=()=>{if(S.sel!=null&&!isDesk())closeSheet();setTab(S.tab==='char'?(isDesk()?'list':'map'):'char')};
 function readHash(){const h=(location.hash||'').slice(1);const t=Object.keys(HASH).find(k=>HASH[k]===h);if(t&&t!==S.tab)setTab(t,true)}
