@@ -805,6 +805,18 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .yytex .dmore{margin:30px 24px 0}.yytex .s2end{height:190px}.yytex .s2end .dghost{position:relative;z-index:1;margin:0 24px;width:calc(100% - 48px)}
 .delev{margin:-4px 0 0;font:500 15px var(--body);color:#C8D3E2;text-shadow:0 1px 8px rgba(11,22,38,.6)}.dhero.day .delev{color:#fff;text-shadow:0 1px 6px rgba(20,45,80,.7)}.dchip{white-space:nowrap}
 .yytex .dtitle{width:min(200px,52%)}.yytex .dname{font-size:40px}
+
+/* editorial title (magazine-style): vertical name, small spaced labels, a big numeral */
+.dtitle.ed{flex-direction:row;align-items:flex-start;gap:16px;width:auto;left:22px;top:calc(env(safe-area-inset-top,0px) + 60px)}
+.dtitle.ed .dname{writing-mode:vertical-rl;text-orientation:upright;font:700 46px/1 var(--display);letter-spacing:.14em;margin:0;text-shadow:0 2px 18px rgba(11,22,38,.45)}
+.dmeta{display:flex;flex-direction:column;gap:4px;padding-top:6px}
+.dmeta .dk{margin:0;font:500 11px/1.4 var(--body);letter-spacing:.32em;color:#C8D3E2}
+.dmeta .dnum{margin:6px 0 0;font:700 40px/1 var(--display);letter-spacing:-.01em;color:var(--ink);border-top:1px solid rgba(238,241,236,.6);padding-top:10px}
+.dmeta .dnum small{font:500 15px var(--display);margin-left:3px;letter-spacing:.06em}
+.dmeta .dchip{margin-top:14px}
+.dhero.day .dmeta .dk{color:#F2F6FA}.dhero.day .dname,.dhero.day .dnum{text-shadow:0 2px 14px rgba(20,45,80,.35)}
+.dhero::after{content:"";position:absolute;inset:0;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .85  0 0 0 0 .9  0 0 0 0 1  0 0 0 1.1 -.35'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/220px 220px;opacity:.12;mix-blend-mode:screen}
+.dhero.day::after{opacity:.16;mix-blend-mode:soft-light}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1612,7 +1624,7 @@ function heroProfile(p,r){
    if(ax!=null){const ay=atX(ax),f=day?'#33465E':'#C8D3E2',kind=(p.rank%2)?'deer':'pheasant',flip=ax>195?' scale(-1.2 1.2)':' scale(1.2)';
      ic+='<g transform="translate('+ax+' '+ay.toFixed(1)+')'+flip+'" opacity="'+(day?.9:.75)+'">'+HI[kind](f)+'</g>'}}
   let g='<svg class="dhero-s" viewBox="0 170 390 390" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><defs><linearGradient id="dpk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A5A72"/><stop offset=".55" stop-color="#22314A"/><stop offset="1" stop-color="#121F33"/></linearGradient><linearGradient id="dhf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1626" stop-opacity="0"/><stop offset="1" stop-color="#0D1829"/></linearGradient></defs>'+
-    (day?'<linearGradient id="dsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E5A8A"/><stop offset=".45" stop-color="#6E9CC6"/><stop offset=".8" stop-color="#C7D9E8"/><stop offset="1" stop-color="#F2DEC0"/></linearGradient><rect width="390" height="560" fill="url(#dsky)"/><g transform="translate(20 100)"><g class="dsun2" fill="none" stroke="#F4C152" stroke-width="2.6" stroke-linecap="round"><circle cx="315" cy="100" r="16"/><line x1="340.0" y1="100.0" x2="350.0" y2="100.0"/><line x1="332.7" y1="117.7" x2="339.7" y2="124.7"/><line x1="315.0" y1="125.0" x2="315.0" y2="135.0"/><line x1="297.3" y1="117.7" x2="290.3" y2="124.7"/><line x1="290.0" y1="100.0" x2="280.0" y2="100.0"/><line x1="297.3" y1="82.3" x2="290.3" y2="75.3"/><line x1="315.0" y1="75.0" x2="315.0" y2="65.0"/><line x1="332.7" y1="82.3" x2="339.7" y2="75.3"/></g></g>'+'<g class="dcl" style="--d:34s" opacity=".85" fill="#F4F8FC"><ellipse cx="48" cy="352" rx="52" ry="10"/><circle cx="30" cy="344" r="12"/><circle cx="52" cy="336" r="17"/><circle cx="74" cy="344" r="11"/></g><g class="dcl" style="--d:40s;--o:-12s" opacity=".75" fill="#F4F8FC"><ellipse cx="345" cy="318" rx="44" ry="8"/><circle cx="330" cy="311" r="10"/><circle cx="349" cy="304" r="14"/><circle cx="367" cy="312" r="9"/></g>'
+    (day?'<linearGradient id="dsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E5A8A"/><stop offset=".45" stop-color="#6E9CC6"/><stop offset=".8" stop-color="#C7D9E8"/><stop offset="1" stop-color="#F2DEC0"/></linearGradient><rect width="390" height="560" fill="url(#dsky)"/><g transform="translate(20 100)"><g class="dsun2" fill="none" stroke="#F4C152" stroke-width="2.6" stroke-linecap="round"><circle cx="315" cy="100" r="16"/><line x1="340.0" y1="100.0" x2="350.0" y2="100.0"/><line x1="332.7" y1="117.7" x2="339.7" y2="124.7"/><line x1="315.0" y1="125.0" x2="315.0" y2="135.0"/><line x1="297.3" y1="117.7" x2="290.3" y2="124.7"/><line x1="290.0" y1="100.0" x2="280.0" y2="100.0"/><line x1="297.3" y1="82.3" x2="290.3" y2="75.3"/><line x1="315.0" y1="75.0" x2="315.0" y2="65.0"/><line x1="332.7" y1="82.3" x2="339.7" y2="75.3"/></g></g>'+'<g class="dcl" style="--d:40s;--o:-12s" opacity=".75" fill="#F4F8FC"><ellipse cx="345" cy="318" rx="44" ry="8"/><circle cx="330" cy="311" r="10"/><circle cx="349" cy="304" r="14"/><circle cx="367" cy="312" r="9"/></g>'
      :'<g fill="#E6EDF6">'+DPA.stars+'</g>')+back+
     (day?'<linearGradient id="dpkd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8E2EC"/><stop offset=".35" stop-color="#93AAC2"/><stop offset="1" stop-color="#4A6482"/></linearGradient>':'')+'<polygon points="0,560 0,'+Y(pts[0][1]).toFixed(1)+' '+X(0).toFixed(1)+','+Y(pts[0][1]).toFixed(1)+' '+line+' 390,'+Y(pts[pts.length-1][1]).toFixed(1)+' 390,560" fill="url(#'+(day?'dpkd':'dpk')+')"/>'+
     '<polyline points="'+line+'" fill="none" stroke="'+(dn?'#F4C152':'#A9C3E6')+'" stroke-opacity=".65" stroke-width="1.4" stroke-linejoin="round"/>'+front+
@@ -1642,8 +1654,8 @@ function renderDPage(p){
   let h='<div class="dp yytex">';
   // hero: name, status, and the climb up to this summit
   const d=r?(r.date||'').split('-'):null,vf=r?(r.verified==='gps'||parseTrack(r.track)?'手錶軌跡':r.verified==='photo'||r.photoId?'照片佐證':'自述'):'';
-  h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle"><h2 class="dname">'+nameHTML(p.name)+'</h2><p class="delev">海拔 '+fmt(p.h)+' 公尺</p>'+
-    (r?'<p class="dchip done">✓ '+(d&&d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂</p>':'<p class="dchip '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div></div>';
+  h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle ed"><h2 class="dname">'+esc(p.name)+'</h2><div class="dmeta"><p class="dk">'+(bai?'百岳・第 '+p.rank+' 高':sh?'小山':'小百岳・第 '+p.no+' 號')+'</p><p class="dnum">'+fmt(p.h)+'<small>m</small></p><p class="dk">海拔</p>'+
+    (r?'<p class="dchip done">✓ '+(d&&d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂</p>':'<p class="dchip '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div></div></div>';
   // three key numbers
   const kpi=[];
   if(bai)kpi.push(['難度',p.grade+'<u>/ 5</u>']);else kpi.push([sh?'小山':'小百岳',sh?esc(p.route):'第 '+p.no+' 號']);
