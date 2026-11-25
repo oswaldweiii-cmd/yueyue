@@ -745,6 +745,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dpair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .dwarn{display:block;color:#F0A35E!important;font-weight:500}
 .sp .dmore .xprule,.sp .dmore .ab,.sp .dmore .badges{margin-top:10px}
+.dman{margin-top:4px}.dman>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;min-height:44px;font:500 16px var(--body);color:#C8D3E2;text-decoration:underline;text-underline-offset:4px}
+.dman>summary::-webkit-details-marker{display:none}.dman[open]>summary{color:var(--ink)}.dman .dghost{margin-top:10px}
+.dvf{margin-left:10px;padding:3px 9px;border-radius:10px;border:1px solid rgba(244,193,82,.5);font:500 13px/1.3 var(--body);color:#F4C152;vertical-align:3px}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -895,7 +898,7 @@ const byRank={};P.forEach(p=>byRank[p.rank]=p);
 P.forEach(p=>{let m=1e9;for(const q of P)if(q!==p){const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<m)m=d}p.nn=m});
 
 let DBH=null,ASSETS=null;
-const safeUrl=u=>typeof u==='string'&&/^(https:\/\/|\/)/.test(u)&&!/["'()\\\s]/.test(u)?u:'';
+const safeUrl=u=>typeof u==='string'&&/^(https:\/\/|\/|blob:)/.test(u)&&!/["'()\\\s]/.test(u)?u:'';
 const REG=a=>/金門|連江|馬祖|澎湖|綠島|蘭嶼/.test(a)?'離島':/^(宜蘭|花蓮|臺東|台東)/.test(a)?'東部':/^(嘉義|臺南|台南|高雄|屏東)/.test(a)?'南部':/^(臺中|台中|彰化|南投|雲林)/.test(a)?'中部':'北部';
 const XB=XBRAW.map(r=>({set:'xiao',no:r[0],rank:1000+r[0],name:r[1],h:r[2],area:r[3],route:REG(r[3]),park:'無',grade:0,lat:r[4],lon:r[5],x:(r[5]-119.95)*GEO.K*GEO.S,y:(25.35-r[4])*GEO.S}));
 const byNo={};XB.forEach(x=>{byNo[x.no]=x;byRank[x.rank]=x});
@@ -1340,8 +1343,9 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)startStars
 /* clustering: peaks closer than a thumb merge into one counter; tap it to zoom in */
 let clusters=[],clusterK=0,clusterSig='';
 const mkEls=new Map();
+let flyTargetK=null;
 function buildClusters(){
-  const Dw=46/V.k,first=S.set==='bai'?nextList()[0]:null,AS=AP();const out=[];
+  const Dw=46/(flyTargetK||V.k),first=S.set==='bai'?nextList()[0]:null,AS=AP();const out=[];
   // the selected peak and the next quest always stand alone; climbed peaks only merge with other climbed peaks,
   // so the map stays readable whether there is 1 record or 100
   const pinned=p=>S.sel===p.rank||(first&&first.rank===p.rank);
@@ -1358,7 +1362,7 @@ function buildClusters(){
 }
 function layout(force){
   if(!V.w)return;
-  if(force||Math.abs(V.k-clusterK)>1e-6)buildClusters();
+  if(force||(flyTargetK==null&&Math.abs(V.k-clusterK)>1e-6))buildClusters();
   const first=S.set==='bai'?nextList()[0]:null;
   const sig=clusters.map(c=>c.key+(c.m.length===1?(REC(c.m[0])&&REC(c.m[0]).thumb?'t':'')+statusOf(c.m[0])+(S.sel===c.m[0].rank?'s':'')+(first&&first.rank===c.m[0].rank?'n':''):'')).join('|')+'@'+G.lv+S.set;
   if(sig!==clusterSig){clusterSig=sig;
@@ -1398,17 +1402,19 @@ function positionMarkers(){
     if(off){if(!el._off){el.style.display='none';el._off=true}}
     else{if(el._off){el.style.display='';el._off=false}el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0)'}}
 }
-function setView(k,tx,ty){V.k=k;V.tx=tx;V.ty=ty;clampView();layout(false);draw()}
+function setView(k,tx,ty,fly){if(!fly&&flyTargetK!=null){cancelAnimationFrame(flyRaf);flyTargetK=null;clusterK=-1}V.k=k;V.tx=tx;V.ty=ty;clampView();layout(false);draw()}
 let flyRaf=0;
 function flyTo(k,tx,ty){
   cancelAnimationFrame(flyRaf);k=clamp(k,V.minK,V.maxK);
   if(reduceMotion()||!V.w){setView(k,tx,ty);return}
   const a={k:V.k,tx:V.tx,ty:V.ty},t0=performance.now(),D=620;
+  // group the peaks once, for where the glide ends, so markers slide with the map instead of regrouping mid-flight
+  flyTargetK=k;layout(true);
   // interpolate the screen-centre world point and log-zoom so the move feels like one glide
   const cx=V.w/2,cy=V.h/2,wa={x:(cx-a.tx)/a.k,y:(cy-a.ty)/a.k},wb={x:(cx-tx)/k,y:(cy-ty)/k};
   const step=now=>{const t=clamp((now-t0)/D,0,1),e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
     const kk=Math.exp(Math.log(a.k)+(Math.log(k)-Math.log(a.k))*e),wx=wa.x+(wb.x-wa.x)*e,wy=wa.y+(wb.y-wa.y)*e;
-    setView(kk,cx-wx*kk,cy-wy*kk);if(t<1)flyRaf=requestAnimationFrame(step)};
+    setView(kk,cx-wx*kk,cy-wy*kk,true);if(t<1)flyRaf=requestAnimationFrame(step);else{flyTargetK=null;clusterK=V.k}};
   flyRaf=requestAnimationFrame(step);
 }
 function zoomAt(f,px,py){const k=clamp(V.k*f,V.minK,V.maxK),r=k/V.k;flyTo(k,px-(px-V.tx)*r,py-(py-V.ty)*r)}
@@ -1580,10 +1586,12 @@ function renderDPage(p){
   h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle"><h2 class="dname">'+nameHTML(p.name)+'</h2></div></div>'+dMist(3,!!r);
   // first screen: did I climb it, how hard, how long
   h+='<div class="dsec dhead">';
-  if(r){const d=(r.date||'').split('-');h+='<p class="dgold">✓ '+(d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂</p>'}
+  if(r){const d=(r.date||'').split('-'),vf=r.verified==='gps'||parseTrack(r.track)?'手錶軌跡':r.verified==='photo'||r.photoId?'照片佐證':'自述';h+='<p class="dgold">✓ '+(d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂<span class="dvf">'+vf+'</span></p>'}
   else h+='<p class="dstat '+(bai?st:'ok')+'"><i></i>還沒去過'+(bai?' · '+ST_TXT[st]:'')+'</p>';
   h+='<p class="dkey">'+(bai?dots+'<span>難度 '+p.grade+'/5</span>':'<span>'+(sh?'小山 · '+esc(p.route):'小百岳第 '+p.no+' 號 · '+esc(p.area||p.route))+'</span>')+(km?'<span>'+(t.kt==='來回'?'來回 ':t.kt==='單程'?'單程 ':'')+km.toFixed(1)+' 公里</span>':'')+(days?'<span>'+days+'</span>':'')+'</p>';
   if(!r)h+='<p class="dsay">'+(bai?reason(p):sh?'不上鎖，出發前先確認路況和交通。':'郊山暖身，不上鎖，隨時可以去。')+'</p>';
+  if(bai&&!r&&DBH)h+='<details class="dman"><summary>以前爬過？補登這座山</summary><div class="xmark dmark"><input type="date" id="xDate" value="'+today+'" max="'+today+'" aria-label="登頂日期"><button type="button" class="dbtn" id="xMark">補登</button></div>'+
+    '<button type="button" class="dghost" id="mPhB">＋ 附一張山頂照（選填）</button><input type="file" id="mPh" accept="image/*" hidden><p class="dnote" style="text-align:left">有附照片標成「照片佐證」，沒有就是「自述」。有手錶軌跡的話，到「數據」上傳 GPX 最準。</p></details>';
   if(!bai&&!r&&DBH)h+='<div class="xmark dmark"><input type="date" id="xDate" value="'+today+'" max="'+today+'" aria-label="登頂日期"><button type="button" class="dbtn" id="xMark">＋ 標記登頂</button></div>';
   h+='</div>';
   h+='<div class="dband" aria-hidden="true">'+dClouds(5,4,70,false,4)+'</div>';
@@ -1633,7 +1641,7 @@ function renderDPage(p){
   if(p.set==='xiao'&&typeof XOFF!=='undefined'&&XOFF[p.no])more+='<h3 class="s-sub">官方步程</h3><p class="offs">'+esc(XOFF[p.no]).replace(/\n/g,'<br>')+'</p><p class="s-foot">來源：<a href="https://isports.sa.gov.tw/apps/TIS/TIS05/TIS0550M_02V1.aspx?PKNO='+p.no+'" target="_blank" rel="noopener">i運動資訊平台・臺灣小百岳（運動部全民運動署）</a></p>';
   more+=routeBlock(p);
   if(!bai)more+='<p class="s-foot">'+(sh?'名單為本地圖精選；海拔與座標取自 OpenStreetMap，少數取自 Wikidata。':'名單、海拔與座標：中文維基百科「臺灣小百岳」與 Wikidata；少數座標取自 OpenStreetMap。')+'</p>';
-  if(!bai&&r&&DBH)more+='<button type="button" class="s-up" id="xMark">取消登頂紀錄</button>';
+  if(r&&DBH&&(!bai||r.source==='補登'))more+='<button type="button" class="s-up" id="xMark">'+(bai?'取消補登':'取消登頂紀錄')+'</button>';
   h+='<details class="dmore"><summary>完整資料<small>路線圖、剖面、每一站</small></summary><div class="dmore-b">'+more+'</div></details>';
   h+='<div class="dend"><button type="button" class="dghost s-act tomap" id="toMap">在地圖上看</button>'+DPA.dawn+'</div></div>';
   return h;
@@ -1642,7 +1650,11 @@ function renderDPage(p){
 function wireDPage(p){
   const bai=p.set==='bai',key=bai?p.rank:(p.set==='shan'?'s':'x')+p.no,r=bai?RECS[p.rank]:REC(p),xp=bai?XP_BY_GRADE[p.grade]:p.set==='shan'?XP_SHAN:XP_XIAO;
   {const ub=$('upPh'),ui=$('upIn');if(ub&&ui){ub.onclick=()=>ui.click();ui.onchange=()=>{const f=ui.files&&ui.files[0];if(f)uploadPhoto(key,f,ub)}}}
-  {const b=$('xMark');if(b)b.onclick=async()=>{b.disabled=true;try{if(r)await DBH.doc('climbs/'+key).delete();else{const di=$('xDate'),day=di&&/^\d{4}-\d{2}-\d{2}$/.test(di.value)?di.value:new Date().toISOString().slice(0,10);await DBH.doc('climbs/'+key).set({set:p.set,no:p.no,name:p.name,date:day})}say(r?'已取消 '+p.name:'登頂 '+p.name+' +'+xp+' XP')}catch(e){b.disabled=false;say('存檔失敗，請再試一次。',true)}}}
+  let mFile=null;{const pb=$('mPhB'),pi=$('mPh');if(pb&&pi){pb.onclick=()=>pi.click();pi.onchange=()=>{mFile=pi.files&&pi.files[0]||null;pb.textContent=mFile?'✓ 已選照片：'+mFile.name.slice(0,18):'＋ 附一張山頂照（選填）'}}}
+  {const b=$('xMark');if(b)b.onclick=async()=>{if(r&&!confirm((bai?'取消補登 ':'取消 ')+p.name+'？'))return;b.disabled=true;try{if(r)await DBH.doc('climbs/'+key).delete();else{const di=$('xDate'),day=di&&/^\d{4}-\d{2}-\d{2}$/.test(di.value)?di.value:new Date().toISOString().slice(0,10);
+      await DBH.doc('climbs/'+key).set(bai?{rank:p.rank,name:p.name,date:day,verified:mFile?'photo':'self',source:'補登'}:{set:p.set,no:p.no,name:p.name,date:day});
+      if(bai&&mFile){const tb=$('upPh')||b;await uploadPhoto(key,mFile,tb)}}
+    say(r?'已取消 '+p.name:(bai?'補登 ':'登頂 ')+p.name+' +'+xp+' 點')}catch(e){b.disabled=false;say('存檔失敗，請再試一次。',true)}}}
   const b=$('toMap');if(b)b.onclick=()=>{const rk=S.sel;setTab('map');requestAnimationFrame(()=>{resize();focusPeak(byRank[rk])})};
   const hb=$('dHut');if(hb)hb.onclick=()=>say(r?'山屋會在帳號功能上線後開放，到時候就能看到同一間山屋的山友。':'先登頂這座山，就能進入這間山屋。');
 }
