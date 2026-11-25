@@ -825,6 +825,13 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dhero.day .dtitle.ed span{text-shadow:0 2px 14px rgba(20,45,80,.35)}
 .dseam{position:relative;z-index:2;margin:-20px 24px 6px;display:flex}
 .dseam .dchip{background:rgba(11,22,38,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+.dseam{align-items:center;justify-content:space-between;min-height:24px}
+.dstamp{position:absolute;right:-4px;top:-78px;width:112px;height:112px;transform:rotate(-10deg);opacity:.92}
+.sring{font:600 9.5px var(--body);letter-spacing:.18em}.sbigc{font:700 19px var(--display);letter-spacing:.12em}.sdate{font:600 9px var(--body);letter-spacing:.06em}
+.dstat2{margin:0;display:inline-flex;align-items:center;gap:9px;font:600 16px/1.2 var(--display);letter-spacing:.12em;color:var(--ink)}
+.dstat2 i{width:8px;height:8px;border-radius:50%;background:var(--far)}.dstat2.ok i{background:var(--ok);box-shadow:0 0 8px rgba(127,209,166,.7)}.dstat2.stretch i{background:var(--stretch)}
+.dstat2::after{content:"";width:56px;height:1px;background:rgba(238,241,236,.4);margin-left:4px}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1658,6 +1665,15 @@ function edName(n){const m=String(n).match(/^(.+?)(大山|主山|主峰|[東西�
   if(String(n).length<=3||a.length<2){a=n;b=''}
   else if(a.length>3&&!b){b=a.slice(3);a=a.slice(0,3)}
   return '<h2 class="dname" aria-label="'+esc(n)+'"><span class="nb">'+esc(a)+'</span>'+(b?'<span class="ns">'+esc(b)+'</span>':'')+'</h2>'}
+// a summit stamp (山頂章), like the ink stamps hikers collect: double ring, the date, the peak's name around the edge
+let stampSeq=0;
+function dStamp(p,r){const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[1]+'.'+d[2]:'',id='stp'+(++stampSeq),nm=String(p.name);
+  return '<svg class="dstamp" viewBox="0 0 120 120" role="img" aria-label="'+esc(nm)+' '+dt+' 登頂"><defs><path id="'+id+'" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0"/>'+
+    '<filter id="'+id+'f"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="'+(p.rank%9)+'"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs>'+
+    '<g filter="url(#'+id+'f)" fill="none" stroke="#F4C152"><circle cx="60" cy="60" r="55" stroke-width="2.6"/><circle cx="60" cy="60" r="33" stroke-width="1.2"/></g>'+
+    '<g filter="url(#'+id+'f)" fill="#F4C152"><text class="sring"><textPath href="#'+id+'" startOffset="50%" text-anchor="middle">月岳・'+esc(nm)+'・'+fmt(p.h)+'M</textPath></text>'+
+    '<text x="60" y="61" text-anchor="middle" class="sbigc">登頂</text><text x="60" y="78" text-anchor="middle" class="sdate">'+esc(dt)+'</text>'+
+    '<path d="M60 26 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/></g></svg>'}
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
   const xp=bai?XP_BY_GRADE[p.grade]:sh?XP_SHAN:XP_XIAO,today=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
@@ -1667,7 +1683,7 @@ function renderDPage(p){
   // hero: name, status, and the climb up to this summit
   const d=r?(r.date||'').split('-'):null,vf=r?(r.verified==='gps'||parseTrack(r.track)?'手錶軌跡':r.verified==='photo'||r.photoId?'照片佐證':'自述'):'';
   h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle ed">'+edName(p.name)+'<div class="dmeta"><p class="dk">'+(bai?'百岳・第 '+p.rank+' 高':sh?'小山':'小百岳・第 '+p.no+' 號')+'</p><p class="dnum">'+fmt(p.h)+'<small>m</small></p><p class="dk">海拔</p>'+
-    '</div></div></div>'+'<div class="dseam">'+(r?'<p class="dchip done">✓ '+(d&&d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂</p>':'<p class="dchip '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div>';
+    '</div></div></div>'+'<div class="dseam">'+(r?dStamp(p,r):'<p class="dstat2 '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div>';
   // three key numbers
   const kpi=[];
   if(bai)kpi.push(['難度',p.grade+'<u>/ 5</u>']);else kpi.push([sh?'小山':'小百岳',sh?esc(p.route):'第 '+p.no+' 號']);
