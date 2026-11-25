@@ -775,7 +775,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .s2ab small{grid-column:2/4;font:400 13px/1.4 var(--body);color:#8FA3BD}.s2ab small .num{font-family:inherit}
 .s2gr+.dbtn{margin-top:20px}
 .sp2 .s2sec .dsay{margin:0 0 12px}.sp2 .dmore{margin:30px 24px 0}
-.s2end{position:relative;height:150px;margin-top:24px;overflow:hidden}.s2end svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px}
+.s2end{position:relative;height:150px;margin-top:24px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent,#000 45%);mask-image:linear-gradient(180deg,transparent,#000 45%)}.s2end svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1921,7 +1921,7 @@ function cumChart(list){
 function wireData(){const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',importGPX);if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
 function dataSec(){let t=0;try{t=+localStorage.getItem(BKEY)||0}catch(e){}
   const n=Object.keys(LDB.raw()).length,old=!t||Date.now()-t>30*864e5,when=t?new Date(t).toLocaleDateString('zh-TW'):'還沒備份過';
-  return '<div class="dsec"><h3 class="dh">我的紀錄</h3><p class="dsay">'+n+' 筆紀錄存在這支手機。上次備份：'+when+'。'+(old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
+  return '<div class="dsec"><h3 class="dh">我的紀錄</h3><p class="dsay">共 '+n+' 筆紀錄，上次備份：'+when+'。'+(old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
     '<button type="button" class="dbtn" id="gpxIn">上傳手錶 GPX 軌跡</button><p class="dnote">軌跡經過山頂 120 公尺內，就自動算登頂。</p>'+
     '<div class="dpair"><button type="button" class="dghost" id="bkOut">備份紀錄</button><button type="button" class="dghost" id="bkIn">匯入備份</button></div></div>'}
 function statTrail(fr){const W=334,pts=[];for(let i=0;i<=40;i++){const x=i/40*W;pts.push([x,52-30*Math.pow(i/40,1.4)+3*Math.sin(i/40*9)])}
