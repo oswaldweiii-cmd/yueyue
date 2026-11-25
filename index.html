@@ -842,6 +842,41 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dhero.day::after{opacity:.3!important;mix-blend-mode:overlay!important}
 .dhero.day::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 80% 60% at 86% 8%,rgba(255,238,205,.35),transparent 70%);mix-blend-mode:screen}
 @media (prefers-reduced-motion:reduce){.dmote,.drays{animation:none}}
+
+/* ---- 數據：少量、只動 transform/opacity 的活動元素 ---- */
+.s2tw{position:absolute;z-index:0;width:2px;height:2px;border-radius:50%;background:#EEF1EC;box-shadow:0 0 6px 1px rgba(238,241,236,.6);opacity:.2;pointer-events:none;animation:s2tw var(--d,5s) ease-in-out var(--o,0s) infinite}
+@keyframes s2tw{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:.95;transform:scale(1.3)}}
+.s2shoot{position:absolute;z-index:0;left:70%;top:4%;width:90px;height:1.5px;border-radius:2px;background:linear-gradient(90deg,rgba(238,241,236,0),rgba(238,241,236,.9));transform:rotate(-28deg);opacity:0;pointer-events:none;animation:s2shoot 14s ease-in 3s infinite}
+@keyframes s2shoot{0%{opacity:0;transform:translate(0,0) rotate(-28deg)}1%{opacity:1}6%{opacity:0;transform:translate(-190px,100px) rotate(-28deg)}100%{opacity:0;transform:translate(-190px,100px) rotate(-28deg)}}
+.s2glow{opacity:.06;transform-origin:28px 28px;animation:s2glow 6s ease-in-out infinite}@keyframes s2glow{0%,100%{opacity:.04;transform:scale(.92)}50%{opacity:.14;transform:scale(1.08)}}
+.s2bar i,.s2ab .bar i,.s2gr .bar i{transform-origin:left center;animation:s2fill 1s cubic-bezier(.2,.8,.2,1) .15s both}
+.s2ab>div:nth-child(2) .bar i,.s2gr>button:nth-child(2) .bar i{animation-delay:.22s}.s2ab>div:nth-child(3) .bar i,.s2gr>button:nth-child(3) .bar i{animation-delay:.29s}
+.s2ab>div:nth-child(4) .bar i,.s2gr>button:nth-child(4) .bar i{animation-delay:.36s}.s2ab>div:nth-child(5) .bar i,.s2gr>button:nth-child(5) .bar i{animation-delay:.43s}.s2ab>div:nth-child(6) .bar i{animation-delay:.5s}
+@keyframes s2fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.s2poly{stroke-dasharray:1;animation:s2draw 1.4s ease-out .2s both}@keyframes s2draw{from{stroke-dashoffset:1;fill-opacity:0}to{stroke-dashoffset:0;fill-opacity:1}}
+@media (prefers-reduced-motion:reduce){.s2tw,.s2shoot,.s2glow,.s2bar i,.s2ab .bar i,.s2gr .bar i,.s2poly{animation:none}.s2shoot{display:none}}
+/* ---- 山頭清單：跟詳情、數據頁同一套語言 ---- */
+#listView{background:#0B1626}
+#listView .lhead{background:rgba(11,22,38,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(200,211,226,.14);padding-block:4px 0;gap:0 14px}
+#listView .sbox{margin:6px 0 2px}#listView .sbox svg{left:0}
+#listView .sbox input{height:46px;padding-left:28px;border:0;border-bottom:1px solid rgba(200,211,226,.24);border-radius:0;background:none;font:400 16px var(--body)}
+#listView .seg{padding:0;border:0;border-radius:0;background:none;gap:2px}
+#listView .seg button{min-height:42px;padding:0 10px;border-radius:0;font:500 15px/1 var(--body);color:#8FA3BD;border-bottom:2px solid transparent}
+#listView .seg button:first-child{padding-left:0}
+#listView .seg button[aria-pressed="true"]{background:none;color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
+#listView .grp h3,#listView .chh .cht{font:700 20px/1.2 var(--display);letter-spacing:.04em}
+#listView .grp>h3:not(.chw){padding-bottom:10px;border-bottom:1px solid rgba(200,211,226,.14)}
+#listView .grp p{font:400 14px/1.5 var(--body);color:#8FA3BD;margin-top:8px}
+#listView .grp h3 .gc,#listView .chh .gc{font:600 14px var(--body);font-variant-numeric:tabular-nums}
+#listView .chn .dot{background:#0B1626;font-family:var(--display)}#listView .chn small{font-family:var(--body);font-size:12px}#listView .chn b{font:700 13px var(--display)}
+#listView .row{border-bottom:1px solid rgba(200,211,226,.1);min-height:62px}
+#listView .ri.qn{border:0;background:none;font:700 22px/1 var(--display);color:var(--ink)}
+#listView .rn{font:700 17px/1.25 var(--display);letter-spacing:.03em}
+#listView .rs{font-family:var(--body);font-size:13px;font-variant-numeric:tabular-nums}
+#listView .tag{padding:0;background:none!important;border-radius:0;font:600 13px/1 var(--body);display:inline-flex;align-items:center;gap:7px}
+#listView .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+#listView .tag.ok::before{box-shadow:0 0 6px rgba(127,209,166,.7)}
+#listView .chip{background:none;padding:0}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -903,7 +938,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
         <button type="button" data-g="route" aria-pressed="false">依路線</button>
       </div>
     </div>
-    <div class="pin" id="listBody"></div>
+    <div class="pin yytex" id="listBody"></div>
   </section>
 
   <section class="gearv" id="gearView" aria-label="我的裝備：可旋轉的角色">
@@ -2028,17 +2063,19 @@ function statRadar(ab,n){const R=78,pt=(i,v)=>{const t=-Math.PI/2+i*Math.PI/3;re
   let g='<svg class="sradar" viewBox="-130 -108 260 220" role="img" aria-label="能力雷達圖：'+ab.map(x=>x.k+' '+Math.round(x.s)).join('、')+'">';
   [1,.75,.5,.25].forEach(s=>g+='<polygon points="'+ab.map((_,i)=>f(pt(i,s))).join(' ')+'" fill="none" stroke="rgba(200,211,226,.14)"/>');
   ab.forEach((_,i)=>g+='<line x1="0" y1="0" x2="'+pt(i,1)[0].toFixed(1)+'" y2="'+pt(i,1)[1].toFixed(1)+'" stroke="rgba(200,211,226,.10)"/>');
-  if(n){g+='<polygon points="'+ab.map((x,i)=>f(pt(i,Math.max(.04,x.s/100)))).join(' ')+'" fill="rgba(169,195,230,.22)" stroke="#A9C3E6" stroke-width="1.6" stroke-linejoin="round"/>';
+  if(n){g+='<polygon class="s2poly" pathLength="1" points="'+ab.map((x,i)=>f(pt(i,Math.max(.04,x.s/100)))).join(' ')+'" fill="rgba(169,195,230,.22)" stroke="#A9C3E6" stroke-width="1.6" stroke-linejoin="round"/>';
     ab.forEach((x,i)=>{const q=pt(i,Math.max(.04,x.s/100));g+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="3" fill="#EEF1EC"/>'})}
   ab.forEach((x,i)=>{const l=pt(i,1.2),anc=Math.abs(l[0])<5?'middle':l[0]>0?'start':'end';g+='<text x="'+l[0].toFixed(1)+'" y="'+(l[1]+4).toFixed(1)+'" text-anchor="'+anc+'" class="srl">'+x.k+'</text>'});
   return g+'</svg>'}
+function s2Count(){const els=[...document.querySelectorAll('.s2kpi b')];const vals=els.map(b=>{const n=b.firstChild;if(!n||n.nodeType!==3)return null;const v=parseFloat(n.textContent.replace(/,/g,''));return isFinite(v)?{n,v,dec:(n.textContent.split('.')[1]||'').length,comma:/,/.test(n.textContent)}:null});
+  const t0=performance.now(),D=800;const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);vals.forEach(o=>{if(!o)return;const x=o.v*e;o.n.textContent=o.comma?fmt(Math.round(x)):x.toFixed(o.dec)});if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
 function renderChar(){
   const ab=abilities(),a=LV[G.lv-1]||0,b=LV[G.lv],n=G.n,top=b==null||n>=P.length,fr=top?1:clamp((G.xp-a)/(b-a),0,1);
   const list=Object.keys(RECS).map(k=>({p:byRank[k],r:RECS[k]})).sort((x,y)=>String(y.r.date||'').localeCompare(String(x.r.date||''))||x.p.rank-y.p.rank);
   const all=[...Object.values(RECS),...Object.values(XRECS),...Object.values(SRECS)],sum=f=>all.reduce((s,x)=>s+(+x[f]||0),0),km=sum('distanceKm'),gain=sum('gainM'),mins=sum('durationMin');
-  let h='<div class="dp sp2">';
+  let h='<div class="dp sp2">'+[[8,12],[22,58],[71,9],[88,31],[46,22],[13,78],[64,66],[93,84],[33,90]].map(([x,y],i)=>'<i class="s2tw" style="left:'+x+'%;top:'+y+'%;--d:'+(3.6+i*.7).toFixed(1)+'s;--o:-'+i*.9+'s"></i>').join('')+'<i class="s2shoot"></i>';
   // summary
-  h+='<div class="s2top"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="22" fill="#24344E"/><path d="'+moonPath(28,28,22,n/100)+'" fill="#F4E3B4"/></svg>'+
+  h+='<div class="s2top"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true" style="overflow:visible"><circle class="s2glow" cx="28" cy="28" r="28" fill="#F4E3B4"/><circle cx="28" cy="28" r="22" fill="#24344E"/><path d="'+moonPath(28,28,22,n/100)+'" fill="#F4E3B4"/></svg>'+
     '<div><p class="s2t">百岳 <b>'+n+'</b> / 100</p><p class="s2s">月亮圓了 '+(n?Math.max(1,n):0)+'%・小百岳 '+G.xn+'・小山 '+G.sn+'</p></div></div>';
   h+='<div class="s2kpi">'+[['總距離',km?km.toFixed(1):'—','公里'],['總爬升',gain?fmt(Math.round(gain)):'—','公尺'],['總時間',mins?(mins/60).toFixed(1):'—','小時'],['登頂',String(n+G.xn+G.sn),'座']]
     .map(([k,v,u])=>'<div><small>'+k+'</small><b>'+v+'<u>'+u+'</u></b></div>').join('')+'</div>';
@@ -2089,6 +2126,7 @@ function setTab(t,fromHash){
   try{if(t==='gear')window.__gearOpen&&window.__gearOpen();else window.__gearClose&&window.__gearClose()}catch(_){}
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   if(t==='map')requestAnimationFrame(resize);
+  if(t==='char'&&!reduceMotion())requestAnimationFrame(s2Count);
   if(!fromHash){try{if(location.hash.slice(1)!==HASH[t])history.replaceState(null,'','#'+HASH[t])}catch(e){}}
 }
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
