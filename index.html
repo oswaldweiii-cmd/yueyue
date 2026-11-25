@@ -1821,13 +1821,13 @@ const CINE=(()=>{
   const P=(c,x)=>{if(c.createStereoPanner){const p=c.createStereoPanner();p.pan.value=x;return p}return G(c,1)};
 
   function start(c,opt){
-    const plan=opt.plan,lv=!!opt.lv,t0=opt.t0!=null?opt.t0:c.currentTime+.02,src=[];
+    const M=Object.assign({lead:1.3,meteor:.53,stamp:.42,organ:.89,count:.22,cic:.65,night:.46},opt.mix||{}),plan=opt.plan,lv=!!opt.lv,t0=opt.t0!=null?opt.t0:c.currentTime+.02,src=[];
     const now=t=>t!=null?t:c.currentTime+.01;
     const osc=(type,f,t,end)=>{const o=c.createOscillator();o.type=type;o.frequency.value=f;o.start(t);o.stop(end);src.push(o);return o};
     const noise=(t,end)=>{const s=c.createBufferSource();s.buffer=noiseBuf(c);s.loop=true;s.start(t,Math.random()*3);s.stop(end);src.push(s);return s};
     // mix bus: dry + long soft reverb → gentle compressor → master fader
     const master=G(c,0),comp=c.createDynamicsCompressor();comp.threshold.value=-20;comp.ratio.value=3;comp.attack.value=.02;comp.release.value=.4;
-    comp.connect(master);master.connect(c.destination);master.gain.setValueAtTime(0,t0);master.gain.linearRampToValueAtTime(.9,t0+.6);
+    const lim=c.createDynamicsCompressor();lim.threshold.value=-4;lim.knee.value=0;lim.ratio.value=20;lim.attack.value=.001;lim.release.value=.12;comp.connect(master);master.connect(lim).connect(c.destination);master.gain.setValueAtTime(0,t0);master.gain.linearRampToValueAtTime(1.8,t0+.6);
     const dry=G(c,1),wet=G(c,1),rv=c.createConvolver();rv.buffer=irBuf(c,3.6);dry.connect(comp);wet.connect(rv).connect(F(c,'lowpass',5200)).connect(G(c,.5)).connect(comp);
     const out=(node,px=0,d=1,w=.3)=>{const p=P(c,px);node.connect(p);const a=G(c,d),b=G(c,w);p.connect(a).connect(dry);p.connect(b).connect(wet);return p};
     const HOR=t0+24; // nothing in this score runs past here
@@ -1863,7 +1863,7 @@ const CINE=(()=>{
     const riser=(peak,d,lvl=.075)=>{const g=G(c,0),bp=F(c,'bandpass',300,2.2),t=Math.max(t0,peak-d);noise(t,peak+3).connect(F(c,'highpass',200)).connect(bp).connect(g);out(g,0,.5,.6);
       bp.frequency.setValueAtTime(300,t);bp.frequency.exponentialRampToValueAtTime(5200,peak);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(lvl*.15,t+d*.5);g.gain.linearRampToValueAtTime(lvl,peak);g.gain.setTargetAtTime(0,peak+1,.5);return g};
     // meteor wind: rushing air that grows and sweeps across, a whistling edge, a rising rumble
-    const meteor=(peak,d)=>{const t=Math.max(t0,peak-d),end=peak+3,fd=G(c,1),pn=P(c,-.8);fd.connect(pn);pn.pan&&(pn.pan.setValueAtTime(-.8,t),pn.pan.linearRampToValueAtTime(.35,peak));
+    const meteor=(peak,d)=>{const t=Math.max(t0,peak-d),end=peak+3,fd=G(c,M.meteor),pn=P(c,-.8);fd.connect(pn);pn.pan&&(pn.pan.setValueAtTime(-.8,t),pn.pan.linearRampToValueAtTime(.35,peak));
       const ap=G(c,1),ad=G(c,1);pn.connect(ap).connect(dry);pn.connect(ad).connect(wet);ad.gain.value=.45;
       const curve=(g,lv)=>{g.gain.setValueAtTime(0,t);g.gain.setTargetAtTime(lv*.25,t,d*.5);g.gain.linearRampToValueAtTime(lv,peak);g.gain.setTargetAtTime(lv*.85,peak,.5);g.gain.setTargetAtTime(0,peak+1.2,.5)};
       {const g=G(c,0),bp=F(c,'bandpass',220,1.1);noise(t,end).connect(bp).connect(g).connect(fd);bp.frequency.setValueAtTime(220,t);bp.frequency.exponentialRampToValueAtTime(2600,peak);curve(g,.22)}
@@ -1876,26 +1876,26 @@ const CINE=(()=>{
     const G6s=0,C3=130.81,E3=164.81,G3=196,A2=110,C4=261.63,D4=293.66,E4=329.63,G4=392,A4=440,C5=523.25,D5=587.33,E5=659.25,G5=783.99,A5=880,C6=1046.5,D6=1174.7,E6=1318.5,G6=1568;
 
     /* ---- cicadas open, the meteor wind builds into the star ---- */
-    cicF.gain.setValueAtTime(0,t0);cicF.gain.linearRampToValueAtTime(1,t0+.35);cicF.gain.setTargetAtTime(.35,t0+plan.ignite-.9,.35);
-    const pre={i:meteor(t0+plan.ignite,Math.max(.6,plan.ignite-.25)),s:riser(t0+plan.stamp,.5,.05)};
+    cicF.gain.setValueAtTime(0,t0);cicF.gain.linearRampToValueAtTime(M.cic,t0+.35);cicF.gain.setTargetAtTime(.35*M.cic,t0+plan.ignite-.9,.35);
+    const pre={i:meteor(t0+plan.ignite,Math.max(.6,plan.ignite-.25)),s:riser(t0+plan.stamp,.5,.05*M.meteor)};
     const st={i:0,s:0,c:0,closed:0};
 
     const h={
       ignite(t){if(st.i||st.c)return;st.i=1;t=now(t);fadeTo(pre.i,0,t+.04,.22);
-        mar(t,G6,1.1,.15,.9);mar(t+.36,G6,.32,-.3,.95);mar(t+.72,G6,.12,.3,1);boom(t,.16);
-        cicF.gain.setTargetAtTime(0,t,.5);nightF.gain.setTargetAtTime(1,t+.3,.8)},
+        mar(t,G6,1.1*M.lead,.15,.9);mar(t+.36,G6,.32*M.lead,-.3,.95);mar(t+.72,G6,.12*M.lead,.3,1);boom(t,.16*M.meteor);
+        cicF.gain.setTargetAtTime(0,t,.5);nightF.gain.setTargetAtTime(M.night,t+.3,.8)},
       stamp(t){if(st.s||st.c)return;st.s=1;t=now(t);if(!st.i)h.ignite(t-.3);fadeTo(pre.s,0,t,.12);
-        boom(t,.26);mar(t,C4,.7,0,.6);mar(t+.004,G4,.45,0,.6);
-        h.o1=chord(t,[C3,G3,C4,E4],.06,.06);h.o1.gain.setTargetAtTime(.045,t+.25,.6)},
+        boom(t,.26*M.stamp);mar(t,C4,.7*M.stamp,0,.6);mar(t+.004,G4,.45*M.stamp,0,.6);
+        h.o1=chord(t,[C3,G3,C4,E4],.06,.06*M.organ);h.o1.gain.setTargetAtTime(.045*M.organ,t+.25,.6)},
       card(t){if(st.c)return;st.c=1;t=now(t);
-        if(!st.s){[pre.i,pre.s].forEach(g=>fadeTo(g,0,t,.12));cicF.gain.setTargetAtTime(0,t,.4);nightF.gain.setTargetAtTime(1,t,.6);whoosh(t-.05,.45,.06,5200,700);st.i=st.s=1}
-        else whoosh(t-.15,.5,.045,6000,900);
+        if(!st.s){[pre.i,pre.s].forEach(g=>fadeTo(g,0,t,.12));cicF.gain.setTargetAtTime(0,t,.4);nightF.gain.setTargetAtTime(M.night,t,.6);whoosh(t-.05,.45,.06*M.meteor,5200,700);st.i=st.s=1}
+        else whoosh(t-.15,.5,.045*M.meteor,6000,900);
         // points count up: soft marimba steps, quickening
-        [C5,D5,E5,G5,A5,C6,D6,E6].forEach((f,i)=>mar(t+.3+i*.105-i*i*.003,f,.38,-.4+i*.1,.5));
-        if(h.o1)fadeTo(h.o1,0,t+.3,.5);const o2=chord(t+.3,[C3,G3,D4,E4,G4],.9,.06);
+        [C5,D5,E5,G5,A5,C6,D6,E6].forEach((f,i)=>mar(t+.3+i*.105-i*i*.003,f,.38*M.count,-.4+i*.1,.5));
+        if(h.o1)fadeTo(h.o1,0,t+.3,.5);const o2=chord(t+.3,[C3,G3,D4,E4,G4],.9,.06*M.organ);
         let tail=t+.3+1.2;
-        if(lv){const u=t+1.55;riser(u,.4,.08);[G5,A5,C6,D6,E6,G6].forEach((f,i)=>mar(u+i*.06,f,.75,-.5+i*.2,.6));mar(u+.36,C6*2,.5,0,.8);
-          const o3=chord(u,[C5,E5,G5],.25,.035,.1);o3.gain.setTargetAtTime(0,u+2.4,1.1);tail=u+1}
+        if(lv){const u=t+1.55;riser(u,.4,.08*M.count);[G5,A5,C6,D6,E6,G6].forEach((f,i)=>mar(u+i*.06,f,.75*M.count,-.5+i*.2,.6));mar(u+.36,C6*2,.5*M.count,0,.8);
+          const o3=chord(u,[C5,E5,G5],.25,.035*M.organ,.1);o3.gain.setTargetAtTime(0,u+2.4,1.1);tail=u+1}
         // outro: everything breathes out slowly
         o2.gain.setTargetAtTime(0,tail+1.8,1.3);nightF.gain.setTargetAtTime(0,tail+2.4,1.5)},
       close(t){if(st.closed)return;st.closed=1;t=now(t);master.gain.cancelScheduledValues(t);master.gain.setTargetAtTime(0,t,.35);src.forEach(s=>{try{s.stop(t+2.2)}catch(e){}})}
