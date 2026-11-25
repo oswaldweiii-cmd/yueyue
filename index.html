@@ -441,23 +441,25 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .mk .ph{display:block;width:34px;height:34px;border-radius:50%;background:#131d2c center/cover no-repeat;border:2px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.5)}
 .mk.hasph .lb{top:40px}
 /* ---------- gear tab ---------- */
-.gearv{display:none;position:absolute;z-index:4;inset:calc(var(--bar-h) + 16px) 0 var(--tabs-h) 0;background:transparent;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent)}
+.gearv{display:none;position:absolute;z-index:4;inset:calc(var(--bar-h) + 16px) 0 var(--tabs-h) 0;background:transparent;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 56px),transparent)}
+.gearv.scrolled{-webkit-mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent)}
 .app[data-tab="gear"] #gearView{display:block}.app[data-tab="gear"] .mapwrap{visibility:hidden}
-.gstage{position:relative;height:max(450px,min(62vh,620px))}.gearv.g3off .gstage{height:220px}
-.g3d{position:absolute;inset:0;touch-action:pan-y}.g3d canvas{display:block;width:100%;height:100%;outline:none;cursor:grab;touch-action:pan-y}
+.gstage{position:relative;height:max(400px,min(calc(100% - 72px),620px))}.gearv.g3off .gstage{height:auto;min-height:0}
+.g3off .gload{position:static;display:block;padding:196px 24px 8px;text-align:left;font:400 14px/1.6 var(--body);letter-spacing:0}.g3off .ghint,.g3off .glead,.g3off .gring,.g3off .g3d{display:none}
+.g3d{position:absolute;inset:0;touch-action:pan-y;-webkit-mask-image:linear-gradient(180deg,#000 84%,transparent);mask-image:linear-gradient(180deg,#000 84%,transparent)}.g3d canvas{display:block;width:100%;height:100%;outline:none;cursor:grab;touch-action:pan-y}
 .ghd{position:absolute;left:24px;top:4px;z-index:2;pointer-events:none}
 .ghd small{display:block;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
 .gnum{margin:10px 0 0;display:flex;align-items:baseline;gap:6px;color:var(--t1)}.gnum b{font:600 56px/1 var(--display);letter-spacing:-.01em}.gnum span{font:600 18px var(--display);color:var(--t2)}
 .gsub{margin:10px 0 0;font:400 14px/1.6 var(--body);color:var(--t2)}.gsub b{font:600 14px var(--display);color:var(--t1);margin:0 2px}
 .gsub i{font-style:normal;margin:0 .4em;color:rgba(238,241,236,.3)}
-.ghint{position:absolute;left:0;right:0;bottom:14px;margin:0;text-align:center;z-index:2;pointer-events:none;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
+.ghint{position:absolute;left:0;right:0;bottom:4px;margin:0;text-align:center;z-index:2;pointer-events:none;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
 .gtip{position:absolute;z-index:4;width:236px;padding:14px 16px;border-radius:18px;background:radial-gradient(120% 120% at 30% 20%,rgba(11,22,38,.92),rgba(11,22,38,.72));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s}
 .gtip.on{opacity:1;transform:none}
 .gtip .k{font:500 11px/1 var(--body);letter-spacing:.32em;color:#F4C152}
 .gtip ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:9px}
 .gtip li b{display:block;font:600 18px/1.3 var(--display);color:var(--t1)}.gtip li small{display:block;margin-top:2px;font:400 14px/1.45 var(--body);color:var(--t2)}
-.gtip.dock{left:24px;top:248px;bottom:auto;right:auto;width:min(160px,40%);padding:0;border-radius:0;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;text-shadow:0 1px 10px rgba(11,22,38,.9)}
-.gtip.dock ul{gap:8px}.gtip.dock li small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gtip.dock{left:24px;top:248px;bottom:auto;right:auto;width:min(172px,44%);padding:0;border-radius:0;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;text-shadow:0 1px 10px rgba(11,22,38,.9)}
+.gtip.dock ul{gap:8px}.gtip.dock.many li small{display:none}.gtip.dock li small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .gstage:has(.gtip.on) .ghint{opacity:0}
 .gtip li.none b{color:var(--t2)}
 .gring{position:absolute;z-index:3;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:1.5px solid #F4C152;box-shadow:0 0 0 5px rgba(244,193,82,.14);pointer-events:none;opacity:0;transition:opacity .2s}.gring.on{opacity:1}
@@ -469,7 +471,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .glist .glg{display:flex;gap:14px;font:500 11px/1 var(--body);letter-spacing:.2em;color:var(--t2);white-space:nowrap}
 .glist .glg i,.gst i{display:inline-block;box-sizing:border-box;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
 .gst .own,.glg .own{background:#5E9E78}.gst .borrow,.glg .borrow{background:linear-gradient(90deg,#F4C152 50%,transparent 50%);border:1px solid #F4C152}.gst .none,.glg .none{border:1px solid rgba(238,241,236,.55)}
-.gz{margin-top:20px}.gzk{display:block;width:100%;min-height:44px;margin:0;padding:16px 0 10px;text-align:left;background:none;border:0;border-bottom:1px solid rgba(238,241,236,.12);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);cursor:pointer}
+.gz{margin-top:12px}.gzk{display:block;width:100%;min-height:44px;margin:0;padding:16px 0 10px;text-align:left;background:none;border:0;border-bottom:1px solid rgba(238,241,236,.12);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);cursor:pointer}
 .gzk:hover{color:var(--t1)}.gzk:focus-visible,.g3d canvas:focus-visible{outline:1px solid #F4C152;outline-offset:4px}
 .gi{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;padding:12px 0;border-bottom:1px solid rgba(238,241,236,.07)}
 .gi .n{font:600 14px/1 var(--display);color:var(--t2);font-variant-numeric:tabular-nums}
@@ -477,7 +479,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gi small{grid-column:2;font:400 14px/1.5 var(--body);color:var(--t2)}
 .gi .w{grid-row:1/3;grid-column:3;align-self:center;text-align:right;font:500 11px/1.6 var(--body);letter-spacing:.2em;color:var(--t2);white-space:nowrap}
 .gi .w em{display:block;font:400 14px var(--display);font-style:normal;letter-spacing:0;color:var(--t2)}
-@media (min-width:900px){.ghd{top:24px}.glist{max-width:720px}}
+@media (min-width:900px){.ghd{top:24px}.glist{max-width:720px}.gstage{position:sticky;top:0;z-index:1}}
 @media (prefers-reduced-motion:reduce){.gtip,.gring{transition:none}}
 @media (min-width:900px){.gearv{position:relative;inset:auto;grid-column:2;grid-row:1/-1;border-left:1px solid var(--line)}.app[data-tab="gear"] .mapwrap{display:none}.app[data-tab="gear"] #listView{display:block}}
 .ctrl button.zx span{font:700 14px/1 var(--serif);color:var(--mute)}.ctrl button.zx.on{border-color:#7cc4ff;background:rgba(124,196,255,.16)}.ctrl button.zx.on span{color:#bfe0ff}
@@ -2555,14 +2557,15 @@ load();
 <script type="module">
 // gear tab: a chibi of him wearing today's kit; three.js loads only when the tab first opens
 let G3=null,want=false;
-window.__gearOpen=async()=>{want=true;try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
+const GV=document.getElementById('gearView');GV.tabIndex=-1;GV.addEventListener('scroll',()=>GV.classList.toggle('scrolled',GV.scrollTop>8),{passive:true});
+window.__gearOpen=async()=>{want=true;if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
     G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；下面的清單照常可以看';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
 if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
 const GEAR={
   head:{k:'頭部',items:[{n:'帽子／頭燈',d:'還沒登錄',s:'none'}]},
   eyes:{k:'眼部',items:[{n:'太陽眼鏡',d:'待確認是否已買',s:'none'}]},
-  torso:{k:'上身・三層',items:[{n:'Storm Cruiser',d:'mont-bell・外層 Gore-Tex 硬殼',s:'own'},{n:'Superior Down',d:'mont-bell・保暖層羽絨',s:'own'},{n:'刷毛／CP 背心',d:'中層・型號待確認',s:'own'}]},
+  torso:{k:'上身・三層',items:[{n:'Storm Cruiser',d:'mont-bell・外層 Gore‑Tex 硬殼',s:'own'},{n:'Superior Down',d:'mont-bell・保暖層羽絨',s:'own'},{n:'刷毛／CP 背心',d:'中層・型號待確認',s:'own'}]},
   pack:{k:'背負',items:[{n:'10L 越野背心包',d:'單攻用・前面兩個水壺袋',s:'own'},{n:'大背包',d:'多天用・跟朋友借',s:'borrow'}]},
   cam:{k:'攝影',items:[{n:'Insta360',d:'運動相機',s:'own'},{n:'Sony A7C II + 40mm',d:'多半留家',s:'own'}]},
   wrist:{k:'手腕',items:[{n:'Garmin Forerunner',d:'手錶・軌跡紀錄',s:'own'}]},
@@ -2602,7 +2605,7 @@ frame();
 scene.add(new THREE.HemisphereLight(0xb9cbe6,0x241a12,1.0));
 const key=new THREE.DirectionalLight(0xfff1df,2.3);key.position.set(2.2,3.4,2.6);key.castShadow=true;key.shadow.mapSize.set(1024,1024);
 Object.assign(key.shadow.camera,{left:-1.2,right:1.2,top:2,bottom:-0.4});key.shadow.bias=-0.0005;key.shadow.radius=4;scene.add(key);
-const rim=new THREE.DirectionalLight(0xf4c152,1.8);rim.position.set(-2.4,2.4,-2.6);scene.add(rim);
+const rim=new THREE.DirectionalLight(0xf4c152,2.4);rim.position.set(-2.4,2.4,-2.6);scene.add(rim);
 const fill=new THREE.DirectionalLight(0x8fb0de,0.6);fill.position.set(-3,1.2,2);scene.add(fill);
 {const g=new THREE.CircleGeometry(1.5,64);g.rotateX(-Math.PI/2);
   const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const gr=x.createRadialGradient(128,128,0,128,128,128);
@@ -2722,12 +2725,12 @@ function pick1(cx,cy){ptr.set(cx/W()*2-1,-(cy/H())*2+1);ray.setFromCamera(ptr,ca
 function pick(cx,cy){let r=pick1(cx,cy);if(r)return r;for(let i=0;i<8&&!r;i++){const a=i*Math.PI/4;r=pick1(cx+22*Math.cos(a),cy+22*Math.sin(a))}return r}
 function showTip(zone,p){const G=GEAR[zone];if(!G){hideTip();return}
   if(zone!==hoverZone)tip.innerHTML='<div class="k">'+G.k+'</div><ul>'+G.items.map(i=>'<li class="'+i.s+'"><b>'+i.n+'</b><small>'+(i.s==='none'?'未登錄':i.s==='borrow'&&!/借/.test(i.d)?i.d+'・借用':i.d)+'</small></li>').join('')+'</ul>';
-  hoverZone=zone;hoverPt=p.clone();tip.classList.add('on');ringEl.classList.add('on');controls.autoRotate=false;place()}
+  tip.classList.toggle('many',G.items.length>2);hoverZone=zone;hoverPt=p.clone();tip.classList.add('on');ringEl.classList.add('on');controls.autoRotate=false;place()}
 function hideTip(){hoverZone=null;hoverPt=null;tip.classList.remove('on');ringEl.classList.remove('on');['x1','y1','x2','y2'].forEach(a=>ld.setAttribute(a,0))}
 function place(){if(!hoverPt)return;const v=hoverPt.clone().project(cam);const x=(v.x+1)/2*W(),y=(1-v.y)/2*H();
   ringEl.style.left=x+'px';ringEl.style.top=y+'px';const narrow=W()<520;tip.classList.toggle('dock',narrow);
-  if(narrow){tip.style.left=tip.style.top='';const tr=tip.getBoundingClientRect(),sr=stage.getBoundingClientRect();const ex=tr.right-sr.left+8,ey=tr.top-sr.top+5;
-    ld.setAttribute('x1',x-7);ld.setAttribute('y1',y);ld.setAttribute('x2',ex);ld.setAttribute('y2',ey);return}
+  if(narrow){tip.style.left='';tip.style.top=Math.max(236,Math.min(248,H()-tip.offsetHeight-28))+'px';const tr=tip.getBoundingClientRect(),sr=stage.getBoundingClientRect();const ex=tr.right-sr.left+8,ey=tr.top-sr.top+5;
+    ['x1','y1','x2','y2'].forEach(k=>ld.setAttribute(k,0));return}
   const tw=236,th=tip.offsetHeight||120,side=x>W()/2?-1:1;let tx=side>0?Math.min(x+46,W()-tw-12):Math.max(x-46-tw,12);let ty=Math.max(90,Math.min(H()-th-70,y-th/2));
   tip.style.left=tx+'px';tip.style.top=ty+'px';const ex=side>0?tx:tx+tw,ey=ty+th/2;ld.setAttribute('x1',x);ld.setAttribute('y1',y);ld.setAttribute('x2',ex);ld.setAttribute('y2',ey)}
 const el=renderer.domElement;const L=e=>{const r=el.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
