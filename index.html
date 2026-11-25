@@ -562,6 +562,58 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
   .legend{top:16px}
 }
 .dataops{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 10px}.dataops button{flex:1 1 140px;min-height:48px}
+
+/* ---------- 月岳 home (phones) ---------- */
+.moonav{position:relative;flex:none;width:42px;height:42px;display:block}.moonav svg{width:100%;height:100%;display:block}
+.lvb{position:absolute;right:-6px;bottom:-4px;min-width:30px;height:18px;padding:0 5px;border-radius:9px;background:var(--abyss);border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;gap:1px;font:700 11px/1 var(--display);white-space:nowrap}
+.lvb b{font:inherit}
+.ptxt{flex:1;min-width:0;display:grid;gap:5px}
+.hdsky,.settitle,.ridge,.qdot{display:none}
+.tabs .ic{display:grid;place-items:center}
+@media (max-width:899px){
+  :root{--top:env(safe-area-inset-top,0px);--bar-h:84px;--tabs-h:calc(76px + env(safe-area-inset-bottom,0px))}
+  .player{top:calc(var(--top) + 8px);left:max(14px,env(safe-area-inset-left,0px));right:auto;width:72px;height:72px;padding:0;border:0;border-radius:50%;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;z-index:8}
+  .moonav{width:72px;height:72px}
+  .lvb{right:-4px;bottom:0;min-width:40px;height:24px;padding:0 6px;border-radius:11px;font-size:14px}
+  .ptxt,.pcount{display:none}
+  .hdsky{display:block;overflow:hidden;position:absolute;z-index:5;left:0;right:0;top:0;height:calc(var(--top) + 170px);pointer-events:none;background:linear-gradient(180deg,#09131F 0%,rgba(9,19,31,.8) 50%,rgba(9,19,31,0) 100%)}
+  .hdsky svg{position:absolute;left:0;top:var(--top);width:100%;height:150px}
+  .app:not([data-tab="map"]) .hdsky{background:var(--abyss);height:calc(var(--top) + var(--bar-h) + 16px)}
+  .settitle{display:flex;position:absolute;z-index:8;top:calc(var(--top) + 18px);left:50%;transform:translateX(-50%);flex-direction:column;align-items:center;gap:7px;min-height:48px;padding:4px 12px;color:var(--ink);white-space:nowrap}
+  .ytl{display:flex;align-items:baseline;gap:8px}.ytl svg{align-self:center;color:#C8D3E2}
+  .ytn{font:700 21px/1 var(--display);letter-spacing:.08em}
+  .ytc{font:500 15px/1 var(--body);color:#C8D3E2}
+  .yts{font:500 14px/1 var(--body);color:#8FA3BD;letter-spacing:.06em}.yts .on{color:var(--ink)}
+  .app[data-tab="char"] .settitle,.app[data-tab="gear"] .settitle{display:none}
+  .sets,.legend{display:none!important}
+  .panel,.gearv{inset:calc(var(--top) + var(--bar-h) + 16px) 0 var(--tabs-h) 0}
+  #listView{inset:calc(var(--top) + var(--bar-h) + 16px) 0 var(--tabs-h) 0}
+  .ctrl{top:calc(var(--top) + 96px);bottom:auto;right:max(12px,env(safe-area-inset-right,0px));gap:4px;justify-items:center;z-index:7}
+  .ctrl>button:not(#zfit):not(#zhelp){display:none}
+  .ctrl #zfit,.ctrl #zhelp{width:auto;height:auto;border:0;border-radius:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink)}
+  .ctrl #zfit svg,.ctrl #zhelp svg{box-sizing:content-box;padding:14px;border-radius:50%;background:rgba(11,22,38,.55);border:1px solid rgba(200,211,226,.28)}
+  .ctrl #zfit::after,.ctrl #zhelp::after{content:attr(data-l);font:400 14px/1 var(--body);color:#DCE4EE;text-shadow:0 1px 6px #0B1626}
+  .ctrl #zfit{order:1}.ctrl #zhelp{order:2;margin-top:8px}
+  .ridge{display:block;position:absolute;z-index:6;left:0;right:0;bottom:0;height:300px;pointer-events:none}
+  .ridge svg{width:100%;height:100%;display:block}
+  .app:not([data-tab="map"]) .ridge{height:calc(var(--tabs-h) + 24px)}
+  .tabs{height:var(--tabs-h);padding:10px var(--gr) env(safe-area-inset-bottom,0px) var(--gl);background:none;border-top:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .tabs button{align-content:start;gap:5px;color:#8FA3BD;font:600 15px/1 var(--display);letter-spacing:.08em}
+  .tabs .ic{width:40px;height:40px;border-radius:50%;border:1px solid transparent}
+  .tabs button[aria-selected="true"]{color:var(--ink)}
+  .tabs button[aria-selected="true"]::before{display:none}
+  .tabs button[aria-selected="true"] .ic{border-color:rgba(238,241,236,.55);background:rgba(11,22,38,.55);box-shadow:0 0 14px rgba(244,227,180,.18)}
+  .quest{left:0;right:0;max-width:none;bottom:calc(var(--tabs-h) + 2px);z-index:7;min-height:52px;padding:0 22px;gap:10px;border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .quest .qi,.quest .qm,.quest small .tag{display:none}
+  .qdot{display:block;flex:none;width:9px;height:9px;border-radius:50%;background:var(--far)}
+  .qdot.ok{background:var(--ok);box-shadow:0 0 8px rgba(127,209,166,.7)}.qdot.stretch{background:var(--stretch)}
+  .quest .qt{flex:1;display:flex;align-items:baseline;gap:10px}
+  .quest small{font:400 15px/1 var(--body);letter-spacing:0;color:#C8D3E2}
+  .quest b{font:700 20px/1.2 var(--display)}
+  .quest .qc{width:20px;height:20px;color:var(--ink)}
+  .toast{bottom:calc(var(--tabs-h) + 64px)}
+}
+@media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
 <div class="app" id="app" data-tab="map">
@@ -573,35 +625,35 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
     <div class="markers" id="markers" role="group" aria-label="百岳地圖，金色是已登頂的山"></div>
     <div class="toast" id="toast" role="status">讀取紀錄中…</div>
     <button class="quest" id="quest" type="button" hidden>
-      <span class="qi"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 18V2.5M5 3.5h10l-2.5 3.5L15 10.5H5"/></svg></span>
+      <span class="qdot" id="qDot"></span><span class="qi"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 18V2.5M5 3.5h10l-2.5 3.5L15 10.5H5"/></svg></span>
       <span class="qt"><small>下一關<em class="tag ok" id="qSt"></em></small><b id="qName"></b><span class="qm" id="qMeta"></span></span>
       <svg class="qc" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l4 4-4 4"/></svg>
     </button>
     <div class="ctrl">
       <button type="button" id="zsearch" aria-label="搜尋百岳"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="8" cy="8" r="5.2"/><path d="M12 12l3.6 3.6"/></svg></button>
-      <button type="button" id="zhelp" aria-label="怎麼看這張地圖"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.4 6.6a2.7 2.7 0 115 1.4c-.6 1-2.2 1.3-2.4 2.7"/><path d="M9 13.9v.1"/></svg></button>
+      <button type="button" id="zhelp" data-l="圖例" aria-label="圖例與說明"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.4 6.6a2.7 2.7 0 115 1.4c-.6 1-2.2 1.3-2.4 2.7"/><path d="M9 13.9v.1"/></svg></button>
       <button type="button" id="zin" aria-label="放大"><svg width="18" height="18" viewBox="0 0 18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 3v12M3 9h12"/></svg></button>
       <button type="button" id="zout" aria-label="縮小"><svg width="18" height="18" viewBox="0 0 18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9h12"/></svg></button>
-      <button type="button" id="zfit" aria-label="回到全覽"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5v-4h4M15.5 6.5v-4h-4M2.5 11.5v4h4M15.5 11.5v4h-4"/></svg></button>
+      <button type="button" id="zfit" data-l="全台" aria-label="看整個台灣"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5v-4h4M15.5 6.5v-4h-4M2.5 11.5v4h4M15.5 11.5v4h-4"/></svg></button>
     </div>
   </div>
 
   <button class="player" id="player" type="button" aria-label="看等級與數據">
-    <span class="lv"><span><small>LV</small><b id="pLv">1</b></span></span>
-    <span class="pmid">
-      <span class="prow"><span class="ptitle" id="pTitle">山腳新手</span><span class="pxp" id="pXpTxt">0 / 100 XP</span></span>
-      <span class="xpbar"><i id="pXp"></i></span>
-    </span>
+    <span class="moonav"><svg aria-hidden="true" viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" fill="#F4E3B4" opacity=".08"/><circle cx="36" cy="36" r="30" fill="none" stroke="#2A3B55" stroke-width="3"/><circle id="pRing" cx="36" cy="36" r="30" fill="none" stroke="#A9C3E6" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 188.5" transform="rotate(-90 36 36)"/><circle cx="36" cy="36" r="23" fill="#24344E"/><path id="pMoon" d="" fill="#F4E3B4"/></svg><span class="lvb"><b id="pLv">1</b> 級</span></span>
+    <span class="ptxt"><span class="ptitle" id="pTitle">山腳新手</span><span class="pxp" id="pXpTxt">0 / 100 XP</span></span>
     <span class="pcount"><b id="pDone">0</b><small>/ 100 座</small></span>
   </button>
+  <div class="hdsky" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 390 150" preserveAspectRatio="xMidYMin slice"><g fill="#E6EDF6"><circle class="st" cx="286" cy="93" r="1.6" style="--a:0.50;--d:6.3s;--o:-4.4s;opacity:0.50"></circle><circle class="st" cx="17" cy="168" r="1.1" style="--a:0.23;--d:5.7s;--o:-1.5s;opacity:0.23"></circle><circle class="st" cx="65" cy="2" r="1" style="--a:0.84;--d:4.5s;--o:-1.5s;opacity:0.84"></circle><circle class="st" cx="223" cy="76" r="0.8" style="--a:0.57;--d:5.5s;--o:-2.4s;opacity:0.57"></circle><circle class="st" cx="334" cy="15" r="1.1" style="--a:0.80;--d:3.4s;--o:-4.8s;opacity:0.80"></circle><circle class="st" cx="239" cy="10" r="0.9" style="--a:0.81;--d:3.3s;--o:-5.8s;opacity:0.81"></circle><circle class="st" cx="298" cy="0" r="0.9" style="--a:0.85;--d:6.0s;--o:-1.7s;opacity:0.85"></circle><circle class="st" cx="210" cy="179" r="1.6" style="--a:0.19;--d:5.1s;--o:-1.1s;opacity:0.19"></circle><circle class="st" cx="80" cy="181" r="1.1" style="--a:0.18;--d:3.9s;--o:-2.2s;opacity:0.18"></circle><circle class="st" cx="61" cy="13" r="0.8" style="--a:0.80;--d:4.0s;--o:-4.9s;opacity:0.80"></circle><circle class="st" cx="231" cy="85" r="1.6" style="--a:0.53;--d:4.1s;--o:-1.9s;opacity:0.53"></circle><circle class="st" cx="188" cy="141" r="1" style="--a:0.33;--d:3.5s;--o:-2.8s;opacity:0.33"></circle><circle class="st" cx="103" cy="14" r="0.8" style="--a:0.80;--d:6.3s;--o:-2.1s;opacity:0.80"></circle><circle class="st" cx="214" cy="49" r="1.1" style="--a:0.67;--d:4.2s;--o:-3.5s;opacity:0.67"></circle><circle class="st" cx="24" cy="0" r="0.9" style="--a:0.85;--d:5.1s;--o:-5.7s;opacity:0.85"></circle><circle class="st" cx="99" cy="8" r="1.1" style="--a:0.82;--d:4.1s;--o:-2.1s;opacity:0.82"></circle><circle class="st" cx="299" cy="72" r="0.8" style="--a:0.58;--d:5.0s;--o:-4.7s;opacity:0.58"></circle><circle class="st" cx="118" cy="42" r="1.1" style="--a:0.69;--d:6.3s;--o:-0.5s;opacity:0.69"></circle><circle class="st" cx="237" cy="38" r="0.9" style="--a:0.71;--d:4.1s;--o:-5.5s;opacity:0.71"></circle><circle class="st" cx="124" cy="76" r="1" style="--a:0.57;--d:3.9s;--o:-4.8s;opacity:0.57"></circle><circle class="st" cx="279" cy="94" r="1" style="--a:0.50;--d:6.5s;--o:-1.0s;opacity:0.50"></circle><circle class="st" cx="379" cy="2" r="1.3" style="--a:0.84;--d:6.2s;--o:-0.2s;opacity:0.84"></circle><circle class="st" cx="136" cy="121" r="1" style="--a:0.40;--d:4.5s;--o:-2.5s;opacity:0.40"></circle><circle class="st" cx="352" cy="2" r="0.8" style="--a:0.84;--d:5.8s;--o:-2.0s;opacity:0.84"></circle><circle class="st" cx="377" cy="18" r="1.3" style="--a:0.78;--d:6.3s;--o:-3.8s;opacity:0.78"></circle><circle class="st" cx="46" cy="133" r="1.1" style="--a:0.36;--d:4.2s;--o:-0.4s;opacity:0.36"></circle></g></svg></div>
+  <button class="settitle" id="setT" type="button"><span class="ytl"><span class="ytn" id="stName">百岳</span><span class="ytc" id="stCount">0 / 100</span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span><span class="yts" id="stSub" aria-hidden="true"></span></button>
+  <div class="ridge" id="ridge" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 390 300" preserveAspectRatio="xMidYMax slice"><defs><linearGradient id="rgFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1626" stop-opacity="0"/><stop offset=".2" stop-color="#0B1626" stop-opacity=".9"/><stop offset="1" stop-color="#0B1626"/></linearGradient></defs><rect width="390" height="300" fill="url(#rgFade)"/><path d="M0 300 L0.0 131.4 L6.0 130.7 L12.0 130.3 L18.0 130.5 L24.0 131.2 L30.0 132.3 L36.0 133.5 L42.0 134.6 L48.0 135.6 L54.0 136.7 L60.0 138.1 L66.0 139.9 L72.0 141.9 L78.0 143.8 L84.0 145.2 L90.0 146.0 L96.0 146.3 L102.0 146.4 L108.0 146.6 L114.0 146.9 L120.0 147.3 L126.0 147.4 L132.0 147.1 L138.0 146.4 L144.0 145.6 L150.0 145.0 L156.0 144.8 L162.0 144.8 L168.0 144.9 L174.0 144.7 L180.0 144.0 L186.0 142.8 L192.0 141.4 L198.0 140.1 L204.0 139.0 L210.0 137.9 L216.0 136.7 L222.0 135.1 L228.0 133.2 L234.0 131.1 L240.0 129.4 L246.0 128.2 L252.0 127.7 L258.0 127.6 L264.0 127.6 L270.0 127.5 L276.0 127.3 L282.0 127.2 L288.0 127.4 L294.0 128.1 L300.0 129.0 L306.0 129.8 L312.0 130.2 L318.0 130.0 L324.0 129.5 L330.0 128.8 L336.0 128.4 L342.0 128.3 L348.0 128.3 L354.0 128.2 L360.0 127.8 L366.0 127.2 L372.0 126.4 L378.0 125.9 L384.0 125.8 L390.0 126.0 L390 300 Z" fill="#1A2A44" opacity=".85"/><path d="M0 300 L0.0 150.7 L6.0 150.4 L12.0 149.9 L18.0 149.8 L24.0 150.4 L30.0 151.7 L36.0 153.0 L42.0 153.5 L48.0 153.1 L54.0 152.3 L60.0 151.6 L66.0 151.2 L72.0 150.8 L78.0 149.9 L84.0 148.3 L90.0 146.5 L96.0 145.4 L102.0 145.2 L108.0 145.8 L114.0 146.5 L120.0 146.7 L126.0 146.5 L132.0 146.4 L138.0 146.8 L144.0 147.6 L150.0 148.1 L156.0 147.9 L162.0 146.9 L168.0 145.9 L174.0 145.4 L180.0 145.8 L186.0 146.7 L192.0 147.7 L198.0 148.3 L204.0 149.1 L210.0 150.4 L216.0 152.5 L222.0 155.1 L228.0 157.3 L234.0 158.7 L240.0 159.2 L246.0 159.6 L252.0 160.3 L258.0 161.4 L264.0 162.4 L270.0 163.0 L276.0 163.0 L282.0 163.2 L288.0 164.1 L294.0 165.8 L300.0 167.9 L306.0 169.6 L312.0 170.5 L318.0 170.9 L324.0 171.1 L330.0 171.7 L336.0 172.2 L342.0 172.1 L348.0 171.1 L354.0 169.5 L360.0 167.9 L366.0 167.0 L372.0 166.8 L378.0 167.0 L384.0 166.8 L390.0 166.3 L390 300 Z" fill="#142239"/><path d="M-6.0 157.7 L1.9 200.5 L-13.9 200.5 Z M-6.0 169.1 L5.8 206.7 L-17.8 206.7 Z M-6.0 180.5 L9.7 213.0 L-21.7 213.0 Z M-6.0 191.9 L13.5 214.7 L-25.5 214.7 Z M-8.1 207.9 h4.2 v6.8 h-4.2 Z M12.0 169.8 L17.5 199.4 L6.5 199.4 Z M12.0 177.7 L20.1 203.8 L3.9 203.8 Z M12.0 185.6 L22.8 208.1 L1.2 208.1 Z M12.0 193.5 L25.5 209.3 L-1.5 209.3 Z M10.5 204.6 h2.9 v4.7 h-2.9 Z M28.0 152.8 L34.3 192.8 L21.7 192.8 Z M28.0 163.5 L37.4 198.7 L18.6 198.7 Z M28.0 174.2 L40.5 204.6 L15.5 204.6 Z M28.0 184.8 L43.6 206.2 L12.4 206.2 Z M26.3 199.8 h3.4 v6.4 h-3.4 Z M352.0 151.7 L359.6 193.3 L344.4 193.3 Z M352.0 162.8 L363.2 199.4 L340.8 199.4 Z M352.0 173.9 L366.9 205.5 L337.1 205.5 Z M352.0 185.0 L370.6 207.2 L333.4 207.2 Z M350.0 200.5 h4.0 v6.7 h-4.0 Z M368.0 170.5 L374.0 202.0 L362.0 202.0 Z M368.0 178.9 L377.0 206.6 L359.0 206.6 Z M368.0 187.3 L379.9 211.2 L356.1 211.2 Z M368.0 195.7 L382.8 212.5 L353.2 212.5 Z M366.4 207.4 h3.2 v5.0 h-3.2 Z M386.0 162.0 L392.0 197.9 L380.0 197.9 Z M386.0 171.5 L394.9 203.2 L377.1 203.2 Z M386.0 181.1 L397.8 208.5 L374.2 208.5 Z M386.0 190.7 L400.7 209.9 L371.3 209.9 Z M384.4 204.2 h3.2 v5.8 h-3.2 Z" fill="#0F1C30"/><path d="M0 300 L0.0 188.3 L6.0 188.3 L12.0 188.0 L18.0 187.5 L24.0 187.1 L30.0 186.9 L36.0 186.8 L42.0 186.9 L48.0 186.9 L54.0 186.9 L60.0 186.8 L66.0 186.7 L72.0 186.8 L78.0 187.1 L84.0 187.4 L90.0 187.6 L96.0 187.5 L102.0 187.1 L108.0 186.3 L114.0 185.3 L120.0 184.4 L126.0 183.7 L132.0 183.1 L138.0 182.7 L144.0 182.4 L150.0 181.9 L156.0 181.4 L162.0 180.9 L168.0 180.5 L174.0 180.3 L180.0 180.2 L186.0 180.0 L192.0 179.6 L198.0 178.9 L204.0 178.0 L210.0 176.9 L216.0 176.0 L222.0 175.4 L228.0 175.1 L234.0 175.0 L240.0 175.1 L246.0 175.2 L252.0 175.2 L258.0 175.3 L264.0 175.5 L270.0 175.9 L276.0 176.4 L282.0 176.9 L288.0 177.3 L294.0 177.4 L300.0 177.3 L306.0 177.1 L312.0 177.1 L318.0 177.4 L324.0 178.0 L330.0 178.9 L336.0 179.9 L342.0 180.9 L348.0 181.7 L354.0 182.5 L360.0 183.3 L366.0 184.2 L372.0 185.1 L378.0 185.9 L384.0 186.6 L390.0 186.9 L390 300 Z" fill="#0D1829"/><path d="M96.0 216.2 L99.9 242.3 L92.1 242.3 Z M96.0 223.2 L101.9 246.1 L90.1 246.1 Z M96.0 230.1 L103.8 250.0 L88.2 250.0 Z M96.0 237.1 L105.7 251.0 L86.3 251.0 Z M95.0 246.8 h2.1 v4.2 h-2.1 Z M108.0 211.3 L112.5 240.5 L103.5 240.5 Z M108.0 219.0 L114.6 244.8 L101.4 244.8 Z M108.0 226.8 L116.8 249.0 L99.2 249.0 Z M108.0 234.6 L119.0 250.2 L97.0 250.2 Z M106.8 245.5 h2.4 v4.7 h-2.4 Z M286.0 213.5 L290.4 240.9 L281.6 240.9 Z M286.0 220.8 L292.5 244.9 L279.5 244.9 Z M286.0 228.1 L294.6 248.9 L277.4 248.9 Z M286.0 235.4 L296.7 250.0 L275.3 250.0 Z M284.8 245.7 h2.3 v4.4 h-2.3 Z M298.0 206.2 L303.1 235.8 L292.9 235.8 Z M298.0 214.1 L305.6 240.1 L290.4 240.1 Z M298.0 221.9 L308.1 244.5 L287.9 244.5 Z M298.0 229.8 L310.5 245.6 L285.5 245.6 Z M296.6 240.9 h2.7 v4.7 h-2.7 Z M312.0 215.1 L316.7 240.5 L307.3 240.5 Z M312.0 221.9 L319.0 244.2 L305.0 244.2 Z M312.0 228.6 L321.3 247.9 L302.7 247.9 Z M312.0 235.4 L323.6 248.9 L300.4 248.9 Z M310.7 244.8 h2.5 v4.1 h-2.5 Z" fill="#0A1322"/><path d="M0 300 L0.0 234.9 L6.0 234.8 L12.0 234.7 L18.0 234.7 L24.0 234.8 L30.0 234.9 L36.0 235.0 L42.0 235.0 L48.0 235.0 L54.0 235.0 L60.0 235.1 L66.0 235.3 L72.0 235.5 L78.0 235.7 L84.0 235.8 L90.0 235.7 L96.0 235.4 L102.0 235.1 L108.0 234.7 L114.0 234.3 L120.0 233.8 L126.0 233.4 L132.0 232.8 L138.0 232.1 L144.0 231.4 L150.0 230.7 L156.0 230.2 L162.0 229.8 L168.0 229.5 L174.0 229.3 L180.0 229.0 L186.0 228.8 L192.0 228.4 L198.0 228.2 L204.0 228.0 L210.0 227.9 L216.0 227.8 L222.0 227.8 L228.0 227.7 L234.0 227.6 L240.0 227.5 L246.0 227.4 L252.0 227.6 L258.0 227.9 L264.0 228.3 L270.0 228.7 L276.0 229.1 L282.0 229.5 L288.0 229.8 L294.0 230.0 L300.0 230.4 L306.0 230.7 L312.0 230.9 L318.0 231.1 L324.0 231.1 L330.0 230.9 L336.0 230.6 L342.0 230.3 L348.0 230.1 L354.0 229.9 L360.0 229.9 L366.0 229.8 L372.0 229.6 L378.0 229.4 L384.0 229.2 L390.0 229.1 L390 300 Z" fill="#08111E"/></svg></div>
 
   <div class="sets" id="sets" role="group" aria-label="切換山系"><button type="button" data-set="bai" aria-pressed="true"><i></i>百岳 <u id="cBai">0/100</u></button><button type="button" data-set="xiao" aria-pressed="false"><i class="cir"></i>小百岳 <u id="cXiao">0/100</u></button><button type="button" data-set="shan" aria-pressed="false"><i class="dia"></i>小山 <u id="cShan">0/38</u></button></div>
 
   <nav class="tabs" role="tablist" aria-label="畫面切換">
-    <button type="button" role="tab" id="tabMap" data-tab="map" aria-selected="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M2.5 5.5l5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2zM8 3.5v13M14 5.5v13"/></svg>地圖</button>
-    <button type="button" role="tab" id="tabList" data-tab="list" aria-selected="false"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M2 17.5l5.5-9 3.2 5 2.3-3.5 5 7.5zM4 4.5h8M4 7.5h4"/></svg>山頭</button>
-    <button type="button" role="tab" id="tabChar" data-tab="char" aria-selected="false"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M11 2.5l7.4 4.25v8.5L11 19.5l-7.4-4.25v-8.5zM11 7l3.5 2-1 4.5-4.5.5-1.5-4z"/></svg>數據</button>
-    <button type="button" role="tab" id="tabGear" data-tab="gear" aria-selected="false"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><circle cx="11" cy="6" r="3.2"/><path d="M5 19.5v-5a6 6 0 0112 0v5M8.5 10.5l-1 9M13.5 10.5l1 9"/></svg>裝備</button>
+    <button type="button" role="tab" id="tabMap" data-tab="map" aria-selected="true"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5l6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z"></path><path d="M9 4v13.5M15 6.5V20"></path></svg></span>地圖</button>
+    <button type="button" role="tab" id="tabList" data-tab="list" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5 20l7.5-11.5 4 6 2-3 5.5 8.5z"></path><path d="M10 8.5V3l5 1.8-5 1.8"></path></svg></span>山頭</button>
+    <button type="button" role="tab" id="tabChar" data-tab="char" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M5 17L10 6.5 17.5 10 19 19.5Z" stroke-opacity=".7" stroke-dasharray="2 2"></path><circle cx="5" cy="17" r="1.8" fill="currentColor"></circle><circle cx="10" cy="6.5" r="2.2" fill="currentColor"></circle><circle cx="17.5" cy="10" r="1.8" fill="currentColor"></circle><circle cx="19" cy="19.5" r="1.5" fill="currentColor"></circle></svg></span>數據</button>
+    <button type="button" role="tab" id="tabGear" data-tab="gear" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M9 7V5.5a3 3 0 0 1 6 0V7"></path><path d="M6 10a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v10.5H6z"></path><path d="M9 14h6v3.5H9z"></path></svg></span>裝備</button>
   </nav>
 
   <section class="panel" id="listView" aria-label="山頭清單">
@@ -788,7 +840,7 @@ function rtProfile(t,cur){
   let up=0,dw=0;for(let i=1;i<n;i++){const d=ch[i][1]-ch[i-1][1];if(d>0)up+=d;else dw-=d}
   let h='<div class="rpw"><div class="rhint"><span>從左走到右：線往上是爬升、往下是下降</span></div>'+g+'</div>'+
     '<div class="rsum"><span>全程至少爬升 <b>'+fmt(Math.round(up/10)*10)+'</b> m</span><span>至少下降 <b>'+fmt(Math.round(dw/10)*10)+'</b> m</span></div>';
-  h+='<ol class="stn">'+ch.map((c,i)=>{const pk=c[2],d=i?c[1]-ch[i-1][1]:0;
+  h+='<ol class="ytn">'+ch.map((c,i)=>{const pk=c[2],d=i?c[1]-ch[i-1][1]:0;
     return'<li class="'+(pk?'pk':'')+(pk===cur?' me':'')+(pk&&RECS[pk]?' dn':'')+'"><i>'+(i+1)+'</i><span>'+esc(c[0])+(pk===cur?'<em>這座山</em>':'')+'</span>'+
       '<u class="'+(d>0?'up':d<0?'dw':'')+'">'+(i?(d>0?'↑ ':d<0?'↓ ':'')+fmt(Math.abs(d)):'起點')+'</u><b>'+(pk?'':'約 ')+fmt(c[1])+' m</b></li>'}).join('')+'</ol>';
   return h;
@@ -1088,7 +1140,7 @@ function paint(){
   const trail=(last?[last]:[]).concat(nx);
   if(trail.length>1){ctx.beginPath();trail.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
     ctx.strokeStyle='rgba(8,15,27,.5)';ctx.lineWidth=4/k;ctx.stroke();
-    ctx.strokeStyle='rgba(244,193,82,.8)';ctx.lineWidth=1.6/k;ctx.setLineDash([5/k,5/k]);ctx.stroke();ctx.setLineDash([])}
+    ctx.strokeStyle='rgba(238,241,236,.85)';ctx.lineWidth=1.6/k;ctx.setLineDash([5/k,5/k]);ctx.stroke();ctx.setLineDash([])}
   // every peak leaves a small pip, even inside a cluster
   const s=clamp(2.6+k*0.5,3,5)/k;PIPS=[];PT={d,k,tx:V.tx,ty:V.ty,s};
   for(const c of clusters){if(c.m.length<2)continue;for(const p of c.m){const st=statusOf(p),h=((typeof p.rank==='number'?p.rank:p.no||0)*2.399+(p.set==='xiao'?1.3:p.set==='shan'?2.6:0))%(Math.PI*2);
@@ -1313,17 +1365,26 @@ $('sx').onclick=closeSheet;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!help.hidden)closeHelp();else closeSheet()}});
 
 /* ---------- player bar, quest card ---------- */
+function moonPath(cx,cy,r,f){if(f<=0)return '';f=Math.max(f,.03);if(f>=1)return 'M'+cx+' '+(cy-r)+'a'+r+' '+r+' 0 1 1 0 '+2*r+'a'+r+' '+r+' 0 1 1 0 '+(-2*r)+'z';
+  const rx=Math.abs(1-2*f)*r,sw=f<.5?0:1;return 'M'+cx+' '+(cy-r)+'a'+r+' '+r+' 0 1 1 0 '+2*r+'a'+rx.toFixed(2)+' '+r+' 0 1 '+sw+' 0 '+(-2*r)+'z'}
+const SETS=['bai','xiao','shan'];
+function renderSetT(){const s=S.set||'bai',c=s==='xiao'?G.xn+' / 100':s==='shan'?G.sn+' / '+SH.length:G.n+' / 100';
+  $('stName').textContent=SETN[s];$('stCount').textContent=c;
+  $('stSub').innerHTML=SETS.map(k=>k===s?'<span class="on">'+SETN[k]+'</span>':SETN[k]).join(' · ');
+  const nx=SETS[(SETS.indexOf(s)+1)%3];$('setT').setAttribute('aria-label','目前顯示'+SETN[s]+'，已登頂 '+c.replace(' / ',' 座，共 ')+' 座。點一下切換成'+SETN[nx])}
 function renderPlayer(){
   const a=LV[G.lv-1]||0,b=LV[G.lv],top=b==null||G.n>=P.length;
   $('pLv').textContent=G.lv;$('pTitle').textContent=titleOf(G.lv);$('pDone').textContent=G.n;
-  $('pXp').style.width=(top?100:clamp((G.xp-a)/(b-a)*100,0,100))+'%';
+  const fr=top?1:clamp((G.xp-a)/(b-a),0,1);$('pRing').setAttribute('stroke-dasharray',(fr*188.5).toFixed(1)+' 188.5');
+  $('pMoon').setAttribute('d',moonPath(36,36,23,G.n/100));
   $('pXpTxt').textContent=top?fmt(G.xp)+' XP':fmt(G.xp)+' / '+fmt(b)+' XP';
-  $('player').setAttribute('aria-label','等級 '+G.lv+'，'+titleOf(G.lv)+'，'+fmt(G.xp)+' XP，已登頂 '+G.n+' / 100 座。看等級與數據');
+  $('player').setAttribute('aria-label','第 '+G.lv+' 級，'+titleOf(G.lv)+'。外圈是升級進度（'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升到第 '+(G.lv+1)+' 級')+'）；月亮是百岳進度 '+G.n+' / 100。看等級與數據');
+  renderSetT();
   $('cBai').textContent=G.n+'/100';$('cXiao').textContent=G.xn+'/100';$('cShan').textContent=G.sn+'/'+SH.length;
   const n=S.set==='bai'?NXT[0]:null,q=$('quest');q.hidden=!n;
   if(n){const st=statusOf(n);$('qName').textContent=n.name;$('qMeta').textContent='難度 '+n.grade+' · '+fmt(n.h)+' m · +'+XP_BY_GRADE[n.grade]+' XP';
     const t=$('qSt');t.className='tag '+st;t.textContent=ST_TXT[st];
-    q.querySelector('.qi').style.color=st==='ok'?'var(--ok)':st==='stretch'?'var(--stretch)':'var(--far)'}
+    q.querySelector('.qi').style.color=st==='ok'?'var(--ok)':st==='stretch'?'var(--stretch)':'var(--far)';$('qDot').className='qdot '+st}
 }
 
 /* ---------- list ---------- */
@@ -1561,6 +1622,7 @@ function setTab(t,fromHash){
   if(!fromHash){try{if(location.hash.slice(1)!==HASH[t])history.replaceState(null,'','#'+HASH[t])}catch(e){}}
 }
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
+$('setT').onclick=()=>setSet(SETS[(SETS.indexOf(S.set)+1)%3]);
 $('player').onclick=()=>{if(S.sel!=null&&!isDesk())closeSheet();setTab(S.tab==='char'?(isDesk()?'list':'map'):'char')};
 function readHash(){const h=(location.hash||'').slice(1);const t=Object.keys(HASH).find(k=>HASH[k]===h);if(t&&t!==S.tab)setTab(t,true)}
 window.addEventListener('hashchange',readHash);
