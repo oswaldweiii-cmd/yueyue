@@ -929,6 +929,35 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .twk-in{position:absolute;left:0;right:0;top:0;height:calc(100dvh - var(--top,0px) - var(--bar-h) - 16px - var(--tabs-h))}
 @keyframes twk{0%,100%{opacity:var(--a,.6);transform:scale(1)}50%{opacity:.06;transform:scale(.55)}}
 @media (prefers-reduced-motion:reduce){.twk i{animation:none}}
+
+/* ---- 登頂成就 ---- */
+.cele{position:fixed;inset:0;z-index:35;cursor:pointer;background:radial-gradient(ellipse at 50% 45%,rgba(11,22,38,0),rgba(4,8,15,.35));animation:ceFade .4s ease-out both}
+@keyframes ceFade{from{opacity:0}to{opacity:1}}
+.ce-burst{position:fixed;width:0;height:0;pointer-events:none}
+.ce-burst i{position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;border:2px solid #F4C152;animation:ceRing 1.3s cubic-bezier(.2,.8,.2,1) both}
+.ce-burst i+i{animation-delay:.25s;border-width:1px}
+@keyframes ceRing{from{transform:scale(.3);opacity:1}to{transform:scale(4.2);opacity:0}}
+.ce-burst svg{position:absolute;left:-24px;top:-24px;width:48px;height:48px;filter:drop-shadow(0 0 12px rgba(244,193,82,.9));animation:ceStar 1.1s cubic-bezier(.2,1.4,.3,1) both}
+@keyframes ceStar{0%{transform:scale(0) rotate(-40deg)}60%{transform:scale(1.6) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
+.ce-stamp{position:fixed;left:50%;top:38%;width:220px;height:220px;margin:-110px 0 0 -110px;pointer-events:none;animation:ceSlam .55s cubic-bezier(.3,1.5,.4,1) both}
+.ce-stamp svg{width:100%;height:100%;filter:drop-shadow(0 6px 24px rgba(0,0,0,.45))}
+@keyframes ceSlam{0%{transform:scale(2.4) rotate(-24deg);opacity:0}55%{opacity:1}100%{transform:scale(1) rotate(-10deg);opacity:1}}
+.cele.card{cursor:default;background:rgba(4,8,15,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.ce-card{position:absolute;left:0;right:0;bottom:0;max-height:86%;overflow:auto;padding:28px 24px calc(24px + env(safe-area-inset-bottom,0px));border-radius:24px 24px 0 0;background:#0E1A2E;border-top:1px solid rgba(244,193,82,.45);transform:translateY(100%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.cele.in .ce-card{transform:none}
+.ce-k{margin:0;font:500 11px var(--body);letter-spacing:.32em;color:#F4C152}
+.ce-n{margin:8px 0 0;font:600 40px/1.15 var(--display);letter-spacing:.04em}
+.ce-d{margin:8px 0 0;font:400 14px var(--body);color:var(--t2)}
+.ce-xp{margin-top:20px;display:flex;align-items:baseline;gap:8px}.ce-xp b{font:600 56px/1 var(--display);color:#F4C152;font-variant-numeric:tabular-nums}.ce-xp span{font:500 16px var(--body);color:var(--t2)}
+.ce-lv{margin-top:16px;display:flex;justify-content:space-between;gap:10px;font:500 14px var(--body);color:var(--t1)}.ce-lv span+span{color:var(--t2);font-weight:400}
+.ce-bar{margin-top:8px;height:8px;border-radius:4px;background:rgba(200,211,226,.14);overflow:hidden}.ce-bar i{display:block;height:100%;border-radius:4px;background:#A9C3E6;transition:width 1.2s cubic-bezier(.2,.8,.2,1) .4s}
+.ce-lines{margin-top:20px;border-top:1px solid rgba(200,211,226,.14)}
+.ce-lines p{margin:0;padding:12px 0;display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:12px;border-bottom:1px solid rgba(200,211,226,.1);opacity:0;animation:ceLine .5s ease-out both}
+.ce-lines p:nth-child(1){animation-delay:.9s}.ce-lines p:nth-child(2){animation-delay:1.05s}.ce-lines p:nth-child(3){animation-delay:1.2s}.ce-lines p:nth-child(4){animation-delay:1.35s}.ce-lines p:nth-child(5){animation-delay:1.5s}
+@keyframes ceLine{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ce-lines small{grid-row:1/3;font:500 11px var(--body);letter-spacing:.2em;color:var(--t2);padding-top:5px}.ce-lines b{font:600 18px var(--display)}.ce-lines em{font:400 13px var(--body);font-style:normal;color:var(--t2)}
+.ce-card .dpair{margin-top:22px}
+@media (prefers-reduced-motion:reduce){.cele,.ce-burst i,.ce-burst svg,.ce-stamp,.ce-lines p{animation:none!important;opacity:1}.ce-card,.ce-bar i{transition:none}}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1771,6 +1800,45 @@ function dStamp(p,r){const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[
     '<g filter="url(#'+id+'f)" fill="#F4C152"><text class="sring"><textPath href="#'+id+'" startOffset="50%" text-anchor="middle">月岳・'+esc(nm)+'・'+fmt(p.h)+'M</textPath></text>'+
     '<text x="60" y="61" text-anchor="middle" class="sbigc">登頂</text><text x="60" y="78" text-anchor="middle" class="sdate">'+esc(dt)+'</text>'+
     '<path d="M60 26 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/></g></svg>'}
+/* ---------- 登頂成就：地圖上飛過去 → 點亮 → 蓋章 → 結算卡 ---------- */
+function snapG(){return{xp:G.xp,lv:G.lv,n:G.n,xn:G.xn,sn:G.sn}}
+function celebrate(ps,prev){
+  ps=(ps||[]).filter(Boolean);if(!ps.length)return;
+  const p=ps.slice().sort((a,b)=>(a.set==='bai'?0:1)-(b.set==='bai'?0:1))[0],bai=p.set==='bai',r=bai?RECS[p.rank]:REC(p);if(!r)return;
+  if(S.sel!=null)closeSheet();if(S.tab!=='map')setTab('map');if(S.set!==p.set)setSet(p.set,true);
+  const rm=reduceMotion(),box=document.createElement('div');box.className='cele';box.setAttribute('role','dialog');box.setAttribute('aria-label','登頂 '+p.name);
+  document.body.appendChild(box);let done=false,timers=[];const at=(ms,f)=>timers.push(setTimeout(f,rm?0:ms));
+  const card=()=>{if(done)return;done=true;timers.forEach(clearTimeout);box.classList.add('card');box.innerHTML=celeCard(p,r,prev,ps);
+    requestAnimationFrame(()=>box.classList.add('in'));celeCount(box,prev);
+    box.querySelector('#ceGo').onclick=()=>{box.remove();openPeak(p.rank,true)};box.querySelector('#ceMap').onclick=()=>box.remove()};
+  box.onclick=e=>{if(!done)card()};
+  // ① fly there
+  requestAnimationFrame(()=>{try{resize();focusPeak(p)}catch(e){}});
+  // ② ignite
+  at(bai?800:300,()=>{const wr=wrap.getBoundingClientRect(),x=wr.left+V.tx+p.x*V.k,y=wr.top+V.ty+p.y*V.k;
+    const b=document.createElement('div');b.className='ce-burst';b.style.left=x+'px';b.style.top=y+'px';b.innerHTML='<i></i><i></i><svg viewBox="-24 -24 48 48"><path d="M0 -22 L4 -4 L22 0 L4 4 L0 22 L-4 4 L-22 0 L-4 -4Z" fill="#F4C152"/></svg>';box.appendChild(b)});
+  // ③ stamp
+  at(bai?1900:1200,()=>{const s=document.createElement('div');s.className='ce-stamp';s.innerHTML=dStamp(p,r);box.appendChild(s)});
+  // ④ result card
+  at(bai?3300:2500,card);
+}
+function celeCount(box,prev){const el=box.querySelector('[data-cnt]');if(el){const to=+el.dataset.cnt,t0=performance.now();const st=n=>{const k=Math.min(1,(n-t0)/900),e=1-Math.pow(1-k,3);el.textContent='+'+fmt(Math.round(to*e));if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
+  const bar=box.querySelector('.ce-bar i');if(bar)requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.style.width=bar.dataset.to}))}
+function celeCard(p,r,prev,ps){
+  const bai=p.set==='bai',gain=G.xp-(prev?prev.xp:G.xp),a=LV[G.lv-1]||0,b=LV[G.lv],top=b==null,lvUp=prev&&G.lv>prev.lv;
+  const from=prev&&!lvUp?clamp((prev.xp-a)/((b||1)-a),0,1):0,to=top?1:clamp((G.xp-a)/(b-a),0,1);
+  const lines=[];
+  if(bai)lines.push(['月亮','圓了 '+Math.max(1,G.n)+'%','百岳 '+G.n+' / 100']);
+  if(bai){const t=mainRoute(p,r),hs=t?(t.rsk||t.ch||[]).map(c=>c[0]).filter(n=>/山莊|山屋/.test(n)):[];if(hs[0])lines.push(['山屋',esc(hs[0])+' 已開放','帳號上線後可以進去'])}
+  if(bai)BADGES.forEach(([nm,rs])=>{if(rs.includes(p.rank)){const d=rs.filter(x=>RECS[x]).length;lines.push(['成就',nm+' '+d+' / '+rs.length,d===rs.length?'全部集滿！':'再 '+(rs.length-d)+' 座'])}});
+  if(bai&&NXT[0])lines.push(['下一關',esc(NXT[0].name),'難度 '+NXT[0].grade+' / 5']);
+  if(ps.length>1)lines.push(['同一趟',ps.filter(x=>x!==p).map(x=>esc(x.name)).join('、'),'也一起點亮了']);
+  return '<div class="ce-card yytex"><p class="ce-k">登頂成功</p><h2 class="ce-n">'+esc(p.name)+'</h2><p class="ce-d">'+esc(r.date||'')+'・海拔 '+fmt(p.h)+' 公尺</p>'+
+    '<div class="ce-xp"><b data-cnt="'+gain+'">+0</b><span>點</span></div>'+
+    '<div class="ce-lv"><span>'+(lvUp?'升級！':'')+'第 '+G.lv+' 級・'+titleOf(G.lv)+'</span><span>'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升級')+'</span></div><div class="ce-bar"><i style="width:'+(from*100).toFixed(1)+'%" data-to="'+(to*100).toFixed(1)+'%"></i></div>'+
+    (lines.length?'<div class="ce-lines">'+lines.map(l=>'<p><small>'+l[0]+'</small><b>'+l[1]+'</b><em>'+l[2]+'</em></p>').join('')+'</div>':'')+
+    '<div class="dpair"><button type="button" class="dghost" id="ceMap">回到地圖</button><button type="button" class="dbtn" id="ceGo">看這座山</button></div></div>'}
+
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
   const xp=bai?XP_BY_GRADE[p.grade]:sh?XP_SHAN:XP_XIAO,today=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
@@ -1843,10 +1911,10 @@ function wireDPage(p){
   const bai=p.set==='bai',key=bai?p.rank:(p.set==='shan'?'s':'x')+p.no,r=bai?RECS[p.rank]:REC(p),xp=bai?XP_BY_GRADE[p.grade]:p.set==='shan'?XP_SHAN:XP_XIAO;
   {const ub=$('upPh'),ui=$('upIn');if(ub&&ui){ub.onclick=()=>ui.click();ui.onchange=()=>{const f=ui.files&&ui.files[0];if(f)uploadPhoto(key,f,ub)}}}
   let mFile=null;{const pb=$('mPhB'),pi=$('mPh');if(pb&&pi){pb.onclick=()=>pi.click();pi.onchange=()=>{mFile=pi.files&&pi.files[0]||null;pb.textContent=mFile?'✓ 已選照片：'+mFile.name.slice(0,18):'＋ 附一張山頂照（選填）'}}}
-  {const b=$('xMark');if(b)b.onclick=async()=>{if(r&&!confirm((bai?'取消補登 ':'取消 ')+p.name+'？'))return;b.disabled=true;try{if(r)await DBH.doc('climbs/'+key).delete();else{const di=$('xDate'),day=di&&/^\d{4}-\d{2}-\d{2}$/.test(di.value)?di.value:new Date().toISOString().slice(0,10);
+  {const b=$('xMark');if(b)b.onclick=async()=>{if(r&&!confirm((bai?'取消補登 ':'取消 ')+p.name+'？'))return;b.disabled=true;const prevG=snapG();try{if(r)await DBH.doc('climbs/'+key).delete();else{const di=$('xDate'),day=di&&/^\d{4}-\d{2}-\d{2}$/.test(di.value)?di.value:new Date().toISOString().slice(0,10);
       await DBH.doc('climbs/'+key).set(bai?{rank:p.rank,name:p.name,date:day,verified:mFile?'photo':'self',source:'補登'}:{set:p.set,no:p.no,name:p.name,date:day});
       if(bai&&mFile){const tb=$('upPh')||b;await uploadPhoto(key,mFile,tb)}}
-    say(r?'已取消 '+p.name:(bai?'補登 ':'登頂 ')+p.name+' +'+xp+' 點')}catch(e){b.disabled=false;say('存檔失敗，請再試一次。',true)}}}
+    if(r)say('已取消 '+p.name);else setTimeout(()=>celebrate([p],prevG),120)}catch(e){b.disabled=false;say('存檔失敗，請再試一次。',true)}}}
   const b=$('toMap');if(b)b.onclick=()=>{const rk=S.sel;setTab('map');requestAnimationFrame(()=>{resize();focusPeak(byRank[rk])})};
   const hb=$('dHut');if(hb)hb.onclick=()=>say(r?'山屋會在帳號功能上線後開放，到時候就能看到同一間山屋的山友。':'先登頂這座山，就能進入這間山屋。');
 }
@@ -2217,7 +2285,7 @@ function applySnapshot(snap){
   const fresh=Object.keys(next).filter(k=>!prev[k]);
   RECS=next;S.loaded=true;refresh();
   const n=Object.keys(next).length;
-  say(n?(fresh.length&&fresh.length<=3?'登頂 '+fresh.map(k=>byRank[k].name+' +'+XP_BY_GRADE[byRank[k].grade]+' XP').join('、'):'已登頂 '+n+' 座'):'還沒有登頂紀錄，整座島都在雲海下');
+  if(!S.toastDone){S.toastDone=true;say(n?'已登頂 '+n+' 座':'還沒有登頂紀錄，整座島都在雲海下')}
   if(fresh.length&&!reduceMotion())requestAnimationFrame(()=>fresh.forEach(k=>{const el=mkEls.get('p'+k);if(el){el.classList.add('burst');setTimeout(()=>el.classList.remove('burst'),1600)}}));
 }
 /* ---------- local storage: records live on this phone; photos in IndexedDB ---------- */
@@ -2287,6 +2355,7 @@ async function importGPX(file){
   const raw=LDB.raw(),add=[],skip=[];
   for(const f of found){if(raw[f.key]){skip.push(f);continue}add.push(f)}
   if(skip.length&&confirm(skip.map(f=>f.p.name).join('、')+' 已經有紀錄了。要用這條軌跡取代嗎？'))add.push(...skip);
+  const prevG=snapG();
   for(const f of add){const st=g.T[f.i][3],dt=isFinite(st)?new Date(st):(g.t0?new Date(g.t0):new Date()),hh=isFinite(st)?String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0'):'';
     const day=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
     const rec={name:f.p.name,date:day,summitTime:hh,distanceKm:+g.km.toFixed(1),track:track.join(';'),source:'GPX：'+file.name,verified:'gps',style:g.loop?'來回':'縱走'};
@@ -2294,7 +2363,7 @@ async function importGPX(file){
     if(f.p.set==='xiao'||f.p.set==='shan'){rec.set=f.p.set;rec.no=f.p.no}else rec.rank=f.p.rank;
     const old=raw[f.key];if(old){if(old.photoId)rec.photoId=old.photoId;if(old.thumbId)rec.thumbId=old.thumbId;if(old.note)rec.note=old.note}
     await LDB.doc('climbs/'+f.key).set(rec)}
-  if(add.length)say('從軌跡找到登頂：'+add.map(f=>f.p.name).join('、'));else say('沒有新增紀錄。');
+  if(add.length){const fresh=add.filter(f=>!skip.includes(f)).map(f=>byRank[f.p.rank]||f.p);if(fresh.length)setTimeout(()=>celebrate(fresh,prevG),120);else say('已更新：'+add.map(f=>f.p.name).join('、'))}else say('沒有新增紀錄。');
 }
 function pickFile(accept,fn){const i=document.createElement('input');i.type='file';i.accept=accept;i.onchange=()=>{const f=i.files&&i.files[0];if(f)fn(f)};i.click()}
 async function load(){
