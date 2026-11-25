@@ -650,7 +650,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .sheet.dpage .grab{display:none}
 .sheet.dpage .sx{left:max(8px,env(safe-area-inset-left,0px));right:auto;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:3;background:rgba(11,22,38,.5);color:var(--ink);border:1px solid rgba(200,211,226,.2);width:44px;height:44px}
 .dp{position:relative;overflow:hidden;color:var(--ink);background:linear-gradient(180deg,#0B1626 0%,#0E1A2E 30%,#142339 55%,#1F2F48 75%,#3A4660 88%,#8A6C5E 96%,#D69A6A 100%)}
-.dhero{position:relative;width:100%;aspect-ratio:390/560}
+.dhero{position:relative;width:100%;aspect-ratio:390/560;-webkit-mask-image:linear-gradient(180deg,#000 93%,transparent 100%);mask-image:linear-gradient(180deg,#000 93%,transparent 100%)}
 .dhero-s{position:absolute;inset:0;width:100%;height:100%}
 .dsvt{font:500 14px var(--body);fill:#C8D3E2}.dsvt.b{font:700 16px var(--display);fill:#EEF1EC}.dsvt.s{font-size:12px;fill:#A3B2C6}
 .dst{animation:ytTw var(--d,5s) ease-in-out var(--o,0s) infinite}
@@ -677,7 +677,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .drow{margin:8px 0 0;display:flex;align-items:center;gap:14px}.drow>b{flex:none;width:44px;font:700 18px var(--display)}
 .ddots{display:inline-flex;gap:7px}.ddots i{width:13px;height:13px;border-radius:50%;border:1.5px solid #7D8EA6;box-sizing:border-box}.ddots i.on{background:var(--ink);border-color:var(--ink)}
 .dind{margin-left:58px}
-.dland{position:relative;margin-top:30px;height:170px;-webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000 62%,transparent 100%)}.dland svg{display:block;width:100%;height:100%}
+.dland{position:relative;margin-top:30px;height:170px;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 60%,transparent 100%)}
+.dmist{position:relative;z-index:2;height:120px;margin:-60px 0;pointer-events:none;overflow:visible}
+.dmist span{position:absolute;border-radius:50%;filter:blur(18px);background:rgba(190,206,228,.16);animation:ytDrift2 var(--d,30s) ease-in-out var(--o,0s) infinite alternate}.dland svg{display:block;width:100%;height:100%}
 .dphoto{display:block;margin-top:-40px}
 .dphoto img{display:block;width:100%;height:320px;object-fit:cover;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 70%,transparent 100%)}
 .dsec>.dghost{margin:10px 0 26px}
@@ -703,7 +705,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dend svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:240px}
 
 @media (max-width:899px){.sheet.dpage{top:0;max-height:none;height:100%;border-radius:0;box-shadow:none}}
-@media (prefers-reduced-motion:reduce){.dst,.dband span{animation:none}}
+@media (prefers-reduced-motion:reduce){.dst,.dband span,.dmist span{animation:none}}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1474,11 +1476,14 @@ function heroProfile(p,r){
     (dn?'<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="22" fill="#F4C152" opacity=".16"/><path transform="translate('+sx.toFixed(1)+' '+sy.toFixed(1)+')" d="M0 -15 L2.6 -2.6 L15 0 L2.6 2.6 L0 15 L-2.6 2.6 L-15 0 L-2.6 -2.6 Z" fill="#F4C152"/>'
        :'<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="7" fill="#0B1626" stroke="#A9C3E6" stroke-width="2"/>')+
     '<text x="'+Math.min(330,Math.max(60,sx)).toFixed(1)+'" y="'+(sy-26).toFixed(1)+'" text-anchor="middle" class="dsvt b">山頂 '+fmt(p.h)+' 公尺</text>'+
-    '<text x="20" y="504" class="dsvt">登山口</text>'+(mid?'<text x="'+sx.toFixed(1)+'" y="504" text-anchor="middle" class="dsvt">'+(+skm).toFixed(1)+' 公里</text>':'')+
-    '<text x="370" y="504" text-anchor="end" class="dsvt">'+(+km).toFixed(1)+' 公里</text>'+
-    '<text x="195" y="530" text-anchor="middle" class="dsvt s">'+esc(src)+'</text></svg>';
+    '<text x="20" y="494" class="dsvt">登山口</text>'+(mid?'<text x="'+sx.toFixed(1)+'" y="494" text-anchor="middle" class="dsvt">'+(+skm).toFixed(1)+' 公里</text>':'')+
+    '<text x="370" y="494" text-anchor="end" class="dsvt">'+(+km).toFixed(1)+' 公里</text>'+
+    '<text x="195" y="516" text-anchor="middle" class="dsvt s">'+esc(src)+'</text></svg>';
   return g;
 }
+function dMist(seed){let r=seed*9301+49297;const rnd=()=>(r=(r*9301+49297)%233280)/233280;let h='<div class="dmist" aria-hidden="true">';
+  for(let i=0;i<5;i++){const w=180+rnd()*160,hh=34+rnd()*30;h+='<span style="left:'+(-90+rnd()*360).toFixed(0)+'px;top:'+(18+rnd()*70).toFixed(0)+'px;width:'+w.toFixed(0)+'px;height:'+hh.toFixed(0)+'px;--o:-'+(rnd()*20).toFixed(1)+'s;--d:'+(24+rnd()*16).toFixed(0)+'s;opacity:'+(.55+rnd()*.45).toFixed(2)+'"></span>'}
+  return h+'</div>'}
 function renderDPage(p){
   const st=statusOf(p),r=RECS[p.rank],isNext=NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
   const mp=moonPath(30,30,21,G.n/100);
@@ -1486,7 +1491,7 @@ function renderDPage(p){
   // hero
   h+='<div class="dhero">'+heroProfile(p,r)+
     '<div class="dmoon" aria-label="你爬了 '+G.n+' 座，共 100 座百岳"><svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28" fill="#F4E3B4" opacity=".07"/><circle cx="30" cy="30" r="21" fill="#24344E"/><path d="'+mp+'" fill="#F4E3B4"/></svg><p>你爬了 <b>'+G.n+'</b> 座<br>共 100 座百岳</p></div>'+
-    '<div class="dtitle"><p class="deb">'+(p.park==='無'?'不在國家公園內':esc(p.park)+'國家公園')+' · 百岳第 '+p.rank+' 高</p><h2 class="dname">'+nameHTML(p.name)+'</h2></div></div>';
+    '<div class="dtitle"><p class="deb">'+(p.park==='無'?'不在國家公園內':esc(p.park)+'國家公園')+' · 百岳第 '+p.rank+' 高</p><h2 class="dname">'+nameHTML(p.name)+'</h2></div></div>'+dMist(3);
   // headline
   if(r){const d=(r.date||'').split('-');const order=Object.values(RECS).map(x=>x.date||'').sort();const nth=order.indexOf(r.date||'')+1||G.n;
     h+='<div class="dsec dhead"><p class="dgold">'+(d.length===3?(+d[0])+' 年 '+(+d[1])+' 月 '+(+d[2])+' 日，':'')+'你登頂了</p><p class="dsay">'+(r.verified==='gps'||parseTrack(r.track)?'手錶有記錄到，':'你補登了這座山，')+'點亮了第 '+nth+' 顆星</p></div>';
@@ -1506,7 +1511,7 @@ function renderDPage(p){
   }else h+='<p class="dlead">這座山的路線還在整理中。</p>';
   h+='<p class="drow"><b>難度</b><span class="ddots" role="img" aria-label="難度 '+p.grade+' 級，共 5 級">'+[1,2,3,4,5].map(i=>'<i'+(i<=p.grade?' class="on"':'')+'></i>').join('')+'</span><span class="dsay">'+p.grade+' 級（共 5 級）</span></p>'+
     '<p class="dsay dind">'+GRADE_SAY[p.grade]+'（國家公園步道分級）</p></div>';
-  h+='<div class="dland">'+DPA.forest+'</div>';
+  h+=dMist(7)+'<div class="dland">'+DPA.forest+'</div>'+dMist(11);
   // photo
   {const ph=r&&safeUrl(r.photo);if(ph)h+='<a class="dphoto" href="'+esc(ph)+'" target="_blank" rel="noopener" aria-label="看登頂照原圖"><img src="'+esc(ph)+'" alt="'+esc(p.name)+' 登頂照" loading="lazy" decoding="async"></a>';
    if(r&&ASSETS)h+='<div class="dsec"><button type="button" class="dghost" id="upPh">'+(ph?'換一張登頂照':'＋ 上傳登頂照')+'</button><input type="file" id="upIn" accept="image/*" hidden></div>';}
@@ -1525,7 +1530,7 @@ function renderDPage(p){
       h+='<p class="dsay">'+s+'</p>'}
     if(r.note)h+='<p class="dquote">「'+esc(r.note)+'」</p>';
     h+='</div>'}
-  h+='<div class="dland">'+DPA.meadow+'</div>';
+  h+=dMist(13)+'<div class="dland">'+DPA.meadow+'</div>'+dMist(17);
   // section 3: hut
   const huts=hutsOf(p),hut=huts[0];
   h+='<div class="dsec"><p class="deb">第三段 · 山友</p><h3 class="dh">'+(hut?esc(hut):'山頂大廳')+'</h3>'+
