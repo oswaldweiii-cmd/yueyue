@@ -441,13 +441,13 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .mk .ph{display:block;width:34px;height:34px;border-radius:50%;background:#131d2c center/cover no-repeat;border:2px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.5)}
 .mk.hasph .lb{top:40px}
 /* ---------- gear tab ---------- */
-.gearv{display:none;position:absolute;z-index:4;inset:calc(var(--bar-h) + 16px) 0 var(--tabs-h) 0;background:transparent;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 56px),transparent)}
+.gearv{display:none;position:absolute;z-index:4;inset:calc(var(--bar-h) + 16px) 0 var(--tabs-h) 0;background:transparent;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent)}
 .app[data-tab="gear"] #gearView{display:block}.app[data-tab="gear"] .mapwrap{visibility:hidden}
-.gstage{position:relative;height:max(440px,min(70vh,620px))}
+.gstage{position:relative;height:max(450px,min(62vh,620px))}.gearv.g3off .gstage{height:220px}
 .g3d{position:absolute;inset:0;touch-action:pan-y}.g3d canvas{display:block;width:100%;height:100%;outline:none;cursor:grab;touch-action:pan-y}
 .ghd{position:absolute;left:24px;top:4px;z-index:2;pointer-events:none}
 .ghd small{display:block;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
-.gnum{margin:10px 0 0;display:flex;align-items:baseline;gap:6px;color:var(--t1)}.gnum b{font:600 56px/1 var(--display);letter-spacing:-.01em}.gnum span{font:600 20px var(--display);color:var(--t2)}
+.gnum{margin:10px 0 0;display:flex;align-items:baseline;gap:6px;color:var(--t1)}.gnum b{font:600 56px/1 var(--display);letter-spacing:-.01em}.gnum span{font:600 18px var(--display);color:var(--t2)}
 .gsub{margin:10px 0 0;font:400 14px/1.6 var(--body);color:var(--t2)}.gsub b{font:600 14px var(--display);color:var(--t1);margin:0 2px}
 .gsub i{font-style:normal;margin:0 .4em;color:rgba(238,241,236,.3)}
 .ghint{position:absolute;left:0;right:0;bottom:14px;margin:0;text-align:center;z-index:2;pointer-events:none;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
@@ -455,7 +455,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gtip.on{opacity:1;transform:none}
 .gtip .k{font:500 11px/1 var(--body);letter-spacing:.32em;color:#F4C152}
 .gtip ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:9px}
-.gtip li b{display:block;font:600 16px/1.3 var(--display);color:var(--t1)}.gtip li small{display:block;margin-top:2px;font:400 12px/1.4 var(--body);color:var(--t2)}
+.gtip li b{display:block;font:600 18px/1.3 var(--display);color:var(--t1)}.gtip li small{display:block;margin-top:2px;font:400 14px/1.45 var(--body);color:var(--t2)}
+.gtip.dock{left:24px;top:248px;bottom:auto;right:auto;width:min(160px,40%);padding:0;border-radius:0;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;text-shadow:0 1px 10px rgba(11,22,38,.9)}
+.gtip.dock ul{gap:8px}.gtip.dock li small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gstage:has(.gtip.on) .ghint{opacity:0}
 .gtip li.none b{color:var(--t2)}
 .gring{position:absolute;z-index:3;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:1.5px solid #F4C152;box-shadow:0 0 0 5px rgba(244,193,82,.14);pointer-events:none;opacity:0;transition:opacity .2s}.gring.on{opacity:1}
 .glead{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
@@ -463,16 +466,19 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .glist{position:relative;padding:8px 24px 96px}
 .glist .gl-hd{display:flex;justify-content:space-between;align-items:baseline;margin:8px 0 6px}
 .glist .gl-hd h3{margin:0;font:600 28px/1.25 var(--display);letter-spacing:.04em;color:var(--t1)}
-.glist .glg{display:flex;gap:14px;font:400 12px/1 var(--body);color:var(--t2);white-space:nowrap}
-.glist .glg i,.gst i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px}
-.gst .own,.glg .own{background:#5E9E78}.gst .borrow,.glg .borrow{border:1.5px dashed #D9A35B}.gst .none,.glg .none{border:1.5px dashed rgba(238,241,236,.35)}
-.gz{margin-top:28px}.gz>small{display:block;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);padding-bottom:10px;border-bottom:1px solid rgba(238,241,236,.12)}
-.gi{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;padding:14px 0;border-bottom:1px solid rgba(238,241,236,.07)}
-.gi .n{font:600 14px/1 var(--display);color:rgba(238,241,236,.35);font-variant-numeric:tabular-nums}
+.glist .glg{display:flex;gap:14px;font:500 11px/1 var(--body);letter-spacing:.2em;color:var(--t2);white-space:nowrap}
+.glist .glg i,.gst i{display:inline-block;box-sizing:border-box;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
+.gst .own,.glg .own{background:#5E9E78}.gst .borrow,.glg .borrow{background:linear-gradient(90deg,#F4C152 50%,transparent 50%);border:1px solid #F4C152}.gst .none,.glg .none{border:1px solid rgba(238,241,236,.55)}
+.gz{margin-top:20px}.gzk{display:block;width:100%;min-height:44px;margin:0;padding:16px 0 10px;text-align:left;background:none;border:0;border-bottom:1px solid rgba(238,241,236,.12);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);cursor:pointer}
+.gzk:hover{color:var(--t1)}.gzk:focus-visible,.g3d canvas:focus-visible{outline:1px solid #F4C152;outline-offset:4px}
+.gi{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;padding:12px 0;border-bottom:1px solid rgba(238,241,236,.07)}
+.gi .n{font:600 14px/1 var(--display);color:var(--t2);font-variant-numeric:tabular-nums}
 .gi b{font:600 18px/1.3 var(--display);letter-spacing:.02em;color:var(--t1)}.gi.none b{color:var(--t2)}
 .gi small{grid-column:2;font:400 14px/1.5 var(--body);color:var(--t2)}
-.gi .w{grid-row:1/3;grid-column:3;align-self:center;text-align:right;font:400 12px/1.4 var(--body);color:var(--t2);white-space:nowrap}
-.gi .w em{display:block;font:600 16px var(--display);font-style:normal;color:rgba(238,241,236,.35)}
+.gi .w{grid-row:1/3;grid-column:3;align-self:center;text-align:right;font:500 11px/1.6 var(--body);letter-spacing:.2em;color:var(--t2);white-space:nowrap}
+.gi .w em{display:block;font:400 14px var(--display);font-style:normal;letter-spacing:0;color:var(--t2)}
+@media (min-width:900px){.ghd{top:24px}.glist{max-width:720px}}
+@media (prefers-reduced-motion:reduce){.gtip,.gring{transition:none}}
 @media (min-width:900px){.gearv{position:relative;inset:auto;grid-column:2;grid-row:1/-1;border-left:1px solid var(--line)}.app[data-tab="gear"] .mapwrap{display:none}.app[data-tab="gear"] #listView{display:block}}
 .ctrl button.zx span{font:700 14px/1 var(--serif);color:var(--mute)}.ctrl button.zx.on{border-color:#7cc4ff;background:rgba(124,196,255,.16)}.ctrl button.zx.on span{color:#bfe0ff}
 .rows .xrow{display:flex;align-items:center;gap:12px;width:100%;padding:12px var(--pr,16px) 12px var(--pl,16px);text-align:left;border-top:1px solid var(--line)}
@@ -1047,7 +1053,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
       <div class="g3d" id="g3d"></div>
       <div class="ghd"><small>我的裝備</small><p class="gnum"><b id="gN">—</b><span>件</span></p><p class="gsub" id="gSub"></p></div>
       <svg class="glead" aria-hidden="true"><line id="gld" x1="0" y1="0" x2="0" y2="0" stroke="#F4C152" stroke-width="1" stroke-opacity=".7"/></svg>
-      <div class="gring" id="gring"></div><div class="gtip" id="gtip" role="status"></div>
+      <div class="gring" id="gring"></div><div class="gtip" id="gtip" aria-live="polite"></div>
       <p class="ghint" id="ghint">左右拖曳轉一圈・點身上看裝備</p>
       <div class="gload" id="gload">載入角色中…</div>
     </div>
@@ -2550,7 +2556,7 @@ load();
 // gear tab: a chibi of him wearing today's kit; three.js loads only when the tab first opens
 let G3=null,want=false;
 window.__gearOpen=async()=>{want=true;try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
-    G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){const l=document.getElementById('gload');if(l)l.textContent='角色載入失敗：'+(e&&e.message||e)}};
+    G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；下面的清單照常可以看';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
 if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
 const GEAR={
@@ -2570,7 +2576,10 @@ const GST={own:'自有',borrow:'借用',none:'未登錄'};
   document.getElementById('gN').textContent=all.length;
   document.getElementById('gSub').innerHTML='自有<b>'+c('own')+'</b><i>·</i>借用<b>'+c('borrow')+'</b><i>·</i>未登錄<b>'+c('none')+'</b><br>總重 '+(wn?'<b>'+wt.toLocaleString()+'</b> 公克':'<b>—</b> 公克，還沒秤');
   let n=0;document.getElementById('glist').innerHTML='<div class="gl-hd"><h3>這一套</h3><span class="glg"><span><i class="own"></i>自有</span><span><i class="borrow"></i>借用</span><span><i class="none"></i>未登錄</span></span></div>'+
-    Object.values(GEAR).map(z=>'<section class="gz"><small>'+z.k+'</small>'+z.items.map(i=>{n++;return '<div class="gi '+i.s+'"><span class="n">'+String(n).padStart(2,'0')+'</span><b>'+i.n+'</b><small>'+i.d+'</small><span class="w gst"><em>'+(i.g?i.g+' g':'— g')+'</em><i class="'+i.s+'"></i>'+GST[i.s]+'</span></div>'}).join('')+'</section>').join('')})();
+    Object.entries(GEAR).map(([zk,z])=>'<section class="gz"><button type="button" class="gzk" data-z="'+zk+'">'+z.k+'</button>'+z.items.map(i=>{n++;return '<div class="gi '+i.s+'"><span class="n">'+String(n).padStart(2,'0')+'</span><b>'+i.n+'</b>'+(/還沒登錄/.test(i.d)?'':'<small>'+i.d+'</small>')+'<span class="w gst"><em>'+(i.g?i.g+' 公克':'— 公克')+'</em><i class="'+i.s+'"></i>'+GST[i.s]+'</span></div>'}).join('')+'</section>').join('');
+  document.querySelectorAll('#glist .gzk').forEach(b=>{const z=b.dataset.z,on=()=>window.__gearZone&&window.__gearZone(z,1),off=()=>window.__gearZone&&window.__gearZone(z,0);
+    b.addEventListener('focus',on);b.addEventListener('blur',off);b.addEventListener('mouseenter',on);b.addEventListener('mouseleave',off);
+    b.addEventListener('click',()=>{document.querySelector('#gearView').scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});on()})})})();
 function build(THREE,OrbitControls,RoundedBoxGeometry){
 
 const stage=document.getElementById('g3d');const W=()=>stage.clientWidth||1,H=()=>stage.clientHeight||1;
@@ -2582,7 +2591,9 @@ const scene=new THREE.Scene(); // transparent: the page's star sky shows through
 const cam=new THREE.PerspectiveCamera(30,W()/H(),0.1,50);
 const controls=new OrbitControls(cam,renderer.domElement);
 controls.enablePan=false;controls.enableDamping=true;controls.dampingFactor=0.08;controls.minDistance=2.2;controls.maxDistance=6;
-controls.minPolarAngle=Math.PI*0.3;controls.maxPolarAngle=Math.PI*0.55;controls.autoRotate=true;controls.autoRotateSpeed=1.1;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// turn left/right only; vertical drags scroll the page (OrbitControls writes touch-action:none, so put pan-y back)
+controls.minPolarAngle=controls.maxPolarAngle=Math.PI*0.45;controls.enableZoom=false;controls.autoRotate=!RM;controls.autoRotateSpeed=1.1;renderer.domElement.style.touchAction='pan-y';
 function frame(){const portrait=H()>W();cam.fov=portrait?33:27;cam.aspect=W()/H();
   // magazine-cover framing on a phone: the figure sits right of centre and lower, clear of the headline
   if(portrait)cam.setViewOffset(W(),H(),-Math.round(W()*0.14),-Math.round(H()*0.07),W(),H());else cam.clearViewOffset();cam.updateProjectionMatrix();
@@ -2610,6 +2621,9 @@ function mesh(geo,mat,zone,outline=0.012){const m=new THREE.Mesh(geo,mat);m.cast
   if(outline){const o=new THREE.Mesh(geo,OUT);o.scale.setScalar(1);o.userData.zone=zone;o.onBeforeRender=()=>{};o.userData.out=outline;m.add(o);o.raycast=()=>{};
     o.material=OUT.clone();o.material.onBeforeCompile=sh=>{sh.vertexShader=sh.vertexShader.replace('#include <begin_vertex>','vec3 transformed=position+normal*'+outline.toFixed(4)+';')}}
   parts.push(m);return m}
+// small parts get an invisible, larger ball so a finger can hit them
+const HIT=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false});
+const hitBall=(r,zone)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(r,10,8),HIT);m.visible=false;m.userData.zone=zone;m.userData.hit=1;parts.unshift(m);return m};
 const caps=(r,l,seg=10)=>new THREE.CapsuleGeometry(r,l,seg,18);
 const R={}; // rig
 const root=new THREE.Group();scene.add(root);
@@ -2644,7 +2658,7 @@ const hose=mesh(new THREE.TorusGeometry(0.05,0.008,6,16,Math.PI*1.2),M(0x9aa1ab,
 const valve=mesh(caps(0.013,0.03),M(C.orange,0.45),'pack',0.005);valve.position.set(-0.11,0.32,0.215);vest.add(valve);
 // action camera on the right strap
 const ic=new THREE.Group();ic.position.set(0.1,0.34,0.2);vest.add(ic);
-ic.add(mesh(new RoundedBoxGeometry(0.035,0.06,0.03,2,0.008),M(0x0e0f12,0.35),'cam',0.006));
+ic.add(mesh(new RoundedBoxGeometry(0.035,0.06,0.03,2,0.008),M(0x0e0f12,0.35),'cam',0.006));ic.add(hitBall(0.07,'cam'));
 const ln=mesh(new THREE.SphereGeometry(0.012,14,10),M(0x050505,0.08,0.7),'cam',0);ln.position.set(0,0.015,0.016);ic.add(ln);
 // arms
 for(const s of[-1,1]){const sh=new THREE.Group();sh.position.set(0.235*s,0.36,0);R.torso.add(sh);R['arm'+s]=sh;
@@ -2655,7 +2669,7 @@ for(const s of[-1,1]){const sh=new THREE.Group();sh.position.set(0.235*s,0.36,0)
   const hand=mesh(new THREE.SphereGeometry(0.068,20,16).scale(0.9,1.05,0.8),M(C.skin,0.55),'hands',0.01);hand.position.y=-0.215;el.add(hand);R['hand'+s]=hand;
   const th=mesh(caps(0.022,0.04),M(C.skin,0.55),'hands',0.006);th.position.set(-0.05*s,-0.19,0.035);th.rotation.z=0.6*s;el.add(th);
   if(s===1){ // the watch on the left wrist (character's left = +x)
-    const w=new THREE.Group();w.position.y=-0.15;el.add(w);
+    const w=new THREE.Group();w.position.y=-0.15;el.add(w);w.add(hitBall(0.095,'wrist'));
     w.add(mesh(new THREE.TorusGeometry(0.058,0.011,8,24).rotateX(Math.PI/2),M(0x101216,0.6),'wrist',0));
     const face=mesh(new THREE.CylinderGeometry(0.03,0.03,0.016,24),M(0x0c0d10,0.25,0.5),'wrist',0.005);face.rotation.z=Math.PI/2;face.position.x=0.06;w.add(face);
     const scr=mesh(new THREE.CircleGeometry(0.023,24),new THREE.MeshBasicMaterial({color:0x5bd6a0}),'wrist',0);scr.rotation.y=Math.PI/2;scr.position.x=0.069;w.add(scr)}}
@@ -2675,7 +2689,7 @@ const head=mesh(hg,M(C.skin,0.58),'head',0.014);R.head.add(head);
 for(const s of[-1,1]){const ear=mesh(new THREE.SphereGeometry(0.055,16,12).scale(0.55,1,0.8),M(C.skinSh,0.6),'head',0.008);ear.position.set(0.295*s,-0.02,-0.01);R.head.add(ear)}
 // face
 const face=new THREE.Group();face.position.z=0.262;R.head.add(face);
-R.eyes=[];for(const s of[-1,1]){const e=new THREE.Group();e.position.set(0.095*s,0.0,0);face.add(e);
+R.eyes=[];for(const s of[-1,1]){const e=new THREE.Group();e.position.set(0.095*s,0.0,0);face.add(e);e.add(hitBall(0.055,'eyes'));
   const ball=mesh(new THREE.SphereGeometry(0.034,20,16).scale(0.85,1.15,0.4),new THREE.MeshStandardMaterial({color:0x111214,roughness:0.25}),'eyes',0);e.add(ball);
   const hl=mesh(new THREE.SphereGeometry(0.009,10,8),new THREE.MeshBasicMaterial({color:0xffffff}),'eyes',0);hl.position.set(0.01*s+0.006,0.014,0.014);e.add(hl);R.eyes.push(e);
   const br=mesh(caps(0.009,0.05).rotateZ(Math.PI/2),M(C.hair,0.9),'head',0);br.position.set(0.1*s,0.072,0.012);br.rotation.z=-0.12*s;face.add(br);
@@ -2686,7 +2700,7 @@ const stub=mesh(new THREE.TorusGeometry(0.05,0.012,6,18,Math.PI*0.7),new THREE.M
 
 /* ---------- motion: breathing, weight shift, glances, blinks; tap = wave ---------- */
 let wave=0;const t0=performance.now();let nextBlink=1.5,blink=0,look=0,lookT=0,lookTo=0,nextLook=3;
-function animate(t,dt){
+function animate(t,dt){if(RM)return;
   const br=Math.sin(t*1.6);R.torso.scale.set(1+0.012*br,1+0.018*br,1+0.012*br);R.hips.position.y=0.36+0.006*Math.sin(t*1.6+0.6);
   root.rotation.z=0.015*Math.sin(t*0.5);R.hips.rotation.y=0.04*Math.sin(t*0.5);
   if(t>nextLook){lookTo=(Math.random()-0.5)*0.7;nextLook=t+2.5+Math.random()*3}look+=(lookTo-look)*Math.min(1,dt*3);
@@ -2698,36 +2712,44 @@ function animate(t,dt){
     a.rotation.z=THREE.MathUtils.lerp(-0.12,-2.5,k);a.rotation.x=THREE.MathUtils.lerp(0,-0.2,k);R['elb-1'].rotation.z=k*0.5*Math.sin(t*12);R['elb-1'].rotation.x=THREE.MathUtils.lerp(-0.25,-0.5,k);
     R.head.rotation.z+=0.1*k;}
   for(const s of[-1,1])R['leg'+s].rotation.x=0}
-function sayHi(){if(wave<=0)wave=2.4}
+function sayHi(){if(!RM&&wave<=0)wave=2.4}
 
 /* ---------- hover / tap ---------- */
 const tip=document.getElementById('gtip'),ringEl=document.getElementById('gring'),ld=document.getElementById('gld');
 const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();let hoverZone=null,hoverPt=null,downAt=null;
-function pick(cx,cy){ptr.set(cx/W()*2-1,-(cy/H())*2+1);ray.setFromCamera(ptr,cam);
-  const h=ray.intersectObjects(parts,false)[0];return h&&h.object.userData.zone?{zone:h.object.userData.zone,p:h.point}:null}
+function pick1(cx,cy){ptr.set(cx/W()*2-1,-(cy/H())*2+1);ray.setFromCamera(ptr,cam);const hs=ray.intersectObjects(parts,false);
+  const h=hs.find(x=>x.object.userData.hit)||hs[0];return h&&h.object.userData.zone?{zone:h.object.userData.zone,p:h.point}:null}
+function pick(cx,cy){let r=pick1(cx,cy);if(r)return r;for(let i=0;i<8&&!r;i++){const a=i*Math.PI/4;r=pick1(cx+22*Math.cos(a),cy+22*Math.sin(a))}return r}
 function showTip(zone,p){const G=GEAR[zone];if(!G){hideTip();return}
-  if(zone!==hoverZone)tip.innerHTML='<div class="k">'+G.k+'</div><ul>'+G.items.map(i=>'<li class="'+i.s+'"><b>'+i.n+'</b><small>'+(i.s==='none'?'未登錄':i.d+(i.s==='borrow'?'・借用':''))+'</small></li>').join('')+'</ul>';
+  if(zone!==hoverZone)tip.innerHTML='<div class="k">'+G.k+'</div><ul>'+G.items.map(i=>'<li class="'+i.s+'"><b>'+i.n+'</b><small>'+(i.s==='none'?'未登錄':i.s==='borrow'&&!/借/.test(i.d)?i.d+'・借用':i.d)+'</small></li>').join('')+'</ul>';
   hoverZone=zone;hoverPt=p.clone();tip.classList.add('on');ringEl.classList.add('on');controls.autoRotate=false;place()}
 function hideTip(){hoverZone=null;hoverPt=null;tip.classList.remove('on');ringEl.classList.remove('on');['x1','y1','x2','y2'].forEach(a=>ld.setAttribute(a,0))}
 function place(){if(!hoverPt)return;const v=hoverPt.clone().project(cam);const x=(v.x+1)/2*W(),y=(1-v.y)/2*H();
-  ringEl.style.left=x+'px';ringEl.style.top=y+'px';const tw=232,th=tip.offsetHeight||120,narrow=W()<520,side=x>W()/2?-1:1;
-  let tx=narrow?Math.max(12,Math.min(W()-tw-12,x-tw/2)):(side>0?Math.min(x+46,W()-tw-12):Math.max(x-46-tw,12));
-  let ty=narrow?(y>H()*0.45?Math.max(208,y-th-56):Math.min(H()-th-48,y+56)):Math.max(90,Math.min(H()-th-70,y-th/2));
-  tip.style.left=tx+'px';tip.style.top=ty+'px';const ex=narrow?x:(side>0?tx:tx+tw),ey=narrow?(ty>y?ty:ty+th):ty+th/2;
-  ld.setAttribute('x1',x);ld.setAttribute('y1',y);ld.setAttribute('x2',ex);ld.setAttribute('y2',ey)}
+  ringEl.style.left=x+'px';ringEl.style.top=y+'px';const narrow=W()<520;tip.classList.toggle('dock',narrow);
+  if(narrow){tip.style.left=tip.style.top='';const tr=tip.getBoundingClientRect(),sr=stage.getBoundingClientRect();const ex=tr.right-sr.left+8,ey=tr.top-sr.top+5;
+    ld.setAttribute('x1',x-7);ld.setAttribute('y1',y);ld.setAttribute('x2',ex);ld.setAttribute('y2',ey);return}
+  const tw=236,th=tip.offsetHeight||120,side=x>W()/2?-1:1;let tx=side>0?Math.min(x+46,W()-tw-12):Math.max(x-46-tw,12);let ty=Math.max(90,Math.min(H()-th-70,y-th/2));
+  tip.style.left=tx+'px';tip.style.top=ty+'px';const ex=side>0?tx:tx+tw,ey=ty+th/2;ld.setAttribute('x1',x);ld.setAttribute('y1',y);ld.setAttribute('x2',ex);ld.setAttribute('y2',ey)}
 const el=renderer.domElement;const L=e=>{const r=el.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
-el.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||e.buttons)return;const r=pick(...L(e));r?showTip(r.zone,r.p):(hideTip(),controls.autoRotate=true);el.style.cursor=r?'pointer':'grab'});
-el.addEventListener('pointerleave',()=>{hideTip();controls.autoRotate=true});
+el.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||e.buttons)return;const r=pick(...L(e));r?showTip(r.zone,r.p):(hideTip(),controls.autoRotate=!RM);el.style.cursor=r?'pointer':'grab'});
+el.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;hideTip();controls.autoRotate=!RM});
 el.addEventListener('pointerdown',e=>{downAt=[...L(e),performance.now()];if(e.pointerType!=='mouse')hideTip()});
 el.addEventListener('pointerup',e=>{if(!downAt)return;const[dx,dy,t]=downAt;downAt=null;if(Math.hypot(L(e)[0]-dx,L(e)[1]-dy)>8||performance.now()-t>400)return;
-  const r=pick(...L(e));if(r){sayHi();if(e.pointerType!=='mouse')showTip(r.zone,r.p)}else if(e.pointerType!=='mouse'){hideTip();controls.autoRotate=true}});
+  const r=pick(...L(e));if(r){sayHi();if(e.pointerType!=='mouse')showTip(r.zone,r.p)}else if(e.pointerType!=='mouse'){hideTip();controls.autoRotate=!RM}});
 controls.addEventListener('start',()=>{controls.autoRotate=false});
+el.tabIndex=0;el.setAttribute('role','img');el.setAttribute('aria-label','我的登山角色，左右方向鍵可以轉身');
+el.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();controls.autoRotate=false;root.rotation.y+=(e.key==='ArrowLeft'?-1:1)*Math.PI/12}});
+// list headers point at the part on the character
+const zc=z=>{const b=new THREE.Box3();parts.forEach(m=>{if(m.userData.zone===z&&!m.userData.hit){m.updateWorldMatrix(true,false);b.expandByObject(m)}});return b.isEmpty()?null:b.getCenter(new THREE.Vector3())};
+window.__gearZone=(z,on)=>{if(!on){hideTip();controls.autoRotate=!RM;return}const p=zc(z);if(p)showTip(z,p)};
 document.getElementById('ghint').textContent=matchMedia('(hover:hover)').matches?'拖曳旋轉・滑到身上看裝備・點他打招呼':'左右拖曳轉一圈・點身上看裝備';
 new ResizeObserver(()=>{renderer.setSize(W(),H());frame()}).observe(stage);
 const clock=new THREE.Clock();
 const loop=()=>{const dt=Math.min(clock.getDelta(),0.05),t=clock.elapsedTime;animate(t,dt);controls.update();if(hoverPt)place();renderer.render(scene,cam)};
 document.getElementById('gload').classList.add('done');
-return{start(){clock.getDelta();renderer.setSize(W(),H());frame();renderer.setAnimationLoop(loop)},stop(){renderer.setAnimationLoop(null);hideTip()}};
+// stop drawing while the character is scrolled out of view
+let inView=true,running=false;new IntersectionObserver(es=>{inView=es[0].isIntersecting;if(running)renderer.setAnimationLoop(inView?loop:null)}).observe(stage);
+return{start(){running=true;clock.getDelta();renderer.setSize(W(),H());frame();renderer.setAnimationLoop(inView?loop:null)},stop(){running=false;renderer.setAnimationLoop(null);hideTip()}};
 
 }
 </script>
