@@ -727,6 +727,24 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dsun2{transform-origin:315px 100px;animation:dsunr 60s linear infinite}@keyframes dsunr{to{transform:rotate(360deg)}}@media (prefers-reduced-motion:reduce){.dsun2{animation:none}}
 .dsvt.i{font:500 12px var(--body);fill:#DCE4EE;paint-order:stroke;stroke:rgba(11,22,38,.55);stroke-width:3px}
 .dmark{margin-top:6px;gap:10px}.dmark input{min-height:56px;border-radius:28px;padding:0 14px}.dmark .dbtn{flex:1;margin:0}
+
+#charBody:has(.sp){padding:0}
+.sp .shero{position:relative}.sp .shero svg{display:block;width:100%;height:auto}
+.shead{position:absolute;left:0;right:0;bottom:22px;text-align:center;display:flex;flex-direction:column;gap:6px}
+.sbig{margin:0;font:700 32px/1.2 var(--display);text-shadow:0 2px 16px rgba(11,22,38,.8)}
+.strail{display:block;width:100%;height:auto;margin-top:8px}
+.slab{margin:0;display:flex;justify-content:space-between;gap:8px;font:400 15px/1.4 var(--body);color:#C8D3E2}.slab b{color:var(--ink)}
+.sconst{display:block;width:100%;max-width:420px;margin:0 auto;height:auto}
+.sct{font:500 14px var(--body);fill:#A9B8CC}.sct .b{font:700 16px var(--display);fill:var(--ink)}
+.srows{display:grid;gap:10px}.srows p{margin:0;display:flex;gap:14px;align-items:baseline}.srows b{flex:none;width:40px;font:700 17px var(--display)}
+.sgridb{display:block;width:100%;padding:6px 0;border-radius:14px}.sgrid{display:block;width:100%;height:auto}
+.sgl{font:600 12px var(--body);fill:#F4C152}
+.scount{margin:4px 0 0;display:flex;align-items:baseline;gap:10px}.scount b{font:700 40px/1 var(--display);color:var(--gold)}.scount span{font:400 18px var(--body)}
+.sp .num{font-family:inherit}
+.sp .dnums .dsay{white-space:normal}
+.dpair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.dwarn{display:block;color:#F0A35E!important;font-weight:500}
+.sp .dmore .xprule,.sp .dmore .ab,.sp .dmore .badges{margin-top:10px}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1860,60 +1878,84 @@ function cumChart(list){
     (n<=40?pts.map((t,i)=>'<circle cx="'+x(t).toFixed(1)+'" cy="'+y(i+1).toFixed(1)+'" r="2.6" fill="#f4c152"/>').join(''):'')+
     '<text x="'+ml+'" y="'+(Hd-6)+'" '+F+'>'+ymd(t0)+'</text><text x="'+(Wd-mr)+'" y="'+(Hd-6)+'" text-anchor="end" '+F+'>'+ymd(t1)+'</text></svg></div>';
 }
-function dataSec(){let t=0;try{t=+localStorage.getItem(BKEY)||0}catch(e){}
-  const n=Object.keys(LDB.raw()).length,when=t?new Date(t).toLocaleDateString('zh-TW'):'還沒備份過';
-  return '<div class="sec"><h2>我的紀錄<em>存在這支手機裡</em></h2><div class="dataops"><button type="button" class="s-act" id="gpxIn">上傳 GPX 軌跡</button><button type="button" class="s-up" id="bkOut">備份紀錄</button><button type="button" class="s-up" id="bkIn">匯入備份</button></div>'+
-    '<p class="hint">從手錶匯出 GPX 上傳，軌跡經過山頂 120 公尺內就算登頂。紀錄 <span class="num">'+n+'</span> 筆，上次備份：'+when+'。刪掉 App 或清除瀏覽器資料，紀錄就會不見，請定期備份到 iCloud 雲碟。</p></div>'}
 function wireData(){const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',importGPX);if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
+function dataSec(){let t=0;try{t=+localStorage.getItem(BKEY)||0}catch(e){}
+  const n=Object.keys(LDB.raw()).length,old=!t||Date.now()-t>30*864e5,when=t?new Date(t).toLocaleDateString('zh-TW'):'還沒備份過';
+  return '<div class="dsec"><h3 class="dh">我的紀錄</h3><p class="dsay">'+n+' 筆紀錄存在這支手機。上次備份：'+when+'。'+(old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
+    '<button type="button" class="dbtn" id="gpxIn">上傳手錶 GPX 軌跡</button><p class="dnote">軌跡經過山頂 120 公尺內，就自動算登頂。</p>'+
+    '<div class="dpair"><button type="button" class="dghost" id="bkOut">備份紀錄</button><button type="button" class="dghost" id="bkIn">匯入備份</button></div></div>'}
+function statTrail(fr){const W=334,pts=[];for(let i=0;i<=40;i++){const x=i/40*W;pts.push([x,52-30*Math.pow(i/40,1.4)+3*Math.sin(i/40*9)])}
+  const k=Math.round(clamp(fr,0,1)*40),d=pts.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' '),dn=pts.slice(0,k+1).map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' '),me=pts[k];
+  return '<svg class="strail" viewBox="-8 -18 '+(W+16)+' 84" aria-hidden="true"><polyline points="'+d+'" fill="none" stroke="#8FA3BD" stroke-width="1.6" stroke-dasharray="3 5" stroke-linecap="round"/>'+
+    (k?'<polyline points="'+dn+'" fill="none" stroke="#EEF1EC" stroke-width="2.6" stroke-linecap="round"/>':'')+
+    '<line x1="'+W+'" y1="'+(pts[40][1]).toFixed(1)+'" x2="'+W+'" y2="'+(pts[40][1]-18).toFixed(1)+'" stroke="#EEF1EC" stroke-width="1.3"/><path d="M'+W+' '+(pts[40][1]-18).toFixed(1)+' l10 3.2 l-10 3.2 Z" fill="#EEF1EC"/>'+
+    '<circle cx="'+me[0].toFixed(1)+'" cy="'+me[1].toFixed(1)+'" r="11" fill="#EEF1EC" opacity=".18"/><circle cx="'+me[0].toFixed(1)+'" cy="'+me[1].toFixed(1)+'" r="6" fill="#EEF1EC"/></svg>'}
+function statConst(ab,n){const R=110,pt=(i,v)=>{const t=-Math.PI/2+i*Math.PI/3;return[Math.cos(t)*R*v,Math.sin(t)*R*v]};
+  let g='<svg class="sconst" viewBox="-175 -150 350 300" role="img" aria-label="能力星座：'+ab.map(x=>x.k+' '+Math.round(x.s)).join('、')+'">';
+  g+='<polygon points="'+ab.map((_,i)=>pt(i,1).map(v=>v.toFixed(1)).join(',')).join(' ')+'" fill="none" stroke="rgba(169,195,230,.18)"/>';
+  ab.forEach((_,i)=>{const q=pt(i,1);g+='<line x1="0" y1="0" x2="'+q[0].toFixed(1)+'" y2="'+q[1].toFixed(1)+'" stroke="rgba(169,195,230,.10)"/>'});
+  const P2=ab.map((x,i)=>pt(i,n?Math.max(.18,x.s/100):.18));
+  if(n)g+='<polygon points="'+P2.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')+'" fill="rgba(169,195,230,.07)" stroke="rgba(238,241,236,.45)" stroke-dasharray="3 4"/>';
+  ab.forEach((x,i)=>{const q=P2[i],s=n?x.s/100:0,r=2.5+s*5;
+    g+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="'+(r*2.6).toFixed(1)+'" fill="#EEF1EC" opacity="'+(.06+s*.16).toFixed(2)+'"/><circle class="dst" style="--a:1;--d:'+(3+i*.7).toFixed(1)+'s;--o:-'+i+'s" cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="'+r.toFixed(1)+'" fill="#EEF1EC"/>';
+    const l=pt(i,1.22),anc=Math.abs(l[0])<5?'middle':l[0]>0?'start':'end';
+    g+='<text x="'+l[0].toFixed(1)+'" y="'+(l[1]+5).toFixed(1)+'" text-anchor="'+anc+'" class="sct"><tspan class="b">'+x.k+'</tspan> '+(n?Math.round(x.s):'–')+'</text>'});
+  return g+'</svg>'}
+function statGrid(){let g='<svg class="sgrid" viewBox="0 0 334 300" aria-hidden="true">',lab=0;
+  P.slice().sort((a,b)=>a.rank-b.rank).forEach((p,i)=>{const x=17+(i%10)*33.3,y=15+Math.floor(i/10)*30;
+    if(RECS[p.rank]){g+='<circle cx="'+x.toFixed(1)+'" cy="'+y+'" r="13" fill="#F4C152" opacity=".18"/><path transform="translate('+x.toFixed(1)+' '+y+')" d="M0 -9 L1.8 -1.8 L9 0 L1.8 1.8 L0 9 L-1.8 1.8 L-9 0 L-1.8 -1.8 Z" fill="#F4C152"/>';
+      if(lab++<4)g+='<text x="'+(x+12).toFixed(1)+'" y="'+(y+5)+'" class="sgl"'+(x>260?' text-anchor="end" dx="-24"':'')+'>'+esc(p.name.replace(/大山$|山$/,''))+'</text>'}
+    else g+='<circle cx="'+x.toFixed(1)+'" cy="'+y+'" r="1.8" fill="#A9B8CC" opacity=".55"/>'});
+  return g+'</svg>'}
 function renderChar(){
-  const ab=abilities(),a=LV[G.lv-1]||0,b=LV[G.lv],n=G.n,top=b==null||n>=P.length;
+  const ab=abilities(),a=LV[G.lv-1]||0,b=LV[G.lv],n=G.n,top=b==null||n>=P.length,fr=top?1:clamp((G.xp-a)/(b-a),0,1);
   const list=Object.keys(RECS).map(k=>({p:byRank[k],r:RECS[k]})).sort((x,y)=>String(y.r.date||'').localeCompare(String(x.r.date||''))||x.p.rank-y.p.rank);
+  const pct=n?Math.max(1,Math.round(n)):0;
+  let h='<div class="dp sp">';
+  // hero: the moon fills up with the 100 peaks
+  h+='<div class="shero"><svg viewBox="0 0 390 330" aria-hidden="true"><g fill="#E6EDF6">'+DPA.stars+'</g><circle cx="195" cy="140" r="96" fill="#F4E3B4" opacity=".05"/><circle cx="195" cy="140" r="74" fill="#1B2A42"/><path d="'+moonPath(195,140,74,n/100)+'" fill="#F4E3B4"/>'+DPA.heroBack.replace(/560/g,'330')+'</svg>'+
+    '<div class="shead"><p class="sbig">月亮圓了 '+pct+'%</p><p class="dsay">百岳爬了 '+n+' 座，還有 '+(100-n)+' 座</p></div></div>';
   // level
-  let h=dataSec()+'<div class="sec"><h2>等級</h2><div class="xpcard"><div class="big"><b>Lv '+G.lv+'</b><span>'+titleOf(G.lv)+'</span><i>百岳 <u>'+n+'</u> / 100 座</i></div><div class="xpbar"><i style="width:'+(top?100:clamp((G.xp-a)/(b-a)*100,0,100))+'%"></i></div>'+
-    '<p><span class="num">'+fmt(G.xp)+'</span> XP（經驗值）'+(top?'，100 座全部登頂。':'，再 <span class="num">'+fmt(b-G.xp)+'</span> XP 升到 Lv '+(G.lv+1)+'。')+'</p>'+
-    '<h4>登頂一座拿到的 XP，依難度：</h4><div class="xprule">'+[1,2,3,4,5].map(g=>'<div><small>難度 '+g+'</small><b>+'+XP_BY_GRADE[g]+'</b></div>').join('')+'</div></div>'+
-    '<p class="hint">XP 來源：百岳 <span class="num">'+fmt(G.xpB)+'</span> · 小百岳 <span class="num">'+fmt(G.xpX)+'</span>（每座 +'+XP_XIAO+'）· 小山 <span class="num">'+fmt(G.xpS)+'</span>（每座 +'+XP_SHAN+'）</p><p class="hint">等級是這張地圖的遊戲規則，只看累積 XP。實際出發前，體能、天氣和路況還是要自己評估。</p></div>';
-  // badges
-  h+='<div class="sec"><h2>名山成就<em>集滿就點亮</em></h2><div class="badges">'+BADGES.map(([nm,rs])=>{const d=rs.filter(r=>RECS[r]).length,on=d===rs.length;
-    return '<div class="bdg'+(on?' on':'')+'"><div class="bh"><b>'+nm+'</b><span>'+d+' / '+rs.length+'</span></div><div class="bbar"><i style="width:'+(d/rs.length*100)+'%"></i></div><ul>'+rs.map(r=>'<li'+(RECS[r]?' class="d"':'')+'>'+esc(byRank[r].name)+'</li>').join('')+'</ul></div>'}).join('')+
-    '</div><p class="hint">分類依維基百科「台灣百岳」與蕃薯藤旅遊整理；十崇只找到維基百科一個來源。奇萊北峰同時算在一奇和十峻。</p></div>';
-  // abilities
-  const N=6,rad=70,pt=(i,v)=>{const t=-Math.PI/2+i*2*Math.PI/N;return [(Math.cos(t)*rad*v).toFixed(1),(Math.sin(t)*rad*v).toFixed(1)]};
-  let sv='<svg id="radar" viewBox="-120 -104 240 222" role="img" aria-label="能力雷達圖：'+ab.map(x=>x.k+' '+Math.round(x.s)).join('、')+'">';
-  [1,.75,.5,.25].forEach((s,j)=>sv+='<polygon points="'+ab.map((_,i)=>pt(i,s).join(',')).join(' ')+'" fill="'+(j===0?'rgba(22,35,56,.6)':'none')+'" stroke="#27384f" stroke-width="1"/>');
-  ab.forEach((_,i)=>{const q=pt(i,1);sv+='<line x1="0" y1="0" x2="'+q[0]+'" y2="'+q[1]+'" stroke="#27384f" stroke-width="1"/>'});
-  if(n)sv+='<polygon points="'+ab.map((x,i)=>pt(i,Math.max(.03,x.s/100)).join(',')).join(' ')+'" fill="rgba(244,193,82,'+(n<3?'.12':'.22')+')" stroke="#f4c152" stroke-width="2" stroke-linejoin="round"'+(n<3?' stroke-dasharray="5 4"':'')+'/>';
-  ab.forEach((x,i)=>{const q=pt(i,Math.max(.03,x.s/100));if(n)sv+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="3" fill="#f4c152"/>';
-    const l=pt(i,1.24);sv+='<text x="'+l[0]+'" y="'+(+l[1]+1)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#eef1ec" font-family="Noto Sans TC, PingFang TC, sans-serif">'+x.k+'</text>'+
-      '<text x="'+l[0]+'" y="'+(+l[1]+15)+'" text-anchor="middle" font-size="11" fill="#93a3b8" font-family="JetBrains Mono, ui-monospace, monospace">'+(n?Math.round(x.s):'–')+'</text>'});
-  sv+='</svg>';
-  h+='<div class="sec"><h2>能力<em>'+(n?'依 '+n+' 次登頂紀錄':'還沒有紀錄')+'</em></h2><div class="abil">'+sv+
-    '<p class="rcap">'+(!n?'完成第一座百岳後，這裡會長出你的能力圖。':n<3?'外圈是 100 分。目前只有 '+n+' 次紀錄，形狀先當參考，紀錄越多越準。':'外圈是 100 分。每項取所有紀錄裡的最佳值。')+'</p>'+
-    '<div class="ab">'+ab.map(x=>'<div class="abr"><span>'+x.k+'</span><b>'+(n?Math.round(x.s):'–')+'</b><div class="bar" role="img" aria-label="'+x.k+' '+Math.round(x.s)+' 分，滿分 100"><i style="width:'+x.s+'%"></i></div><small>'+x.v+'</small><small class="r">'+x.full+'</small></div>').join('')+'</div></div>'+
-    '<p class="hint">分數 0 到 100。左邊是你的實際數值，右邊是這一項的計分方式。上河速度＝實際時間 ÷ 上河地圖的標準時間，1.0 等於標準，越低越快。</p></div>';
-  // progress
+  h+='<div class="dsec"><h3 class="dh">第 '+G.lv+' 級 · '+titleOf(G.lv)+'</h3><p class="dlead">'+(top?'已經滿級了。':'再 '+fmt(b-G.xp)+' 點，就升到第 '+(G.lv+1)+' 級。')+'</p>'+statTrail(fr)+
+    '<p class="slab"><span>第 '+G.lv+' 級</span><b>你在 '+fmt(G.xp)+' 點</b><span>'+(top?'':'第 '+(G.lv+1)+' 級（'+fmt(b)+' 點）')+'</span></p>'+
+    '<p class="dsay">點數來自登頂：百岳依難度給 50 到 400 點，小百岳每座 +'+XP_XIAO+'，小山每座 +'+XP_SHAN+'。</p></div>';
+  h+='<div class="dband" aria-hidden="true">'+dClouds(9,4,70,false,4)+'</div>';
+  // abilities as a constellation
+  h+='<div class="dsec"><h3 class="dh">你的能力星座</h3><p class="dlead">六顆星是六種能力，越往外、越亮，代表越強。</p></div>'+statConst(ab,n)+
+    '<div class="dsec"><div class="srows">'+ab.map(x=>'<p><b>'+x.k+'</b><span class="dsay">'+(n?x.v:'還沒有紀錄')+'</span></p>').join('')+'</div>'+
+    '<p class="dnote" style="text-align:left">每項滿分 100，全部來自你的手錶紀錄。'+(n&&n<3?'紀錄還少，先當參考。':'')+'</p></div>';
+  h+=dMist(19)+'<div class="dland">'+DPA.forest+'</div>';
+  // collection
+  h+='<div class="dsec"><h3 class="dh">點亮的星星</h3><p class="dlead">百岳 100 座，每座一顆星。'+(n?'你點亮了'+list.slice(0,3).map(x=>esc(x.p.name)).join('、')+(n>3?'等 '+n+' 座':'')+'。':'')+'</p>'+
+    '<button type="button" class="sgridb" id="sGrid" aria-label="打開百岳清單：已點亮 '+n+' 座">'+statGrid()+'</button>'+
+    '<p class="scount"><b>'+n+'</b><span>/ 100 座百岳</span></p>'+
+    '<div class="dnums"><div><span class="dbig">'+G.xn+'<u>/ 100</u></span><span class="dsay">小百岳：好親近的郊山</span></div><div><span class="dbig">'+G.sn+'<u>/ '+SH.length+'</u></span><span class="dsay">小山：百岳以外值得爬的山</span></div></div>'+
+    (NXT[0]?'<button type="button" class="dbtn" id="sNext">看看下一座可以爬什麼</button>':'')+'</div>';
+  h+=dMist(23)+'<div class="dland">'+DPA.meadow+'</div>';
+  h+=dataSec();
+  // everything else, folded
+  let more='<h3 class="s-sub">登頂一座拿到的點數</h3><div class="xprule">'+[1,2,3,4,5].map(g=>'<div><small>難度 '+g+'</small><b>+'+XP_BY_GRADE[g]+'</b></div>').join('')+'</div>'+
+    '<p class="hint">點數來源：百岳 '+fmt(G.xpB)+' · 小百岳 '+fmt(G.xpX)+' · 小山 '+fmt(G.xpS)+'。等級是遊戲規則，實際出發前，體能、天氣和路況還是要自己評估。</p>';
+  more+='<h3 class="s-sub">能力怎麼算</h3><div class="ab">'+ab.map(x=>'<div class="abr"><span>'+x.k+'</span><b>'+(n?Math.round(x.s):'–')+'</b><div class="bar" role="img" aria-label="'+x.k+' '+Math.round(x.s)+' 分，滿分 100"><i style="width:'+x.s+'%"></i></div><small>'+x.v+'</small><small class="r">'+x.full+'</small></div>').join('')+'</div>';
+  more+='<h3 class="s-sub">名山成就</h3><div class="badges">'+BADGES.map(([nm,rs])=>{const d=rs.filter(r=>RECS[r]).length,on=d===rs.length;
+    return '<div class="bdg'+(on?' on':'')+'"><div class="bh"><b>'+nm+'</b><span>'+d+' / '+rs.length+'</span></div><div class="bbar"><i style="width:'+(d/rs.length*100)+'%"></i></div><ul>'+rs.map(r=>'<li'+(RECS[r]?' class="d"':'')+'>'+esc(byRank[r].name)+'</li>').join('')+'</ul></div>'}).join('')+'</div>';
   const seg=[['grade','難度'],['ele','海拔'],['park','國家公園'],['route','路線']];
-  h+='<div class="sec"><h2>百岳進度<em>一格一座</em></h2><div class="seg" role="group" aria-label="分組方式">'+seg.map(([k,t])=>'<button type="button" data-uc="'+k+'" aria-pressed="'+(S.uc===k)+'">'+t+'</button>').join('')+'</div>'+unitChart()+
-    '<p class="ukey"><span><i class="d"></i>已登頂</span>'+(NXT[0]?'<span><i class="n"></i>下一關</span>':'')+'<span><i></i>還沒去</span>'+(S.uc==='ele'?'<span>海拔單位 m，每 100 m 一列</span>':S.uc==='route'?'<span>由北到南</span>':'')+'</p></div>';
-  // history
-  h+='<div class="sec"><h2>登頂紀錄<em>'+(n?n+' 筆':'')+'</em></h2>';
-  if(!n)h+='<p class="hint" style="margin-top:0">'+(S.loaded?'還沒有登頂紀錄。完成第一座之後，時間、距離和爬升都會記在這裡。':esc(S.msg||'讀取紀錄中…'))+'</p>';
-  else{
-    const sum=f=>list.reduce((s,x)=>s+(+x.r[f]||0),0),km=sum('distanceKm'),gain=sum('gainM'),mins=sum('durationMin');
-    h+='<div class="tiles"><div><small>累積距離</small><b>'+(km?km.toFixed(1)+'<u>km</u>':'—')+'</b></div><div><small>累積爬升</small><b>'+(gain?fmt(gain)+'<u>m</u>':'—')+'</b></div><div><small>累積時間</small><b>'+(mins?(mins/60).toFixed(1)+'<u>小時</u>':'—')+'</b></div></div>'+cumChart(list);
+  more+='<h3 class="s-sub">百岳進度</h3><div class="seg" role="group" aria-label="分組方式">'+seg.map(([k,t])=>'<button type="button" data-uc="'+k+'" aria-pressed="'+(S.uc===k)+'">'+t+'</button>').join('')+'</div>'+unitChart();
+  if(n){const sum=f=>list.reduce((s,x)=>s+(+x.r[f]||0),0),km=sum('distanceKm'),gain=sum('gainM'),mins=sum('durationMin');
+    more+='<h3 class="s-sub">登頂紀錄 '+n+' 筆</h3><div class="tiles"><div><small>累積距離</small><b>'+(km?km.toFixed(1)+'<u>km</u>':'—')+'</b></div><div><small>累積爬升</small><b>'+(gain?fmt(gain)+'<u>m</u>':'—')+'</b></div><div><small>累積時間</small><b>'+(mins?(mins/60).toFixed(1)+'<u>小時</u>':'—')+'</b></div></div>'+cumChart(list);
     const show=S.histAll?list:list.slice(0,5);
-    h+='<div class="hist">'+show.map(({p,r})=>{const m=[];if(r.style)m.push(esc(r.style));if(+r.durationMin)m.push(durTxt(+r.durationMin));if(+r.distanceKm)m.push((+r.distanceKm).toFixed(1)+' km');if(+r.gainM)m.push('爬升 '+fmt(+r.gainM)+' m');if(+r.shanghe)m.push('上河 '+(+r.shanghe).toFixed(2));
-      return '<button type="button" class="hrow" data-rank="'+p.rank+'"><span class="hn">'+esc(p.name)+'<small>'+esc(r.date||'')+'</small></span><span class="hx">+'+XP_BY_GRADE[p.grade]+' XP</span>'+(m.length?'<span class="hm">'+m.join(' · ')+'</span>':'')+'</button>'}).join('')+'</div>';
-    if(list.length>5)h+='<button type="button" class="more" id="histMore">'+(S.histAll?'只看最近 5 筆':'看全部 '+list.length+' 筆')+'</button>';
-  }
-  h+='</div>';
-  // titles
-  h+='<div class="sec"><h2>稱號</h2><ol class="ladder">'+TITLES.map(([m,t],i)=>{const last=i===TITLES.length-1,nx=TITLES[i+1],all=n>=P.length;
+    more+='<div class="hist">'+show.map(({p,r})=>{const m=[];if(r.style)m.push(esc(r.style));if(+r.durationMin)m.push(durTxt(+r.durationMin));if(+r.distanceKm)m.push((+r.distanceKm).toFixed(1)+' km');if(+r.gainM)m.push('爬升 '+fmt(+r.gainM)+' m');
+      return '<button type="button" class="hrow" data-rank="'+p.rank+'"><span class="hn">'+esc(p.name)+'<small>'+esc(r.date||'')+'</small></span><span class="hx">+'+XP_BY_GRADE[p.grade]+'</span>'+(m.length?'<span class="hm">'+m.join(' · ')+'</span>':'')+'</button>'}).join('')+'</div>';
+    if(list.length>5)more+='<button type="button" class="more" id="histMore">'+(S.histAll?'只看最近 5 筆':'看全部 '+list.length+' 筆')+'</button>'}
+  more+='<h3 class="s-sub">稱號</h3><ol class="ladder">'+TITLES.map(([m,t],i)=>{const last=i===TITLES.length-1,nx=TITLES[i+1],all=n>=P.length;
     const got=last?all:G.lv>=m,cur=last?all:!all&&G.lv>=m&&(!nx||G.lv<nx[0]);
-    return '<li class="'+(cur?'cur':got?'got':'')+'"><span class="num">'+(last?'100 座':'Lv '+m)+'</span><span>'+t+'</span><small>'+(cur?'現在':got?'已達成':last?'完登全部百岳':fmt(LV[m-1])+' XP')+'</small></li>'}).join('')+'</ol></div>';
-  h+='<p class="src">'+(S.loaded?'紀錄由 Claude 寫進資料庫，這一頁會自動更新。':esc(S.msg||'讀取紀錄中…'))+' 山頭資料：百岳排名、海拔、路線、國家公園與難度分級（1 到 5）。</p>';
+    return '<li class="'+(cur?'cur':got?'got':'')+'"><span class="num">'+(last?'100 座':'第 '+m+' 級')+'</span><span>'+t+'</span><small>'+(cur?'現在':got?'已達成':last?'完登全部百岳':fmt(LV[m-1])+' 點')+'</small></li>'}).join('')+'</ol>';
+  h+='<details class="dmore"'+(S.statMore?' open':'')+' id="sMore"><summary>完整資料<small>成就、進度、紀錄、稱號</small></summary><div class="dmore-b">'+more+'</div></details>';
+  h+='<div class="dend"><p>'+(n?'天快亮了，下一座山在等你。':'等你點亮第一顆星。')+'</p>'+DPA.dawn+'</div></div>';
   $('charBody').innerHTML=h;wireData();
+  {const g=$('sGrid');if(g)g.onclick=()=>setTab('list');const x=$('sNext');if(x)x.onclick=()=>NXT[0]&&openPeak(NXT[0].rank,true);const m=$('sMore');if(m)m.ontoggle=()=>{S.statMore=m.open}}
 }
+
 $('charBody').addEventListener('click',e=>{
   const u=e.target.closest('[data-uc]');if(u){S.uc=u.dataset.uc;renderChar();try{$('charBody').querySelector('[data-uc="'+S.uc+'"]').focus({preventScroll:true})}catch(_){}return}
   if(e.target.closest('#histMore')){S.histAll=!S.histAll;renderChar();return}
