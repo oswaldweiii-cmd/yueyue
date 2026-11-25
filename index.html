@@ -714,6 +714,16 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dhero.day .dname{text-shadow:0 2px 18px rgba(20,50,90,.45)}
 .dhero.day .dsvt{fill:#F4F8FC}.dhero.day .dsvt.s{fill:#E2EAF3}
 .dhero.day .dsvt{paint-order:stroke;stroke:rgba(30,55,85,.45);stroke-width:3px}
+
+.dkey{margin:2px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font:500 16px/1.4 var(--body);color:var(--ink)}.dkey span{white-space:nowrap}
+.dkey .ddots{margin-right:-6px}
+.dsmall{margin:0;font:500 14px/1.4 var(--body);color:#8FA3BD;letter-spacing:.06em}
+.dsay{color:#C8D3E2!important}
+.dtl span{font-size:16px!important}
+.dland{height:100px!important;margin-top:16px!important}
+.dband{height:64px!important;margin:4px 0!important}
+.dend{height:300px!important;justify-content:flex-start;padding-top:10px}
+.dnums .dsay{white-space:nowrap}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1462,6 +1472,7 @@ function mainRoute(p,r){const ks=(PEAK_ROUTES[p.rank]||[]).map(k=>ROUTES[k]);if(
 function nameHTML(n){n=esc(n);return n.length>=5?n.slice(0,-2)+'<br>'+n.slice(-2):n}
 function hutsOf(p){const out=[];(PEAK_ROUTES[p.rank]||[]).forEach(k=>{const t=ROUTES[k];(t.rsk||t.ch||[]).forEach(c=>{const n=c[0];if(/山莊|山屋/.test(n)&&!out.includes(n))out.push(n)})});return out}
 function hm(min){min=((Math.round(min)%1440)+1440)%1440;return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0')}
+function heroSrc(p,r){if(r&&parseTrack(r.track))return '你的手錶軌跡';const t=mainRoute(p,r);return t&&(t.rprof||t.prof)?'步道加上內政部 20 公尺地形':'示意圖'}
 function heroProfile(p,r){
   // [km, ele] points + summit km, from: your own track → the route's real profile → a simple peak
   let pts=null,skm=null,src='';
@@ -1486,9 +1497,7 @@ function heroProfile(p,r){
     (dn?'<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="22" fill="#F4C152" opacity=".16"/><path transform="translate('+sx.toFixed(1)+' '+sy.toFixed(1)+')" d="M0 -15 L2.6 -2.6 L15 0 L2.6 2.6 L0 15 L-2.6 2.6 L-15 0 L-2.6 -2.6 Z" fill="#F4C152"/>'
        :'<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="7" fill="#0B1626" stroke="#A9C3E6" stroke-width="2"/>')+
     '<text x="'+Math.min(330,Math.max(60,sx)).toFixed(1)+'" y="'+(sy-26).toFixed(1)+'" text-anchor="middle" class="dsvt b">山頂 '+fmt(p.h)+' 公尺</text>'+
-    '<text x="20" y="494" class="dsvt">登山口</text>'+(mid?'<text x="'+sx.toFixed(1)+'" y="494" text-anchor="middle" class="dsvt">'+(+skm).toFixed(1)+' 公里</text>':'')+
-    '<text x="370" y="494" text-anchor="end" class="dsvt">'+(+km).toFixed(1)+' 公里</text>'+
-    '<text x="195" y="516" text-anchor="middle" class="dsvt s">'+esc(src)+'</text></svg>';
+    '</svg>';
   return g;
 }
 // clouds: puffy shapes built from overlapping circles, a soft top-lit gradient and only a slight edge blur
@@ -1504,58 +1513,52 @@ function dClouds(seed,n,h,day,top){let r=seed*9301+49297;const rnd=()=>(r=(r*930
 function dMist(seed,day){return '<div class="dmist'+(day?' day':'')+'" aria-hidden="true">'+dClouds(seed,day?5:4,day?70:120,day,day?0:14)+'</div>'}
 function renderDPage(p){
   const st=statusOf(p),r=RECS[p.rank],isNext=NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
-  const mp=moonPath(30,30,21,G.n/100);
+  const km=t?+(t.rkm||t.km)||0:0,up=t?+(t.rup||t.gain)||0:0,days=t?(t.tm?'約 '+esc(t.tm):t.d+' 天'):'';
+  const dots='<span class="ddots" role="img" aria-label="難度 '+p.grade+'，共 5 級">'+[1,2,3,4,5].map(i=>'<i'+(i<=p.grade?' class="on"':'')+'></i>').join('')+'</span>';
   let h='<div class="dp">';
-  // hero
-  h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+
-    '<div class="dmoon" aria-label="你爬了 '+G.n+' 座，共 100 座百岳">'+(r?'<div style="height:60px"></div>':'<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28" fill="#F4E3B4" opacity=".07"/><circle cx="30" cy="30" r="21" fill="#24344E"/><path d="'+mp+'" fill="#F4E3B4"/></svg>')+'<p>你爬了 <b>'+G.n+'</b> 座<br>共 100 座百岳</p></div>'+
-    '<div class="dtitle"><p class="deb">'+(p.park==='無'?'不在國家公園內':esc(p.park)+'國家公園')+' · 百岳第 '+p.rank+' 高</p><h2 class="dname">'+nameHTML(p.name)+'</h2></div></div>'+dMist(3,!!r);
-  // headline
-  if(r){const d=(r.date||'').split('-');const order=Object.values(RECS).map(x=>x.date||'').sort();const nth=order.indexOf(r.date||'')+1||G.n;
-    h+='<div class="dsec dhead"><p class="dgold">'+(d.length===3?(+d[0])+' 年 '+(+d[1])+' 月 '+(+d[2])+' 日，':'')+'你登頂了</p><p class="dsay">'+(r.verified==='gps'||parseTrack(r.track)?'手錶有記錄到，':'你補登了這座山，')+'點亮了第 '+nth+' 顆星</p></div>';
-  }else{
-    h+='<div class="dsec dhead"><p class="dstat '+st+'"><i></i>'+ST_TXT[st]+'</p><p class="dsay">'+reason(p)+'</p>'+
-      '<p class="dsay">登頂可以拿 <b>+'+XP_BY_GRADE[p.grade]+'</b> 點經驗值；建議第 '+SUGGEST_LV[p.grade]+' 級以上挑戰，你現在第 '+G.lv+' 級。</p>'+
-      (isNext?'<ul class="dwhy">'+questWhy(p).map(x=>'<li>'+x+'</li>').join('')+'</ul>':'')+'</div>';
-  }
-  h+='<div class="dband" aria-hidden="true">'+dClouds(5,5,100,false,6)+'</div>';
-  // section 1: route
-  h+='<div class="dsec"><p class="deb">第一段 · 路線</p><h3 class="dh">這條路怎麼走</h3>';
-  if(t){const km=+(t.rkm||t.km)||0,up=+(t.rup||t.gain)||0;
-    h+='<p class="dlead">'+esc(t.n)+(t.kt?'，'+esc(t.kt)+'。':'。')+'</p><div class="dnums">';
-    if(km)h+='<div><span class="dbig">'+km.toFixed(1)+'<u>公里</u></span><span class="dsay">'+(t.kt==='來回'?'來回的路':'整條路')+'，大約繞操場 '+fmt(Math.round(km*2.5))+' 圈</span></div>';
-    if(up)h+='<div><span class="dbig">'+fmt(Math.round(up/10)*10)+'<u>公尺</u></span><span class="dsay">要爬升的高度，差不多 '+fmt(Math.round(up/3/10)*10)+' 層樓</span></div>';
-    h+='</div><p class="drow"><b>天數</b><span class="dsay">'+(t.tm?'約 '+esc(t.tm):t.d+' 天')+'</span></p>';
-  }else h+='<p class="dlead">這座山的路線還在整理中。</p>';
-  h+='<p class="drow"><b>難度</b><span class="ddots" role="img" aria-label="難度 '+p.grade+' 級，共 5 級">'+[1,2,3,4,5].map(i=>'<i'+(i<=p.grade?' class="on"':'')+'></i>').join('')+'</span><span class="dsay">'+p.grade+' 級（共 5 級）</span></p>'+
-    '<p class="dsay dind">'+GRADE_SAY[p.grade]+'（國家公園步道分級）</p></div>';
-  h+=dMist(7)+'<div class="dland">'+DPA.forest+'</div>'+dMist(11);
+  // hero: only the mountain and its name
+  h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle"><h2 class="dname">'+nameHTML(p.name)+'</h2></div></div>'+dMist(3,!!r);
+  // first screen: did I climb it, how hard, how long
+  h+='<div class="dsec dhead">';
+  if(r){const d=(r.date||'').split('-');h+='<p class="dgold">✓ '+(d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂</p>'}
+  else h+='<p class="dstat '+st+'"><i></i>還沒去過 · '+ST_TXT[st]+'</p>';
+  h+='<p class="dkey">'+dots+'<span>難度 '+p.grade+'/5</span>'+(km?'<span>'+(t.kt==='來回'?'來回 ':'')+km.toFixed(1)+' 公里</span>':'')+(days?'<span>'+days+'</span>':'')+'</p>';
+  if(!r)h+='<p class="dsay">'+reason(p)+'</p>';
+  h+='</div>';
+  h+='<div class="dband" aria-hidden="true">'+dClouds(5,4,70,false,4)+'</div>';
+  // the route
+  h+='<div class="dsec"><h3 class="dh">這條路怎麼走</h3>';
+  if(t){h+='<p class="dsmall">一般路線</p><div class="dnums">';
+    if(km)h+='<div><span class="dbig">'+km.toFixed(1)+'<u>公里</u></span><span class="dsay">≈ 繞操場 '+fmt(Math.round(km*2.5))+' 圈</span></div>';
+    if(up)h+='<div><span class="dbig">'+fmt(Math.round(up/10)*10)+'<u>公尺</u></span><span class="dsay">≈ 爬 '+fmt(Math.round(up/3/10)*10)+' 層樓</span></div>';
+    h+='</div>'}else h+='<p class="dsay">這座山的路線還在整理中。</p>';
+  h+='<p class="dsay">'+GRADE_SAY[p.grade]+'。</p></div>';
+  h+=dMist(7)+'<div class="dland">'+DPA.forest+'</div>';
   // photo
   {const ph=r&&safeUrl(r.photo);if(ph)h+='<a class="dphoto" href="'+esc(ph)+'" target="_blank" rel="noopener" aria-label="看登頂照原圖"><img src="'+esc(ph)+'" alt="'+esc(p.name)+' 登頂照" loading="lazy" decoding="async"></a>';
    if(r&&ASSETS)h+='<div class="dsec"><button type="button" class="dghost" id="upPh">'+(ph?'換一張登頂照':'＋ 上傳登頂照')+'</button><input type="file" id="upIn" accept="image/*" hidden></div>';}
-  // section 2: your day
-  if(r){h+='<div class="dsec"><p class="deb">第二段 · 你的紀錄</p><h3 class="dh">你那天</h3>';
-    const T=parseTrack(r.track),sm=/^\d{1,2}:\d{2}$/.test(r.summitTime||'')?(+r.summitTime.split(':')[0])*60+(+r.summitTime.split(':')[1]):null;
-    if(sm!=null){let s0=null,e0=null,l0='出發',l1='回到登山口';const tm=x=>/^\d{1,2}:\d{2}$/.test(x||'')?(+x.split(':')[0])*60+(+x.split(':')[1]):null;
-      const cp=(Array.isArray(r.cps)?r.cps:[]).filter(c=>tm(c.t)!=null);
+  // your day
+  if(r){h+='<div class="dsec"><h3 class="dh">你那天</h3>';
+    const T=parseTrack(r.track),tm=x=>/^\d{1,2}:\d{2}$/.test(x||'')?(+x.split(':')[0])*60+(+x.split(':')[1]):null,sm=tm(r.summitTime);
+    if(sm!=null){let s0=null,e0=null,l0='出發',l1='回到登山口';const cp=(Array.isArray(r.cps)?r.cps:[]).filter(c=>tm(c.t)!=null);
       if(cp.length>=2){s0=tm(cp[0].t);e0=tm(cp[cp.length-1].t);l0=cp[0].n||l0;l1=cp[cp.length-1].n||l1}
       else if(T){const ti=T.reduce((b,q,i)=>{const d=(q[0]-p.lat)**2+(q[1]-p.lon)**2,e=(T[b][0]-p.lat)**2+(T[b][1]-p.lon)**2;return d<e?i:b},0);s0=sm-T[ti][3];e0=s0+(+r.durationMin||T[T.length-1][3])}
       h+='<div class="dtl">'+(s0!=null?'<div><i></i><b>'+hm(s0)+'</b><span>'+esc(l0)+'</span></div>':'<div></div>')+
         '<div class="top"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 0 L13.2 8.8 L22 11 L13.2 13.2 L11 22 L8.8 13.2 L0 11 L8.8 8.8 Z" fill="#F4C152"/></svg><b>'+hm(sm)+'</b><span>登頂</span></div>'+
         (e0!=null?'<div><i></i><b>'+hm(e0)+'</b><span>'+esc(l1)+'</span></div>':'<div></div>')+'</div>'}
-    if(+r.durationMin){let s='總共 <b>'+durTxt(+r.durationMin)+'</b>';if(+r.distanceKm)s+='，走了 '+(+r.distanceKm).toFixed(1)+' 公里';if(+r.gainM)s+='、爬升 '+fmt(+r.gainM)+' 公尺';s+='。';
-      if(+r.shanghe)s+='花的時間大約是上河地圖建議時間的 '+(+r.shanghe).toFixed(1)+' 倍'+(+r.shanghe>1.1?'，照自己的步調穩穩走完。':+r.shanghe<.9?'，比一般人快。':'，跟一般人差不多。');
-      h+='<p class="dsay">'+s+'</p>'}
-    if(r.note)h+='<p class="dquote">「'+esc(r.note)+'」</p>';
+    const bits=[];if(+r.distanceKm)bits.push('走了 '+(+r.distanceKm).toFixed(1)+' 公里');if(+r.gainM)bits.push('爬升 '+fmt(+r.gainM)+' 公尺');if(+r.durationMin)bits.push('總共 <b>'+durTxt(+r.durationMin)+'</b>');
+    if(bits.length)h+='<p class="dsay"><span class="dsmall">你走的</span>　'+bits.join('，')+'。</p>';
+    if(r.note){const n=String(r.note).split(/(?<=[。！？!?])/).filter(x=>!/\d{1,2}:\d{2}/.test(x)).join('').trim();if(n)h+='<p class="dquote">「'+esc(n)+'」</p>'}
     h+='</div>'}
-  h+=dMist(13)+'<div class="dland">'+DPA.meadow+'</div>'+dMist(17);
-  // section 3: hut
+  h+=dMist(13)+'<div class="dland">'+DPA.meadow+'</div>';
+  // hut
   const huts=hutsOf(p),hut=huts[0];
-  h+='<div class="dsec"><p class="deb">第三段 · 山友</p><h3 class="dh">'+(hut?esc(hut):'山頂大廳')+'</h3>'+
-    '<p class="dsay">'+(hut?(r?'你可以進入'+esc(hut)+'。':'登頂這座山後，就能進入'+esc(hut)+'。')+'走這條路的山友，會一盞一盞亮在山屋裡。':(r?'這座山的路線上沒有山屋，':'這座山的路線上沒有山屋，')+'山友會聚在山頂大廳。')+(huts.length>1?'這條路上也會經過：'+huts.slice(1).map(esc).join('、')+'。':'')+'</p>'+
-    '<button type="button" class="dbtn" id="dHut">'+(r?'進入'+(hut?'山屋':'大廳'):'登頂後開放')+'</button><p class="dnote">帳號功能上線後開放</p></div>';
+  h+='<div class="dsec"><h3 class="dh">'+(hut?esc(hut):'山頂大廳')+'</h3><p class="dsay">爬過這座山的山友聚在這裡'+(r?'。':'，登頂後就能進來。')+'</p>'+
+    '<button type="button" class="dbtn" id="dHut">'+(r?'進入'+(hut?'山屋':'大廳'):'登頂後開放')+'</button></div>';
   // full data
-  let more='';
+  let more='<h3 class="s-sub">這座山</h3><p class="s-note">'+(p.park==='無'?'不在國家公園內':esc(p.park)+'國家公園')+'・百岳第 '+p.rank+' 高・海拔 '+fmt(p.h)+' 公尺・難度依國家公園步道分級。'+(huts.length>1?'路上也會經過：'+huts.slice(1).map(esc).join('、')+'。':'')+'</p>';
+  more+='<p class="s-note">'+(r?'':'登頂可以拿 +'+XP_BY_GRADE[p.grade]+' 經驗值；建議 Lv '+SUGGEST_LV[p.grade]+' 以上挑戰，你現在 Lv '+G.lv+'。')+'主視覺的高低起伏：'+esc(heroSrc(p,r))+'。</p>';
+  if(!r&&isNext)more+='<h3 class="s-sub">為什麼推薦這座</h3><ul class="why">'+questWhy(p).map(x=>'<li>'+x+'</li>').join('')+'</ul>';
   if(r){const f=[];const add=(k,v)=>f.push('<div><small>'+k+'</small><b>'+v+'</b></div>');
     if(r.date)add('日期',esc(r.date));if(r.style)add('型式',esc(r.style));if(r.summitTime)add('登頂時間',esc(r.summitTime));if(+r.durationMin)add('總時間',dur(+r.durationMin));
     if(+r.distanceKm)add('距離',(+r.distanceKm).toFixed(1)+'<u>km</u>');if(+r.gainM)add('總爬升',fmt(+r.gainM)+'<u>m</u>');if(+r.maxEle)add('最高海拔',fmt(+r.maxEle)+'<u>m</u>');
@@ -1563,10 +1566,11 @@ function renderDPage(p){
     more+='<h3 class="s-sub">登頂紀錄</h3>'+(f.length?'<div class="facts">'+f.join('')+'</div>':'');
     const rows=[];if(+r.shanghe)rows.push(['全程',+r.shanghe]);if(+r.shangheUp)rows.push(['上坡',+r.shangheUp]);if(+r.shangheDown)rows.push(['下坡',+r.shangheDown]);
     if(rows.length){const m=rows[0];more+='<div class="shcard"><div class="hd"><small>上河速度</small><b>'+m[1].toFixed(2)+'</b><span>'+shTxt(m[1])+'</span></div>'+shBlock(rows)+'<p>上河速度＝實際時間 ÷ 上河地圖的標準時間。1.0 剛好等於標準，數字越低越快。</p></div>'}
+    if(r.note)more+='<p class="s-note">心得：'+esc(r.note)+'</p>';
     more+=trackBlock(r);if(r.source)more+='<p class="s-foot">資料來源：'+esc(r.source)+'</p>'}
   more+=routeBlock(p);
-  h+='<details class="dmore"><summary>完整資料<small>路線圖、海拔剖面、每一站</small></summary><div class="dmore-b">'+more+'</div></details>';
-  h+='<div class="dend"><p>'+(r?'天快亮了，下一座山在等你。':'等你來點亮這顆星。')+'</p><button type="button" class="dghost s-act tomap" id="toMap">在地圖上看</button>'+DPA.dawn+'</div></div>';
+  h+='<details class="dmore"><summary>完整資料<small>路線圖、剖面、每一站</small></summary><div class="dmore-b">'+more+'</div></details>';
+  h+='<div class="dend"><button type="button" class="dghost s-act tomap" id="toMap">在地圖上看</button>'+DPA.dawn+'</div></div>';
   return h;
 }
 
