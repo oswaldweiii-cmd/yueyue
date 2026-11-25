@@ -479,7 +479,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gi small{grid-column:2;font:400 14px/1.5 var(--body);color:var(--t2)}
 .gi .w{grid-row:1/3;grid-column:3;align-self:center;text-align:right;font:500 11px/1.6 var(--body);letter-spacing:.2em;color:var(--t2);white-space:nowrap}
 .gi .w em{display:block;font:400 14px var(--display);font-style:normal;letter-spacing:0;color:var(--t2)}
-@media (min-width:900px){.ghd{top:24px}.glist{max-width:720px}.gstage{position:sticky;top:0;z-index:1}}
+@media (min-width:900px){#gearView{grid-template-columns:minmax(0,1fr) minmax(360px,440px);align-items:start}.app[data-tab="gear"] #gearView{display:grid}.ghd{top:24px}.gstage{position:sticky;top:0;height:100vh;height:100dvh;min-height:560px}.glist{max-width:none;padding-top:96px}.gearv.g3off{display:block}}
 @media (prefers-reduced-motion:reduce){.gtip,.gring{transition:none}}
 @media (min-width:900px){.gearv{position:relative;inset:auto;grid-column:2;grid-row:1/-1;border-left:1px solid var(--line)}.app[data-tab="gear"] .mapwrap{display:none}.app[data-tab="gear"] #listView{display:block}}
 .ctrl button.zx span{font:700 14px/1 var(--serif);color:var(--mute)}.ctrl button.zx.on{border-color:#7cc4ff;background:rgba(124,196,255,.16)}.ctrl button.zx.on span{color:#bfe0ff}
@@ -2567,7 +2567,7 @@ const GEAR={
   eyes:{k:'眼部',items:[{n:'太陽眼鏡',d:'待確認是否已買',s:'none'}]},
   torso:{k:'上身・三層',items:[{n:'Storm Cruiser',d:'mont-bell・外層 Gore‑Tex 硬殼',s:'own'},{n:'Superior Down',d:'mont-bell・保暖層羽絨',s:'own'},{n:'刷毛／CP 背心',d:'中層・型號待確認',s:'own'}]},
   pack:{k:'背負',items:[{n:'10L 越野背心包',d:'單攻用・前面兩個水壺袋',s:'own'},{n:'大背包',d:'多天用・跟朋友借',s:'borrow'}]},
-  cam:{k:'攝影',items:[{n:'Insta360',d:'運動相機',s:'own'},{n:'Sony A7C II + 40mm',d:'多半留家',s:'own'}]},
+  cam:{k:'攝影',items:[{n:'Insta360',d:'運動相機',s:'own'},{n:'Sony A7C II + 40mm',d:'多半留家',s:'own'}]},
   wrist:{k:'手腕',items:[{n:'Garmin Forerunner',d:'手錶・軌跡紀錄',s:'own'}]},
   hands:{k:'手部',items:[{n:'手套',d:'還沒登錄',s:'none'},{n:'登山杖',d:'還沒登錄',s:'none'}]},
   legs:{k:'腿部',items:[{n:'登山褲',d:'還沒登錄',s:'none'}]},
@@ -2581,8 +2581,8 @@ const GST={own:'自有',borrow:'借用',none:'未登錄'};
   let n=0;document.getElementById('glist').innerHTML='<div class="gl-hd"><h3>這一套</h3><span class="glg"><span><i class="own"></i>自有</span><span><i class="borrow"></i>借用</span><span><i class="none"></i>未登錄</span></span></div>'+
     Object.entries(GEAR).map(([zk,z])=>'<section class="gz"><button type="button" class="gzk" data-z="'+zk+'">'+z.k+'</button>'+z.items.map(i=>{n++;return '<div class="gi '+i.s+'"><span class="n">'+String(n).padStart(2,'0')+'</span><b>'+i.n+'</b>'+(/還沒登錄/.test(i.d)?'':'<small>'+i.d+'</small>')+'<span class="w gst"><em>'+(i.g?i.g+' 公克':'— 公克')+'</em><i class="'+i.s+'"></i>'+GST[i.s]+'</span></div>'}).join('')+'</section>').join('');
   document.querySelectorAll('#glist .gzk').forEach(b=>{const z=b.dataset.z,on=()=>window.__gearZone&&window.__gearZone(z,1),off=()=>window.__gearZone&&window.__gearZone(z,0);
-    b.addEventListener('focus',on);b.addEventListener('blur',off);b.addEventListener('mouseenter',on);b.addEventListener('mouseleave',off);
-    b.addEventListener('click',()=>{document.querySelector('#gearView').scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});on()})})})();
+    b.addEventListener('focus',on);b.addEventListener('blur',()=>{if(!b._tap)off();b._tap=0});b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')on()});b.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&!b._tap)off()});
+    b.addEventListener('click',()=>{b._tap=1;document.querySelector('#gearView').scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});on()})})})();
 function build(THREE,OrbitControls,RoundedBoxGeometry){
 
 const stage=document.getElementById('g3d');const W=()=>stage.clientWidth||1,H=()=>stage.clientHeight||1;
@@ -2597,7 +2597,9 @@ controls.enablePan=false;controls.enableDamping=true;controls.dampingFactor=0.08
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 // turn left/right only; vertical drags scroll the page (OrbitControls writes touch-action:none, so put pan-y back)
 controls.minPolarAngle=controls.maxPolarAngle=Math.PI*0.45;controls.enableZoom=false;controls.autoRotate=!RM;controls.autoRotateSpeed=1.1;renderer.domElement.style.touchAction='pan-y';
-function frame(){const portrait=H()>W();cam.fov=portrait?33:27;cam.aspect=W()/H();
+function frame(){const portrait=H()>W(),asp=W()/H();
+  // keep the same side-to-side framing however tall the stage is (a tall desktop column would otherwise zoom him in)
+  cam.fov=portrait?Math.max(33,2*Math.atan(Math.tan(14.5*Math.PI/180)/asp)*180/Math.PI):27;cam.aspect=asp;
   // magazine-cover framing on a phone: the figure sits right of centre and lower, clear of the headline
   if(portrait)cam.setViewOffset(W(),H(),-Math.round(W()*0.14),-Math.round(H()*0.07),W(),H());else cam.clearViewOffset();cam.updateProjectionMatrix();
   cam.position.set(0,1.0,portrait?3.8:4.3);controls.target.set(0,portrait?0.66:0.78,0);controls.update()}
