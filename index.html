@@ -929,6 +929,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .twk-in{position:absolute;left:0;right:0;top:0;height:calc(100dvh - var(--top,0px) - var(--bar-h) - 16px - var(--tabs-h))}
 @keyframes twk{0%,100%{opacity:var(--a,.6);transform:scale(1)}50%{opacity:.06;transform:scale(.55)}}
 @media (prefers-reduced-motion:reduce){.twk i{animation:none}}
+
+.shr{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:20px;background:rgba(4,8,15,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.shr-in{width:min(340px,100%);display:flex;flex-direction:column;gap:12px}
+.shr-t{margin:0;font:500 11px var(--body);letter-spacing:.32em;color:var(--t2,#93a3b8)}
+.shr-v canvas,.shr-v video{display:block;width:100%;aspect-ratio:9/16;height:auto;border-radius:14px;background:#0B1626}
+.shr-s{margin:0;font:400 14px var(--body);color:#C8D3E2}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1771,6 +1777,82 @@ function dStamp(p,r){const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[
     '<g filter="url(#'+id+'f)" fill="#F4C152"><text class="sring"><textPath href="#'+id+'" startOffset="50%" text-anchor="middle">月岳・'+esc(nm)+'・'+fmt(p.h)+'M</textPath></text>'+
     '<text x="60" y="61" text-anchor="middle" class="sbigc">登頂</text><text x="60" y="78" text-anchor="middle" class="sdate">'+esc(dt)+'</text>'+
     '<path d="M60 26 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/></g></svg>'}
+/* ---------- 3-5 登頂分享動畫：8 秒、1080×1920，畫在 canvas 上再錄成影片 ---------- */
+function shareData(p,r){
+  let pts=null,skm=null;const T=parseTrack(r.track),t=mainRoute(p,r);
+  if(T){pts=T.map(q=>[q[4],q[2]]);skm=T[T.reduce((b,q,i)=>q[2]>T[b][2]?i:b,0)][4]}
+  else if(t&&t.rprof){pts=t.rprof;const s=(t.rsk||[]).find(s=>s[3]===p.rank);skm=s?s[1]:pts.reduce((b,q)=>q[1]>b[1]?q:b,pts[0])[0]}
+  else if(t&&t.prof){pts=t.prof;skm=pts.reduce((b,q)=>q[1]>b[1]?q:b,pts[0])[0]}
+  if(!pts||pts.length<3){pts=[[0,p.h-900],[5,p.h],[10,p.h-900]];skm=5}
+  const up=pts.filter(q=>q[0]<=skm+1e-6);if(up.length>=3)pts=up.concat(up.slice(0,-1).reverse().map(q=>[2*skm-q[0],q[1]]));
+  const step=Math.max(1,Math.floor(pts.length/220));pts=pts.filter((q,i)=>i%step===0||i===pts.length-1);
+  const km=pts[pts.length-1][0]||1,lo=Math.min(...pts.map(q=>q[1])),hi=Math.max(p.h,...pts.map(q=>q[1]));
+  const P=pts.map(q=>[120+q[0]/km*840,1360-(q[1]-lo)/(hi-lo||1)*560]);let si=0;P.forEach((q,i)=>{if(q[1]<P[si][1])si=i});
+  const d=(r.date||'').split('-'),order=Object.values(RECS).map(x=>x.date||'').sort();
+  return{P,si,name:p.name,h:p.h,date:d.length===3?d[0]+'.'+d[1]+'.'+d[2]:'',nth:p.set==='bai'?(order.indexOf(r.date||'')+1||G.n):null,set:p.set,
+    stats:[['距離',+r.distanceKm?(+r.distanceKm).toFixed(1):(t?(+(t.rkm||t.km)).toFixed(1):'—'),'公里'],['爬升',+r.gainM?fmt(+r.gainM):(t&&(t.rup||t.gain)?fmt(Math.round((t.rup||t.gain)/10)*10):'—'),'公尺'],
+      ['時間',+r.durationMin?(Math.floor(+r.durationMin/60)+':'+String(Math.round(+r.durationMin%60)).padStart(2,'0')):'—',+r.durationMin?'小時':''],['登頂',r.summitTime||'—','']],
+    moon:G.n}}
+function shareDraw(x,D,t){
+  const W=1080,H=1920,E=(a,b)=>Math.max(0,Math.min(1,(t-a)/(b-a))),ease=k=>1-Math.pow(1-k,3),SER='"Noto Serif TC","Songti TC",serif',SAN='"Noto Sans TC","PingFang TC",sans-serif';
+  const day=ease(E(3.3,4.4));
+  // sky: night → day
+  const mix=(a,b,k)=>'rgb('+a.map((v,i)=>Math.round(v+(b[i]-v)*k)).join(',')+')';
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,mix([11,22,38],[46,90,138],day));g.addColorStop(.45,mix([14,26,46],[110,156,198],day));g.addColorStop(.72,mix([20,35,57],[199,217,232],day));g.addColorStop(1,mix([11,22,38],[242,222,192],day*.6));
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  // stars fade out as day comes
+  let s=7;const rnd=()=>(s=(s*9301+49297)%233280)/233280;
+  for(let i=0;i<120;i++){const sx=rnd()*W,sy=rnd()*1300,a=(.3+.7*rnd())*(.55+.45*Math.sin(t*2+i))*(1-day);if(a<=0)continue;x.globalAlpha=a;x.fillStyle='#E6EDF6';x.beginPath();x.arc(sx,sy,1+rnd()*2.2,0,7);x.fill()}
+  x.globalAlpha=1;
+  // light rays + sun once it is day
+  if(day>0){const sx=880,sy=360;x.save();x.globalAlpha=day*.28;x.globalCompositeOperation='screen';x.filter='blur(22px)';for(let i=0;i<7;i++){const a=2.05+i*.19,w=.045+.02*Math.sin(i*3);const rg=x.createRadialGradient(sx,sy,0,sx,sy,1500);rg.addColorStop(0,'rgba(255,244,214,.75)');rg.addColorStop(1,'rgba(255,244,214,0)');x.fillStyle=rg;x.beginPath();x.moveTo(sx,sy);x.lineTo(sx+1600*Math.cos(a-w),sy+1600*Math.sin(a-w));x.lineTo(sx+1600*Math.cos(a+w),sy+1600*Math.sin(a+w));x.fill()}x.filter='none';x.restore();
+    x.save();x.globalAlpha=day;x.strokeStyle='#F4C152';x.lineWidth=7;x.lineCap='round';x.translate(sx,sy);x.rotate(t*.15);x.beginPath();x.arc(0,0,44,0,7);x.stroke();for(let i=0;i<8;i++){const a=i*Math.PI/4;x.beginPath();x.moveTo(Math.cos(a)*68,Math.sin(a)*68);x.lineTo(Math.cos(a)*96,Math.sin(a)*96);x.stroke()}x.restore()}
+  // mountain profile drawn left → right
+  const P=D.P,dk=ease(E(.9,3.3)),n=Math.max(2,Math.round(dk*(P.length-1))+1);
+  x.save();x.beginPath();x.moveTo(0,1600);x.lineTo(0,P[0][1]+20);P.slice(0,n).forEach(q=>x.lineTo(q[0],q[1]));if(n>=P.length)x.lineTo(W,P[P.length-1][1]+20),x.lineTo(W,1600);else x.lineTo(P[n-1][0],1600);x.closePath();
+  const mg=x.createLinearGradient(0,760,0,1500);mg.addColorStop(0,mix([74,90,114],[216,226,236],day));mg.addColorStop(1,mix([18,31,51],[74,100,130],day));x.fillStyle=mg;x.globalAlpha=Math.min(1,dk*3)*.95;x.fill();x.restore();
+  x.beginPath();P.slice(0,n).forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.strokeStyle=day>.5?'#F4C152':'#A9C3E6';x.lineWidth=5;x.lineJoin='round';x.stroke();
+  // ground fade
+  const fg=x.createLinearGradient(0,1300,0,1560);fg.addColorStop(0,'rgba(11,22,38,0)');fg.addColorStop(1,'rgba(11,22,38,.96)');x.fillStyle=fg;x.fillRect(0,1380,W,540);x.fillStyle='rgba(11,22,38,.96)';x.fillRect(0,1560,W,360);
+  // hiker walking up the line
+  const hi=Math.min(n-1,D.si),hq=P[hi];if(t>.9){x.save();x.translate(hq[0]-(t>3.3?34:0),hq[1]-4);x.fillStyle='#E35D4A';x.beginPath();x.roundRect(-11,-46,22,30,8);x.fill();x.fillStyle='#3D5A80';x.fillRect(-22,-44,11,24);
+    x.fillStyle='#F2D2B0';x.beginPath();x.arc(0,-58,11,0,7);x.fill();x.strokeStyle='#2B3A52';x.lineWidth=6;x.lineCap='round';x.beginPath();x.moveTo(-5,-16);x.lineTo(-9,0);x.moveTo(5,-16);x.lineTo(9,0);x.stroke();
+    if(t>3.4){x.strokeStyle='#EEF1EC';x.lineWidth=4;x.beginPath();x.moveTo(16,-40);x.lineTo(16,-100);x.stroke();x.fillStyle='#F4C152';x.beginPath();x.moveTo(16,-100);x.lineTo(52,-89);x.lineTo(16,-78);x.fill()}x.restore()}
+  // summit burst
+  const bk=E(3.2,4.2);if(bk>0){const sq=P[D.si];x.save();x.translate(sq[0],sq[1]);x.globalAlpha=1-bk;x.strokeStyle='#F4C152';x.lineWidth=3;x.beginPath();x.arc(0,0,40+bk*180,0,7);x.stroke();x.globalAlpha=1;
+    const sc=1+Math.sin(Math.min(1,bk*2)*Math.PI)*.5;x.scale(sc,sc);x.fillStyle='#F4C152';x.beginPath();[[0,-46],[8,-8],[46,0],[8,8],[0,46],[-8,8],[-46,0],[-8,-8]].forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.fill();x.restore()}
+  // title: vertical name + elevation
+  const ta=ease(E(.1,.9));x.save();x.globalAlpha=ta;x.translate(0,(1-ta)*30);x.fillStyle='#EEF1EC';x.textBaseline='top';
+  const nm=[...D.name],big=nm.length>3?nm.slice(0,3):nm;x.font='700 150px '+SER;big.forEach((c,i)=>x.fillText(c,110,170+i*160));
+  if(nm.length>3){x.font='700 70px '+SER;nm.slice(3).forEach((c,i)=>x.fillText(c,40,170+(big.length-1)*160+90-(nm.length-4-i)*76))}
+  x.font='500 30px '+SAN;x.fillStyle=day>.5?'#F2F6FA':'#C8D3E2';x.fillText((D.set==='bai'?'百岳':D.set==='shan'?'小山':'小百岳')+'・海拔',310,190);
+  x.fillStyle='#EEF1EC';x.font='700 120px '+SER;const ew=x.measureText(fmt(D.h)).width;x.fillText(fmt(D.h),306,240);x.font='500 44px '+SER;x.fillText('m',318+ew,310);x.fillRect(310,236,380,2);x.restore();
+  // stats
+  D.stats.forEach((st,i)=>{const k=ease(E(4.4+i*.35,5+i*.35));if(k<=0)return;const cx=110+(i%2)*450,cy=1490+Math.floor(i/2)*150;x.save();x.globalAlpha=k;x.translate(0,(1-k)*24);x.textBaseline='alphabetic';
+    x.fillStyle='rgba(238,241,236,.55)';x.font='500 28px '+SAN;x.fillText([...st[0]].join(' '),cx,cy);x.fillStyle='#EEF1EC';x.font='700 84px '+SER;const vw=x.measureText(st[1]).width;x.fillText(st[1],cx,cy+96);x.font='500 30px '+SAN;x.fillStyle='rgba(238,241,236,.55)';if(st[2])x.fillText(st[2],cx+vw+12,cy+96);x.restore()});
+  // stamp slams in
+  const sk=E(6,6.5);if(sk>0){const sc=1.6-.6*ease(sk);x.save();x.translate(820,1360);x.rotate(-.18);x.scale(sc,sc);x.globalAlpha=Math.min(1,sk*2.5)*.95;x.strokeStyle='#F4C152';x.fillStyle='#F4C152';
+    x.lineWidth=7;x.beginPath();x.arc(0,0,150,0,7);x.stroke();x.lineWidth=3;x.beginPath();x.arc(0,0,92,0,7);x.stroke();x.textAlign='center';x.font='700 64px '+SER;x.fillText('登頂',0,-30);x.font='600 28px '+SAN;x.fillText(D.date,0,40);
+    const ring=('月岳・'+D.name+'・'+fmt(D.h)+'M').split('');x.font='600 26px '+SAN;ring.forEach((c,i)=>{const a=-Math.PI/2+(i-(ring.length-1)/2)*.2;x.save();x.rotate(a);x.fillText(c,0,-112);x.restore()});x.restore()}
+  // footer: moon + brand
+  const fk=ease(E(6.6,7.4));if(fk>0){x.save();x.globalAlpha=fk;x.fillStyle='#24344E';x.beginPath();x.arc(150,1850,34,0,7);x.fill();if(D.moon>0){x.fillStyle='#F4E3B4';x.fill(new Path2D(moonPath(150,1850,34,D.moon/100)))}
+    x.fillStyle='#EEF1EC';x.font='700 44px '+SER;x.textBaseline='middle';x.fillText(D.nth?'第 '+D.nth+' 座・月亮圓了 '+Math.max(1,D.moon)+'%':'又點亮一顆星',206,1850);x.textAlign='right';x.font='700 52px '+SER;x.fillText('月岳',1000,1850);x.restore()}
+}
+async function shareVideo(p,r){
+  const D=shareData(p,r),cv=document.createElement('canvas');cv.width=1080;cv.height=1920;const x=cv.getContext('2d');
+  try{await document.fonts.ready}catch(e){}
+  const box=document.createElement('div');box.className='shr';box.innerHTML='<div class="shr-in"><p class="shr-t">登頂動畫</p><div class="shr-v"></div><p class="shr-s" id="shrS">製作中…</p><div class="dpair"><button type="button" class="dghost" id="shrX">關閉</button><button type="button" class="dbtn" id="shrGo" disabled>分享</button></div></div>';
+  document.body.appendChild(box);box.querySelector('.shr-v').appendChild(cv);const close=()=>{box.remove();cancelAnimationFrame(raf)};box.querySelector('#shrX').onclick=close;
+  let raf=0;const DUR=8.2;
+  const mime=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm'].find(m=>window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(m));
+  if(!mime||!cv.captureStream){const t0=performance.now();const loop=n=>{shareDraw(x,D,((n-t0)/1000)%DUR);raf=requestAnimationFrame(loop)};raf=requestAnimationFrame(loop);$('shrS').textContent='這台裝置不能錄影，可以直接螢幕錄影分享。';return}
+  const rec=new MediaRecorder(cv.captureStream(30),{mimeType:mime,videoBitsPerSecond:6e6}),chunks=[];rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+  const t0=performance.now();rec.start();const loop=n=>{const t=(n-t0)/1000;shareDraw(x,D,Math.min(t,DUR));$('shrS')&&($('shrS').textContent='製作中… '+Math.min(100,Math.round(t/DUR*100))+'%');if(t<DUR)raf=requestAnimationFrame(loop);else rec.stop()};raf=requestAnimationFrame(loop);
+  rec.onstop=()=>{const ext=mime.includes('mp4')?'mp4':'webm',blob=new Blob(chunks,{type:mime.split(';')[0]}),file=new File([blob],'月岳-'+p.name+'.'+ext,{type:blob.type});
+    const v=document.createElement('video');v.src=URL.createObjectURL(blob);v.autoplay=v.loop=v.muted=v.playsInline=true;cv.replaceWith(v);$('shrS').textContent='好了！可以分享到限時動態。';
+    const go=$('shrGo');go.disabled=false;go.onclick=async()=>{try{if(navigator.canShare&&navigator.canShare({files:[file]}))await navigator.share({files:[file],title:p.name+' 登頂'});else{const a=document.createElement('a');a.href=v.src;a.download=file.name;document.body.appendChild(a);a.click();a.remove()}}catch(e){}}}
+}
+
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
   const xp=bai?XP_BY_GRADE[p.grade]:sh?XP_SHAN:XP_XIAO,today=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
@@ -1789,7 +1871,7 @@ function renderDPage(p){
   h+='<div class="s2kpi c3">'+kpi.map(([k,v])=>'<div><small>'+k+'</small><b>'+v+'</b></div>').join('')+'</div>';
   // one sentence + one action
   h+='<div class="dlead2">';
-  if(r){const bits=[];if(+r.distanceKm)bits.push('走了 '+(+r.distanceKm).toFixed(1)+' 公里');if(+r.durationMin)bits.push('花了 '+durTxt(+r.durationMin));h+='<p>'+(bits.length?'你那次'+bits.join('，')+'。':'你在 '+esc(r.date||'')+' 登頂了這座山。')+'</p>'}
+  if(r){const bits=[];if(+r.distanceKm)bits.push('走了 '+(+r.distanceKm).toFixed(1)+' 公里');if(+r.durationMin)bits.push('花了 '+durTxt(+r.durationMin));h+='<p>'+(bits.length?'你那次'+bits.join('，')+'。':'你在 '+esc(r.date||'')+' 登頂了這座山。')+'</p><button type="button" class="dbtn" id="dShare">做一支登頂動畫</button>'}
   else h+='<p>'+(bai?reason(p):sh?'不上鎖，出發前先確認路況和交通。':'郊山暖身，不上鎖，隨時可以去。')+'</p>';
   if(bai&&!r&&DBH)h+='<details class="dman"><summary>以前爬過？補登這座山</summary><div class="xmark dmark"><input type="date" id="xDate" value="'+today+'" max="'+today+'" aria-label="登頂日期"><button type="button" class="dbtn" id="xMark">補登</button></div>'+
     '<button type="button" class="dghost" id="mPhB">＋ 附一張山頂照（選填）</button><input type="file" id="mPh" accept="image/*" hidden><p class="dnote" style="text-align:left">有附照片標成「照片佐證」，沒有就是「自述」。有手錶軌跡的話，到「數據」上傳 GPX 最準。</p></details>';
@@ -1848,6 +1930,7 @@ function wireDPage(p){
       if(bai&&mFile){const tb=$('upPh')||b;await uploadPhoto(key,mFile,tb)}}
     say(r?'已取消 '+p.name:(bai?'補登 ':'登頂 ')+p.name+' +'+xp+' 點')}catch(e){b.disabled=false;say('存檔失敗，請再試一次。',true)}}}
   const b=$('toMap');if(b)b.onclick=()=>{const rk=S.sel;setTab('map');requestAnimationFrame(()=>{resize();focusPeak(byRank[rk])})};
+  {const sb=$('dShare');if(sb)sb.onclick=()=>shareVideo(p,r)}
   const hb=$('dHut');if(hb)hb.onclick=()=>say(r?'山屋會在帳號功能上線後開放，到時候就能看到同一間山屋的山友。':'先登頂這座山，就能進入這間山屋。');
 }
 function renderSheet(){
