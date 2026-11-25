@@ -1191,8 +1191,9 @@ function paint(){
 let PIPS=[],PT=null,stRaf=0,stLast=0,stIntro=0;
 function drawStars(t){
   sctx.setTransform(1,0,0,1,0,0);sctx.clearRect(0,0,stc.width,stc.height);if(!PT||!PIPS.length)return;
-  sctx.setTransform(PT.d*PT.k,0,0,PT.d*PT.k,PT.d*PT.tx,PT.d*PT.ty);
   const rm=reduceMotion(),sec=t/1000,ia=stIntro?t-stIntro:1e9;
+  if(!rm&&!document.getElementById('app').classList.contains('panning')){if(t-wvLast>=66||wvKey!==PT.k+'|'+PT.tx+'|'+PT.ty){wvLast=t;drawWaves(sec)}if(wv)sctx.drawImage(wv,0,0)}
+  sctx.setTransform(PT.d*PT.k,0,0,PT.d*PT.k,PT.d*PT.tx,PT.d*PT.ty);
   for(const q of PIPS){
     let tw=rm?1:.5+.5*Math.sin(sec*q.w+q.ph),sc=rm?1:.8+.35*tw,a=q.a*(rm?1:.45+.55*tw);
     if(ia<1600){const u=clamp((ia-q.dl)/700,0,1);if(u<=0)continue;sc*=u<.6?u/.6*1.3:1.3-.3*(u-.6)/.4;a*=Math.min(1,u*1.6)}
@@ -1206,6 +1207,29 @@ function drawStars(t){
     if(!rm&&tw>.93){sctx.globalAlpha=a*(tw-.93)/.07*.9;sctx.strokeStyle='rgb('+q.c+')';sctx.lineWidth=.6/PT.k;const L=s*2.4;sctx.beginPath();sctx.moveTo(q.x-L,q.y);sctx.lineTo(q.x+L,q.y);sctx.moveTo(q.x,q.y-L);sctx.lineTo(q.x,q.y+L);sctx.stroke()}
   }
   sctx.globalAlpha=1;
+}
+
+// open-sea ripples: short wave strokes drift slowly over the far sea, fading out toward the coast (15 fps, paused while panning)
+let wv=null,wx=null,wvLast=0,wvKey='',wvPat=null,wvMask=null;
+function wavePattern(seed){const c=document.createElement('canvas');c.width=c.height=220;const x=c.getContext('2d');let r=seed;const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+  x.lineCap='round';x.strokeStyle='rgba(170,205,240,1)';x.lineWidth=1.1;
+  for(let i=0;i<7;i++){const cx=rnd()*220,cy=rnd()*220,L=14+rnd()*18,A=1.6+rnd()*1.4;x.globalAlpha=.35+rnd()*.65;x.beginPath();
+    for(let j=0;j<=12;j++){const t=j/12,px=cx-L/2+t*L,py=cy+Math.sin(t*Math.PI*2)*A*Math.sin(t*Math.PI);
+      j?x.lineTo(px,py):x.moveTo(px,py)}x.stroke()}
+  return c}
+function drawWaves(sec){
+  if(!wv){wv=document.createElement('canvas');wx=wv.getContext('2d');wvPat=[wx.createPattern(wavePattern(7),'repeat'),wx.createPattern(wavePattern(23),'repeat')]}
+  if(wv.width!==stc.width||wv.height!==stc.height){wv.width=stc.width;wv.height=stc.height}
+  wvKey=PT.k+'|'+PT.tx+'|'+PT.ty;
+  wx.setTransform(1,0,0,1,0,0);wx.globalCompositeOperation='source-over';wx.clearRect(0,0,wv.width,wv.height);
+  wx.setTransform(PT.d*PT.k,0,0,PT.d*PT.k,PT.d*PT.tx,PT.d*PT.ty);wx.lineJoin='round';
+  const x0=-PT.tx/PT.k,y0=-PT.ty/PT.k,x1=(V.w-PT.tx)/PT.k,y1=(V.h-PT.ty)/PT.k;
+  [[0,4.2,1.1,.9],[1,-3.1,-.7,2.6]].forEach(([i,vx,vy,ph])=>{const P=wvPat[i];
+    P.setTransform(new DOMMatrix([1,0,0,1,(sec*vx)%220,(sec*vy+Math.sin(sec*.35+ph)*3)%220]));
+    wx.globalAlpha=.24*(.55+.45*Math.sin(sec*.5+ph));wx.fillStyle=P;wx.fillRect(x0,y0,x1-x0,y1-y0)});
+  if(!wvMask){const M=120,r=.5;wvMask=document.createElement('canvas');wvMask.width=Math.ceil((W+2*M)*r);wvMask.height=Math.ceil((H+2*M)*r);const m=wvMask.getContext('2d');
+    m.setTransform(r,0,0,r,M*r,M*r);m.lineJoin='round';m.strokeStyle='#000';[[230,.22],[180,.45],[130,.75],[90,1]].forEach(([w,a])=>{m.globalAlpha=a;m.lineWidth=w;m.stroke(landPath)});m.globalAlpha=1;m.fillStyle='#000';m.fill(landPath);wvMask.M=M}
+  wx.globalAlpha=1;wx.globalCompositeOperation='destination-out';wx.drawImage(wvMask,-wvMask.M,-wvMask.M,W+2*wvMask.M,H+2*wvMask.M);wx.globalCompositeOperation='source-over';
 }
 function startStars(){if(stRaf||reduceMotion())return;const loop=t=>{stRaf=0;if(document.hidden||!PIPS.length||!wrap.offsetParent)return;if(t-stLast>=40){stLast=t;drawStars(t)}stRaf=requestAnimationFrame(loop)};stRaf=requestAnimationFrame(loop)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)startStars()});
