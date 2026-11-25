@@ -1639,9 +1639,11 @@ function flyTo(k,tx,ty){
   flyRaf=requestAnimationFrame(step);
 }
 function zoomAt(f,px,py){const k=clamp(V.k*f,V.minK,V.maxK),r=k/V.k;flyTo(k,px-(px-V.tx)*r,py-(py-V.ty)*r)}
+// on a phone the peak page covers the whole screen, so the map is not hidden behind it
+const sheetFull=()=>!isDesk()&&sheet.classList.contains('dpage');
 function focusPeak(p){
   const k=clamp(Math.max(V.k,Math.min(46/p.nn,V.maxK),2.2),V.minK,V.maxK);
-  const cx=isDesk()&&V.w>700?(432+V.w)/2:V.w/2;const sh=sheet.classList.contains('open')?sheet.offsetHeight:0;const cy=isDesk()?V.h*0.42:sh?(84+V.h-sh)/2:V.h*0.4;
+  const cx=isDesk()&&V.w>700?(432+V.w)/2:V.w/2;const sh=sheet.classList.contains('open')&&!sheetFull()?sheet.offsetHeight:0;const cy=isDesk()?V.h*0.42:sh?(84+V.h-sh)/2:V.h*0.4;
   flyTo(k,cx-p.x*k,cy-p.y*k);
 }
 function openCluster(c){
@@ -1695,8 +1697,8 @@ function openPeak(rank,fly){
   S.sel=rank;renderSheet();sheet.classList.add('open');sheet.scrollTop=0;
   layout(true);draw();
   if(S.tab==='map'||isDesk()){if(fly||isDesk()||true)requestAnimationFrame(()=>{const sx=p.x*V.k+V.tx,sy=p.y*V.k+V.ty;
-    const hidden=!isDesk()&&sy>V.h-sheet.offsetHeight-40;const crowded=V.k<Math.min(46/p.nn,V.maxK)*0.6;const under=isDesk()&&sx<440&&V.w>700;
-    if(fly||hidden||crowded||under||sx<30||sx>V.w-30||sy<90)focusPeak(p)})}
+    const hidden=!isDesk()&&!sheetFull()&&sy>V.h-sheet.offsetHeight-40;const crowded=V.k<Math.min(46/p.nn,V.maxK)*0.6;const under=isDesk()&&sx<440&&V.w>700;
+    if(fly||hidden||crowded||under||sx<30||sx>V.w-30||sy<90||sy>V.h-110)focusPeak(p)})}
   try{$('sx').focus({preventScroll:true})}catch(e){}
 }
 function closeSheet(){
