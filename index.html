@@ -667,7 +667,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dstat i{width:11px;height:11px;border-radius:50%;background:var(--far)}.dstat.ok i{background:var(--ok);box-shadow:0 0 8px rgba(127,209,166,.7)}.dstat.stretch i{background:var(--stretch)}
 .dwhy{margin:4px 0 0;padding-left:20px;display:grid;gap:6px;font:400 15px/1.6 var(--body);color:#B4C2D4}
 .dband{position:relative;height:96px;margin:8px 0}
-.dband span{position:absolute;border-radius:50%;filter:blur(14px);background:rgba(196,212,234,.15);animation:ytDrift2 30s ease-in-out var(--o,0s) infinite alternate}
+.dband svg,.dmist svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dcl{animation:ytDrift2 var(--d,30s) ease-in-out var(--o,0s) infinite alternate}
 @keyframes ytDrift2{from{transform:translateX(-16px)}to{transform:translateX(20px)}}
 .dh{margin:0;font:700 30px/1.25 var(--display);letter-spacing:.04em}
 .dlead{margin:0;font:400 17px/1.6 var(--body);color:#D3DCE7}
@@ -678,8 +679,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ddots{display:inline-flex;gap:7px}.ddots i{width:13px;height:13px;border-radius:50%;border:1.5px solid #7D8EA6;box-sizing:border-box}.ddots i.on{background:var(--ink);border-color:var(--ink)}
 .dind{margin-left:58px}
 .dland{position:relative;margin-top:30px;height:170px;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 60%,transparent 100%)}
-.dmist{position:relative;z-index:2;height:120px;margin:-60px 0;pointer-events:none;overflow:visible}
-.dmist span{position:absolute;border-radius:50%;filter:blur(18px);background:rgba(190,206,228,.16);animation:ytDrift2 var(--d,30s) ease-in-out var(--o,0s) infinite alternate}.dland svg{display:block;width:100%;height:100%}
+.dmist{position:relative;z-index:0;height:110px;margin:-70px 0 -40px;pointer-events:none;overflow:visible}
+.dsec,.dhero .dtitle,.dhero .dmoon{z-index:1}
+.dmist.day{height:64px;margin:-44px 0 14px}
+.dland svg{display:block;width:100%;height:100%}
 .dphoto{display:block;margin-top:-40px}
 .dphoto img{display:block;width:100%;height:320px;object-fit:cover;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 70%,transparent 100%)}
 .dsec>.dghost{margin:10px 0 26px}
@@ -705,7 +708,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dend svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:240px}
 
 @media (max-width:899px){.sheet.dpage{top:0;max-height:none;height:100%;border-radius:0;box-shadow:none}}
-@media (prefers-reduced-motion:reduce){.dst,.dband span,.dmist span{animation:none}}
+@media (prefers-reduced-motion:reduce){.dst,.dcl{animation:none}}
+
+.dhero.day .deb{color:#E8F0F8}.dhero.day .dmoon p{color:#F4F8FC;text-shadow:0 1px 8px rgba(30,60,100,.5)}.dhero.day .dmoon b{color:#fff}
+.dhero.day .dname{text-shadow:0 2px 18px rgba(20,50,90,.45)}
+.dhero.day .dsvt{fill:#F4F8FC}.dhero.day .dsvt.s{fill:#E2EAF3}
+.dhero.day .dsvt{paint-order:stroke;stroke:rgba(30,55,85,.45);stroke-width:3px}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1467,12 +1475,14 @@ function heroProfile(p,r){
   const X=k=>14+k/km*362,Y=e=>470-(e-lo)/(hi-lo||1)*175;
   const line=pts.map(q=>X(q[0]).toFixed(1)+','+Y(q[1]).toFixed(1)).join(' ');
   const sx=X(skm),sy=Y(pts.reduce((b,q)=>Math.abs(q[0]-skm)<Math.abs(b[0]-skm)?q:b,pts[0])[1]);
-  const dn=!!r,mid=skm>km*.15&&skm<km*.85;
+  const dn=!!r,mid=skm>km*.15&&skm<km*.85;const day=dn;
+  const back=day?DPA.heroBack.replace('#1A2A44','#86A0BE').replace('#16243B','#6D88A8'):DPA.heroBack,front=day?DPA.heroFront.replace('#0C1729','#2F4A68').replace('#0E1A2E','#3A5676'):DPA.heroFront;
   let g='<svg class="dhero-s" viewBox="0 0 390 560" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><defs><linearGradient id="dpk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A5A72"/><stop offset=".55" stop-color="#22314A"/><stop offset="1" stop-color="#121F33"/></linearGradient><linearGradient id="dhf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1626" stop-opacity="0"/><stop offset="1" stop-color="#0D1829"/></linearGradient></defs>'+
-    '<g fill="#E6EDF6">'+DPA.stars+'</g>'+DPA.heroBack+
-    '<polygon points="0,560 0,'+Y(pts[0][1]).toFixed(1)+' '+line+' 390,'+Y(pts[pts.length-1][1]).toFixed(1)+' 390,560" fill="url(#dpk)"/>'+
-    '<polyline points="'+line+'" fill="none" stroke="'+(dn?'#F4C152':'#A9C3E6')+'" stroke-opacity=".65" stroke-width="1.4" stroke-linejoin="round"/>'+DPA.heroFront+
-    '<rect x="0" y="480" width="390" height="80" fill="url(#dhf)"/>'+
+    (day?'<linearGradient id="dsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E5A8A"/><stop offset=".45" stop-color="#6E9CC6"/><stop offset=".8" stop-color="#C7D9E8"/><stop offset="1" stop-color="#F2DEC0"/></linearGradient><rect width="390" height="560" fill="url(#dsky)"/><circle cx="315" cy="100" r="44" fill="#FFF1D6" opacity=".28"/><circle cx="315" cy="100" r="28" fill="#FFF6E4" opacity=".5"/><circle cx="315" cy="100" r="19" fill="#FFFBF2"/>'+'<g class="dcl" style="--d:34s" opacity=".85" fill="#F4F8FC"><ellipse cx="48" cy="352" rx="52" ry="10"/><circle cx="30" cy="344" r="12"/><circle cx="52" cy="336" r="17"/><circle cx="74" cy="344" r="11"/></g><g class="dcl" style="--d:40s;--o:-12s" opacity=".75" fill="#F4F8FC"><ellipse cx="345" cy="318" rx="44" ry="8"/><circle cx="330" cy="311" r="10"/><circle cx="349" cy="304" r="14"/><circle cx="367" cy="312" r="9"/></g>'
+     :'<g fill="#E6EDF6">'+DPA.stars+'</g>')+back+
+    (day?'<linearGradient id="dpkd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8E2EC"/><stop offset=".35" stop-color="#93AAC2"/><stop offset="1" stop-color="#4A6482"/></linearGradient>':'')+'<polygon points="0,560 0,'+Y(pts[0][1]).toFixed(1)+' '+line+' 390,'+Y(pts[pts.length-1][1]).toFixed(1)+' 390,560" fill="url(#'+(day?'dpkd':'dpk')+')"/>'+
+    '<polyline points="'+line+'" fill="none" stroke="'+(dn?'#F4C152':'#A9C3E6')+'" stroke-opacity=".65" stroke-width="1.4" stroke-linejoin="round"/>'+front+
+    (day?'':'<rect x="0" y="480" width="390" height="80" fill="url(#dhf)"/>')+
     (dn?'<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="22" fill="#F4C152" opacity=".16"/><path transform="translate('+sx.toFixed(1)+' '+sy.toFixed(1)+')" d="M0 -15 L2.6 -2.6 L15 0 L2.6 2.6 L0 15 L-2.6 2.6 L-15 0 L-2.6 -2.6 Z" fill="#F4C152"/>'
        :'<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="7" fill="#0B1626" stroke="#A9C3E6" stroke-width="2"/>')+
     '<text x="'+Math.min(330,Math.max(60,sx)).toFixed(1)+'" y="'+(sy-26).toFixed(1)+'" text-anchor="middle" class="dsvt b">山頂 '+fmt(p.h)+' 公尺</text>'+
@@ -1481,17 +1491,25 @@ function heroProfile(p,r){
     '<text x="195" y="516" text-anchor="middle" class="dsvt s">'+esc(src)+'</text></svg>';
   return g;
 }
-function dMist(seed){let r=seed*9301+49297;const rnd=()=>(r=(r*9301+49297)%233280)/233280;let h='<div class="dmist" aria-hidden="true">';
-  for(let i=0;i<5;i++){const w=180+rnd()*160,hh=34+rnd()*30;h+='<span style="left:'+(-90+rnd()*360).toFixed(0)+'px;top:'+(18+rnd()*70).toFixed(0)+'px;width:'+w.toFixed(0)+'px;height:'+hh.toFixed(0)+'px;--o:-'+(rnd()*20).toFixed(1)+'s;--d:'+(24+rnd()*16).toFixed(0)+'s;opacity:'+(.55+rnd()*.45).toFixed(2)+'"></span>'}
-  return h+'</div>'}
+// clouds: puffy shapes built from overlapping circles, a soft top-lit gradient and only a slight edge blur
+let dCloudId=0;
+function dClouds(seed,n,h,day,top){let r=seed*9301+49297;const rnd=()=>(r=(r*9301+49297)%233280)/233280;const id='dc'+(++dCloudId);
+  const c0=day?'#FFFFFF':'#B9C8DC',c1=day?'#D9E4F0':'#6F84A3',al=day?.9:.3;
+  let g='<svg viewBox="0 0 390 '+h+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="'+id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+c0+'"/><stop offset="1" stop-color="'+c1+'"/></linearGradient><filter id="'+id+'f" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="'+(day?1.1:1.4)+'"/></filter></defs>';
+  for(let i=0;i<n;i++){const W=(day?90:70)+rnd()*(day?120:90),x=-60+rnd()*420,y=(top||14)+rnd()*(h-(top||14)-26),k=4+Math.floor(rnd()*3),hh=W*(.16+rnd()*.06);
+    let cs='<ellipse cx="'+(x+W/2).toFixed(1)+'" cy="'+(y+hh*.55).toFixed(1)+'" rx="'+(W/2).toFixed(1)+'" ry="'+(hh*.45).toFixed(1)+'"/>';
+    for(let j=0;j<k;j++){const t=(j+.5)/k,rr=hh*(.45+Math.sin(Math.PI*t)*.55)*(.8+rnd()*.35);cs+='<circle cx="'+(x+W*(.12+t*.76)).toFixed(1)+'" cy="'+(y+hh*.55-rr*.55).toFixed(1)+'" r="'+rr.toFixed(1)+'"/>'}
+    g+='<g class="dcl" style="--d:'+(26+rnd()*20).toFixed(0)+'s;--o:-'+(rnd()*20).toFixed(1)+'s" opacity="'+(al*(.65+rnd()*.35)).toFixed(2)+'" fill="url(#'+id+'g)" filter="url(#'+id+'f)">'+cs+'</g>'}
+  return g+'</svg>'}
+function dMist(seed,day){return '<div class="dmist'+(day?' day':'')+'" aria-hidden="true">'+dClouds(seed,day?5:4,day?70:120,day,day?0:14)+'</div>'}
 function renderDPage(p){
   const st=statusOf(p),r=RECS[p.rank],isNext=NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
   const mp=moonPath(30,30,21,G.n/100);
   let h='<div class="dp">';
   // hero
-  h+='<div class="dhero">'+heroProfile(p,r)+
-    '<div class="dmoon" aria-label="你爬了 '+G.n+' 座，共 100 座百岳"><svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28" fill="#F4E3B4" opacity=".07"/><circle cx="30" cy="30" r="21" fill="#24344E"/><path d="'+mp+'" fill="#F4E3B4"/></svg><p>你爬了 <b>'+G.n+'</b> 座<br>共 100 座百岳</p></div>'+
-    '<div class="dtitle"><p class="deb">'+(p.park==='無'?'不在國家公園內':esc(p.park)+'國家公園')+' · 百岳第 '+p.rank+' 高</p><h2 class="dname">'+nameHTML(p.name)+'</h2></div></div>'+dMist(3);
+  h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+
+    '<div class="dmoon" aria-label="你爬了 '+G.n+' 座，共 100 座百岳">'+(r?'<div style="height:60px"></div>':'<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28" fill="#F4E3B4" opacity=".07"/><circle cx="30" cy="30" r="21" fill="#24344E"/><path d="'+mp+'" fill="#F4E3B4"/></svg>')+'<p>你爬了 <b>'+G.n+'</b> 座<br>共 100 座百岳</p></div>'+
+    '<div class="dtitle"><p class="deb">'+(p.park==='無'?'不在國家公園內':esc(p.park)+'國家公園')+' · 百岳第 '+p.rank+' 高</p><h2 class="dname">'+nameHTML(p.name)+'</h2></div></div>'+dMist(3,!!r);
   // headline
   if(r){const d=(r.date||'').split('-');const order=Object.values(RECS).map(x=>x.date||'').sort();const nth=order.indexOf(r.date||'')+1||G.n;
     h+='<div class="dsec dhead"><p class="dgold">'+(d.length===3?(+d[0])+' 年 '+(+d[1])+' 月 '+(+d[2])+' 日，':'')+'你登頂了</p><p class="dsay">'+(r.verified==='gps'||parseTrack(r.track)?'手錶有記錄到，':'你補登了這座山，')+'點亮了第 '+nth+' 顆星</p></div>';
@@ -1500,7 +1518,7 @@ function renderDPage(p){
       '<p class="dsay">登頂可以拿 <b>+'+XP_BY_GRADE[p.grade]+'</b> 點經驗值；建議第 '+SUGGEST_LV[p.grade]+' 級以上挑戰，你現在第 '+G.lv+' 級。</p>'+
       (isNext?'<ul class="dwhy">'+questWhy(p).map(x=>'<li>'+x+'</li>').join('')+'</ul>':'')+'</div>';
   }
-  h+='<div class="dband" aria-hidden="true"><span style="left:-40px;top:14px;width:210px;height:40px"></span><span style="left:150px;top:34px;width:240px;height:46px;--o:-9s"></span><span style="left:60px;top:58px;width:170px;height:32px;--o:-15s"></span></div>';
+  h+='<div class="dband" aria-hidden="true">'+dClouds(5,5,100,false,6)+'</div>';
   // section 1: route
   h+='<div class="dsec"><p class="deb">第一段 · 路線</p><h3 class="dh">這條路怎麼走</h3>';
   if(t){const km=+(t.rkm||t.km)||0,up=+(t.rup||t.gain)||0;
