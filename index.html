@@ -923,10 +923,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 #listView .chn small{font:400 12px var(--body)!important;color:var(--t2)}#listView .chn b{font:600 14px var(--display)!important}
 #listView .seg button{font-weight:400!important}#listView .seg button[aria-pressed="true"]{font-weight:500!important}
 
-.twk{position:sticky;top:0;height:0;z-index:3;pointer-events:none;overflow:visible}
-#listBody{min-height:100%;box-sizing:border-box}
-.twk i{position:absolute;border-radius:50%;background:#E6EDF6;box-shadow:0 0 5px rgba(230,237,246,.55);opacity:var(--a,.6);animation:twk var(--d,5s) ease-in-out var(--o,0s) infinite}
-.twk-in{position:absolute;left:0;right:0;top:0;height:calc(100dvh - var(--top,0px) - var(--bar-h) - 16px - var(--tabs-h))}
+.twk{position:absolute;display:none;pointer-events:none;overflow:hidden;z-index:30;contain:strict}
+.twk i{position:absolute;border-radius:50%;background:#E6EDF6;box-shadow:0 0 5px rgba(230,237,246,.55);opacity:var(--a,.6);will-change:opacity,transform;animation:twk var(--d,5s) ease-in-out var(--o,0s) infinite}
 @keyframes twk{0%,100%{opacity:var(--a,.6);transform:scale(1)}50%{opacity:.06;transform:scale(.55)}}
 @media (prefers-reduced-motion:reduce){.twk i{animation:none}}
 
@@ -2342,9 +2340,12 @@ function renderChar(){
 
 
 /* twinkling stars over the 山頭 and 數據 backgrounds: a few dozen dots that only change opacity/scale */
-{const mk=(id,seed)=>{const v=$(id);if(!v)return;let r=seed;const rnd=()=>(r=(r*9301+49297)%233280)/233280;const w=document.createElement('div');w.className='twk';w.setAttribute('aria-hidden','true');
+{const L=[],mk=(id,seed)=>{const v=$(id);if(!v)return;let r=seed;const rnd=()=>(r=(r*9301+49297)%233280)/233280;const w=document.createElement('div');w.className='twk';w.setAttribute('aria-hidden','true');
   let h='';for(let i=0;i<34;i++){const sz=(rnd()<.18?2.4:rnd()<.5?1.6:1.1).toFixed(1),warm=rnd()<.2;h+='<i style="left:'+(rnd()*100).toFixed(1)+'%;top:'+(rnd()*100).toFixed(1)+'%;width:'+sz+'px;height:'+sz+'px;--d:'+(3+rnd()*5).toFixed(1)+'s;--o:-'+(rnd()*6).toFixed(1)+'s;--a:'+(.35+rnd()*.6).toFixed(2)+(warm?';background:#F4E3B4':'')+'"></i>'}
-  w.innerHTML='<div class="twk-in">'+h+'</div>';v.prepend(w)};mk('listView',3);mk('charView',7)}
+  w.innerHTML=h;v.after(w);L.push([v,w])};mk('listView',3);mk('charView',7);
+  // overlay sits outside the scroller (iOS Safari skips repainting animations inside a sticky child of a scroll view)
+  const sync=()=>{for(const[v,w]of L){const on=v.offsetParent!==null&&v.clientHeight>0;w.style.display=on?'block':'none';if(on){const z=parseInt(getComputedStyle(v).zIndex)||0;Object.assign(w.style,{left:v.offsetLeft+'px',top:v.offsetTop+'px',width:v.clientWidth+'px',height:v.clientHeight+'px',zIndex:z+1})}}};
+  new MutationObserver(()=>requestAnimationFrame(sync)).observe($('app'),{attributes:true,attributeFilter:['data-tab']});addEventListener('resize',()=>requestAnimationFrame(sync));sync()}
 $('charBody').addEventListener('click',e=>{
   const u=e.target.closest('[data-uc]');if(u){S.uc=u.dataset.uc;renderChar();try{$('charBody').querySelector('[data-uc="'+S.uc+'"]').focus({preventScroll:true})}catch(_){}return}
   if(e.target.closest('#histMore')){S.histAll=!S.histAll;renderChar();return}
