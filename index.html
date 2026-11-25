@@ -877,6 +877,51 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 #listView .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 #listView .tag.ok::before{box-shadow:0 0 6px rgba(94,158,120,.7)}
 #listView .chip{background:none;padding:0}
+/* ======== 字級系統（雜誌標準）：主數字 56/36 · 標題 28 · 名稱 18 · 內文 14 · 標籤 11 ======== */
+:root{--t1:rgba(238,241,236,.92);--t2:rgba(238,241,236,.55)}
+.gc i,.chn small i,.s2gr b i{font-style:normal;margin:0 .22em;color:var(--t2);font-weight:400}
+.sp2 b,.sp2 .dbig,#listView .gc,#listView .rs{font-variant-numeric:tabular-nums lining-nums}
+.s2lbl,.s2hd h3{margin:0;font:500 11px/1.4 var(--body)!important;letter-spacing:.32em!important;color:var(--t2)}
+.s2t{margin:4px 0 0;display:flex;align-items:baseline;gap:8px;color:var(--t1)}.s2t b{font:600 56px/1 var(--display)!important;letter-spacing:-.01em;margin:0!important}.s2t span{font:600 20px var(--display);color:var(--t2)}
+.s2s{font:400 14px/1.5 var(--body);color:var(--t2);margin-top:8px}
+.s2top{align-items:flex-end}
+.s2kpi>div:nth-child(odd){border-right:0!important}.s2kpi>div{padding:16px 0!important}
+.s2kpi:not(.c3) b{font:600 36px/1 var(--display)!important}.s2kpi u{font:500 11px var(--body)!important;letter-spacing:.2em;color:var(--t2)!important}
+.s2kpi small{font:500 11px/1 var(--body)!important;letter-spacing:.32em!important;color:var(--t2)!important}
+.s2sec{padding-top:48px!important}
+.s2hd{padding-bottom:8px!important;margin-bottom:16px!important}.s2hd span{font:400 12px var(--body)!important;color:var(--t2)!important}
+.s2lv{margin:0 0 16px!important;font:600 28px/1.25 var(--display)!important;letter-spacing:.04em}.s2lv small{display:block;margin-bottom:6px;font:500 11px var(--body);letter-spacing:.32em;color:var(--t2)}
+.s2cap{font:400 12px var(--body)!important;color:var(--t2)!important}
+.s2ab>div,.s2gr>button{grid-template-columns:88px minmax(0,1fr) 64px!important;row-gap:4px!important}
+.s2ab .k,.s2gr .k{font:600 18px/1.2 var(--display)!important;letter-spacing:.02em;color:var(--t1)!important}
+.s2gr .k em{font:500 11px var(--body)!important;letter-spacing:.2em;color:var(--t2)!important;margin-top:3px}
+.s2ab b,.s2gr b{font:600 20px var(--display)!important;color:var(--t1)}
+.s2ab small{grid-column:1/4!important;font:400 14px/1.5 var(--body)!important;color:var(--t2)!important}
+.s2ab,.s2gr{gap:16px!important}
+.sp2 .dsay{font:400 14px/1.6 var(--body)!important;color:var(--t2)!important}
+.sp2 .dnote{text-align:left!important;margin:12px 0!important;font:400 12px var(--body)!important;color:var(--t2)!important}
+.sp2 .dbtn,.sp2 .dghost{font-weight:500!important}
+.sp2 .dmore,.yytex .dmore{background:none!important;border:0!important;border-top:1px solid rgba(200,211,226,.14)!important;border-radius:0!important}
+.sp2 .dmore>summary,.yytex .dmore>summary{padding:16px 0!important;font:600 18px var(--display)!important}
+.sp2 .dmore>summary small,.yytex .dmore>summary small{font:400 12px var(--body)!important;color:var(--t2)!important}
+.sp2 .dmore-b,.yytex .dmore-b{padding:0 0 16px!important}
+#listView .grp{padding-block:48px 0!important}
+#listView .grp h3,#listView .chh .cht{font:600 28px/1.2 var(--display)!important;letter-spacing:.04em!important}
+#listView .chh .cht{flex-direction:column;align-items:flex-start;gap:6px}
+#listView .chh .cht small{font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
+#listView .chn2{font:600 32px/1.1 var(--display);letter-spacing:.04em}
+#listView .grp h3 .gc,#listView .chh .gc{font:600 18px var(--display)!important;color:var(--t1)!important}
+#listView .chh .gc b{color:var(--gold);font-weight:600}
+#listView .chs{font:400 12px/1.5 var(--body)!important;color:var(--t2)!important}#listView .chs .chip{font:500 11px var(--body)!important;letter-spacing:.2em}
+#listView .grp p{font:400 14px/1.6 var(--body)!important;color:var(--t2)!important}
+#listView .row{grid-template-columns:40px minmax(0,1fr) auto!important;min-height:64px!important;padding:12px 0!important;gap:8px 12px!important}
+#listView .ri,#listView .ri.qn{width:auto;height:auto;border:0!important;background:none!important;font:600 20px/1 var(--display)!important;color:var(--t2)!important;letter-spacing:.02em}
+#listView .row.done .ri{color:var(--gold)!important}
+#listView .rn{font:600 18px/1.25 var(--display)!important;letter-spacing:.02em!important;color:var(--t1)}
+#listView .rs{font:400 13px/1.4 var(--body)!important;color:var(--t2)!important}#listView .rs em{color:var(--t2)!important;font-style:normal}
+#listView .tag{font:400 12px/1 var(--body)!important}
+#listView .chn small{font:400 12px var(--body)!important;color:var(--t2)}#listView .chn b{font:600 14px var(--display)!important}
+#listView .seg button{font-weight:400!important}#listView .seg button[aria-pressed="true"]{font-weight:500!important}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1871,9 +1916,9 @@ const SVG={
   chev:'<svg class="chev" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l4 4 4-4"/></svg>'
 };
 const CH_TXT={clear:'全部登頂',open:'已開放',near:'快到了',lock:'未開放'};
-function row(p,n,badge){
+function row(p,n,badge,idx){
   const st=statusOf(p),x=p.set!=='bai';
-  return '<button type="button" class="row '+st+'" data-rank="'+p.rank+'"><span class="ri'+(n?' qn':'')+'">'+(n?n:p.set==='shan'?(st==='done'?ICO.srowDone:ICO.srow):x?(st==='done'?ICO.xrowDone:ICO.xrow):st==='done'?ICO.rowDone:ICO.rowPeak)+'</span>'+
+  return '<button type="button" class="row '+st+'" data-rank="'+p.rank+'"><span class="ri'+(n||idx?' qn':'')+'">'+(n?String(n).padStart(2,'0'):idx?String(idx).padStart(2,'0'):p.set==='shan'?(st==='done'?ICO.srowDone:ICO.srow):x?(st==='done'?ICO.xrowDone:ICO.xrow):st==='done'?ICO.rowDone:ICO.rowPeak)+'</span>'+
     '<span class="rt"><span class="rn">'+(badge?'<em class="sb">'+SETN[p.set]+'</em>':'')+esc(p.name)+'</span><span class="rs">'+fmt(p.h)+' m '+(x?'<em>'+esc(p.area)+'</em>':(S.group==='route'||n?pips(p.grade):'')+'<em>'+(S.group==='route'&&!n?'':esc(p.route))+'</em>')+'</span></span>'+
     '<span class="tag '+st+'">'+stTxt(p,st)+'</span></button>';
 }
@@ -1887,17 +1932,17 @@ function renderList(){
     if(S.filter==='all'){
       // chapter track: five difficulty tiers as stops on one road
       h+='<div class="chtrack" role="group" aria-label="章節進度">'+cs.map(c=>'<button type="button" class="chn '+c.st+'" data-go="'+c.g+'" aria-label="第 '+c.g+' 章 '+CH[c.g]+'，'+CH_TXT[c.st]+'，已登頂 '+c.dn+' / '+c.all.length+' 座">'+
-        '<span class="dot">'+(c.st==='clear'?SVG.check:c.st==='lock'?SVG.lock:c.g)+'</span><b>'+CH[c.g]+'</b><small>'+(c.dn?'<u>'+c.dn+'</u>':'0')+'/'+c.all.length+'</small></button>').join('')+'</div>';
+        '<span class="dot">'+(c.st==='clear'?SVG.check:c.st==='lock'?SVG.lock:c.g)+'</span><b>'+CH[c.g]+'</b><small>'+(c.dn?'<u>'+c.dn+'</u>':'0')+'<i>/</i>'+c.all.length+'</small></button>').join('')+'</div>';
       const nx=NXT.slice(0,3);
       if(nx.length)h+='<div class="grp"><h3>接下來 '+nx.length+' 關</h3><p>'+(NEXT.some(r=>!RECS[r])?'照這個順序走，難度會一步一步往上。':'推薦路線走完了，先挑剩下難度最低的。')+'</p></div><div class="rows">'+nx.map((p,i)=>row(p,i+1)).join('')+'</div>'}
     for(const c of cs){const items=c.all.filter(pass);if(!items.length)continue;shown+=items.length;
       const open=S.filter!=='all'||(S.open[c.g]==null?c.st!=='lock':S.open[c.g]);
-      const sub=c.st==='clear'?'共獲得 '+fmt(c.all.length*XP_BY_GRADE[c.g])+' XP':c.st==='open'?'每座 +'+XP_BY_GRADE[c.g]+' XP':'建議 Lv '+c.s+'，再 '+fmt(LV[c.s-1]-G.xp)+' XP · 每座 +'+XP_BY_GRADE[c.g]+' XP';
+      const sub=c.st==='clear'?'共獲得 '+fmt(c.all.length*XP_BY_GRADE[c.g])+' 點':c.st==='open'?'每座 +'+XP_BY_GRADE[c.g]+' 點':'建議第 '+c.s+' 級・再 '+fmt(LV[c.s-1]-G.xp)+' 點・每座 +'+XP_BY_GRADE[c.g]+' 點';
       h+='<div class="grp ch'+(open?'':' shut')+'" id="ch'+c.g+'"><h3 class="chw"><button type="button" class="chh" data-ch="'+c.g+'" aria-expanded="'+open+'"'+(S.filter!=='all'?' disabled':'')+'>'+
-        '<span class="cht"><small>第 '+c.g+' 章</small>'+CH[c.g]+' '+pips(c.g)+'</span><span class="gc"><b>'+c.dn+'</b> / '+c.all.length+'</span>'+(S.filter==='all'?SVG.chev:'<span></span>')+
+        '<span class="cht"><small>第 '+c.g+' 章・難度 '+c.g+'</small><span class="chn2">'+CH[c.g]+'</span></span><span class="gc"><b>'+c.dn+'</b><i>/</i>'+c.all.length+'</span>'+(S.filter==='all'?SVG.chev:'<span></span>')+
         '<span class="chs"><span class="chip '+c.st+'">'+(c.st==='lock'?SVG.lock:'')+CH_TXT[c.st]+'</span>'+sub+'</span>'+
         '<span class="gbar"><i style="width:'+(c.dn/c.all.length*100)+'%"></i></span></button></h3></div>'+
-        (open?'<div class="rows">'+items.map(p=>row(p)).join('')+'</div>':'');
+        (open?'<div class="rows">'+items.map((p,i)=>row(p,null,false,i+1)).join('')+'</div>':'');
     }
   }else{
     const m=new Map();for(const p of P){if(!m.has(p.route))m.set(p.route,[]);m.get(p.route).push(p)}
@@ -1905,7 +1950,7 @@ function renderList(){
       const items=g.all.filter(pass);if(!items.length)return;shown+=items.length;const dn=g.all.filter(p=>RECS[p.rank]).length;
       const ps=[...new Set(g.all.map(p=>p.park))].filter(x=>x!=='無');
       h+='<div class="grp"><h3>'+esc(g.t)+'<span class="gc"><b>'+dn+'</b> / '+g.all.length+'</span></h3>'+(ps.length?'<p>'+esc(ps.join('、'))+'國家公園</p>':'')+
-        '<div class="gbar"><i style="width:'+(dn/g.all.length*100)+'%"></i></div></div><div class="rows">'+items.map(p=>row(p)).join('')+'</div>'});
+        '<div class="gbar"><i style="width:'+(dn/g.all.length*100)+'%"></i></div></div><div class="rows">'+items.map((p,i)=>row(p,null,false,i+1)).join('')+'</div>'});
     if(shown&&S.filter==='all')h='<div class="grp"><p>由北到南排列。</p></div>'+h;
   }
   if(!shown&&S.filter!=='all')h+='<div class="empty">'+(S.filter==='done'?'還沒有登頂紀錄。完成第一座之後，這裡會亮起來。':'目前沒有等級剛好的山，先看看下一關。')+'</div>';
@@ -2076,18 +2121,18 @@ function renderChar(){
   let h='<div class="dp sp2">'+[[8,12],[22,58],[71,9],[88,31],[46,22],[13,78],[64,66],[93,84],[33,90]].map(([x,y],i)=>'<i class="s2tw" style="left:'+x+'%;top:'+y+'%;--d:'+(3.6+i*.7).toFixed(1)+'s;--o:-'+i*.9+'s"></i>').join('')+'<i class="s2shoot"></i>';
   // summary
   h+='<div class="s2top"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true" style="overflow:visible"><circle class="s2glow" cx="28" cy="28" r="28" fill="#F4E3B4"/><circle cx="28" cy="28" r="22" fill="#24344E"/><path d="'+moonPath(28,28,22,n/100)+'" fill="#F4E3B4"/></svg>'+
-    '<div><p class="s2t">百岳 <b>'+n+'</b> / 100</p><p class="s2s">月亮圓了 '+(n?Math.max(1,n):0)+'%・小百岳 '+G.xn+'・小山 '+G.sn+'</p></div></div>';
+    '<div><p class="s2lbl">百岳進度</p><p class="s2t"><b>'+n+'</b><span>/ 100</span></p><p class="s2s">月亮圓了 '+(n?Math.max(1,n):0)+'%・小百岳 '+G.xn+'・小山 '+G.sn+'</p></div></div>';
   h+='<div class="s2kpi">'+[['總距離',km?km.toFixed(1):'—','公里'],['總爬升',gain?fmt(Math.round(gain)):'—','公尺'],['總時間',mins?(mins/60).toFixed(1):'—','小時'],['登頂',String(n+G.xn+G.sn),'座']]
     .map(([k,v,u])=>'<div><small>'+k+'</small><b>'+v+'<u>'+u+'</u></b></div>').join('')+'</div>';
   // level
   h+='<section class="s2sec"><div class="s2hd"><h3>等級</h3><span>'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升到第 '+(G.lv+1)+' 級')+'</span></div>'+
-    '<p class="s2lv">第 '+G.lv+' 級・'+titleOf(G.lv)+'</p><div class="s2bar" role="img" aria-label="升級進度 '+Math.round(fr*100)+'%"><i style="width:'+(fr*100).toFixed(1)+'%"></i></div>'+
+    '<p class="s2lv"><small>第 '+G.lv+' 級</small>'+titleOf(G.lv)+'</p><div class="s2bar" role="img" aria-label="升級進度 '+Math.round(fr*100)+'%"><i style="width:'+(fr*100).toFixed(1)+'%"></i></div>'+
     '<p class="s2cap"><span>'+fmt(G.xp)+' 點</span><span>'+(top?'':fmt(b)+' 點')+'</span></p></section>';
   // abilities
   h+='<section class="s2sec"><div class="s2hd"><h3>能力</h3><span>'+(n?'依 '+n+' 筆紀錄・每項滿分 100':'還沒有紀錄')+'</span></div>'+statRadar(ab,n)+
     '<div class="s2ab">'+ab.map(x=>'<div><span class="k">'+x.k+'</span><span class="bar"><i style="width:'+(n?x.s:0)+'%"></i></span><b>'+(n?Math.round(x.s):'–')+'</b><small>'+(n?x.v:'—')+'</small></div>').join('')+'</div></section>';
   // progress by grade
-  h+='<section class="s2sec"><div class="s2hd"><h3>百岳進度</h3><span>依難度</span></div><div class="s2gr">'+[1,2,3,4,5].map(g=>{const c=chState(g);return'<button type="button" data-gr="'+g+'"><span class="k">難度 '+g+'<em>'+CH[g]+'</em></span><span class="bar"><i style="width:'+(c.dn/c.all.length*100).toFixed(1)+'%"></i></span><b>'+c.dn+' / '+c.all.length+'</b></button>'}).join('')+'</div>'+
+  h+='<section class="s2sec"><div class="s2hd"><h3>百岳進度</h3><span>依難度</span></div><div class="s2gr">'+[1,2,3,4,5].map(g=>{const c=chState(g);return'<button type="button" data-gr="'+g+'"><span class="k">'+CH[g]+'<em>第 '+g+' 章</em></span><span class="bar"><i style="width:'+(c.dn/c.all.length*100).toFixed(1)+'%"></i></span><b>'+c.dn+'<i>/</i>'+c.all.length+'</b></button>'}).join('')+'</div>'+
     (NXT[0]?'<button type="button" class="dbtn" id="sNext">下一座推薦：'+esc(NXT[0].name)+'</button>':'')+'</section>';
   // my data
   h+=dataSec().replace('<div class="dsec">','<section class="s2sec">').replace('<h3 class="dh">我的紀錄</h3>','<div class="s2hd"><h3>我的紀錄</h3><span>存在這支手機</span></div>').replace(/<\/div>$/,'</section>');
