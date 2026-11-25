@@ -956,6 +956,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ce-lines p:nth-child(1){animation-delay:.9s}.ce-lines p:nth-child(2){animation-delay:1.05s}.ce-lines p:nth-child(3){animation-delay:1.2s}.ce-lines p:nth-child(4){animation-delay:1.35s}.ce-lines p:nth-child(5){animation-delay:1.5s}
 @keyframes ceLine{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .ce-lines small{grid-row:1/3;font:500 11px var(--body);letter-spacing:.2em;color:var(--t2);padding-top:5px}.ce-lines b{font:600 18px var(--display)}.ce-lines em{font:400 13px var(--body);font-style:normal;color:var(--t2)}
+.ce-snd{position:absolute;top:14px;right:12px;width:48px;height:48px;display:grid;place-items:center;background:none;border:0;color:rgba(238,241,236,.55);cursor:pointer}.ce-snd .off{display:none}.ce-snd[aria-pressed="false"] .on{display:none}.ce-snd[aria-pressed="false"] .off{display:inline}
 .ce-card .dpair{margin-top:22px}
 @media (prefers-reduced-motion:reduce){.cele,.ce-burst i,.ce-burst svg,.ce-stamp,.ce-lines p{animation:none!important;opacity:1}.ce-card,.ce-bar i{transition:none}}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
@@ -1800,6 +1801,109 @@ function dStamp(p,r){const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[
     '<g filter="url(#'+id+'f)" fill="#F4C152"><text class="sring"><textPath href="#'+id+'" startOffset="50%" text-anchor="middle">月岳・'+esc(nm)+'・'+fmt(p.h)+'M</textPath></text>'+
     '<text x="60" y="61" text-anchor="middle" class="sbigc">登頂</text><text x="60" y="78" text-anchor="middle" class="sdate">'+esc(dt)+'</text>'+
     '<path d="M60 26 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/></g></svg>'}
+/* ---------- 音效：全部用程式合成（Web Audio），0 檔案；跟著手機靜音鍵，不打斷使用者的音樂 ---------- */
+const SFX={ctx:null,get on(){try{return localStorage.getItem('yueyue.sfx')!=='0'}catch(e){return true}},set on(v){try{localStorage.setItem('yueyue.sfx',v?'1':'0')}catch(e){}}};
+function sfxCtx(){if(SFX.ctx)return SFX.ctx;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;
+  try{if(navigator.audioSession)navigator.audioSession.type='ambient'}catch(e){}
+  SFX.ctx=new AC();return SFX.ctx}
+// iOS only lets a page make sound after a tap: open the audio context on the first touch
+['pointerdown','touchend','keydown'].forEach(ev=>addEventListener(ev,function u(){const c=sfxCtx();if(c&&c.state==='suspended')c.resume();removeEventListener(ev,u,true)},true));
+/* ---------- 登頂配樂：一段連續的電影感聲景（全部程式合成）
+   夜：蟾蜍＋樹葉風聲＋低音風琴 → 點亮：上升音＋木琴 → 蓋章：低鳴＋風琴大三和弦，夜轉晝（蟾蜍退、蟬聲進）
+   → 結算：木琴點數＋風琴轉暖（升級加一段上行）→ 慢慢淡出。任何接點都有過門，關掉也是淡出。 ---------- */
+const CINE=(()=>{
+  let R=11;const rnd=()=>(R=(R*9301+49297)%233280)/233280;
+  const NB=new WeakMap();
+  const noiseBuf=c=>{if(NB.has(c))return NB.get(c);const n=c.sampleRate*4,b=c.createBuffer(2,n,c.sampleRate);for(let k=0;k<2;k++){const d=b.getChannelData(k);for(let i=0;i<n;i++)d[i]=Math.random()*2-1}NB.set(c,b);return b};
+  const irBuf=(c,sec)=>{const n=Math.floor(c.sampleRate*sec),b=c.createBuffer(2,n,c.sampleRate),a=Math.floor(c.sampleRate*.015);for(let k=0;k<2;k++){const d=b.getChannelData(k);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.8)*(i<a?i/a:1)}return b};
+  const F=(c,type,f,q)=>{const x=c.createBiquadFilter();x.type=type;x.frequency.value=f;if(q!=null)x.Q.value=q;return x};
+  const G=(c,v=0)=>{const g=c.createGain();g.gain.value=v;return g};
+  const P=(c,x)=>{if(c.createStereoPanner){const p=c.createStereoPanner();p.pan.value=x;return p}return G(c,1)};
+
+  function start(c,opt){
+    const M=Object.assign({lead:1.3,meteor:.53,stamp:.42,organ:.89,count:.22,cic:.65,night:.46},opt.mix||{}),plan=opt.plan,lv=!!opt.lv,t0=opt.t0!=null?opt.t0:c.currentTime+.02,src=[];
+    const now=t=>t!=null?t:c.currentTime+.01;
+    const osc=(type,f,t,end)=>{const o=c.createOscillator();o.type=type;o.frequency.value=f;o.start(t);o.stop(end);src.push(o);return o};
+    const noise=(t,end)=>{const s=c.createBufferSource();s.buffer=noiseBuf(c);s.loop=true;s.start(t,Math.random()*3);s.stop(end);src.push(s);return s};
+    // mix bus: dry + long soft reverb → gentle compressor → master fader
+    const master=G(c,0),comp=c.createDynamicsCompressor();comp.threshold.value=-20;comp.ratio.value=3;comp.attack.value=.02;comp.release.value=.4;
+    const lim=c.createDynamicsCompressor();lim.threshold.value=-4;lim.knee.value=0;lim.ratio.value=20;lim.attack.value=.001;lim.release.value=.12;comp.connect(master);master.connect(lim).connect(c.destination);master.gain.setValueAtTime(0,t0);master.gain.linearRampToValueAtTime(1.8,t0+.6);
+    const dry=G(c,1),wet=G(c,1),rv=c.createConvolver();rv.buffer=irBuf(c,3.6);dry.connect(comp);wet.connect(rv).connect(F(c,'lowpass',5200)).connect(G(c,.5)).connect(comp);
+    const out=(node,px=0,d=1,w=.3)=>{const p=P(c,px);node.connect(p);const a=G(c,d),b=G(c,w);p.connect(a).connect(dry);p.connect(b).connect(wet);return p};
+    const HOR=t0+24; // nothing in this score runs past here
+
+    /* ---- ambience beds, each on its own fader ---- */
+    // cicadas: open the whole cue, then step back as the wind rises
+    const cicF=G(c,0);out(cicF,0,.85,.3);
+    [[4600,-.55,148,.42],[5500,.5,121,.34],[6900,.05,173,.16]].forEach(([f,px,am,l])=>{const g=G(c,.5),sw=G(c,l*.65),p=P(c,px);
+      const m=osc('sine',am,t0,HOR),md=G(c,.5);m.connect(md).connect(g.gain);
+      const s=osc('sine',.12+rnd()*.18,t0,HOR),sd=G(c,l*.35);s.connect(sd).connect(sw.gain);
+      noise(t0,HOR).connect(F(c,'bandpass',f,8)).connect(F(c,'bandpass',f,3)).connect(g).connect(sw).connect(p).connect(cicF)});
+    // night: crickets (short tonal chirps) and a distant owl, a small bird now and then
+    const nightF=G(c,0);out(nightF,0,.8,.45);
+    [[4250,-.6,.82,.05],[4700,.55,1.07,.04],[3900,.1,.66,.025]].forEach(([f,px,per,l])=>{const p=P(c,px),g=G(c,0),o=osc('sine',f,t0,HOR);o.connect(g).connect(p).connect(nightF);
+      let x=t0+rnd()*per;while(x<HOR){const n=3+(rnd()<.4?1:0);for(let i=0;i<n;i++){const tt=x+i*.032;g.gain.setValueAtTime(0,tt);g.gain.linearRampToValueAtTime(l,tt+.006);g.gain.linearRampToValueAtTime(0,tt+.022)}x+=per*(.9+rnd()*.25)}});
+    {const p=P(c,-.35),lp=F(c,'lowpass',900);lp.connect(p).connect(nightF);let x=t0+1.2;
+      while(x<HOR){[0,.42].forEach((d,i)=>{const tt=x+d,o=osc('sine',i?352:372,tt,tt+.5),g=G(c,0);o.frequency.setValueAtTime(i?352:372,tt);o.frequency.linearRampToValueAtTime(i?338:366,tt+.36);
+        g.gain.setValueAtTime(0,tt);g.gain.linearRampToValueAtTime(.06,tt+.06);g.gain.setValueAtTime(.06,tt+.24);g.gain.linearRampToValueAtTime(0,tt+.42);o.connect(g).connect(lp)});x+=3.6+rnd()*1.6}}
+    {const p=P(c,.6);p.connect(nightF);let x=t0+2.3;while(x<HOR){const n=2+Math.floor(rnd()*2);for(let i=0;i<n;i++){const tt=x+i*.13,o=osc('sine',2900,tt,tt+.12),g=G(c,0);
+        o.frequency.setValueAtTime(2900,tt);o.frequency.exponentialRampToValueAtTime(4300,tt+.07);g.gain.setValueAtTime(0,tt);g.gain.linearRampToValueAtTime(.018,tt+.01);g.gain.linearRampToValueAtTime(0,tt+.08);o.connect(g).connect(p)}x+=2.8+rnd()*2.5}}
+
+    /* ---- instruments ---- */
+    const mar=(t,f,v=1,px=0,w=.5)=>{const g=G(c,1);out(g,px,1,w);
+      [[1,1,f<500?1.6:1.1],[3.93,.26,.3],[9.2,.07,.08]].forEach(([m,a,d])=>{const o=osc('sine',f*m,t,t+d*1.2+.05),e=G(c,0);e.gain.setValueAtTime(0,t);e.gain.linearRampToValueAtTime(a*v*.2,t+.004);e.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(e).connect(g)});
+      const e=G(c,0);e.gain.setValueAtTime(.09*v,t);e.gain.exponentialRampToValueAtTime(.0001,t+.03);noise(t,t+.04).connect(F(c,'bandpass',f*2.4,1.4)).connect(e).connect(g)};
+    // organ: soft flue stops, two slightly detuned ranks, own fader per chord
+    const chord=(t,notes,att,lvl,px=0)=>{const f=G(c,0);out(f,px,1,.4);const lp=F(c,'lowpass',2300);lp.connect(f);
+      f.gain.setValueAtTime(0,t);f.gain.linearRampToValueAtTime(lvl,t+att);
+      notes.forEach(n=>[[1,1],[2,.4],[3,.14],[4,.1],[.5,.3]].forEach(([m,a])=>[-5,5].forEach(ct=>{const o=osc('sine',n*m,t,HOR);o.detune.value=ct;const g=G(c,a*.5/notes.length);o.connect(g).connect(lp)})));
+      const trem=osc('sine',4.8,t,HOR),td=G(c,lvl*.06);trem.connect(td).connect(f.gain);return f};
+    const fadeTo=(g,v,t,tau)=>{g.gain.cancelScheduledValues(t);g.gain.setTargetAtTime(v,t,tau)};
+    // riser: band of noise sweeping up into the hit; it holds at the top if the hit is late, the hit releases it
+    const riser=(peak,d,lvl=.075)=>{const g=G(c,0),bp=F(c,'bandpass',300,2.2),t=Math.max(t0,peak-d);noise(t,peak+3).connect(F(c,'highpass',200)).connect(bp).connect(g);out(g,0,.5,.6);
+      bp.frequency.setValueAtTime(300,t);bp.frequency.exponentialRampToValueAtTime(5200,peak);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(lvl*.15,t+d*.5);g.gain.linearRampToValueAtTime(lvl,peak);g.gain.setTargetAtTime(0,peak+1,.5);return g};
+    // meteor wind: rushing air that grows and sweeps across, a whistling edge, a rising rumble
+    const meteor=(peak,d)=>{const t=Math.max(t0,peak-d),end=peak+3,fd=G(c,M.meteor),pn=P(c,-.8);fd.connect(pn);pn.pan&&(pn.pan.setValueAtTime(-.8,t),pn.pan.linearRampToValueAtTime(.35,peak));
+      const ap=G(c,1),ad=G(c,1);pn.connect(ap).connect(dry);pn.connect(ad).connect(wet);ad.gain.value=.45;
+      const curve=(g,lv)=>{g.gain.setValueAtTime(0,t);g.gain.setTargetAtTime(lv*.25,t,d*.5);g.gain.linearRampToValueAtTime(lv,peak);g.gain.setTargetAtTime(lv*.85,peak,.5);g.gain.setTargetAtTime(0,peak+1.2,.5)};
+      {const g=G(c,0),bp=F(c,'bandpass',220,1.1);noise(t,end).connect(bp).connect(g).connect(fd);bp.frequency.setValueAtTime(220,t);bp.frequency.exponentialRampToValueAtTime(2600,peak);curve(g,.22)}
+      {const g=G(c,0),bp=F(c,'bandpass',700,14);noise(t,end).connect(bp).connect(g).connect(fd);bp.frequency.setValueAtTime(700,t);bp.frequency.exponentialRampToValueAtTime(2400,peak);curve(g,.5)}
+      {const g=G(c,0),lp=F(c,'lowpass',140);noise(t,end).connect(lp).connect(g).connect(fd);lp.frequency.setValueAtTime(140,t);lp.frequency.exponentialRampToValueAtTime(520,peak);curve(g,.5)}
+      return fd};
+    const whoosh=(t,d,lvl=.12,f0=4200,f1=260)=>{const g=G(c,0),bp=F(c,'bandpass',f0,1.6);noise(t,t+d+.1).connect(bp).connect(g);out(g,0,.7,.7);
+      bp.frequency.setValueAtTime(f0,t);bp.frequency.exponentialRampToValueAtTime(f1,t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(lvl,t+d*.55);g.gain.linearRampToValueAtTime(0,t+d)};
+    const boom=(t,lv=.32)=>{const o=osc('sine',64,t,t+2.6),g=G(c,0);o.frequency.setValueAtTime(64,t);o.frequency.exponentialRampToValueAtTime(37,t+1.4);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(lv,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+1.8);o.connect(g);out(g,0,1,.35)};
+    const G6s=0,C3=130.81,E3=164.81,G3=196,A2=110,C4=261.63,D4=293.66,E4=329.63,G4=392,A4=440,C5=523.25,D5=587.33,E5=659.25,G5=783.99,A5=880,C6=1046.5,D6=1174.7,E6=1318.5,G6=1568;
+
+    /* ---- cicadas open, the meteor wind builds into the star ---- */
+    cicF.gain.setValueAtTime(0,t0);cicF.gain.linearRampToValueAtTime(M.cic,t0+.35);cicF.gain.setTargetAtTime(.35*M.cic,t0+plan.ignite-.9,.35);
+    const pre={i:meteor(t0+plan.ignite,Math.max(.6,plan.ignite-.25)),s:riser(t0+plan.stamp,.5,.05*M.meteor)};
+    const st={i:0,s:0,c:0,closed:0};
+
+    const h={
+      ignite(t){if(st.i||st.c)return;st.i=1;t=now(t);fadeTo(pre.i,0,t+.04,.22);
+        mar(t,G6,1.1*M.lead,.15,.9);mar(t+.36,G6,.32*M.lead,-.3,.95);mar(t+.72,G6,.12*M.lead,.3,1);boom(t,.16*M.meteor);
+        cicF.gain.setTargetAtTime(0,t,.5);nightF.gain.setTargetAtTime(M.night,t+.3,.8)},
+      stamp(t){if(st.s||st.c)return;st.s=1;t=now(t);if(!st.i)h.ignite(t-.3);fadeTo(pre.s,0,t,.12);
+        boom(t,.26*M.stamp);mar(t,C4,.7*M.stamp,0,.6);mar(t+.004,G4,.45*M.stamp,0,.6);
+        h.o1=chord(t,[C3,G3,C4,E4],.06,.06*M.organ);h.o1.gain.setTargetAtTime(.045*M.organ,t+.25,.6)},
+      card(t){if(st.c)return;st.c=1;t=now(t);
+        if(!st.s){[pre.i,pre.s].forEach(g=>fadeTo(g,0,t,.12));cicF.gain.setTargetAtTime(0,t,.4);nightF.gain.setTargetAtTime(M.night,t,.6);whoosh(t-.05,.45,.06*M.meteor,5200,700);st.i=st.s=1}
+        else whoosh(t-.15,.5,.045*M.meteor,6000,900);
+        // points count up: soft marimba steps, quickening
+        [C5,D5,E5,G5,A5,C6,D6,E6].forEach((f,i)=>mar(t+.3+i*.105-i*i*.003,f,.38*M.count,-.4+i*.1,.5));
+        if(h.o1)fadeTo(h.o1,0,t+.3,.5);const o2=chord(t+.3,[C3,G3,D4,E4,G4],.9,.06*M.organ);
+        let tail=t+.3+1.2;
+        if(lv){const u=t+1.55;riser(u,.4,.08*M.count);[G5,A5,C6,D6,E6,G6].forEach((f,i)=>mar(u+i*.06,f,.75*M.count,-.5+i*.2,.6));mar(u+.36,C6*2,.5*M.count,0,.8);
+          const o3=chord(u,[C5,E5,G5],.25,.035*M.organ,.1);o3.gain.setTargetAtTime(0,u+2.4,1.1);tail=u+1}
+        // outro: everything breathes out slowly
+        o2.gain.setTargetAtTime(0,tail+1.8,1.3);nightF.gain.setTargetAtTime(0,tail+2.4,1.5)},
+      close(t){if(st.closed)return;st.closed=1;t=now(t);master.gain.cancelScheduledValues(t);master.gain.setTargetAtTime(0,t,.35);src.forEach(s=>{try{s.stop(t+2.2)}catch(e){}})}
+    };
+    return h}
+  return{start}
+})();
+function cineStart(plan,lv){if(!SFX.on)return null;const c=sfxCtx();if(!c||c.state!=='running')return null;try{return CINE.start(c,{plan,lv})}catch(e){return null}}
 /* ---------- 登頂成就：地圖上飛過去 → 點亮 → 蓋章 → 結算卡 ---------- */
 function snapG(){return{xp:G.xp,lv:G.lv,n:G.n,xn:G.xn,sn:G.sn}}
 function celebrate(ps,prev){
@@ -1808,19 +1912,21 @@ function celebrate(ps,prev){
   if(S.sel!=null)closeSheet();if(S.tab!=='map')setTab('map');if(S.set!==p.set)setSet(p.set,true);
   const rm=reduceMotion(),box=document.createElement('div');box.className='cele';box.setAttribute('role','dialog');box.setAttribute('aria-label','登頂 '+p.name);
   document.body.appendChild(box);let done=false,timers=[];const at=(ms,f)=>timers.push(setTimeout(f,rm?0:ms));
-  const card=()=>{if(done)return;done=true;timers.forEach(clearTimeout);box.classList.add('card');box.innerHTML=celeCard(p,r,prev,ps);
+  const T=bai?{ignite:1.6,stamp:2.7,card:4.1}:{ignite:1.1,stamp:2,card:3.1},snd=rm?null:cineStart(T,prev&&G.lv>prev.lv),hit=k=>{try{snd&&snd[k]()}catch(e){}},bye=()=>{try{snd&&snd.close()}catch(e){}};
+  const card=()=>{if(done)return;done=true;timers.forEach(clearTimeout);box.classList.add('card');box.innerHTML=celeCard(p,r,prev,ps);hit('card');
     requestAnimationFrame(()=>box.classList.add('in'));celeCount(box,prev);
-    box.querySelector('#ceGo').onclick=()=>{box.remove();openPeak(p.rank,true)};box.querySelector('#ceMap').onclick=()=>box.remove()};
+    const sb=box.querySelector('#ceSnd'),ss=()=>{sb.setAttribute('aria-pressed',SFX.on);sb.setAttribute('aria-label',SFX.on?'音效開著，點一下關掉':'音效關著，點一下打開')};ss();sb.onclick=e=>{e.stopPropagation();SFX.on=!SFX.on;if(!SFX.on)bye();ss()};
+    box.querySelector('#ceGo').onclick=()=>{bye();box.remove();openPeak(p.rank,true)};box.querySelector('#ceMap').onclick=()=>{bye();box.remove()}};
   box.onclick=e=>{if(!done)card()};
   // ① fly there
   requestAnimationFrame(()=>{try{resize();focusPeak(p)}catch(e){}});
   // ② ignite
-  at(bai?800:300,()=>{const wr=wrap.getBoundingClientRect(),x=wr.left+V.tx+p.x*V.k,y=wr.top+V.ty+p.y*V.k;
-    const b=document.createElement('div');b.className='ce-burst';b.style.left=x+'px';b.style.top=y+'px';b.innerHTML='<i></i><i></i><svg viewBox="-24 -24 48 48"><path d="M0 -22 L4 -4 L22 0 L4 4 L0 22 L-4 4 L-22 0 L-4 -4Z" fill="#F4C152"/></svg>';box.appendChild(b)});
+  at(T.ignite*1000,()=>{const wr=wrap.getBoundingClientRect(),x=wr.left+V.tx+p.x*V.k,y=wr.top+V.ty+p.y*V.k;
+    const b=document.createElement('div');b.className='ce-burst';b.style.left=x+'px';b.style.top=y+'px';hit('ignite');b.innerHTML='<i></i><i></i><svg viewBox="-24 -24 48 48"><path d="M0 -22 L4 -4 L22 0 L4 4 L0 22 L-4 4 L-22 0 L-4 -4Z" fill="#F4C152"/></svg>';box.appendChild(b)});
   // ③ stamp
-  at(bai?1900:1200,()=>{const s=document.createElement('div');s.className='ce-stamp';s.innerHTML=dStamp(p,r);box.appendChild(s)});
+  at(T.stamp*1000,()=>{const s=document.createElement('div');s.className='ce-stamp';s.innerHTML=dStamp(p,r);box.appendChild(s);setTimeout(()=>hit('stamp'),230)});
   // ④ result card
-  at(bai?3300:2500,card);
+  at(T.card*1000,card);
 }
 function celeCount(box,prev){const el=box.querySelector('[data-cnt]');if(el){const to=+el.dataset.cnt,t0=performance.now();const st=n=>{const k=Math.min(1,(n-t0)/900),e=1-Math.pow(1-k,3);el.textContent='+'+fmt(Math.round(to*e));if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
   const bar=box.querySelector('.ce-bar i');if(bar)requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.style.width=bar.dataset.to}))}
@@ -1833,7 +1939,7 @@ function celeCard(p,r,prev,ps){
   if(bai)BADGES.forEach(([nm,rs])=>{if(rs.includes(p.rank)){const d=rs.filter(x=>RECS[x]).length;lines.push(['成就',nm+' '+d+' / '+rs.length,d===rs.length?'全部集滿！':'再 '+(rs.length-d)+' 座'])}});
   if(bai&&NXT[0])lines.push(['下一關',esc(NXT[0].name),'難度 '+NXT[0].grade+' / 5']);
   if(ps.length>1)lines.push(['同一趟',ps.filter(x=>x!==p).map(x=>esc(x.name)).join('、'),'也一起點亮了']);
-  return '<div class="ce-card yytex"><p class="ce-k">登頂成功</p><h2 class="ce-n">'+esc(p.name)+'</h2><p class="ce-d">'+esc(r.date||'')+'・海拔 '+fmt(p.h)+' 公尺</p>'+
+  return '<div class="ce-card yytex"><button type="button" class="ce-snd" id="ceSnd"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="on" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button><p class="ce-k">登頂成功</p><h2 class="ce-n">'+esc(p.name)+'</h2><p class="ce-d">'+esc(r.date||'')+'・海拔 '+fmt(p.h)+' 公尺</p>'+
     '<div class="ce-xp"><b data-cnt="'+gain+'">+0</b><span>點</span></div>'+
     '<div class="ce-lv"><span>'+(lvUp?'升級！':'')+'第 '+G.lv+' 級・'+titleOf(G.lv)+'</span><span>'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升級')+'</span></div><div class="ce-bar"><i style="width:'+(from*100).toFixed(1)+'%" data-to="'+(to*100).toFixed(1)+'%"></i></div>'+
     (lines.length?'<div class="ce-lines">'+lines.map(l=>'<p><small>'+l[0]+'</small><b>'+l[1]+'</b><em>'+l[2]+'</em></p>').join('')+'</div>':'')+
