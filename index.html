@@ -1655,7 +1655,8 @@ function dClouds(seed,n,h,day,top){let r=seed*9301+49297;const rnd=()=>(r=(r*930
   return g+'</svg>'}
 function dMist(seed,day){return '<div class="dmist'+(day?' day':'')+'" aria-hidden="true">'+dClouds(seed,day?5:4,day?70:120,day,day?0:14)+'</div>'}
 function edName(n){const m=String(n).match(/^(.+?)(大山|主山|主峰|[東西南北]峰|山|峰|尖)$/);let a=m?m[1]:n,b=m?m[2]:'';
-  if(a.length>3&&!b){b=a.slice(3);a=a.slice(0,3)}
+  if(String(n).length<=3||a.length<2){a=n;b=''}
+  else if(a.length>3&&!b){b=a.slice(3);a=a.slice(0,3)}
   return '<h2 class="dname" aria-label="'+esc(n)+'"><span class="nb">'+esc(a)+'</span>'+(b?'<span class="ns">'+esc(b)+'</span>':'')+'</h2>'}
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
