@@ -478,7 +478,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gi b{font:600 18px/1.3 var(--display);letter-spacing:.02em;color:var(--t1)}.gi.none b{color:var(--t2)}
 .gi small{grid-column:2;font:400 14px/1.5 var(--body);color:var(--t2)}
 .gi .w{grid-row:1/3;grid-column:3;align-self:center;text-align:right;font:500 11px/1.6 var(--body);letter-spacing:.32em;margin-right:-.32em;color:var(--t2);white-space:nowrap}
-.gi .w em{display:block;font:600 14px var(--display);font-style:normal;letter-spacing:0;margin-right:.32em;color:var(--t1)}.gi .w em s{text-decoration:none;font:400 14px var(--body);color:var(--t2)}.gi .w em s.p{margin-right:.3em}.gi .w em s.u{margin-left:.3em}.gi.none .w em{color:var(--t2)}
+.gi .w em{display:block;font:600 14px var(--display);font-style:normal;letter-spacing:0;margin-right:.32em;color:var(--t1)}.gi .w em s{text-decoration:none;font:400 14px var(--body);color:var(--t2)}.gi .w em s.p{margin-right:.3em}.gi .w em s.u{margin-left:.3em}.gi.none .w em{color:var(--t2);font-weight:400}
+@media (min-width:600px) and (max-width:899px){.ghd,.gwt2{left:max(24px,calc(50% - 320px))}}
+.ge-narrow{max-width:200px}
 .gi b,.gi small{overflow-wrap:anywhere}.gi small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.gi b{line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .gi{width:100%;background:none;border:0;border-bottom:1px solid rgba(238,241,236,.07);color:inherit;text-align:left;font:inherit;cursor:pointer}
 .gi:hover b{color:#fff}.gi:focus-visible,.gadd:focus-visible,.gload2:focus-visible{outline:1px solid #F4C152;outline-offset:2px}
@@ -489,8 +491,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ghd{pointer-events:none}.ghd .gload2{pointer-events:auto}
 .gwt2{position:absolute;left:24px;bottom:34px;z-index:2;display:flex;flex-direction:column;gap:2px;pointer-events:none;transition:opacity .2s;text-shadow:0 1px 10px rgba(11,22,38,.9)}
 .gwt2 p{margin:0;display:flex;align-items:baseline;gap:6px;color:var(--t1)}.gwt2 small{width:3em;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
-.gwt2 b{font:600 28px/1.15 var(--display);font-variant-numeric:tabular-nums;min-width:2.4ch;text-align:right}.gwt2 u{text-decoration:none;font:400 14px var(--body);color:var(--t2)}.gwt2 .gw0{font:400 14px var(--body);color:var(--t2)}
-.gwt2 .gload2{pointer-events:auto;margin-top:8px}.gwt2 .gload2 b{font:600 14px var(--display);color:#F4C152;min-width:0;margin-right:.5em}.gwt2 .gload2 b.num{color:var(--t1);margin:0}
+.gwt2 b{font:600 28px/1.15 var(--display);font-variant-numeric:tabular-nums;min-width:3.4ch;text-align:right}.gwt2 u{text-decoration:none;font:400 14px var(--body);color:var(--t2)}.gwt2 .gw0{font:400 14px var(--body);color:var(--t2)}
+.gwt2 .gload2{pointer-events:auto;margin-top:8px;flex-wrap:wrap;max-width:150px;row-gap:2px;align-content:center}.gwt2 .gload2>span:last-child{flex-basis:100%}.gwt2 .gload2 b{font:600 14px var(--display);color:#F4C152;min-width:0;margin-right:.5em}.gwt2 .gload2 b.num{color:var(--t1);margin:0}
 .gstage:has(.gtip.on) .gwt2{opacity:0}.gstage:has(.gtip.on) .gwt2 .gload2{pointer-events:none}
 .g3off .gwt2{position:static;padding:8px 24px 0}
 .gmeter{position:relative;flex:none;width:96px;height:2px;background:rgba(238,241,236,.4);border-radius:1px}
@@ -502,7 +504,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ge-x,.ge-del,.ge-link{min-height:44px;padding:0 8px;background:none;border:0;font:500 14px/1 var(--body);color:var(--t1);cursor:pointer}
 .ge-del{color:#E0806A}.ge-link{color:#F4C152;padding:0}.ge-link.mute{color:var(--t2)}
 .ge-k{font:500 11px/1 var(--body);letter-spacing:.32em;color:#F4C152;margin:4px 0 -10px}
-.ge-h{margin:0;font:600 28px/1.25 var(--display);color:var(--t1)}.ge-say{margin:-12px 0 0;font:400 14px/1.6 var(--body);color:var(--t2);text-wrap:pretty}.nw{white-space:nowrap}
+.ge-h{margin:0 0 -12px;font:600 28px/1.25 var(--display);color:var(--t1)}.ge-say{margin:0;font:400 14px/1.6 var(--body);color:var(--t2);text-wrap:pretty}.nw{white-space:nowrap}
 .ge-f{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;border:0;min-width:0;position:relative}
 .ge-f>span,.ge-f legend{font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);padding:0;margin:0 0 4px}
 .ge-f input,.ge-f select,.ge-f textarea{width:100%;box-sizing:border-box;min-height:44px;padding:8px 0;background:transparent;border:0;border-bottom:1px solid rgba(238,241,236,.42);border-radius:0;color:var(--t1);font:400 18px/1.4 var(--body);outline:none;color-scheme:dark;-webkit-appearance:none;appearance:none}
@@ -516,7 +518,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ge-name input{font:600 28px/1.25 var(--display);letter-spacing:.02em;min-height:56px}
 .ge-f.bad input{border-bottom-color:#E0806A}
 .ge-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
-.ge-g{position:relative}.ge-g input{padding-right:44px;text-align:right;font:700 18px/1.4 var(--display);font-variant-numeric:tabular-nums}.ge-g em{position:absolute;right:0;top:28px;font:400 14px var(--body);font-style:normal;color:var(--t2)}
+.ge-g{position:relative}.ge-g input{padding-right:44px;text-align:right;font:700 18px/1.4 var(--display);font-variant-numeric:tabular-nums}.ge-g em{position:absolute;right:0;bottom:13px;font:400 14px var(--body);font-style:normal;color:var(--t2)}
 .ge-r{display:flex;flex-wrap:wrap;gap:4px 22px}
 .ge-r label{position:relative;cursor:pointer}.ge-r input{position:absolute;opacity:0;width:1px;height:1px}
 .ge-r span{display:inline-flex;align-items:center;gap:8px;min-height:44px;font:400 18px/1 var(--body);color:var(--t2)}
@@ -2696,7 +2698,7 @@ function gearEdit(id,zone){
     '<div class="ge-bar"><button type="submit" class="ge-save">儲存</button></div></form>',ed=>{
       const f=ed.querySelector('form'),v=k=>f.elements[k].value.trim();
       if(!v('name'))return gErr(f.elements.name,'請寫上裝備名稱');
-      const gv=v('g')===''?null:Math.round(+v('g'));if(gv!==null&&!(gv>0&&gv<=99999))return gErr(f.elements.g,'重量請填 1 到 99,999 公克');
+      const gv=v('g')===''?null:Math.round(+v('g'));if(gv!==null&&!(gv>0&&gv<=99999))return gErr(f.elements.g,'請填 1 到 99,999');
       Object.assign(it,{name:v('name'),brand:v('brand'),g:gv,status:f.elements.status.value,worn:f.elements.worn.value==='1',zone:f.elements.zone.value,date:v('date'),note:v('note')});
       if(dropPhoto&&it.photo){window.YY.IDB.del(it.photo).catch(()=>{});delete GPH[it.photo];it.photo=''}
       if(newPhoto){const key='gear:'+it.id;it.photo=key;GPH[key]=URL.createObjectURL(newPhoto);window.YY.IDB.put(key,newPhoto).catch(()=>window.YY.say('照片沒存到，請再試一次',true))}
@@ -2712,7 +2714,7 @@ function gearEdit(id,zone){
 function bodyEdit(){
   gOpen('<form class="ge" novalidate><div class="ge-top"><button type="button" class="ge-x" aria-label="不儲存，回到裝備">‹ 返回</button></div><small class="ge-k">負重等級</small>'+
     '<h3 class="ge-h">你的體重</h3><p class="ge-say">背的裝備除以體重：10% 以下是輕裝，20% 以下是<span class="nw">標準，</span>超過是重裝。體重只存在這支手機上。</p>'+
-    '<label class="ge-f ge-g"><span>體重</span><input name="kg" type="number" inputmode="decimal" min="25" max="200" step="0.1" value="'+(GS.body||'')+'" placeholder="—" autofocus><em>公斤</em></label>'+
+    '<label class="ge-f ge-g ge-narrow"><span>體重</span><input name="kg" type="number" inputmode="decimal" min="25" max="200" step="0.1" value="'+(GS.body||'')+'" placeholder="—" autofocus><em>公斤</em></label>'+
     '<div class="ge-bar"><button type="submit" class="ge-save">儲存</button></div></form>',ed=>{const v=+ed.querySelector('[name=kg]').value;
       if(!(v>=25&&v<=200))return gErr(ed.querySelector('[name=kg]'),'體重請填 25 到 200 公斤');
       GS.body=Math.round(v*10)/10;try{localStorage.setItem(BKEY,String(GS.body))}catch(e){}gearRender()},'你的體重',()=>document.getElementById('gBody'));
