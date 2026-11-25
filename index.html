@@ -924,6 +924,18 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 #listView .seg button{font-weight:400!important}#listView .seg button[aria-pressed="true"]{font-weight:500!important}
 
 .twk{position:absolute;display:none;pointer-events:none;overflow:hidden;z-index:30;contain:strict}
+.sky{position:absolute;background:#0B1626;contain:strict}.sky svg{position:absolute;inset:0;z-index:1}.sky .s2shoot{z-index:2}
+.lst{animation:lstTw 5s ease-in-out infinite}@keyframes lstTw{0%,100%{opacity:1}50%{opacity:.1}}
+#charView{background:transparent!important;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28px,#000 calc(100% - 64px),transparent);mask-image:linear-gradient(180deg,transparent 0,#000 28px,#000 calc(100% - 64px),transparent)}
+#charView .sp2{background:none}#charView .sp2::before,#charView .sp2::after,#charView .s2tw,#charView .dp>.s2shoot{display:none}
+.app[data-tab="char"] .ridge{display:none}
+.app[data-tab="char"] .hdsky{background:transparent!important}
+.app[data-tab="list"] .hdsky{background:linear-gradient(180deg,rgba(11,22,38,0) 0%,rgba(11,22,38,0) 30%,#0B1626 100%)!important}
+#listView{background:transparent!important;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 64px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 64px),transparent)}
+#listView .lhead{background:none!important;border-bottom:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#listView .lhead::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-44px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#0B1626 0%,#0B1626 64%,rgba(11,22,38,0) 100%);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.app[data-tab="list"] .ridge{display:none}
+@media (prefers-reduced-motion:reduce){.lst{animation:none}}
 .twk i{position:absolute;border-radius:50%;animation:twk var(--d,5s) ease-in-out var(--o,0s) infinite}
 @keyframes twk{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.1;transform:scale(.55)}}
 @media (prefers-reduced-motion:reduce){.twk i{animation:none}}
@@ -1018,7 +1030,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
         <button type="button" data-g="route" aria-pressed="false">依路線</button>
       </div>
     </div>
-    <div class="pin yytex" id="listBody"></div>
+    <div class="pin" id="listBody"></div>
   </section>
 
   <section class="gearv" id="gearView" aria-label="我的裝備：可旋轉的角色">
@@ -2342,9 +2354,14 @@ function renderChar(){
 /* twinkling stars over the 山頭 and 數據 backgrounds: a few dozen dots that only change opacity/scale */
 {const L=[],mk=(id,seed)=>{const v=$(id);if(!v)return;let r=seed;const rnd=()=>(r=(r*9301+49297)%233280)/233280;const w=document.createElement('div');w.className='twk';w.setAttribute('aria-hidden','true');
   let h='';for(let i=0;i<34;i++){const sz=(rnd()<.18?2.4:rnd()<.5?1.6:1.1).toFixed(1),warm=rnd()<.2;h+='<i style="left:'+(rnd()*100).toFixed(1)+'%;top:'+(rnd()*100).toFixed(1)+'%;width:'+sz+'px;height:'+sz+'px;--d:'+(3+rnd()*5).toFixed(1)+'s;--o:-'+(rnd()*6).toFixed(1)+'s;'+(a=>{const c=warm?'244,227,180':'230,237,246';return 'background:rgba('+c+','+a+');box-shadow:0 0 5px rgba('+c+','+(a*.6).toFixed(2)+')'})((.35+rnd()*.6).toFixed(2))+'"></i>'}
-  w.innerHTML=h;v.after(w);L.push([v,w])};mk('listView',3);mk('charView',7);
+  w.innerHTML=h;v.after(w);L.push([v,w])};
+  // 山頭／數據: the sky is its own fixed full-screen layer behind the content — content scrolls over it, the stars stay put
+  const sky=(vid,id,seed,extra)=>{const v=$(vid),w=document.createElement('div');w.id=id;w.className='twk sky yytex';w.setAttribute('aria-hidden','true');let r=seed;const rnd=()=>(r=(r*9301+49297)%233280)/233280;let h='<svg width="100%" height="100%" aria-hidden="true">';
+    for(let i=0;i<46;i++){const sz=rnd()<.18?1.2:rnd()<.5?.85:.6,warm=rnd()<.2;h+='<circle class="lst" cx="'+(rnd()*100).toFixed(1)+'%" cy="'+(rnd()*100).toFixed(1)+'%" r="'+sz+'" fill="'+(warm?'#F4E3B4':'#E6EDF6')+'" fill-opacity="'+(.35+rnd()*.6).toFixed(2)+'" style="animation-duration:'+(3+rnd()*5).toFixed(1)+'s;animation-delay:-'+(rnd()*6).toFixed(1)+'s"/>'}
+    w.innerHTML=h+'</svg>'+(extra||'');v.before(w);L.push([v,w,0])};
+  sky('listView','lsky',5);sky('charView','csky',9,'<span class="s2shoot"></span>');
   // overlay sits outside the scroller (iOS Safari skips repainting animations inside a sticky child of a scroll view)
-  const sync=()=>{for(const[v,w]of L){const on=v.offsetParent!==null&&v.clientHeight>0;w.style.display=on?'block':'none';if(on){const z=parseInt(getComputedStyle(v).zIndex)||0;Object.assign(w.style,{left:v.offsetLeft+'px',top:v.offsetTop+'px',width:v.clientWidth+'px',height:v.clientHeight+'px',zIndex:z+1})}}};
+  const sync=()=>{for(const[v,w]of L){const on=v.offsetParent!==null&&v.clientHeight>0;w.style.display=on?'block':'none';if(on){const z=parseInt(getComputedStyle(v).zIndex)||0;const full=w.classList.contains('sky');Object.assign(w.style,{left:v.offsetLeft+'px',top:(full?0:v.offsetTop)+'px',width:v.offsetWidth+'px',height:(full?v.offsetParent.clientHeight:v.clientHeight)+'px',zIndex:z+(full?0:1)})}}};
   new MutationObserver(()=>requestAnimationFrame(sync)).observe($('app'),{attributes:true,attributeFilter:['data-tab']});addEventListener('resize',()=>requestAnimationFrame(sync));sync()}
 $('charBody').addEventListener('click',e=>{
   const u=e.target.closest('[data-uc]');if(u){S.uc=u.dataset.uc;renderChar();try{$('charBody').querySelector('[data-uc="'+S.uc+'"]').focus({preventScroll:true})}catch(_){}return}
