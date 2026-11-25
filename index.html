@@ -571,7 +571,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .hdsky,.settitle,.ridge,.qdot{display:none}
 .tabs .ic{display:grid;place-items:center}
 @media (max-width:899px){
-  :root{--top:env(safe-area-inset-top,0px);--bar-h:84px;--tabs-h:calc(76px + env(safe-area-inset-bottom,0px))}
+  :root{--top:env(safe-area-inset-top,0px);--bar-h:84px;--tabs-h:calc(86px + env(safe-area-inset-bottom,0px))}
   .player{top:calc(var(--top) + 8px);left:max(14px,env(safe-area-inset-left,0px));right:auto;width:72px;height:72px;padding:0;border:0;border-radius:50%;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;z-index:8}
   .moonav{width:72px;height:72px}
   .lvb{right:-4px;bottom:0;min-width:40px;height:24px;padding:0 6px;border-radius:11px;font-size:14px}
@@ -598,12 +598,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
     -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
   .ridge svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%;max-height:300px;display:block}
   .app:not([data-tab="map"]) .ridge{height:calc(var(--tabs-h) + 24px)}
-  .tabs{height:var(--tabs-h);padding:10px var(--gr) env(safe-area-inset-bottom,0px) var(--gl);background:none;border-top:0;-webkit-backdrop-filter:none;backdrop-filter:none}
-  .tabs button{align-content:start;gap:5px;color:#8FA3BD;font:600 15px/1 var(--display);letter-spacing:.08em}
-  .tabs .ic{width:40px;height:40px;border-radius:50%;border:1px solid transparent}
+  .tabs{left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);height:66px;padding:5px;gap:2px;border-radius:33px;background:rgba(16,28,46,.78);border:1px solid rgba(200,211,226,.16);box-shadow:0 10px 30px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2)}
+  .tabs button{align-content:center;gap:4px;border-radius:28px;color:#A3B2C6;font:600 13px/1 var(--display);letter-spacing:.06em;transition:background .2s,color .2s}
+  .tabs .ic{width:26px;height:26px}.tabs .ic svg{width:24px;height:24px}
   .tabs button[aria-selected="true"]{color:var(--ink)}
   .tabs button[aria-selected="true"]::before{display:none}
-  .tabs button[aria-selected="true"] .ic{border-color:rgba(238,241,236,.55);background:rgba(11,22,38,.55);box-shadow:0 0 14px rgba(244,227,180,.18)}
+  .tabs button[aria-selected="true"]{background:rgba(238,241,236,.13);box-shadow:inset 0 0 0 1px rgba(238,241,236,.10)}
   .quest{left:0;right:0;max-width:none;bottom:calc(var(--tabs-h) + 2px);z-index:7;min-height:52px;padding:0 22px;gap:10px;border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
   .quest .qi,.quest .qm,.quest small .tag{display:none}
   .qdot{display:block;flex:none;width:9px;height:9px;border-radius:50%;background:var(--far)}
@@ -635,6 +635,14 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 @keyframes ytTw{0%,100%{opacity:var(--a,.6)}50%{opacity:.08}}
 @keyframes ytDrift{from{transform:translate(-14px,0)}to{transform:translate(14px,4px)}}
 @media (prefers-reduced-motion:reduce){.hdsky .st,.hdsky svg g{animation:none}}
+
+@media (max-width:899px){
+  .player,.settitle,.radio,.hdsky,.ctrl,.quest,.tabs,.ridge{transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s}
+  .app.panning .player,.app.panning .settitle,.app.panning .radio,.app.panning .hdsky,.app.panning .ctrl{transform:translateY(calc(-100% - var(--top) - 160px));opacity:0;pointer-events:none}
+  .app.panning .settitle{transform:translate(-50%,calc(-100% - var(--top) - 160px))}
+  .app.panning .quest,.app.panning .tabs,.app.panning .ridge{transform:translateY(calc(100% + 40px));opacity:0;pointer-events:none}
+}
+@media (prefers-reduced-motion:reduce){.app.panning .player,.app.panning .settitle,.app.panning .radio,.app.panning .hdsky,.app.panning .ctrl,.app.panning .quest,.app.panning .tabs,.app.panning .ridge{transform:none}}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1651,6 +1659,13 @@ function setTab(t,fromHash){
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
 $('radio').onclick=()=>say('這是無線電廣播的範例。之後登入帳號，就能每週免費發一則，點廣播會打開對方的個人頁。');
 {const w=$('radio').querySelector('.rdw');const f=()=>{try{$('radioT').style.setProperty('--rdw',w.clientWidth+'px')}catch(e){}};f();window.addEventListener('resize',f)}
+{const app=$('app'),mw=$('mapwrap');let t=null,sx=0,sy=0,down=false;
+  const on=()=>{if(S.tab!=='map'||innerWidth>=900)return;app.classList.add('panning');clearTimeout(t)},
+        off=d=>{clearTimeout(t);t=setTimeout(()=>app.classList.remove('panning'),d)};
+  mw.addEventListener('pointerdown',e=>{down=true;sx=e.clientX;sy=e.clientY},{passive:true});
+  mw.addEventListener('pointermove',e=>{if(down&&Math.hypot(e.clientX-sx,e.clientY-sy)>8)on()},{passive:true});
+  addEventListener('pointerup',()=>{down=false;off(650)},{passive:true});addEventListener('pointercancel',()=>{down=false;off(650)},{passive:true});
+  mw.addEventListener('wheel',()=>{on();off(800)},{passive:true});}
 $('setT').onclick=()=>setSet(SETS[(SETS.indexOf(S.set)+1)%3]);
 $('player').onclick=()=>{if(S.sel!=null&&!isDesk())closeSheet();setTab(S.tab==='char'?(isDesk()?'list':'map'):'char')};
 function readHash(){const h=(location.hash||'').slice(1);const t=Object.keys(HASH).find(k=>HASH[k]===h);if(t&&t!==S.tab)setTab(t,true)}
