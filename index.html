@@ -817,6 +817,14 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dhero.day .dmeta .dk{color:#F2F6FA}.dhero.day .dname,.dhero.day .dnum{text-shadow:0 2px 14px rgba(20,45,80,.35)}
 .dhero::after{content:"";position:absolute;inset:0;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .85  0 0 0 0 .9  0 0 0 0 1  0 0 0 1.1 -.35'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/220px 220px;opacity:.12;mix-blend-mode:screen}
 .dhero.day::after{opacity:.16;mix-blend-mode:soft-light}
+
+.dtitle.ed .dname{writing-mode:horizontal-tb;display:flex;flex-direction:row-reverse;align-items:flex-end;gap:6px;font:inherit;letter-spacing:0}
+.dtitle.ed .dname span{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--display);font-weight:700;line-height:1;text-shadow:0 2px 18px rgba(11,22,38,.45)}
+.dtitle.ed .nb{font-size:58px;letter-spacing:.06em}
+.dtitle.ed .ns{font-size:26px;letter-spacing:.2em;color:#DCE4EE}
+.dhero.day .dtitle.ed span{text-shadow:0 2px 14px rgba(20,45,80,.35)}
+.dseam{position:relative;z-index:2;margin:-20px 24px 6px;display:flex}
+.dseam .dchip{background:rgba(11,22,38,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -1646,6 +1654,9 @@ function dClouds(seed,n,h,day,top){let r=seed*9301+49297;const rnd=()=>(r=(r*930
     g+='<g class="dcl" style="--d:'+(26+rnd()*20).toFixed(0)+'s;--o:-'+(rnd()*20).toFixed(1)+'s" opacity="'+(al*(.65+rnd()*.35)).toFixed(2)+'" fill="url(#'+id+'g)" filter="url(#'+id+'f)">'+cs+'</g>'}
   return g+'</svg>'}
 function dMist(seed,day){return '<div class="dmist'+(day?' day':'')+'" aria-hidden="true">'+dClouds(seed,day?5:4,day?70:120,day,day?0:14)+'</div>'}
+function edName(n){const m=String(n).match(/^(.+?)(大山|主山|主峰|[東西南北]峰|山|峰|尖)$/);let a=m?m[1]:n,b=m?m[2]:'';
+  if(a.length>3&&!b){b=a.slice(3);a=a.slice(0,3)}
+  return '<h2 class="dname" aria-label="'+esc(n)+'"><span class="nb">'+esc(a)+'</span>'+(b?'<span class="ns">'+esc(b)+'</span>':'')+'</h2>'}
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
   const xp=bai?XP_BY_GRADE[p.grade]:sh?XP_SHAN:XP_XIAO,today=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
@@ -1654,8 +1665,8 @@ function renderDPage(p){
   let h='<div class="dp yytex">';
   // hero: name, status, and the climb up to this summit
   const d=r?(r.date||'').split('-'):null,vf=r?(r.verified==='gps'||parseTrack(r.track)?'手錶軌跡':r.verified==='photo'||r.photoId?'照片佐證':'自述'):'';
-  h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle ed"><h2 class="dname">'+esc(p.name)+'</h2><div class="dmeta"><p class="dk">'+(bai?'百岳・第 '+p.rank+' 高':sh?'小山':'小百岳・第 '+p.no+' 號')+'</p><p class="dnum">'+fmt(p.h)+'<small>m</small></p><p class="dk">海拔</p>'+
-    (r?'<p class="dchip done">✓ '+(d&&d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂</p>':'<p class="dchip '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div></div></div>';
+  h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle ed">'+edName(p.name)+'<div class="dmeta"><p class="dk">'+(bai?'百岳・第 '+p.rank+' 高':sh?'小山':'小百岳・第 '+p.no+' 號')+'</p><p class="dnum">'+fmt(p.h)+'<small>m</small></p><p class="dk">海拔</p>'+
+    '</div></div></div>'+'<div class="dseam">'+(r?'<p class="dchip done">✓ '+(d&&d.length===3?(+d[0])+'/'+(+d[1])+'/'+(+d[2])+' ':'')+'登頂</p>':'<p class="dchip '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div>';
   // three key numbers
   const kpi=[];
   if(bai)kpi.push(['難度',p.grade+'<u>/ 5</u>']);else kpi.push([sh?'小山':'小百岳',sh?esc(p.route):'第 '+p.no+' 號']);
