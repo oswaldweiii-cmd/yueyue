@@ -23,7 +23,7 @@
 :root{
   --abyss:#080f1b; --sea:#0d1828; --panel:#0f1a2b; --panel-2:#162338; --line:#27384f; --line-2:#3a4f6b;
   --ink:#eef1ec; --mute:#93a3b8; --dim:#62728a;
-  --gold:#f4c152; --dawn:#ff9d5c; --ok:#7fd1a6; --stretch:#f0a35e; --far:#7c8aa0;
+  --gold:#f4c152; --dawn:#ff9d5c; --ok:#5E9E78; --stretch:#f0a35e; --far:#7c8aa0;
   --display:"Noto Serif TC","Songti TC","PMingLiU",serif;
   --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
@@ -54,7 +54,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .mk:not(.cl) svg{animation:twinkle var(--tw-t,3.4s) ease-in-out var(--tw-d,0s) infinite;filter:drop-shadow(0 0 3px currentColor)}
 .mk.cl span{animation:twinkleC var(--tw-t,3.4s) ease-in-out var(--tw-d,0s) infinite}
 @keyframes twinkle{0%,100%{opacity:.55;transform:scale(.9)}45%{opacity:1;transform:scale(1.08)}55%{opacity:.95;transform:scale(1)}}
-@keyframes twinkleC{0%,100%{box-shadow:0 0 0 0 rgba(127,209,166,0)}50%{box-shadow:0 0 12px 1px rgba(127,209,166,.28)}}
+@keyframes twinkleC{0%,100%{box-shadow:0 0 0 0 rgba(94,158,120,0)}50%{box-shadow:0 0 12px 1px rgba(94,158,120,.28)}}
 /* switching collections: the stars light up one by one */
 #markers.sparkle .mk{animation:starFade .5s ease-out var(--in-d,0s) both}
 #markers.sparkle .mk:not(.cl)>svg{animation:twinkle var(--tw-t,3.4s) ease-in-out var(--tw-d,0s) infinite,starIn .9s cubic-bezier(.2,.9,.3,1.3) var(--in-d,0s) both}
@@ -93,7 +93,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ctrl button:active{background:var(--panel-2)}
 .quest{position:absolute;left:var(--gl);bottom:calc(var(--tabs-h) + 12px);z-index:5;display:flex;align-items:center;gap:10px;max-width:calc(100% - var(--gl) - var(--gr) - 56px);
   padding:9px 14px 9px 10px;border-radius:14px;background:rgba(15,26,43,.9);border:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.quest .qi{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(127,209,166,.12);color:var(--ok)}
+.quest .qi{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(94,158,120,.12);color:var(--ok)}
 .quest .qt{min-width:0;display:grid;gap:3px}
 .quest small{font:700 10px/1 var(--body);letter-spacing:.16em;color:var(--mute)}
 .quest b{font:700 15px/1.15 var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -157,7 +157,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .rs em{font:400 11.5px/1 var(--body);font-style:normal;overflow:hidden;text-overflow:ellipsis}
 .tag{flex:none;font:700 11px/1 var(--body);padding:6px 9px;border-radius:99px;white-space:nowrap}
 .tag.done{color:var(--gold);background:rgba(244,193,82,.14)}
-.tag.ok{color:var(--ok);background:rgba(127,209,166,.13)}
+.tag.ok{color:var(--ok);background:rgba(94,158,120,.13)}
 .tag.stretch{color:var(--stretch);background:rgba(240,163,94,.13)}
 .tag.far{color:var(--far);background:rgba(124,138,160,.13)}
 .gr{display:inline-flex;gap:2px;vertical-align:middle}
@@ -266,7 +266,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .chn{position:relative;display:grid;justify-items:center;align-content:start;gap:5px;min-height:44px;padding:0 2px}
 .chn::before{content:"";position:absolute;top:15px;right:50%;width:100%;height:2px;background:var(--line)}
 .chn:first-child::before{display:none}
-.chn.clear::before,.chn.open::before{background:rgba(127,209,166,.5)}
+.chn.clear::before,.chn.open::before{background:rgba(94,158,120,.5)}
 .chn .dot{position:relative;z-index:1;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1.5px solid var(--line-2);font:700 13px/1 var(--mono);color:var(--dim)}
 .chn.open .dot{border-color:var(--ok);color:var(--ok)}
 .chn.near .dot{border-color:var(--stretch);color:var(--stretch)}
@@ -286,7 +286,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .chh .chs{grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:400 12px/1.4 var(--body);color:var(--mute)}
 .chh .gbar{display:block}
 .chip{flex:none;display:inline-flex;align-items:center;gap:4px;font:700 10.5px/1 var(--body);padding:4px 7px;border-radius:6px}
-.chip.open{color:var(--ok);background:rgba(127,209,166,.13)}
+.chip.open{color:var(--ok);background:rgba(94,158,120,.13)}
 .chip.near{color:var(--stretch);background:rgba(240,163,94,.13)}
 .chip.lock{color:var(--far);background:rgba(124,138,160,.13)}
 .chip.clear{color:var(--gold);background:rgba(244,193,82,.14)}
@@ -610,7 +610,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
   .quest{left:0;right:0;max-width:none;bottom:calc(var(--tabs-h) + 2px);z-index:7;min-height:52px;padding:0 22px;gap:10px;border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
   .quest .qi,.quest .qm,.quest small .tag{display:none}
   .qdot{display:block;flex:none;width:9px;height:9px;border-radius:50%;background:var(--far)}
-  .qdot.ok{background:var(--ok);box-shadow:0 0 8px rgba(127,209,166,.7)}.qdot.stretch{background:var(--stretch)}
+  .qdot.ok{background:var(--ok);box-shadow:0 0 8px rgba(94,158,120,.7)}.qdot.stretch{background:var(--stretch)}
   .quest .qt{flex:1;display:flex;align-items:baseline;gap:10px}
   .quest small{font:400 15px/1 var(--body);letter-spacing:0;color:#C8D3E2}
   .quest b{font:700 20px/1.2 var(--display)}
@@ -667,7 +667,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dgold{margin:0;font:700 22px/1.4 var(--display);color:var(--gold)}
 .dsay{margin:0;font:400 16px/1.6 var(--body);color:#B4C2D4}.dsay b{color:var(--ink)}
 .dstat{margin:0;display:flex;align-items:center;gap:10px;font:700 22px/1.3 var(--display)}
-.dstat i{width:11px;height:11px;border-radius:50%;background:var(--far)}.dstat.ok i{background:var(--ok);box-shadow:0 0 8px rgba(127,209,166,.7)}.dstat.stretch i{background:var(--stretch)}
+.dstat i{width:11px;height:11px;border-radius:50%;background:var(--far)}.dstat.ok i{background:var(--ok);box-shadow:0 0 8px rgba(94,158,120,.7)}.dstat.stretch i{background:var(--stretch)}
 .dwhy{margin:4px 0 0;padding-left:20px;display:grid;gap:6px;font:400 15px/1.6 var(--body);color:#B4C2D4}
 .dband{position:relative;height:96px;margin:8px 0}
 .dband svg,.dmist svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -795,7 +795,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .yytex .dhero{aspect-ratio:390/390}
 .yytex .dtitle{top:calc(env(safe-area-inset-top,0px) + 64px);gap:10px}
 .dchip{margin:0;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:6px 12px;border-radius:16px;background:rgba(11,22,38,.55);border:1px solid rgba(200,211,226,.22);font:600 14px/1.2 var(--body);color:var(--ink)}
-.dchip i{width:9px;height:9px;border-radius:50%;background:var(--far)}.dchip.ok i{background:var(--ok);box-shadow:0 0 8px rgba(127,209,166,.7)}.dchip.stretch i{background:var(--stretch)}
+.dchip i{width:9px;height:9px;border-radius:50%;background:var(--far)}.dchip.ok i{background:var(--ok);box-shadow:0 0 8px rgba(94,158,120,.7)}.dchip.stretch i{background:var(--stretch)}
 .dchip.done{color:#F4C152;border-color:rgba(244,193,82,.5);background:rgba(30,45,70,.55)}
 .s2kpi.c3{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0}
 .s2kpi.c3>div{padding:14px 10px;border-right:1px solid rgba(200,211,226,.14)!important;border-left:0}.s2kpi.c3>div:first-child{padding-left:0}.s2kpi.c3>div:last-child{border-right:0!important}
@@ -833,7 +833,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dstamp{position:absolute;right:-4px;top:-78px;width:112px;height:112px;transform:rotate(-10deg);opacity:.92}
 .sring{font:600 9.5px var(--body);letter-spacing:.18em}.sbigc{font:700 19px var(--display);letter-spacing:.12em}.sdate{font:600 9px var(--body);letter-spacing:.06em}
 .dstat2{margin:0;display:inline-flex;align-items:center;gap:9px;font:600 16px/1.2 var(--display);letter-spacing:.12em;color:var(--ink)}
-.dstat2 i{width:8px;height:8px;border-radius:50%;background:var(--far)}.dstat2.ok i{background:var(--ok);box-shadow:0 0 8px rgba(127,209,166,.7)}.dstat2.stretch i{background:var(--stretch)}
+.dstat2 i{width:8px;height:8px;border-radius:50%;background:var(--far)}.dstat2.ok i{background:var(--ok);box-shadow:0 0 8px rgba(94,158,120,.7)}.dstat2.stretch i{background:var(--stretch)}
 .dstat2::after{content:"";width:56px;height:1px;background:rgba(238,241,236,.4);margin-left:4px}
 
 .dmote{opacity:var(--a,.6);animation:dmt var(--d,5s) ease-in-out var(--o,0s) infinite}
@@ -842,6 +842,41 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dhero.day::after{opacity:.3!important;mix-blend-mode:overlay!important}
 .dhero.day::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 80% 60% at 86% 8%,rgba(255,238,205,.35),transparent 70%);mix-blend-mode:screen}
 @media (prefers-reduced-motion:reduce){.dmote,.drays{animation:none}}
+
+/* ---- 數據：少量、只動 transform/opacity 的活動元素 ---- */
+.s2tw{position:absolute;z-index:0;width:2px;height:2px;border-radius:50%;background:#EEF1EC;box-shadow:0 0 6px 1px rgba(238,241,236,.6);opacity:.2;pointer-events:none;animation:s2tw var(--d,5s) ease-in-out var(--o,0s) infinite}
+@keyframes s2tw{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:.95;transform:scale(1.3)}}
+.s2shoot{position:absolute;z-index:0;left:70%;top:4%;width:90px;height:1.5px;border-radius:2px;background:linear-gradient(90deg,rgba(238,241,236,0),rgba(238,241,236,.9));transform:rotate(-28deg);opacity:0;pointer-events:none;animation:s2shoot 14s ease-in 3s infinite}
+@keyframes s2shoot{0%{opacity:0;transform:translate(0,0) rotate(-28deg)}1%{opacity:1}6%{opacity:0;transform:translate(-190px,100px) rotate(-28deg)}100%{opacity:0;transform:translate(-190px,100px) rotate(-28deg)}}
+.s2glow{opacity:.06;transform-origin:28px 28px;animation:s2glow 6s ease-in-out infinite}@keyframes s2glow{0%,100%{opacity:.04;transform:scale(.92)}50%{opacity:.14;transform:scale(1.08)}}
+.s2bar i,.s2ab .bar i,.s2gr .bar i{transform-origin:left center;animation:s2fill 1s cubic-bezier(.2,.8,.2,1) .15s both}
+.s2ab>div:nth-child(2) .bar i,.s2gr>button:nth-child(2) .bar i{animation-delay:.22s}.s2ab>div:nth-child(3) .bar i,.s2gr>button:nth-child(3) .bar i{animation-delay:.29s}
+.s2ab>div:nth-child(4) .bar i,.s2gr>button:nth-child(4) .bar i{animation-delay:.36s}.s2ab>div:nth-child(5) .bar i,.s2gr>button:nth-child(5) .bar i{animation-delay:.43s}.s2ab>div:nth-child(6) .bar i{animation-delay:.5s}
+@keyframes s2fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.s2poly{stroke-dasharray:1;animation:s2draw 1.4s ease-out .2s both}@keyframes s2draw{from{stroke-dashoffset:1;fill-opacity:0}to{stroke-dashoffset:0;fill-opacity:1}}
+@media (prefers-reduced-motion:reduce){.s2tw,.s2shoot,.s2glow,.s2bar i,.s2ab .bar i,.s2gr .bar i,.s2poly{animation:none}.s2shoot{display:none}}
+/* ---- 山頭清單：跟詳情、數據頁同一套語言 ---- */
+#listView{background:#0B1626}
+#listView .lhead{background:rgba(11,22,38,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(200,211,226,.14);padding-block:4px 0;gap:0 14px}
+#listView .sbox{margin:6px 0 2px}#listView .sbox svg{left:0}
+#listView .sbox input{height:46px;padding-left:28px;border:0;border-bottom:1px solid rgba(200,211,226,.24);border-radius:0;background:none;font:400 16px var(--body)}
+#listView .seg{padding:0;border:0;border-radius:0;background:none;gap:2px}
+#listView .seg button{min-height:42px;padding:0 10px;border-radius:0;font:500 15px/1 var(--body);color:#8FA3BD;border-bottom:2px solid transparent}
+#listView .seg button:first-child{padding-left:0}
+#listView .seg button[aria-pressed="true"]{background:none;color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
+#listView .grp h3,#listView .chh .cht{font:700 20px/1.2 var(--display);letter-spacing:.04em}
+#listView .grp>h3:not(.chw){padding-bottom:10px;border-bottom:1px solid rgba(200,211,226,.14)}
+#listView .grp p{font:400 14px/1.5 var(--body);color:#8FA3BD;margin-top:8px}
+#listView .grp h3 .gc,#listView .chh .gc{font:600 14px var(--body);font-variant-numeric:tabular-nums}
+#listView .chn .dot{background:#0B1626;font-family:var(--display)}#listView .chn small{font-family:var(--body);font-size:12px}#listView .chn b{font:700 13px var(--display)}
+#listView .row{border-bottom:1px solid rgba(200,211,226,.1);min-height:62px}
+#listView .ri.qn{border:0;background:none;font:700 22px/1 var(--display);color:var(--ink)}
+#listView .rn{font:700 17px/1.25 var(--display);letter-spacing:.03em}
+#listView .rs{font-family:var(--body);font-size:13px;font-variant-numeric:tabular-nums}
+#listView .tag{padding:0;background:none!important;border-radius:0;font:600 13px/1 var(--body);display:inline-flex;align-items:center;gap:7px}
+#listView .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+#listView .tag.ok::before{box-shadow:0 0 6px rgba(94,158,120,.7)}
+#listView .chip{background:none;padding:0}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
 
@@ -903,7 +938,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
         <button type="button" data-g="route" aria-pressed="false">依路線</button>
       </div>
     </div>
-    <div class="pin" id="listBody"></div>
+    <div class="pin yytex" id="listBody"></div>
   </section>
 
   <section class="gearv" id="gearView" aria-label="我的裝備：可旋轉的角色">
@@ -1030,9 +1065,9 @@ function locator(ranks,cur){
     '<path d="'+GEO.land+'" fill="#1c2b42"/><image href="lit.jpg" x="0" y="0" width="'+W+'" height="'+H+'" preserveAspectRatio="none" opacity=".62" clip-path="url(#lc'+cur+')"/>'+
     '<path d="'+GEO.land+'" fill="none" stroke="#5a7396" stroke-width="'+(u*0.8).toFixed(2)+'"/>';
   near.forEach(p=>g+='<circle cx="'+f(p.x)+'" cy="'+f(p.y)+'" r="'+(u*1.9).toFixed(2)+'" fill="#c3ccd8" fill-opacity=".55" stroke="#0f1a2b" stroke-width="'+(u*0.6).toFixed(2)+'"/>');
-  pts.forEach(p=>{const me=p.rank===cur,dn=!!RECS[p.rank];if(me)return;g+='<circle cx="'+f(p.x)+'" cy="'+f(p.y)+'" r="'+(u*3.8).toFixed(2)+'" fill="'+(dn?'#f4c152':'#7fd1a6')+'" stroke="#0f1a2b" stroke-width="'+(u*1.2).toFixed(2)+'"/>'});
+  pts.forEach(p=>{const me=p.rank===cur,dn=!!RECS[p.rank];if(me)return;g+='<circle cx="'+f(p.x)+'" cy="'+f(p.y)+'" r="'+(u*3.8).toFixed(2)+'" fill="'+(dn?'#f4c152':'#5E9E78')+'" stroke="#0f1a2b" stroke-width="'+(u*1.2).toFixed(2)+'"/>'});
   {const p=byRank[cur],dn=!!RECS[cur],right=p.x-vx<w*0.62,tx=p.x+(right?u*9:-u*9);
-    g+='<circle cx="'+f(p.x)+'" cy="'+f(p.y)+'" r="'+(u*5.5).toFixed(2)+'" fill="'+(dn?'#f4c152':'#7fd1a6')+'" stroke="#eef1ec" stroke-width="'+(u*1.8).toFixed(2)+'"/>'+
+    g+='<circle cx="'+f(p.x)+'" cy="'+f(p.y)+'" r="'+(u*5.5).toFixed(2)+'" fill="'+(dn?'#f4c152':'#5E9E78')+'" stroke="#eef1ec" stroke-width="'+(u*1.8).toFixed(2)+'"/>'+
     '<text x="'+f(tx)+'" y="'+f(p.y+u*4)+'" text-anchor="'+(right?'start':'end')+'" font-size="'+(u*12).toFixed(1)+'" font-weight="700" fill="#eef1ec" stroke="#0b1422" stroke-width="'+(u*3).toFixed(1)+'" paint-order="stroke" stroke-linejoin="round" font-family="Noto Sans TC,sans-serif">'+esc(p.name)+'</text>'}
   // whole-island inset: where this window sits
   {const ih=h*0.42,iw=ih*W/H,ix=vx+u*8,iy=vy+h-ih-u*8,sw=W/iw;
@@ -1050,16 +1085,16 @@ function rtProfile(t,cur){
   const e0=Math.floor(Math.min(...ch.map(c=>c[1]))/500)*500,e1=Math.ceil(Math.max(...ch.map(c=>c[1]))/500)*500;
   const seg=[0];for(let i=1;i<n;i++)seg.push(seg[i-1]+1+Math.abs(ch[i][1]-ch[i-1][1])/700);const tot=seg[n-1]||1;
   const X=i=>L+seg[i]/tot*(W-L-R),Y=e=>Tp+(e1-e)/(e1-e0||1)*(H-Tp-B);
-  let g='<svg class="rpf" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t.n)+' 爬升下降示意"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd1a6" stop-opacity=".32"/><stop offset="1" stop-color="#7fd1a6" stop-opacity="0"/></linearGradient></defs>';
+  let g='<svg class="rpf" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t.n)+' 爬升下降示意"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5E9E78" stop-opacity=".32"/><stop offset="1" stop-color="#5E9E78" stop-opacity="0"/></linearGradient></defs>';
   for(let e=e0;e<=e1;e+=500)g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(e).toFixed(1)+'" y2="'+Y(e).toFixed(1)+'" stroke="#27384f"/><text x="'+(L-5)+'" y="'+(Y(e)+3.5).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#62728a" font-family="JetBrains Mono,monospace">'+e+'</text>';
   const pts=ch.map((c,i)=>X(i).toFixed(1)+','+Y(c[1]).toFixed(1)).join(' ');
-  g+='<polygon points="'+X(0).toFixed(1)+','+Y(e0).toFixed(1)+' '+pts+' '+X(n-1).toFixed(1)+','+Y(e0).toFixed(1)+'" fill="url(#'+gid+')"/><polyline points="'+pts+'" fill="none" stroke="#7fd1a6" stroke-width="2" stroke-linejoin="round"/>';
+  g+='<polygon points="'+X(0).toFixed(1)+','+Y(e0).toFixed(1)+' '+pts+' '+X(n-1).toFixed(1)+','+Y(e0).toFixed(1)+'" fill="url(#'+gid+')"/><polyline points="'+pts+'" fill="none" stroke="#5E9E78" stroke-width="2" stroke-linejoin="round"/>';
   const labs=[];
   ch.forEach((c,i)=>{const x=X(i),y=Y(c[1]),pk=c[2],me=pk===cur,dn=pk&&RECS[pk];
     // station number on the axis: the same number as the list below
     g+='<line x1="'+x.toFixed(1)+'" x2="'+x.toFixed(1)+'" y1="'+Y(e0).toFixed(1)+'" y2="'+(Y(e0)+3).toFixed(1)+'" stroke="#3a4f6b"/><text x="'+x.toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9" font-weight="'+(me?700:500)+'" fill="'+(me?'#eef1ec':pk?'#c3ccd8':'#7a8aa0')+'" font-family="JetBrains Mono,monospace">'+(i+1)+'</text>';
     if(!pk){g+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.8" fill="#131d2c" stroke="#93a3b8" stroke-width="1.4"/>';return}
-    g+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(me?5.5:4)+'" fill="'+(dn?'#f4c152':'#7fd1a6')+'" stroke="'+(me?'#eef1ec':'#0f1a2b')+'" stroke-width="'+(me?2:1.5)+'"/>';
+    g+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(me?5.5:4)+'" fill="'+(dn?'#f4c152':'#5E9E78')+'" stroke="'+(me?'#eef1ec':'#0f1a2b')+'" stroke-width="'+(me?2:1.5)+'"/>';
     labs.push({x,y,me,t:c[0]})});
   // peak names sit in two rows above the chart; a name is only drawn where it clears the other names and their leader lines
   const placed=[[],[]],anch=[];labs.sort((a,b)=>b.me-a.me);labs.forEach(o=>{const lw=o.t.length*10+4;let hit=null;
@@ -1085,14 +1120,14 @@ function profChart(t,cur){
   const pr=t.prof,W=320,H=170,L=36,R=12,Tp=26,B=26,gid='pg'+(++rtSeq),km=pr[pr.length-1][0]||1,top=byRank[cur]?Math.round(byRank[cur].h):pr[pr.length-1][1];
   let lo=Math.min(...pr.map(q=>q[1])),hi=Math.max(...pr.map(q=>q[1]),top);const st=hi-lo>600?200:100;const e0=Math.floor(lo/st)*st,e1=Math.ceil(hi/st)*st;
   const X=k=>L+k/km*(W-L-R),Y=e=>Tp+(e1-e)/(e1-e0||1)*(H-Tp-B);
-  let g='<svg class="rpf" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t.n)+' 海拔剖面"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd1a6" stop-opacity=".34"/><stop offset="1" stop-color="#7fd1a6" stop-opacity="0"/></linearGradient></defs>';
+  let g='<svg class="rpf" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t.n)+' 海拔剖面"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5E9E78" stop-opacity=".34"/><stop offset="1" stop-color="#5E9E78" stop-opacity="0"/></linearGradient></defs>';
   for(let e=e0;e<=e1;e+=st)g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(e).toFixed(1)+'" y2="'+Y(e).toFixed(1)+'" stroke="#27384f"/><text x="'+(L-5)+'" y="'+(Y(e)+3.5).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#62728a" font-family="JetBrains Mono,monospace">'+e+'</text>';
   const ks=km>3?1:.5;for(let k=0;k<=km+1e-6;k+=ks)g+='<text x="'+X(k).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9.5" fill="#62728a" font-family="JetBrains Mono,monospace">'+(k?k+'':'0 km')+'</text>';
   const pts=pr.map(q=>X(q[0]).toFixed(1)+','+Y(q[1]).toFixed(1)).join(' ');
-  g+='<polygon points="'+X(0).toFixed(1)+','+Y(e0).toFixed(1)+' '+pts+' '+X(km).toFixed(1)+','+Y(e0).toFixed(1)+'" fill="url(#'+gid+')"/><polyline points="'+pts+'" fill="none" stroke="#7fd1a6" stroke-width="2" stroke-linejoin="round"/>';
+  g+='<polygon points="'+X(0).toFixed(1)+','+Y(e0).toFixed(1)+' '+pts+' '+X(km).toFixed(1)+','+Y(e0).toFixed(1)+'" fill="url(#'+gid+')"/><polyline points="'+pts+'" fill="none" stroke="#5E9E78" stroke-width="2" stroke-linejoin="round"/>';
   const a=pr[0],z=pr[pr.length-1],dn=RECS[cur]||(byRank[cur]&&REC(byRank[cur]));
-  g+='<circle cx="'+X(0).toFixed(1)+'" cy="'+Y(a[1]).toFixed(1)+'" r="3.5" fill="#0f1a2b" stroke="#7fd1a6" stroke-width="2"/>';
-  g+='<circle cx="'+X(km).toFixed(1)+'" cy="'+Y(z[1]).toFixed(1)+'" r="5" fill="'+(dn?'#f4c152':'#7fd1a6')+'" stroke="#0f1a2b" stroke-width="2"/>';
+  g+='<circle cx="'+X(0).toFixed(1)+'" cy="'+Y(a[1]).toFixed(1)+'" r="3.5" fill="#0f1a2b" stroke="#5E9E78" stroke-width="2"/>';
+  g+='<circle cx="'+X(km).toFixed(1)+'" cy="'+Y(z[1]).toFixed(1)+'" r="5" fill="'+(dn?'#f4c152':'#5E9E78')+'" stroke="#0f1a2b" stroke-width="2"/>';
   g+='<text x="'+(X(km)-4).toFixed(1)+'" y="'+(Y(z[1])-10).toFixed(1)+'" text-anchor="end" font-size="11" font-weight="700" fill="#eef1ec" font-family="Noto Sans TC,PingFang TC,sans-serif">'+esc(byRank[cur]?byRank[cur].name:'')+' '+top+' m</text>';
   g+='<text x="'+(X(0)+6).toFixed(1)+'" y="'+(Y(a[1])+(Y(a[1])>H-B-14?-8:16)).toFixed(1)+'" font-size="10.5" fill="#93a3b8" font-family="Noto Sans TC,PingFang TC,sans-serif">'+esc(t.ch[0][0])+' 約 '+a[1]+' m</text>';
   return g+'</svg>';
@@ -1101,13 +1136,13 @@ function profChartB(t,cur){
   const pr=t.rprof,W=320,H=200,L=36,R=12,Tp=34,B=26,gid='pb'+(++rtSeq),km=pr[pr.length-1][0]||1;
   const lo=Math.min(...pr.map(q=>q[1])),hi=Math.max(...pr.map(q=>q[1]));const st=hi-lo>1500?500:hi-lo>600?200:100;const e0=Math.floor(lo/st)*st,e1=Math.ceil(hi/st)*st;
   const X=k=>L+k/km*(W-L-R),Y=e=>Tp+(e1-e)/(e1-e0||1)*(H-Tp-B);
-  let g='<svg class="rpf" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t.n)+' 實際海拔剖面"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd1a6" stop-opacity=".34"/><stop offset="1" stop-color="#7fd1a6" stop-opacity="0"/></linearGradient></defs>';
+  let g='<svg class="rpf" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t.n)+' 實際海拔剖面"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5E9E78" stop-opacity=".34"/><stop offset="1" stop-color="#5E9E78" stop-opacity="0"/></linearGradient></defs>';
   for(let e=e0;e<=e1;e+=st)g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(e).toFixed(1)+'" y2="'+Y(e).toFixed(1)+'" stroke="#27384f"/><text x="'+(L-5)+'" y="'+(Y(e)+3.5).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#62728a" font-family="JetBrains Mono,monospace">'+e+'</text>';
   const ks=km>40?10:km>16?5:km>6?2:1;for(let k=0;k<=km+1e-6;k+=ks)g+='<text x="'+X(k).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9.5" fill="#62728a" font-family="JetBrains Mono,monospace">'+(k?k+'':'0 km')+'</text>';
   const pts=pr.map(q=>X(q[0]).toFixed(1)+','+Y(q[1]).toFixed(1)).join(' ');
-  g+='<polygon points="'+X(0).toFixed(1)+','+Y(e0).toFixed(1)+' '+pts+' '+X(km).toFixed(1)+','+Y(e0).toFixed(1)+'" fill="url(#'+gid+')"/><polyline points="'+pts+'" fill="none" stroke="#7fd1a6" stroke-width="2" stroke-linejoin="round"/>';
+  g+='<polygon points="'+X(0).toFixed(1)+','+Y(e0).toFixed(1)+' '+pts+' '+X(km).toFixed(1)+','+Y(e0).toFixed(1)+'" fill="url(#'+gid+')"/><polyline points="'+pts+'" fill="none" stroke="#5E9E78" stroke-width="2" stroke-linejoin="round"/>';
   const seen=new Set();(t.rsk||[]).forEach(s=>{const rk=s[3];if(!rk||seen.has(rk))return;seen.add(rk);const x=X(s[1]),y=Y(s[2]),me=rk===cur,dn=RECS[rk];
-    g+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(me?5:3.5)+'" fill="'+(dn?'#f4c152':me?'#7fd1a6':'#0f1a2b')+'" stroke="'+(dn?'#0f1a2b':'#7fd1a6')+'" stroke-width="'+(me?2:1.6)+'"/>';
+    g+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(me?5:3.5)+'" fill="'+(dn?'#f4c152':me?'#5E9E78':'#0f1a2b')+'" stroke="'+(dn?'#0f1a2b':'#5E9E78')+'" stroke-width="'+(me?2:1.6)+'"/>';
     if(me)g+='<text x="'+Math.min(W-R,Math.max(L,x)).toFixed(1)+'" y="'+(y-10).toFixed(1)+'" text-anchor="'+(x>W-70?'end':x<L+40?'start':'middle')+'" font-size="11" font-weight="700" fill="#eef1ec" font-family="Noto Sans TC,PingFang TC,sans-serif">'+esc(byRank[rk]?byRank[rk].name:'')+'</text>'});
   return g+'</svg><p class="rsrc">'+(t.rstart?'從'+esc(t.rstart)+'起算，':'')+'實際步道約 <b>'+t.rkm+' km</b>、累計爬升約 <b>'+fmt(t.rup)+' m</b>'+(t.mine?'（依你的 GPS 軌跡，海拔取內政部 20 m 地形）':t.bj?'（參考健行筆記使用者軌跡〈<a href="'+esc(t.bj[1])+'" target="_blank" rel="noopener">'+esc(t.bj[0])+'</a>〉，海拔取內政部 20 m 地形，山頂對齊官方海拔；軌跡版權屬原作者，這裡只畫剖面不提供下載）'+(t.bjn?'。'+esc(t.bjn.replace(/。$/,'')):''):'（OpenStreetMap 步道＋內政部 20 m 地形計算，山頂對齊官方海拔）')+'。圓點是這條路線經過的百岳，'+(RECS[cur]?'':'')+'大點是這座山。</p>';
 }
@@ -1380,7 +1415,7 @@ function paint(){
   // every peak leaves a small pip, even inside a cluster
   const s=clamp(2.6+k*0.5,3,5)/k;PIPS=[];PT={d,k,tx:V.tx,ty:V.ty,s};
   for(const c of clusters){if(c.m.length<2)continue;for(const p of c.m){const st=statusOf(p),h=((typeof p.rank==='number'?p.rank:p.no||0)*2.399+(p.set==='xiao'?1.3:p.set==='shan'?2.6:0))%(Math.PI*2);
-    PIPS.push({x:p.x,y:p.y,set:p.set,c:st==='done'?'244,193,82':st==='ok'?'127,209,166':st==='stretch'?'240,163,94':'170,186,208',a:st==='done'?.95:st==='ok'?.9:st==='stretch'?.8:.55,ph:h,w:1.4+(h*7.3%1)*1.8,dl:h/(Math.PI*2)*650})}}
+    PIPS.push({x:p.x,y:p.y,set:p.set,c:st==='done'?'244,193,82':st==='ok'?'94,158,120':st==='stretch'?'240,163,94':'170,186,208',a:st==='done'?.95:st==='ok'?.9:st==='stretch'?.8:.55,ph:h,w:1.4+(h*7.3%1)*1.8,dl:h/(Math.PI*2)*650})}}
   drawStars(performance.now());startStars();
   // glow under climbed peaks
   for(const p of AP()){if(!REC(p))continue;const r=p.rank,t=p.set==='bai'&&T.reveal[r]!=null?T.reveal[r]:1,R=(p.set==='bai'?16+20*t:11)/Math.sqrt(k);const gg=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,R);
@@ -2028,17 +2063,19 @@ function statRadar(ab,n){const R=78,pt=(i,v)=>{const t=-Math.PI/2+i*Math.PI/3;re
   let g='<svg class="sradar" viewBox="-130 -108 260 220" role="img" aria-label="能力雷達圖：'+ab.map(x=>x.k+' '+Math.round(x.s)).join('、')+'">';
   [1,.75,.5,.25].forEach(s=>g+='<polygon points="'+ab.map((_,i)=>f(pt(i,s))).join(' ')+'" fill="none" stroke="rgba(200,211,226,.14)"/>');
   ab.forEach((_,i)=>g+='<line x1="0" y1="0" x2="'+pt(i,1)[0].toFixed(1)+'" y2="'+pt(i,1)[1].toFixed(1)+'" stroke="rgba(200,211,226,.10)"/>');
-  if(n){g+='<polygon points="'+ab.map((x,i)=>f(pt(i,Math.max(.04,x.s/100)))).join(' ')+'" fill="rgba(169,195,230,.22)" stroke="#A9C3E6" stroke-width="1.6" stroke-linejoin="round"/>';
+  if(n){g+='<polygon class="s2poly" pathLength="1" points="'+ab.map((x,i)=>f(pt(i,Math.max(.04,x.s/100)))).join(' ')+'" fill="rgba(169,195,230,.22)" stroke="#A9C3E6" stroke-width="1.6" stroke-linejoin="round"/>';
     ab.forEach((x,i)=>{const q=pt(i,Math.max(.04,x.s/100));g+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="3" fill="#EEF1EC"/>'})}
   ab.forEach((x,i)=>{const l=pt(i,1.2),anc=Math.abs(l[0])<5?'middle':l[0]>0?'start':'end';g+='<text x="'+l[0].toFixed(1)+'" y="'+(l[1]+4).toFixed(1)+'" text-anchor="'+anc+'" class="srl">'+x.k+'</text>'});
   return g+'</svg>'}
+function s2Count(){const els=[...document.querySelectorAll('.s2kpi b')];const vals=els.map(b=>{const n=b.firstChild;if(!n||n.nodeType!==3)return null;const v=parseFloat(n.textContent.replace(/,/g,''));return isFinite(v)?{n,v,dec:(n.textContent.split('.')[1]||'').length,comma:/,/.test(n.textContent)}:null});
+  const t0=performance.now(),D=800;const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);vals.forEach(o=>{if(!o)return;const x=o.v*e;o.n.textContent=o.comma?fmt(Math.round(x)):x.toFixed(o.dec)});if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
 function renderChar(){
   const ab=abilities(),a=LV[G.lv-1]||0,b=LV[G.lv],n=G.n,top=b==null||n>=P.length,fr=top?1:clamp((G.xp-a)/(b-a),0,1);
   const list=Object.keys(RECS).map(k=>({p:byRank[k],r:RECS[k]})).sort((x,y)=>String(y.r.date||'').localeCompare(String(x.r.date||''))||x.p.rank-y.p.rank);
   const all=[...Object.values(RECS),...Object.values(XRECS),...Object.values(SRECS)],sum=f=>all.reduce((s,x)=>s+(+x[f]||0),0),km=sum('distanceKm'),gain=sum('gainM'),mins=sum('durationMin');
-  let h='<div class="dp sp2">';
+  let h='<div class="dp sp2">'+[[8,12],[22,58],[71,9],[88,31],[46,22],[13,78],[64,66],[93,84],[33,90]].map(([x,y],i)=>'<i class="s2tw" style="left:'+x+'%;top:'+y+'%;--d:'+(3.6+i*.7).toFixed(1)+'s;--o:-'+i*.9+'s"></i>').join('')+'<i class="s2shoot"></i>';
   // summary
-  h+='<div class="s2top"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="22" fill="#24344E"/><path d="'+moonPath(28,28,22,n/100)+'" fill="#F4E3B4"/></svg>'+
+  h+='<div class="s2top"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true" style="overflow:visible"><circle class="s2glow" cx="28" cy="28" r="28" fill="#F4E3B4"/><circle cx="28" cy="28" r="22" fill="#24344E"/><path d="'+moonPath(28,28,22,n/100)+'" fill="#F4E3B4"/></svg>'+
     '<div><p class="s2t">百岳 <b>'+n+'</b> / 100</p><p class="s2s">月亮圓了 '+(n?Math.max(1,n):0)+'%・小百岳 '+G.xn+'・小山 '+G.sn+'</p></div></div>';
   h+='<div class="s2kpi">'+[['總距離',km?km.toFixed(1):'—','公里'],['總爬升',gain?fmt(Math.round(gain)):'—','公尺'],['總時間',mins?(mins/60).toFixed(1):'—','小時'],['登頂',String(n+G.xn+G.sn),'座']]
     .map(([k,v,u])=>'<div><small>'+k+'</small><b>'+v+'<u>'+u+'</u></b></div>').join('')+'</div>';
@@ -2089,6 +2126,7 @@ function setTab(t,fromHash){
   try{if(t==='gear')window.__gearOpen&&window.__gearOpen();else window.__gearClose&&window.__gearClose()}catch(_){}
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   if(t==='map')requestAnimationFrame(resize);
+  if(t==='char'&&!reduceMotion())requestAnimationFrame(s2Count);
   if(!fromHash){try{if(location.hash.slice(1)!==HASH[t])history.replaceState(null,'','#'+HASH[t])}catch(e){}}
 }
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
