@@ -481,6 +481,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gi.packed b{color:var(--t2)}
 .gpk-none{margin:16px 0 0;font:400 14px/1.6 var(--body);color:var(--t2)}
 .gout{margin-top:28px}.gout-t{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:44px;padding:10px 0;background:none;border:0;border-bottom:1px solid rgba(238,241,236,.12);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);cursor:pointer;text-align:left}
+.gkn{padding:0;margin:0;background:none;border:0;font:inherit;color:inherit;letter-spacing:inherit;cursor:text;border-bottom:1px dashed transparent;min-height:44px}
+.gkn:hover,.gkn:focus-visible{border-bottom-color:rgba(238,241,236,.42);outline:none}
+.gkn-in{width:6.5em;min-height:44px;padding:0;background:transparent;border:0;border-bottom:1px solid #F4C152;border-radius:0;font:inherit;letter-spacing:inherit;color:var(--t1);outline:none}
 .gout-t span{font-size:14px;letter-spacing:0}.gi.gin .n{color:#F4C152;font-family:var(--body)}.gi.gin small{color:#F4C152}
 .glist .glg{display:flex;gap:14px;margin:-2px 0 4px;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);white-space:nowrap}
 .glist .glg i,.gst i{display:inline-block;box-sizing:border-box;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
@@ -2687,7 +2690,7 @@ function gearRender(){
   const carry=wt(i=>!i.worn&&i.status!=='none'),worn=wt(i=>i.worn&&i.status!=='none'),weighed=all.filter(i=>i.g).length;
   const packing=PK.on&&PK.kit===GS.kit,have=all.filter(i=>i.status!=='none'),packed=have.filter(i=>PK.ids.includes(i.id)).length;
   // set switcher
-  document.getElementById('gKits').innerHTML=GS.kits.map(k=>'<button type="button" role="tab" class="gkt" data-k="'+k.id+'" aria-selected="'+(k.id===GS.kit)+'">'+E(k.name)+'</button>').join('')+'<button type="button" class="gkr" id="gKitRen" aria-label="幫這幾套改名">改名</button>';
+  document.getElementById('gKits').innerHTML=GS.kits.map(k=>'<button type="button" role="tab" class="gkt" data-k="'+k.id+'" aria-selected="'+(k.id===GS.kit)+'">'+E(k.name)+'</button>').join('')+'';
   document.getElementById('gN').textContent=all.length;
   let load='';
   if(GS.body&&carry){const p=carry/(GS.body*1000)*100,lv=p<10?'輕裝':p<20?'標準':'重裝';
@@ -2701,18 +2704,22 @@ function gearRender(){
     return '<button type="button" class="gi '+i.status+(packing&&pk?' packed':'')+'" data-id="'+i.id+'"'+(packing?' role="checkbox" aria-checked="'+pk+'"':'')+'>'+lead+
       '<b>'+E(i.name)+'</b>'+(sub?'<small>'+E(sub)+'</small>':'')+'<span class="w gst"><em>'+(i.status!=='none'?'<s class="p">'+(i.worn?'穿':'背')+'</s>':'')+(i.g?i.g.toLocaleString():'—')+'<s class="u">公克</s></em><i class="'+i.status+'"></i>'+GST[i.status]+'</span></button>'};
   let n=0;const list=packing?have:all;
-  const hd='<div class="gl-hd"><h3>'+E(kitName())+'這一套</h3>'+(packing?'<span class="gpk-p" aria-live="polite">已打包 <b>'+packed+'</b>／'+have.length+'</span>':'<button type="button" class="gpk-go" id="gPack">開始打包</button>')+'</div>'+
+  const hd='<div class="gl-hd"><h3><button type="button" class="gkn" id="gKitName" aria-label="套裝名稱「'+E(kitName())+'」，點一下改名">'+E(kitName())+'</button></h3>'+(packing?'<span class="gpk-p" aria-live="polite">已打包 <b>'+packed+'</b>／'+have.length+'</span>':'<button type="button" class="gpk-go" id="gPack">開始打包</button>')+'</div>'+
     (packing?'<div class="gpk-bar"><button type="button" class="ge-link mute" id="gPackClr">全部清空</button><button type="button" class="ge-link" id="gPackDone">完成</button></div>':
       '<div class="glg"><span><i class="own"></i>自有</span><span><i class="borrow"></i>借用</span><span><i class="none"></i>未登錄</span></div>');
   document.getElementById('glist').innerHTML=hd+
     Object.entries(ZONES).map(([zk,zl])=>{const its=list.filter(i=>i.zone===zk);if(packing&&!its.length)return '';
       return '<section class="gz"><button type="button" class="gzk" data-z="'+zk+'">'+zl+'</button>'+its.map(i=>row(i,++n)).join('')+(packing?'':'<button type="button" class="gadd" data-z="'+zk+'">＋ 新增</button>')+'</section>'}).join('')+
     (packing?(all.length>have.length?'<p class="gpk-none">另外 '+(all.length-have.length)+' 件還沒登錄，不列在打包清單裡</p>':''):
-      out.length?'<section class="gout"><button type="button" class="gout-t" id="gOut" aria-expanded="'+showOut+'">不在'+E(kitName())+'這套的 '+out.length+' 件<span aria-hidden="true">'+(showOut?'－':'＋')+'</span></button>'+
+      out.length?'<section class="gout"><button type="button" class="gout-t" id="gOut" aria-expanded="'+showOut+'">不在「'+E(kitName())+'」的 '+out.length+' 件<span aria-hidden="true">'+(showOut?'－':'＋')+'</span></button>'+
         (showOut?out.map(i=>'<button type="button" class="gi gin '+i.status+'" data-add="'+i.id+'"><span class="n">＋</span><b>'+E(i.name)+'</b><small>加進'+E(kitName())+'</small><span class="w gst"><em>'+(i.g?i.g.toLocaleString():'—')+'<s class="u">公克</s></em></span></button>').join(''):'')+'</section>':'');
   // wire
   document.querySelectorAll('#gKits .gkt').forEach(b=>b.onclick=()=>{if(GS.kit===b.dataset.k)return;GS.kit=b.dataset.k;PK.on=false;showOut=false;kSave();gearRender();document.querySelector('#gKits .gkt[aria-selected="true"]').focus()});
-  document.getElementById('gKitRen').onclick=kitRename;
+  // tap the set name to rename it in place
+  document.getElementById('gKitName').onclick=e=>{const h=e.currentTarget.parentNode,k=GS.kits.find(x=>x.id===GS.kit),old=k.name;
+    h.innerHTML='<input class="gkn-in" maxlength="6" value="'+E(old)+'" aria-label="套裝名稱，最多 6 個字，按 Enter 儲存">';const i=h.firstChild;i.focus();i.select();let done=false;
+    const fin=ok=>{if(done)return;done=true;const v=i.value.trim();if(ok&&v&&v!==old){k.name=v;kSave();window.YY.say('已改名為「'+v+'」')}gearRender();const b=document.getElementById('gKitName');if(b)b.focus({preventScroll:true})};
+    i.onkeydown=ev=>{if(ev.key==='Enter'){ev.preventDefault();fin(true)}else if(ev.key==='Escape'){ev.preventDefault();ev.stopPropagation();fin(false)}};i.onblur=()=>fin(true)};
   document.querySelectorAll('#glist .gzk').forEach(b=>{const z=b.dataset.z,on=()=>window.__gearZone&&window.__gearZone(z,1),off=()=>window.__gearZone&&window.__gearZone(z,0);
     b.addEventListener('focus',on);b.addEventListener('blur',()=>{if(!b._tap)off();b._tap=0});b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')on()});b.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&!b._tap)off()});
     b.addEventListener('click',()=>{b._tap=1;document.querySelector('#gearView').scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});on()})});
@@ -2727,13 +2734,6 @@ function gearRender(){
   document.getElementById('gBody').onclick=bodyEdit;
   window.__gearLookState={pack:all.some(i=>i.look==='pack')?'pack':all.some(i=>i.look==='vest')?'vest':null,crampon:all.some(i=>i.look==='crampon')};window.__gearLook&&window.__gearLook(window.__gearLookState);
   window.__gearRetip&&window.__gearRetip();
-}
-function kitRename(){
-  gOpen('<form class="ge" novalidate><div class="ge-top"><button type="button" class="ge-x" aria-label="不儲存，回到裝備">‹ 返回</button></div><small class="ge-k">我的套裝</small><h3 class="ge-h">幫這幾套取名字</h3>'+
-    '<p class="ge-say">最多 '+KMAX+' 套，每個名字最多 6 個字。</p>'+GS.kits.map((k,i)=>'<label class="ge-f"><span>第 '+(i+1)+' 套</span><input name="k'+i+'" maxlength="6" value="'+E(k.name)+'" autocomplete="off"'+(i?'':' autofocus')+'></label>').join('')+
-    '<div class="ge-bar"><button type="submit" class="ge-save">儲存</button></div></form>',ed=>{
-      for(let i=0;i<GS.kits.length;i++){const el=ed.querySelector('[name=k'+i+']');if(!el.value.trim())return gErr(el,'請給這一套一個名字')}
-      GS.kits.forEach((k,i)=>k.name=ed.querySelector('[name=k'+i+']').value.trim());kSave();gearRender()},'幫套裝改名',()=>document.getElementById('gKitRen'));
 }
 /* ---------- editor: a full page on the phone, underlines instead of boxes ---------- */
 let gBack=null;{const g=document.getElementById('gedit');if(g)document.body.appendChild(g)}
