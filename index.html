@@ -675,6 +675,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ggo{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 24px;border:0;border-radius:12px;background:#F4C152;color:#0B1626;font:700 14px var(--body);letter-spacing:.08em;cursor:pointer;box-shadow:0 8px 24px rgba(244,193,82,.18)}.ggo i{font-style:normal}
 .g3off .gact{position:static;order:3;margin:16px 24px}.g3off .ghd{position:relative}
 .gtip.dock{left:24px;right:24px;top:auto;bottom:64px;width:auto;text-align:center}.gtip.dock ul{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 16px;margin-top:8px}.gtip.dock li small{display:none}.gtip.dock li b{font-size:14px;line-height:1.5}
+@media (min-width:900px){.gact{left:50%;right:auto;width:480px;margin-left:-240px}.gkn2{font-size:56px;line-height:1.1}.gkn2 .gkn-in{font-size:56px}.gka{font-size:36px}}
+.ghint{transition:opacity .4s}.ghint.bye{opacity:0}.ggo .num{font:600 14px var(--display);margin-left:.4em;letter-spacing:0}
 /* 整理裝備 */
 .gb-in{padding-bottom:120px}
 .gb-kit{margin:10px -8px 0;padding:16px 14px 18px;border-radius:20px;background:linear-gradient(180deg,rgba(94,158,120,.15),rgba(94,158,120,.03));box-shadow:inset 0 0 0 1px rgba(94,158,120,.26)}
@@ -710,7 +712,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gp.done .gp-n b{color:var(--t2);text-decoration:line-through;text-decoration-color:rgba(238,241,236,.35)}.gp.done .gp-t{opacity:.5}
 .gp:focus-visible{outline:1px solid #F4C152;outline-offset:2px}
 .ge-link[disabled]{opacity:.35;cursor:default}
-@media (min-width:900px){.gb-toast{left:auto;right:16px;width:488px}}
+@media (min-width:900px){.gb-toast{left:auto;right:16px;width:488px}.gbag .gb-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.gb-det{background:linear-gradient(180deg,#14233a,#0B1626)}
+.gb-toast.on~.gb-page .gb-in,.gb-page:has(~.gb-toast.on) .gb-in{padding-bottom:160px}
 @media (prefers-reduced-motion:reduce){.gb-toast,.gdots i,.gb-prog i{transition:none}}
 
 @media (min-width:900px){.gedit{left:auto;width:520px;border-left:1px solid rgba(238,241,236,.12);box-shadow:-24px 0 60px rgba(0,0,0,.35)}}
@@ -1289,8 +1293,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 
   <section class="gearv" id="gearView" aria-label="我的裝備：可旋轉的角色">
     <div class="gstage">
-      <div class="g3d" id="g3d"></div>
       <div class="ghd"><small>我的裝備</small><div class="gkp" id="gKitP" role="group" aria-label="套裝，左右滑或點箭頭換一套"><button type="button" class="gka" data-d="-1" aria-label="上一套">‹</button><button type="button" class="gkn2" id="gKitT"></button><button type="button" class="gka" data-d="1" aria-label="下一套">›</button></div><div class="gdots" id="gDots" aria-hidden="true"></div><p class="gsub"><b id="gN">—</b> 件<i>·</i><span id="gSub"></span></p><span class="sr" id="gKitLive" aria-live="polite"></span></div>
+      <div class="g3d" id="g3d"></div>
       <svg class="glead" aria-hidden="true"><line id="gld" x1="0" y1="0" x2="0" y2="0" stroke="#F4C152" stroke-width="1" stroke-opacity=".7"/></svg>
       <div class="gring" id="gring"></div><div class="gtip" id="gtip" aria-live="polite"></div>
       <div class="gwt2" id="gW"></div>
@@ -2870,6 +2874,7 @@ function gearRender(){
   document.getElementById('gSub').innerHTML=T.weighed?'共 <b>'+kg(T.carry+T.worn)+'</b> 公斤':'還沒秤重';
   document.getElementById('gW').innerHTML=(T.weighed?'<p class="gw1"><span>背的 <b>'+kg(T.carry)+'</b> 公斤</span><i>·</i><span>穿的 <b>'+(T.worn?kg(T.worn):'—')+'</b> 公斤</span></p>':'')+loadHTML(T.carry,'gBody');
   document.getElementById('gBody').onclick=bodyEdit;
+  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;document.getElementById('gPackB').innerHTML='<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
   window.__gearLook&&window.__gearLook(window.__gearLookState);
   window.__gearRetip&&window.__gearRetip();
@@ -2906,14 +2911,14 @@ document.addEventListener('keydown',e=>{if(!BAG.open||!document.getElementById('
 // Esc: first closes the detail sheet, then the screen
 document.addEventListener('keydown',e=>{if(e.key!=='Escape'||!BAG.open||!document.getElementById('gedit').hidden)return;e.preventDefault();
   if(BAG.sel){const id=BAG.sel;BAG.sel=null;bagRender();const b=document.querySelector('#gbag [data-info="'+id+'"]');b&&b.focus({preventScroll:true})}else bagClose()});
-const MOVED={body:'穿上了',pack:'放進背包了',store:'收回倉庫了'};
+const MOVED={body:'穿上了',pack:'放進背包了',store:'收回倉庫了'},moved=(i,to)=>to==='body'&&i.zone==='pack'?'背上了':to==='body'&&i.zone==='cam'?'帶在身上了':MOVED[to];
 function moveTo(it,to){const was={kits:[...it.kits],worn:it.worn};
   if(to==='store')it.kits=it.kits.filter(k=>k!==GS.kit);else{if(!it.kits.includes(GS.kit))it.kits=[...it.kits,GS.kit];it.worn=to==='body'}
   gSave();return was}
-function toast(msg,undo){clearTimeout(tTimer);BAG.toast={msg,undo};drawToast();tTimer=setTimeout(()=>{BAG.toast=null;drawToast()},6000)}
+function toast(msg,undo,id){clearTimeout(tTimer);BAG.toast={msg,undo,id};drawToast();tTimer=setTimeout(()=>{BAG.toast=null;drawToast()},6000)}
 function drawToast(){const v=document.getElementById('gbag');let t=v.querySelector('.gb-toast');if(!t){t=document.createElement('div');t.className='gb-toast';t.setAttribute('role','status');v.appendChild(t)}
   if(!BAG.toast){t.classList.remove('on');return}t.innerHTML='<span>'+E(BAG.toast.msg)+'</span>'+(BAG.toast.undo?'<button type="button">復原</button>':'');t.classList.add('on');
-  const b=t.querySelector('button');if(b)b.onclick=()=>{const u=BAG.toast.undo;BAG.toast=null;clearTimeout(tTimer);u();drawToast()}}
+  const b=t.querySelector('button');if(b)b.onclick=()=>{const {undo:u,id}=BAG.toast;BAG.toast=null;clearTimeout(tTimer);u();drawToast();const f=v.querySelector('.gs[data-id="'+id+'"]')||v.querySelector('#gbX');f&&f.focus({preventScroll:false})}}
 function bagRender(){
   const v=document.getElementById('gbag');v.querySelectorAll('.gb-page,.gb-det').forEach(x=>x.remove());const T=totals();
   const pg=document.createElement('div');pg.className='gb-page';
@@ -2943,11 +2948,11 @@ function bagRender(){
     '<p class="gb-foot">點 <span class="gs-i0">i</span> 看詳細、修改，或換成穿／背</p></div>';
   v.prepend(pg);
   if(s){const d=document.createElement('div');d.className='gb-det';d.setAttribute('role','region');d.setAttribute('aria-label',s.name+' 的詳細資料');
-    const acts=(here==='store'?[['body','穿上'],['pack','放進背包']]:[[here==='body'?'pack':'body',here==='body'?'改放背包':'改成穿上'],['store','收回倉庫']]);
+    const on=s.zone==='pack'?'背上':s.zone==='cam'?'帶在身上':'穿上',acts=(here==='store'?[['body',on],['pack','放進背包']]:[[here==='body'?'pack':'body',here==='body'?'改放背包':'改成'+on],['store','收回倉庫']]);
     d.innerHTML='<div class="gb-dt">'+icon(s,'gb-di')+'<div><small><span>'+E(ZONES[s.zone])+'</span><i>·</i><span>'+(here==='store'?'在倉庫':here==='body'?'穿在身上':'放在背包')+'</span>'+(s.borrow?'<i>·</i><span>借來的</span>':'')+'</small><h3>'+E(s.name)+'</h3><p>'+E([s.brand,s.note].filter(Boolean).join(' · ')||' ')+'</p></div><em>'+(s.g?s.g.toLocaleString()+' <s>公克</s>':'<s>還沒秤</s>')+'</em></div>'+
       '<div class="gb-acts">'+acts.map(([p,l])=>'<button type="button" class="gb-a" data-mv="'+p+'">'+l+'</button>').join('')+'<button type="button" class="gb-a mute" data-ed>編輯</button><button type="button" class="gb-a mute gb-dx" data-close aria-label="關掉詳細資料">關閉</button></div>';
     v.appendChild(d);
-    d.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const it=s,to=b.dataset.mv,was=moveTo(it,to);BAG.sel=null;gearRender();toast('「'+it.name+'」'+MOVED[to],()=>{Object.assign(it,was);gSave();gearRender()});
+    d.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const it=s,to=b.dataset.mv,was=moveTo(it,to);BAG.sel=null;gearRender();toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id);
       const nb=v.querySelector('[data-info="'+it.id+'"]');nb&&nb.focus({preventScroll:true})});
     d.querySelector('[data-ed]').onclick=()=>gearEdit(s.id);
     d.querySelector('[data-close]').onclick=()=>{const id=s.id;BAG.sel=null;bagRender();const b=v.querySelector('[data-info="'+id+'"]');b&&b.focus({preventScroll:true})}}
@@ -2958,7 +2963,7 @@ function bagRender(){
     const nb=v.querySelector('.gs[data-id="'+it.id+'"]');if(nb){nb.focus({preventScroll:true});const t=nb.querySelector('.gs-t'),r=t.getBoundingClientRect();
       if(!RMq()&&t.animate){t.animate([{transform:'translate('+(from.left-r.left)+'px,'+(from.top-r.top)+'px)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.2,.75,.25,1)'});nb.classList.add('land');setTimeout(()=>nb.classList.remove('land'),900)}
       const rr=nb.getBoundingClientRect();if(rr.top<60||rr.bottom>innerHeight-80)nb.scrollIntoView({block:'center',behavior:RMq()?'auto':'smooth'})}
-    toast('「'+it.name+'」'+MOVED[to],()=>{Object.assign(it,was);gSave();gearRender()})});
+    toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id)});
   pg.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>{BAG.sel=BAG.sel===b.dataset.info?null:b.dataset.info;bagRender();const f=v.querySelector('.gb-det [data-mv]')||v.querySelector('[data-info="'+b.dataset.info+'"]');f&&f.focus({preventScroll:true})});
   if(BAG.toast)drawToast();
 }
@@ -3045,7 +3050,7 @@ function frame(){const portrait=H()>W(),asp=W()/H();
   // keep the same side-to-side framing however tall the stage is (a tall desktop column would otherwise zoom him in)
   cam.fov=portrait?Math.max(33,2*Math.atan(Math.tan(14.5*Math.PI/180)/asp)*180/Math.PI):27;cam.aspect=asp;
   cam.clearViewOffset();cam.updateProjectionMatrix();
-  cam.position.set(0,1.0,portrait?4.4:4.3);controls.target.set(0,portrait?0.64:0.78,0);controls.update()}
+  cam.position.set(0,1.0,portrait?4.4:5.2);controls.target.set(0,portrait?0.64:0.72,0);controls.update()}
 frame();
 scene.add(new THREE.HemisphereLight(0xb9cbe6,0x241a12,1.0));
 const key=new THREE.DirectionalLight(0xfff1df,2.3);key.position.set(2.2,3.4,2.6);key.castShadow=true;key.shadow.mapSize.set(1024,1024);
@@ -3058,7 +3063,7 @@ const fill=new THREE.DirectionalLight(0x8fb0de,0.6);fill.position.set(-3,1.2,2);
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;
   scene.add(new THREE.Mesh(g,new THREE.MeshStandardMaterial({map:tex,transparent:true,roughness:1})));
   const sh=new THREE.Mesh(g.clone(),new THREE.ShadowMaterial({opacity:.45}));sh.position.y=0.002;sh.receiveShadow=true;scene.add(sh);
-  const ring=new THREE.Mesh(new THREE.RingGeometry(0.62,0.64,96).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0xf4c152,transparent:true,opacity:.35}));ring.position.y=0.004;scene.add(ring)}
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.46,0.475,96).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0xf4c152,transparent:true,opacity:.35}));ring.position.y=0.004;scene.add(ring)}
 
 /* ---------- the chibi: built from soft shapes, outlined like a game sprite ---------- */
 const C={skin:0xd7a37a,skinSh:0xc48c64,hair:0x15161a,jacket:0x17191f,jacketHi:0x23262d,vest:0x2d3139,vestHi:0x3b404a,pants:0x111216,shoe:0x1e2026,sole:0xd8d2c6,orange:0xf08a2c,flask:0x2b2f36};
@@ -3203,13 +3208,16 @@ el.addEventListener('pointerdown',e=>{downAt=[...L(e),performance.now()];if(e.po
 el.addEventListener('pointerup',e=>{if(!downAt)return;const[dx,dy,t]=downAt;downAt=null;if(Math.hypot(L(e)[0]-dx,L(e)[1]-dy)>8||performance.now()-t>400)return;
   const r=pick(...L(e));clearTimeout(tipT);if(r){sayHi();showTip(r.zone,r.p);if(e.pointerType!=='mouse')tipT=setTimeout(()=>{hideTip();controls.autoRotate=!RM},4000)}else if(e.pointerType!=='mouse'){hideTip();controls.autoRotate=!RM}});let tipT=0;
 controls.addEventListener('start',()=>{controls.autoRotate=false});
-el.tabIndex=0;el.setAttribute('role','img');el.setAttribute('aria-label','我的登山角色，左右方向鍵轉身');
-el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sayHi();return}if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();controls.autoRotate=false;root.rotation.y+=(e.key==='ArrowLeft'?-1:1)*Math.PI/12}});
+el.tabIndex=0;el.setAttribute('role','img');el.setAttribute('aria-label','我的登山角色。左右方向鍵轉身，上下方向鍵看各部位穿了什麼');
+let kz=-1;const KZ=['head','eyes','torso','pack','wrist','hands','legs','feet'];
+el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sayHi();return}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const L=KZ.filter(z=>zc(z)&&GEAR[z].items.length);if(!L.length)return;kz=(kz+(e.key==='ArrowDown'?1:-1)+L.length)%L.length;window.__gearZone(L[kz],true);return}if(e.key==='Escape'&&hoverZone){hideTip();controls.autoRotate=!RM;return}if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();controls.autoRotate=false;root.rotation.y+=(e.key==='ArrowLeft'?-1:1)*Math.PI/12}});
 // list headers point at the part on the character
 const zc=z=>{const b=new THREE.Box3();parts.forEach(m=>{if(m.userData.zone===z&&!m.userData.hit&&shown(m)){m.updateWorldMatrix(true,false);b.expandByObject(m)}});return b.isEmpty()?null:b.getCenter(new THREE.Vector3())};
 window.__gearRetip=()=>{if(hoverZone&&hoverPt){const z=hoverZone,p=hoverPt.clone();hoverZone=null;showTip(z,p)}};
 window.__gearZone=(z,on)=>{if(!on){hideTip();controls.autoRotate=!RM;return}const p=zc(z);if(p)showTip(z,p)};
-document.getElementById('ghint').textContent=matchMedia('(hover:hover)').matches?'拖曳旋轉・滑到身上看穿了什麼':'左右拖曳轉一圈・點身上看穿了什麼';
+const gh=document.getElementById('ghint');try{if(localStorage.getItem('yueyue.ghint'))gh.hidden=true}catch(e){}
+const ghDone=()=>{if(gh.hidden)return;gh.classList.add('bye');setTimeout(()=>gh.hidden=true,400);try{localStorage.setItem('yueyue.ghint','1')}catch(e){}};controls.addEventListener('start',()=>setTimeout(ghDone,1200));el.addEventListener('pointerup',()=>setTimeout(ghDone,1200));
+gh.textContent=matchMedia('(hover:hover)').matches?'拖曳旋轉・滑到身上看穿了什麼':'左右拖曳轉一圈・點身上看穿了什麼';
 new ResizeObserver(()=>{renderer.setSize(W(),H());frame()}).observe(stage);
 const clock=new THREE.Clock();
 const loop=()=>{const dt=Math.min(clock.getDelta(),0.05),t=clock.elapsedTime;animate(t,dt);controls.update();if(hoverPt)place();renderer.render(scene,cam)};
