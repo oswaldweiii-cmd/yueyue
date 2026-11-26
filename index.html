@@ -2642,7 +2642,18 @@ const GEAR=new Proxy({},{get:(_,z)=>ZONES[z]?{k:ZONES[z],items:GS.items.filter(i
 const GST={own:'自有',borrow:'借用',none:'未登錄'};
 const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const kg=g=>(g/1000).toFixed(1);
-const BRANDS=['mont-bell','Arc\'teryx','Patagonia','The North Face','Mammut','Black Diamond','Salomon','La Sportiva','HOKA','Osprey','Gregory','Deuter','Mystery Ranch','Hyperlite Mountain Gear','Zpacks','Sea to Summit','Petzl','Garmin','Suunto','COROS','Insta360','GoPro','Sony','LEKI','Snow Peak','Jetboil','MSR','NEMO','Big Agnes','Therm-a-Rest','Icebreaker','Smartwool','Darn Tough','Fjällräven','Haglöfs','Norrøna','Rab','Montane','Columbia','Mountain Hardwear','Outdoor Research','Naturehike','Kailas','歐都納 Atunas','荒野 WILDLAND','山林 Mountneer','山頂鳥 Hilltop'];
+// brand suggestions per body zone; brands you already used in that zone come first
+const BRANDZ={
+  head:['Petzl','Black Diamond','Ledlenser','Nitecore','Fenix','Buff','Outdoor Research','mont-bell','Arc\'teryx','The North Face','Patagonia'],
+  eyes:['Oakley','Julbo','Smith','POC','Bollé','Rudy Project','Ray-Ban','goodr'],
+  torso:['Arc\'teryx','The North Face','Patagonia','mont-bell','Mammut','Rab','Norrøna','Haglöfs','Fjällräven','Mountain Hardwear','Outdoor Research','Columbia','Montane','Icebreaker','Smartwool','歐都納 Atunas','荒野 WILDLAND','山林 Mountneer','Kailas','迪卡儂 Decathlon'],
+  pack:['Osprey','Gregory','Deuter','Mystery Ranch','Hyperlite Mountain Gear','Zpacks','Granite Gear','ULA','Salomon','Ultimate Direction','Black Diamond','Arc\'teryx','mont-bell','山頂鳥 Hilltop'],
+  cam:['Sony','Insta360','GoPro','DJI','Canon','Nikon','Fujifilm','Ricoh','Peak Design'],
+  wrist:['Garmin','COROS','Suunto','Apple','Polar','Casio'],
+  hands:['LEKI','Black Diamond','Komperdell','Fizan','Hestra','Outdoor Research','mont-bell','The North Face','Showa'],
+  legs:['Arc\'teryx','mont-bell','Patagonia','The North Face','Fjällräven','Mammut','Haglöfs','Kühl','Outdoor Research','Columbia','歐都納 Atunas','荒野 WILDLAND'],
+  feet:['Salomon','La Sportiva','HOKA','Merrell','Scarpa','LOWA','Asolo','Altra','KEEN','Kahtoola','Hillsound','Grivel','Darn Tough','Injinji']};
+const brandsFor=z=>[...new Set([...GS.items.filter(i=>i.zone===z&&i.brand).map(i=>i.brand),...(BRANDZ[z]||[])])];
 
 function gearRender(){
   const all=GS.items,c=k=>all.filter(i=>i.status===k).length,wt=f=>all.filter(i=>i.g&&f(i)).reduce((a,i)=>a+i.g,0);
@@ -2686,7 +2697,7 @@ function gearEdit(id,zone){
   const {ed,close}=gOpen('<form class="ge" novalidate><div class="ge-top"><button type="button" class="ge-x" aria-label="不儲存，回到裝備">‹ 返回</button>'+(id?'<button type="button" class="ge-del" id="geDel">刪除</button>':'')+'</div>'+
     '<small class="ge-k">'+E(ZONES[it.zone])+(id?'':'・新增')+'</small>'+
     '<label class="ge-f ge-name"><span class="sr">名稱</span><input name="name" list="geNames" value="'+E(it.name)+'" placeholder="裝備名稱" autocomplete="off" required'+(id?'':' autofocus')+'></label>'+
-    '<datalist id="geNames">'+names.map(n=>'<option value="'+E(n)+'">').join('')+'</datalist><datalist id="geBrands">'+BRANDS.map(n=>'<option value="'+E(n)+'">').join('')+'</datalist>'+
+    '<datalist id="geNames">'+names.map(n=>'<option value="'+E(n)+'">').join('')+'</datalist><datalist id="geBrands">'+brandsFor(it.zone).map(n=>'<option value="'+E(n)+'">').join('')+'</datalist>'+
     '<div class="ge-row"><label class="ge-f"><span>品牌</span><input name="brand" list="geBrands" value="'+E(it.brand)+'" placeholder="例如 mont-bell" autocomplete="off"></label>'+
     '<label class="ge-f ge-g"><span>重量</span><input name="g" type="number" inputmode="numeric" min="0" max="99999" value="'+(it.g||'')+'" placeholder="—"><em>公克</em></label></div>'+
     '<fieldset class="ge-f"><legend>狀態</legend>'+radio('status',it.status,[['own','自有','own'],['borrow','借用','borrow'],['none','未登錄','none']])+'</fieldset>'+
@@ -2704,6 +2715,7 @@ function gearEdit(id,zone){
       if(newPhoto){const key='gear:'+it.id;it.photo=key;GPH[key]=URL.createObjectURL(newPhoto);window.YY.IDB.put(key,newPhoto).catch(()=>window.YY.say('照片沒存到，請再試一次',true))}
       if(!GS.items.includes(it))GS.items.push(it);gSave();gearRender();window.YY.say(id?'已更新「'+it.name+'」':'已新增「'+it.name+'」');
     },id?'編輯「'+it.name+'」':'新增裝備',()=>document.querySelector('#glist .gi[data-id="'+it.id+'"]')||document.querySelector('#glist .gadd[data-z="'+it.zone+'"]'));
+  ed.querySelector('[name=zone]').addEventListener('change',e=>{ed.querySelector('#geBrands').innerHTML=brandsFor(e.target.value).map(n=>'<option value="'+E(n)+'">').join('')});
   const pick=()=>{const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=async()=>{const fl=i.files&&i.files[0];if(!fl)return;try{newPhoto=await window.YY.shrink(fl,1000,false);dropPhoto=false;
       const box=ed.querySelector('#gePhImg'),u=URL.createObjectURL(newPhoto);box.outerHTML='<img src="'+u+'" alt="這件裝備的照片" id="gePhImg">';ed.querySelector('#gePh').textContent='換一張'}catch(e){window.YY.say('這張照片讀不了，換一張試試',true)}};i.click()};
   ed.querySelector('#gePh').onclick=pick;
