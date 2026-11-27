@@ -731,6 +731,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gb-off-h{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 0;padding-top:14px;border-top:1px dashed rgba(238,241,236,.14);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}.gb-off-h i{font-style:normal;letter-spacing:.08em;color:rgba(238,241,236,.62)}
 .gsw.off .gs-t{opacity:.62;filter:saturate(.4);background:none;box-shadow:inset 0 0 0 1px rgba(238,241,236,.22);outline:1px dashed rgba(238,241,236,.22);outline-offset:-5px}.gsw.off .gs-n{color:rgba(238,241,236,.62)}.gsw.off .gs:hover .gs-t{opacity:.7;filter:none}
 .gb-more{display:block;margin:10px auto 0;min-height:44px}
+.gb-ghost{position:fixed;z-index:80;pointer-events:none;display:grid;place-items:center;border-radius:14px;background:rgba(26,40,64,.94);box-shadow:0 14px 32px rgba(0,0,0,.55),inset 0 0 0 1.5px #F4C152;transform:scale(1.1)}.gb-ghost svg,.gb-ghost img{width:72%;height:72%}
+.gs,.pds{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.dragsrc{opacity:.3}
+.dnd [data-zone]{border-radius:16px;transition:background .15s,box-shadow .15s}.dnd [data-zone].zone-on{background:rgba(244,193,82,.06);box-shadow:inset 0 0 0 1.5px rgba(244,193,82,.55)}
+.pds.tgt{box-shadow:inset 0 0 0 2px #F4C152,0 0 20px rgba(244,193,82,.45)}
 /* 打包 */
 .gb-h i{font-style:normal;margin:0 .3em;color:var(--t2)}
 .gb-sub2{display:block}.gb-sub2 b{margin:0 .15em}
@@ -2944,7 +2948,7 @@ function gearRender(){
   document.getElementById('gBody').onclick=bodyEdit;
   {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;document.getElementById('gPackB').innerHTML='<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
-  {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i&&i.color&&COL[i.color]?COL[i.color].c:null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
+  {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i?(i.color&&COL[i.color]?COL[i.color].c:PXC[iconOf(i)]||null):null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
   window.__gearLook&&window.__gearLook(window.__gearLookState);window.__gearTint&&window.__gearTint(window.__gearTintState);
   window.__gearRetip&&window.__gearRetip();
   if(BAG.open)bagRender();
@@ -3013,14 +3017,15 @@ function bagRender(){
   const pds=([k,z,verb])=>{const L=SL[k],f=L[0],on=BAG.pick===k||BAG.slot===k||(s&&here==='body'&&slotOf(s)===k);
     return '<div class="pdw"><button type="button" class="pds'+(f?'':' e')+(L.length>1?' stk':'')+(L.length>2?' stk3':'')+(on?' sel':'')+'" data-slot="'+k+'" data-ids="'+L.map(i=>i.id).join(' ')+'" aria-label="'+z+'：'+(f?E(L.map(i=>i.name).join('、'))+'。點一下看全部':'還沒有，點一下挑一件')+'">'+
       (f?icon(f)+(L.length>1?'<em>'+L.length+' 件</em>':''):'<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gs-'+SLOTSIL[k]+'"/></svg>')+'</button><span class="pdn'+(f?'':' z')+'">'+(f?E(f.name):z)+'</span></div>'};
-  const doll='<div class="gb-pd"><div class="gb-pdc">'+SLOTS.slice(0,4).map(pds).join('')+'</div>'+dollSVG(fill)+'<div class="gb-pdc">'+SLOTS.slice(4).map(pds).join('')+'</div></div>';
+  const doll='<div class="gb-pd" data-zone="body"><div class="gb-pdc">'+SLOTS.slice(0,4).map(pds).join('')+'</div>'+dollSVG(fill)+'<div class="gb-pdc">'+SLOTS.slice(4).map(pds).join('')+'</div></div>';
   pg.innerHTML='<div class="gb-in"><div class="gb-top"><button type="button" class="ge-x" id="gbX">‹ 返回</button><button type="button" class="ge-link" id="gbAdd">＋ 新增</button></div><h2 class="gb-h">整理<i>·</i>'+E(kitName())+'</h2>'+
     '<section class="gb-kit" aria-label="'+E(kitName())+'帶的"><div class="gb-kh"><h2>這套帶的</h2>'+(GS.body&&T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤<i>·</i><em>'+(T.carry/(GS.body*1000)<.1?'輕裝':T.carry/(GS.body*1000)<.2?'標準':'重裝')+'</em></span>':T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤</span>':'')+'</div>'+
       '<div class="gb-rl"><span>穿在身上</span><span>'+(miss?'還缺 <b>'+miss+'</b> 個部位':T.worn?'<b>'+kg(T.worn)+'</b> 公斤':'都穿好了')+'</span></div>'+doll+
-      '<div class="gb-rl"><span>放在背包</span><span><b>'+pack.length+'</b> 件'+(T.carry?'<i>·</i><b>'+kg(T.carry)+'</b> 公斤':'')+'</span></div>'+
-      (pack.length||store.length?(pack.length?'<div class="gb-grid" role="group" aria-label="放在背包">'+pack.map(slot).join('')+'</div>':'<p class="gb-empty">背包是空的，點下面沒帶的就帶上</p>')+(store.length?'<p class="gb-off-h"><span>沒帶的 '+store.length+' 件</span><i>點一下就帶上</i></p><div class="gb-grid" role="group" aria-label="沒帶的">'+(BAG.more||store.length<=4?store:store.slice(0,4)).map(i=>slot(i).replace('class="gsw"','class="gsw off"')).join('')+'</div>':'')+
-        (store.length>4?'<button type="button" class="ge-link gb-more" id="gbMore" aria-expanded="'+!!BAG.more+'">'+(BAG.more?'收起':'再看 '+(store.length-4)+' 件')+'</button>':''):'<p class="gb-empty">還沒有裝備，按右上角「＋ 新增」</p>')+'</section>'+
-    '<p class="gb-foot">點一下帶或不帶，點 <span class="gs-i0">i</span> 看詳細、修改</p></div>';
+      '<div class="gb-zone" data-zone="pack"><div class="gb-rl"><span>放在背包</span><span><b>'+pack.length+'</b> 件'+(T.carry?'<i>·</i><b>'+kg(T.carry)+'</b> 公斤':'')+'</span></div>'+
+      (pack.length?'<div class="gb-grid" role="group" aria-label="放在背包">'+pack.map(slot).join('')+'</div>':'<p class="gb-empty">'+(store.length?'背包是空的，把下面沒帶的點一下或拖上來':'還沒有裝備，按右上角「＋ 新增」')+'</p>')+'</div>'+
+      (store.length?'<div class="gb-zone" data-zone="store"><p class="gb-off-h"><span>沒帶的 '+store.length+' 件</span><i>點一下就帶上</i></p><div class="gb-grid" role="group" aria-label="沒帶的">'+(BAG.more||store.length<=4?store:store.slice(0,4)).map(i=>slot(i).replace('class="gsw"','class="gsw off"')).join('')+'</div>'+
+        (store.length>4?'<button type="button" class="ge-link gb-more" id="gbMore" aria-expanded="'+!!BAG.more+'">'+(BAG.more?'收起':'再看 '+(store.length-4)+' 件')+'</button>':'')+'</div>':'')+'</section>'+
+    '<p class="gb-foot">點一下帶或不帶，按住可以拖到身上或背包<br>點 <span class="gs-i0">i</span> 看詳細、修改</p></div>';
   v.prepend(pg);
   if(s){const d=document.createElement('div');d.className='gb-det';d.setAttribute('role','region');d.setAttribute('aria-label',s.name+' 的詳細資料');
     const on=s.zone==='pack'?'背上':s.zone==='cam'?'帶在身上':'穿上',acts=(here==='store'?[['body',on],['pack','放進背包']]:[[here==='body'?'pack':'body',here==='body'?'改放背包':'改成'+on],['store','這次不帶']]);
@@ -3097,6 +3102,27 @@ function bagRender(){
       if(!RMq()&&t.animate){t.animate([{transform:'translate('+(from.left-r.left)+'px,'+(from.top-r.top)+'px)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.2,.75,.25,1)'});nb.classList.add('land');setTimeout(()=>nb.classList.remove('land'),900)}
       const rr=nb.getBoundingClientRect();if(rr.top<60||rr.bottom>innerHeight-110)nb.scrollIntoView({block:'center',behavior:RMq()?'auto':'smooth'})}
     toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id)});
+
+  // drag & drop between the figure, the pack and what's left behind (finger: hold ~0.4s; mouse: just drag)
+  const dragItem=(el,getIt)=>{let hold=0,sx=0,sy=0,armed=false,on=false,gh=null,pid=0,zone=null,raf=0,lx=0,ly=0;
+    const zoneAt=(x,y)=>{const e=document.elementFromPoint(x,y),z=e&&e.closest('[data-zone]');return z&&pg.contains(z)?z:null};
+    const track=(x,y)=>{lx=x;ly=y;gh.style.left=(x-gh._dx)+'px';gh.style.top=(y-gh._dy)+'px';const z=zoneAt(x,y);if(z!==zone){zone&&zone.classList.remove('zone-on');zone=z;zone&&zone.classList.add('zone-on')}};
+    const begin=()=>{const it=getIt();if(!it)return;on=true;const src=el.querySelector('.gs-t')||el,r=src.getBoundingClientRect();
+      gh=document.createElement('div');gh.className='gb-ghost';gh.setAttribute('aria-hidden','true');gh.innerHTML=icon(it);Object.assign(gh.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});gh._dx=sx-r.left;gh._dy=sy-r.top;document.body.appendChild(gh);
+      el.classList.add('dragsrc');pg.classList.add('dnd');const t=v.querySelector('.pds[data-slot="'+slotOf(it)+'"]');t&&t.classList.add('tgt');try{el.setPointerCapture(pid)}catch(e){}if(navigator.vibrate)try{navigator.vibrate(12)}catch(e){}
+      const loop=()=>{if(!on)return;const edge=ly<80?-9:ly>innerHeight-90?9:0;if(edge){v.scrollTop+=edge;track(lx,ly)}raf=requestAnimationFrame(loop)};raf=requestAnimationFrame(loop)};
+    const end=ok=>{clearTimeout(hold);armed=false;if(!on)return;on=false;cancelAnimationFrame(raf);el.classList.remove('dragsrc');pg.classList.remove('dnd');v.querySelectorAll('.tgt,.zone-on').forEach(x=>x.classList.remove('tgt','zone-on'));gh&&gh.remove();gh=null;el._dragged=Date.now();
+      const it=getIt(),to=zone&&zone.dataset.zone;zone=null;if(ok&&it&&to&&to!==place(it)){const was=moveTo(it,to);gearRender();toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id);
+        const nb=to==='body'?v.querySelector('.pds[data-slot="'+slotOf(it)+'"]'):v.querySelector('.gs[data-id="'+it.id+'"]');if(nb){nb.classList.add('land');setTimeout(()=>nb.classList.remove('land'),900)}}};
+    el.addEventListener('pointerdown',e=>{if(e.button>0||e.target.closest('.gs-i'))return;pid=e.pointerId;sx=e.clientX;sy=e.clientY;armed=true;if(e.pointerType!=='mouse')hold=setTimeout(()=>{if(armed)begin()},380)});
+    el.addEventListener('pointermove',e=>{if(!armed&&!on)return;if(!on){const dd=Math.hypot(e.clientX-sx,e.clientY-sy);if(e.pointerType==='mouse'){if(dd>6)begin();else return}else if(dd>8){clearTimeout(hold);armed=false;return}else return}
+      if(!gh)return;e.preventDefault();track(e.clientX,e.clientY)});
+    el.addEventListener('touchmove',e=>{if(on)e.preventDefault()},{passive:false});
+    el.addEventListener('pointerup',()=>end(true));el.addEventListener('pointercancel',()=>end(false));
+    el.addEventListener('contextmenu',e=>{if(armed||on)e.preventDefault()});
+    el.addEventListener('click',e=>{if(Date.now()-(el._dragged||0)<400){e.stopImmediatePropagation();e.preventDefault()}},true)};
+  pg.querySelectorAll('.gs[data-id]').forEach(b=>dragItem(b,()=>GS.items.find(i=>i.id===b.dataset.id)));
+  pg.querySelectorAll('.pds:not(.e)').forEach(b=>dragItem(b,()=>GS.items.find(i=>i.id===b.dataset.ids.split(' ')[0])));
   pg.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>{BAG.pick=null;BAG.slot=null;BAG.sel=BAG.sel===b.dataset.info?null:b.dataset.info;bagRender();const f=v.querySelector('.gb-det [data-mv]')||v.querySelector('[data-info="'+b.dataset.info+'"]');f&&f.focus({preventScroll:true})});
   if(BAG.toast)drawToast();
   const sh=v.querySelector('.gb-det'),sl=v.querySelector('.pds.sel');if(sh){pg.querySelector('.gb-in').style.paddingBottom=(sh.offsetHeight+40)+'px';
@@ -3267,7 +3293,7 @@ const big=new THREE.Group();big.visible=false;R.torso.add(big);
 // which kit is on him: vest, big pack, crampons
 window.__gearTint=o=>{o=o||{};const G={torso:[[C.jacket,.42],[C.jacketHi,.5]],legs:[[C.pants,.38]],feet:[[C.shoe,.42]],back:[[C.vest,.42],[C.vestHi,.52],[0x2f4a3c,.42],[0x23382d,.34]]};
   for(const[k,L]of Object.entries(G))for(const[c,lv]of L)(TM[c]||[]).forEach(m=>{if(!o[k]){m.color.setHex(c);return}const col=new THREE.Color(o[k]),hsl={};col.getHSL(hsl);m.color.setHSL(hsl.h,hsl.s*.9,Math.min(.62,hsl.l*lv/.5))})};
-window.__gearTintState&&window.__gearTint(window.__gearTintState);
+setTimeout(()=>window.__gearTintState&&window.__gearTint(window.__gearTintState));// after the arms and legs below exist
 window.__gearLook=o=>{o=o||{};vest.visible=o.pack==='vest';big.visible=o.pack==='pack';(R.cramps||[]).forEach(c=>c.visible=!!o.crampon)};
 window.__gearLook(window.__gearLookState||{pack:'vest'});
 // action camera on the right strap
