@@ -741,7 +741,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gready{position:absolute;left:0;right:0;top:60px;z-index:4;text-align:center;pointer-events:none}.gready>*{pointer-events:auto}
 .gready small{display:block;font:500 11px var(--body);letter-spacing:.32em;color:#F4C152}.gready b{display:block;margin-top:6px;font:600 28px/1.2 var(--display);color:var(--t1);text-shadow:0 2px 18px rgba(244,193,82,.35)}
 .gready p{margin:4px 0 0;font:400 14px var(--body);color:var(--t2)}.gready button{margin-top:2px;min-height:44px}
-.gearv.ready .gwt2,.gearv.ready .ghint,.gearv.ready .ghd .gsub,.gearv.ready .gdots,.gearv.ready #gSortB,.gearv:not(.ready) .gready-x{display:none}.gready-x i{margin:0 4px 0 0!important}
+.gearv.ready .gwt2,.gearv.ready .ghint,.gearv.ready .ghd .gsub,.gearv.ready .gdots{display:none}
+.ggo.cancel{background:none;color:#F4C152;box-shadow:inset 0 0 0 1.5px #F4C152}
 .gearv.ready .gready{animation:gReadyIn .5s cubic-bezier(.2,.8,.2,1) both}@keyframes gReadyIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.gearv.ready .gready{animation:none}}
 /* 打包 */
@@ -1345,7 +1346,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
       <div class="gwt2" id="gW"></div>
       <p class="ghint" id="ghint">左右拖曳轉一圈・點身上看穿了什麼</p>
       <div class="gready" id="gReady" hidden><small>都 帶 齊 了 ・ <span id="gReadyN">0</span> 件</small><b>準備出發</b></div>
-      <div class="gact"><button type="button" class="glk gready-x" id="gReadyX"><i aria-hidden="true">‹</i>取消準備</button><button type="button" class="glk" id="gSortB"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#gi-pack"/></svg>整理裝備<i aria-hidden="true">›</i></button><button type="button" class="ggo" id="gPackB"><i aria-hidden="true">✓</i>開始打包</button></div>
+      <div class="gact"><button type="button" class="glk" id="gSortB"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#gi-pack"/></svg>整理裝備<i aria-hidden="true">›</i></button><button type="button" class="ggo" id="gPackB"><i aria-hidden="true">✓</i>開始打包</button></div>
       <div class="gload" id="gload">載入角色中…</div>
     </div>
   </section>
@@ -2850,7 +2851,7 @@ window.YY={IDB,shrink,say};
 let G3=null,want=false;
 const GV=document.getElementById('gearView');GV.tabIndex=-1;GV.addEventListener('scroll',()=>GV.classList.toggle('scrolled',GV.scrollTop>8),{passive:true});
 window.__gearOpen=async()=>{want=true;if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
-    G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；背包照常可以打開';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
+    G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){console.warn('gear3d',e);const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；背包照常可以打開';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
 if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
 // ---------- gear: his own kit, kept on the phone (localStorage + photos in IndexedDB) ----------
@@ -2956,7 +2957,7 @@ function gearRender(){
   document.getElementById('gSub').innerHTML=T.weighed?'共 <b>'+kg(T.carry+T.worn)+'</b> 公斤':'還沒秤重';
   document.getElementById('gW').innerHTML=(T.weighed?'<p class="gw1"><span>背的 <b>'+kg(T.carry)+'</b> 公斤</span><i>·</i><span>穿的 <b>'+(T.worn?kg(T.worn):'—')+'</b> 公斤</span></p>':'')+loadHTML(T.carry,'gBody');
   document.getElementById('gBody').onclick=bodyEdit;
-  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;document.getElementById('gPackB').innerHTML='<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
+  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
   {const rd=!!(PK.ready&&PK.kit===GS.kit&&T.all.length&&T.all.every(i=>PK.ids.includes(i.id))),g=document.getElementById('gReady');if(g){g.hidden=!rd;document.getElementById('gearView').classList.toggle('ready',rd);if(rd)document.getElementById('gReadyN').textContent=T.all.length}window.__gearReady&&window.__gearReady(rd)}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
   {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i?(i.color&&COL[i.color]?COL[i.color].c:PXC[iconOf(i)]||null):null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
@@ -3216,8 +3217,7 @@ function bodyEdit(){
       GS.body=Math.round(v*10)/10;try{localStorage.setItem(BKEY,String(GS.body))}catch(e){}gearRender()},'你的體重',()=>document.getElementById('gBody')||document.getElementById('gSortB'));
 }
 document.getElementById('gSortB').onclick=()=>bagOpen('sort');
-document.getElementById('gReadyX').onclick=()=>{PK.ready=false;pSave();gearRender();window.YY.say('取消準備');document.getElementById('gPackB').focus()};
-document.getElementById('gPackB').onclick=()=>bagOpen('pack');
+document.getElementById('gPackB').onclick=()=>{if(document.getElementById('gearView').classList.contains('ready')){PK.ready=false;pSave();gearRender();window.YY.say('取消準備，回到一般模式');return}bagOpen('pack')};
 gearRender();gPhoto().then(()=>{if(GS.items.some(i=>i.photo))gearRender()});
 function build(THREE,OrbitControls,RoundedBoxGeometry){
 
@@ -3250,7 +3250,7 @@ const fill=new THREE.DirectionalLight(0x8fb0de,0.6);fill.position.set(-3,1.2,2);
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;
   scene.add(new THREE.Mesh(g,new THREE.MeshStandardMaterial({map:tex,transparent:true,roughness:1})));
   const sh=new THREE.Mesh(g.clone(),new THREE.ShadowMaterial({opacity:.45}));sh.position.y=0.002;sh.receiveShadow=true;scene.add(sh);
-  const ring=new THREE.Mesh(new THREE.RingGeometry(0.46,0.475,96).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0xf4c152,transparent:true,opacity:.35}));ring.position.y=0.004;scene.add(ring)}
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.46,0.475,96).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0xf4c152,transparent:true,opacity:.35}));ring.position.y=0.004;scene.add(ring);scene.userData.ring=ring}
 
 /* ---------- the chibi: built from soft shapes, outlined like a game sprite ---------- */
 const C={skin:0xd7a37a,skinSh:0xc48c64,hair:0x15161a,jacket:0x17191f,jacketHi:0x23262d,vest:0x2d3139,vestHi:0x3b404a,pants:0x111216,shoe:0x1e2026,sole:0xd8d2c6,orange:0xf08a2c,flask:0x2b2f36};
@@ -3360,7 +3360,7 @@ const stub=mesh(new THREE.TorusGeometry(0.05,0.012,6,18,Math.PI*0.7),new THREE.M
 
 /* ---------- motion: breathing, weight shift, glances, blinks; tap = wave ---------- */
 let wave=0;const t0=performance.now();let nextBlink=1.5,blink=0,look=0,lookT=0,lookTo=0,nextLook=3;
-function animate(t,dt){rk+=(readyTo-rk)*Math.min(1,dt*(readyTo?5:4));if(hop>0)hop=Math.max(0,hop-dt);if(RM){poseReady(t);return}
+function animate(t,dt){rk+=(readyTo-rk)*Math.min(1,dt*(readyTo?5:4));if(hop>0)hop=Math.max(0,hop-dt);if(RM){poseReady(t,dt);return}
   const br=Math.sin(t*1.6);R.torso.scale.set(1+0.012*br,1+0.018*br,1+0.012*br);R.hips.position.y=0.36+0.006*Math.sin(t*1.6+0.6);
   root.rotation.z=0.015*Math.sin(t*0.5);R.hips.rotation.y=0.04*Math.sin(t*0.5);
   if(t>nextLook){lookTo=(Math.random()-0.5)*0.7;nextLook=t+2.5+Math.random()*3}look+=(lookTo-look)*Math.min(1,dt*3);
@@ -3371,11 +3371,24 @@ function animate(t,dt){rk+=(readyTo-rk)*Math.min(1,dt*(readyTo?5:4));if(hop>0)ho
   if(wave>0){wave=Math.max(0,wave-dt);const k=Math.min(1,Math.min(wave,2.4-wave)*3);const a=R['arm-1'];
     a.rotation.z=THREE.MathUtils.lerp(-0.12,-2.5,k);a.rotation.x=THREE.MathUtils.lerp(0,-0.2,k);R['elb-1'].rotation.z=k*0.5*Math.sin(t*12);R['elb-1'].rotation.x=THREE.MathUtils.lerp(-0.25,-0.5,k);
     R.head.rotation.z+=0.1*k;}
-  for(const s of[-1,1])R['leg'+s].rotation.x=0;poseReady(t)}
+  for(const s of[-1,1])R['leg'+s].rotation.x=0;poseReady(t,dt)}
 function sayHi(){if(!RM&&wave<=0)wave=2.4}
+// 'ready' fire: a warm glow pool, flame tongues round the ring and embers drifting up
+const FX=new THREE.Group();FX.visible=false;scene.add(FX);
+const tex=(w,h,paint)=>{const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t};
+const glowT=tex(128,128,(x,w)=>{const g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(255,220,130,.85)');g.addColorStop(.5,'rgba(244,170,60,.4)');g.addColorStop(1,'rgba(240,110,30,0)');x.fillStyle=g;x.fillRect(0,0,w,w)});
+const flameT=tex(64,128,(x,w,h)=>{const g=x.createRadialGradient(32,104,2,32,92,60);g.addColorStop(0,'rgba(255,246,200,1)');g.addColorStop(.25,'rgba(255,200,80,.95)');g.addColorStop(.6,'rgba(244,120,40,.55)');g.addColorStop(1,'rgba(200,60,20,0)');x.fillStyle=g;x.beginPath();x.moveTo(32,4);x.bezierCurveTo(52,48,62,86,32,124);x.bezierCurveTo(2,86,12,48,32,4);x.fill()});
+const glow=new THREE.Mesh(new THREE.PlaneGeometry(1.7,1.7).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({map:glowT,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));glow.position.y=0.008;FX.add(glow);
+const FL=[];for(let i=0;i<22;i++){const a=i/22*Math.PI*2,sp=new THREE.Sprite(new THREE.SpriteMaterial({map:flameT,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));sp.center.set(0.5,0.02);sp.position.set(Math.cos(a)*0.47,0.004,Math.sin(a)*0.47);sp.userData={ph:Math.random()*6.3,sp:5+Math.random()*4};FX.add(sp);FL.push(sp)}
+const EN=36,eg=new THREE.BufferGeometry(),ep=new Float32Array(EN*3),ev=[];for(let i=0;i<EN;i++){const a=Math.random()*6.3,r=0.3+Math.random()*0.25;ep[i*3]=Math.cos(a)*r;ep[i*3+1]=Math.random()*0.9;ep[i*3+2]=Math.sin(a)*r;ev.push(0.25+Math.random()*0.35)}
+eg.setAttribute('position',new THREE.BufferAttribute(ep,3));const embers=new THREE.Points(eg,new THREE.PointsMaterial({color:0xffc56a,size:0.022,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));FX.add(embers);
+function fxTick(t,dt,e){FX.visible=e>0.02;{const rg=scene.userData.ring;if(rg){rg.material.opacity=0.35+0.55*e;rg.material.color.setRGB(0.957+0.04*e,0.757+0.05*e,0.322-0.1*e)}}if(!FX.visible)return;
+  glow.material.opacity=e*(RM?0.9:0.8+0.2*Math.sin(t*7.3)*Math.sin(t*3.1));
+  FL.forEach(f=>{const u=f.userData,fl=RM?0.8:0.65+0.35*Math.abs(Math.sin(t*u.sp+u.ph))*(0.7+0.3*Math.sin(t*13+u.ph));f.scale.set(0.09*e,0.26*e*fl,1);f.material.opacity=e*(0.75+0.25*fl)});
+  embers.material.opacity=e*0.9;if(RM)return;const P=eg.attributes.position;for(let i=0;i<EN;i++){let y=P.getY(i)+ev[i]*dt;if(y>1.1){y=0;const a=Math.random()*6.3,r=0.3+Math.random()*0.25;P.setX(i,Math.cos(a)*r);P.setZ(i,Math.sin(a)*r)}else P.setX(i,P.getX(i)+Math.sin(t*3+i)*0.0015);P.setY(i,y)}P.needsUpdate=true}
 let readyTo=0,rk=0;window.__gearReady=on=>{readyTo=on?1:0;if(on&&!RM)hop=0.5;if(RM){rk=readyTo;poseReady(0)}};let hop=0;
 // game-style 'ready': camera leans in, feet set wide, one fist up, the other at the chest, eyes narrowed
-function poseReady(t){const k=rk;if(k<=0.001&&cam.zoom===1&&!R.torso.rotation.x)return;const e=k<=0.001?0:k*k*(3-2*k);cam.zoom=1+0.16*e;if(e>0)cam.setViewOffset(W(),H(),0,-H()*0.045*e,W(),H());else cam.clearViewOffset();cam.updateProjectionMatrix();for(const s of[-1,1])R['leg'+s].rotation.z=0.13*s*e;R.torso.rotation.x=0.07*e;if(e===0)return;
+function poseReady(t,dt=0.016){const k=rk;fxTick(t,dt,k<=0.001?0:k*k*(3-2*k));if(k<=0.001&&cam.zoom===1&&!R.torso.rotation.x)return;const e=k<=0.001?0:k*k*(3-2*k);cam.zoom=1+0.16*e;if(e>0)cam.setViewOffset(W(),H(),0,-H()*0.045*e,W(),H());else cam.clearViewOffset();cam.updateProjectionMatrix();for(const s of[-1,1])R['leg'+s].rotation.z=0.13*s*e;R.torso.rotation.x=0.07*e;if(e===0)return;
   const L=THREE.MathUtils.lerp,A=R['arm1'],B=R['arm-1'];A.rotation.z=L(A.rotation.z,2.75,e);A.rotation.x=L(A.rotation.x,-0.15,e);R['elb1'].rotation.x=L(R['elb1'].rotation.x,-1.9,e);
   B.rotation.x=L(B.rotation.x,-1.15,e);B.rotation.z=L(B.rotation.z,-0.25,e);R['elb-1'].rotation.x=L(R['elb-1'].rotation.x,-1.7,e);
   R.head.rotation.x+=0.06*e;R.eyes.forEach(x=>x.scale.y*=1-0.4*e);R.hips.position.y-=0.02*e+(hop>0?Math.sin(hop/0.5*Math.PI)*0.06:0)}
