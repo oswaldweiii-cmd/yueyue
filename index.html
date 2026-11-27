@@ -681,8 +681,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gb-pk-add{display:block;margin:12px auto 0;min-height:44px}
 
 /* inner screens: same language as the other pages */
-.gbag{background:linear-gradient(180deg,rgba(11,22,38,.74),rgba(11,22,38,.93));-webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1)}
-.gedit{background:linear-gradient(180deg,rgba(11,22,38,.9),rgba(11,22,38,.97));-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.gbag,.gedit{background:none}
+.gbag::before,.gedit::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(11,22,38,.62),rgba(11,22,38,.9));-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.gedit::before{background:linear-gradient(180deg,rgba(11,22,38,.88),rgba(11,22,38,.96))}
+.gedit:not([hidden])~.gbag{visibility:hidden}
+.ge-ic span{border-radius:0}
+@media (min-width:900px){.gbag::before,.gedit::before{left:auto;width:520px}body.bagopen .gstage{width:calc(100% - 520px)}}
 @media (min-width:900px){.gbag.in{box-shadow:0 0 0 100vmax rgba(8,15,27,.55)}}
 .ggo,.ge-save{min-height:56px;border-radius:12px;font:700 14px/1 var(--body);letter-spacing:.08em;padding-left:24px;padding-right:24px}.ggo{min-height:48px}
 .gb-kit{margin:18px 0 0;padding:16px 0 4px;background:none;box-shadow:none;border-radius:0;border-top:1px solid rgba(238,241,236,.12)}
@@ -2907,8 +2911,8 @@ const BAG={open:false,mode:'sort',sel:null,toast:null};
 let bTimer=0,tTimer=0;
 function bagOpen(mode){clearTimeout(bTimer);BAG.open=true;BAG.mode=mode||'sort';BAG.sel=null;BAG.pick=null;BAG.toast=null;const v=document.getElementById('gbag'),app=document.getElementById('app');
   if(BAG.mode==='pack'){if(PK.kit!==GS.kit){PK={on:true,kit:GS.kit,ids:[],t:Date.now()};pSave()}else PK.on=true}
-  v.setAttribute('aria-label',BAG.mode==='pack'?'打包清單':'整理裝備');BAG.back=document.activeElement;v.hidden=false;v.scrollTop=0;app.inert=true;bagRender();requestAnimationFrame(()=>v.classList.add('in'));setTimeout(()=>{const f=v.querySelector('#gbX');f&&f.focus({preventScroll:true})},60)}
-function bagClose(){BAG.open=false;PK.on=false;clearTimeout(tTimer);const v=document.getElementById('gbag'),app=document.getElementById('app');v.classList.remove('in');app.inert=false;
+  document.body.classList.add('bagopen');v.setAttribute('aria-label',BAG.mode==='pack'?'打包清單':'整理裝備');BAG.back=document.activeElement;v.hidden=false;v.scrollTop=0;app.inert=true;bagRender();requestAnimationFrame(()=>v.classList.add('in'));setTimeout(()=>{const f=v.querySelector('#gbX');f&&f.focus({preventScroll:true})},60)}
+function bagClose(){document.body.classList.remove('bagopen');BAG.open=false;PK.on=false;clearTimeout(tTimer);const v=document.getElementById('gbag'),app=document.getElementById('app');v.classList.remove('in');app.inert=false;
   bTimer=setTimeout(()=>{v.hidden=true;v.innerHTML=''},RMq()?0:220);gearRender();try{(BAG.back&&document.contains(BAG.back)?BAG.back:document.getElementById('gSortB')).focus({preventScroll:true})}catch(e){}}
 // Tab stays inside
 document.addEventListener('keydown',e=>{if(!BAG.open||!document.getElementById('gedit').hidden||e.key!=='Tab')return;const v=document.getElementById('gbag'),a=document.activeElement;
