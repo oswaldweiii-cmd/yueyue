@@ -721,8 +721,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gl-bag{color:#F4C152}
 .gl-mv{width:44px;height:44px;flex:none;padding:0;background:none;border:0;font:400 18px var(--body);color:var(--t2);cursor:pointer}.gl-mv:hover{color:var(--t1)}.gl-mv[disabled]{opacity:.2;cursor:default}
 .gl-note{margin:12px 0 0;text-align:center;font:400 11px var(--body);letter-spacing:.08em;color:var(--t2)}
-.gb-off-h{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 0;padding-top:14px;border-top:1px dashed rgba(238,241,236,.14);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}.gb-off-h i{font-style:normal;letter-spacing:.08em;color:rgba(238,241,236,.4)}
-.gsw.off .gs-t{opacity:.38;filter:saturate(.35)}.gsw.off .gs-n{color:rgba(238,241,236,.45)}.gsw.off .gs:hover .gs-t{opacity:.7;filter:none}
+.gb-off-h{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 0;padding-top:14px;border-top:1px dashed rgba(238,241,236,.14);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}.gb-off-h i{font-style:normal;letter-spacing:.08em;color:rgba(238,241,236,.62)}
+.gsw.off .gs-t{opacity:.62;filter:saturate(.4);background:none;box-shadow:inset 0 0 0 1px rgba(238,241,236,.22);outline:1px dashed rgba(238,241,236,.22);outline-offset:-5px}.gsw.off .gs-n{color:rgba(238,241,236,.62)}.gsw.off .gs:hover .gs-t{opacity:.7;filter:none}
 .gb-more{display:block;margin:10px auto 0;min-height:44px}
 /* 打包 */
 .gb-h i{font-style:normal;margin:0 .3em;color:var(--t2)}
@@ -2833,7 +2833,7 @@ window.__gearOpen=async()=>{want=true;if(matchMedia('(min-width:900px)').matches
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
 if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
 // ---------- gear: his own kit, kept on the phone (localStorage + photos in IndexedDB) ----------
-// three places, like a game inventory: 身上 (worn), 背包 (carried), 倉庫 (owned, not in this set)
+// three places, like a game inventory: 身上 (worn), 背包 (carried), 沒帶的 (owned, not in this set)
 const ZONES={head:'頭部',eyes:'眼部',torso:'上身',pack:'背包類',cam:'攝影',wrist:'手腕',hands:'手部',legs:'腿部',feet:'腳部'};
 const WORN_BY_ZONE={head:1,eyes:1,torso:1,wrist:1,hands:1,legs:1,feet:1,pack:0,cam:0};
 const SEED=[ // [zone,name,brand,note,borrowed,worn]
@@ -2958,7 +2958,7 @@ document.getElementById('gKitT').onclick=()=>{const p=document.getElementById('g
   const fin=ok=>{if(done)return;done=true;const v=i.value.trim();if(ok&&v&&v!==old){k.name=v;kSave();window.YY.say('已改名為「'+v+'」')}t.textContent='';gearRender();t.focus()};
   i.onclick=e=>e.stopPropagation();i.onkeydown=ev=>{ev.stopPropagation();if(ev.key==='Enter'){ev.preventDefault();fin(true)}else if(ev.key==='Escape'){ev.preventDefault();fin(false)}};i.onblur=()=>fin(true)};
 
-/* ---------- 整理裝備: this set on top (worn / carried), 倉庫 below; one tap moves a thing across ---------- */
+/* ---------- 整理裝備: this set on top (worn / carried), 沒帶的 dimmed below; one tap takes it or leaves it ---------- */
 const BAG={open:false,mode:'sort',sel:null,toast:null};
 let bTimer=0,tTimer=0;
 function bagOpen(mode){clearTimeout(bTimer);BAG.open=true;BAG.mode=mode||'sort';BAG.sel=null;BAG.pick=null;BAG.slot=null;BAG.toast=null;const v=document.getElementById('gbag'),app=document.getElementById('app');
@@ -3011,8 +3011,8 @@ function bagRender(){
     '<section class="gb-kit" aria-label="'+E(kitName())+'帶的"><div class="gb-kh"><h2>這套帶的</h2>'+(GS.body&&T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤<i>·</i><em>'+(T.carry/(GS.body*1000)<.1?'輕裝':T.carry/(GS.body*1000)<.2?'標準':'重裝')+'</em></span>':T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤</span>':'')+'</div>'+
       '<div class="gb-rl"><span>穿在身上</span><span>'+(miss?'還缺 <b>'+miss+'</b> 個部位':T.worn?'<b>'+kg(T.worn)+'</b> 公斤':'都穿好了')+'</span></div>'+doll+
       '<div class="gb-rl"><span>放在背包</span><span><b>'+pack.length+'</b> 件'+(T.carry?'<i>·</i><b>'+kg(T.carry)+'</b> 公斤':'')+'</span></div>'+
-      (pack.length||store.length?'<div class="gb-grid" role="group" aria-label="放在背包">'+pack.map(slot).join('')+(store.length?'<p class="gb-off-h"><span>沒帶的 '+store.length+' 件</span><i>點一下就帶上</i></p>'+(BAG.more||store.length<=4?store:store.slice(0,4)).map(i=>slot(i).replace('class="gsw"','class="gsw off"')).join(''):'')+'</div>'+
-        (store.length>4?'<button type="button" class="ge-link gb-more" id="gbMore" aria-expanded="'+!!BAG.more+'">'+(BAG.more?'收起':'展開全部 '+store.length+' 件')+'</button>':''):'<p class="gb-empty">還沒有裝備，按右上角「＋ 新增」</p>')+'</section>'+
+      (pack.length||store.length?(pack.length?'<div class="gb-grid" role="group" aria-label="放在背包">'+pack.map(slot).join('')+'</div>':'<p class="gb-empty">背包是空的，點下面沒帶的就帶上</p>')+(store.length?'<p class="gb-off-h"><span>沒帶的 '+store.length+' 件</span><i>點一下就帶上</i></p><div class="gb-grid" role="group" aria-label="沒帶的">'+(BAG.more||store.length<=4?store:store.slice(0,4)).map(i=>slot(i).replace('class="gsw"','class="gsw off"')).join('')+'</div>':'')+
+        (store.length>4?'<button type="button" class="ge-link gb-more" id="gbMore" aria-expanded="'+!!BAG.more+'">'+(BAG.more?'收起':'再看 '+(store.length-4)+' 件')+'</button>':''):'<p class="gb-empty">還沒有裝備，按右上角「＋ 新增」</p>')+'</section>'+
     '<p class="gb-foot">點一下帶或不帶，點 <span class="gs-i0">i</span> 看詳細、修改</p></div>';
   v.prepend(pg);
   if(s){const d=document.createElement('div');d.className='gb-det';d.setAttribute('role','region');d.setAttribute('aria-label',s.name+' 的詳細資料');
