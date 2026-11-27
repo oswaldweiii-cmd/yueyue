@@ -745,6 +745,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ggo.cancel{background:rgba(11,22,38,.62);color:#F4C152;box-shadow:inset 0 0 0 1.5px #F4C152;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}.gearv.ready .glk{text-shadow:0 1px 8px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8)}
 .gearv.ready .gready{animation:gReadyIn .5s cubic-bezier(.2,.8,.2,1) both}@keyframes gReadyIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.gearv.ready .gready{animation:none}}
+.gb-go{position:sticky;bottom:0;z-index:2;margin:20px -24px 0;padding:16px 24px calc(env(safe-area-inset-bottom,0px) + 18px);background:linear-gradient(180deg,rgba(11,22,38,0),rgba(11,22,38,.92) 35%)}.gb-go .ggo{width:100%;animation:gReadyIn .4s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion:reduce){.gb-go .ggo{animation:none}}
 /* 打包 */
 .gb-h i{font-style:normal;margin:0 .3em;color:var(--t2)}
 .gb-sub2{display:block}.gb-sub2 b{margin:0 .15em}
@@ -2331,7 +2333,7 @@ function renderDPage(p){
   more+=routeBlock(p);
   if(!bai)more+='<p class="s-foot">'+(sh?'名單為本地圖精選；海拔與座標取自 OpenStreetMap，少數取自 Wikidata。':'名單、海拔與座標：中文維基百科「臺灣小百岳」與 Wikidata；少數座標取自 OpenStreetMap。')+'</p>';
   if(r&&DBH&&(!bai||r.source==='補登'))more+='<button type="button" class="s-up" id="xMark">'+(bai?'取消補登':'取消登頂紀錄')+'</button>';
-  h+='<details class="dmore"><summary>完整資料<small>路線圖、剖面、每一站</small></summary><div class="dmore-b">'+more+'</div></details>';
+  h+='<details class="dmore" open><summary>完整資料<small>路線圖、剖面、每一站</small></summary><div class="dmore-b">'+more+'</div></details>';
   h+='<div class="dlead2"><button type="button" class="dghost s-act tomap" id="toMap">在地圖上看</button></div><div class="s2end">'+DPA.dawn+'</div></div>';
   return h;
 }
@@ -2656,7 +2658,7 @@ function renderChar(){
   more+='<h3 class="s-sub">稱號</h3><ol class="ladder">'+TITLES.map(([m,t],i)=>{const last=i===TITLES.length-1,nx=TITLES[i+1],al=n>=P.length;
     const got=last?al:G.lv>=m,cur=last?al:!al&&G.lv>=m&&(!nx||G.lv<nx[0]);
     return '<li class="'+(cur?'cur':got?'got':'')+'"><span class="num">'+(last?'100 座':'第 '+m+' 級')+'</span><span>'+t+'</span><small>'+(cur?'現在':got?'已達成':last?'完登全部百岳':fmt(LV[m-1])+' 點')+'</small></li>'}).join('')+'</ol>';
-  h+='<details class="dmore"'+(S.statMore?' open':'')+' id="sMore"><summary>完整資料<small>成就、進度圖、紀錄、稱號</small></summary><div class="dmore-b">'+more+'</div></details>';
+  h+='<details class="dmore"'+(S.statMore!==false?' open':'')+' id="sMore"><summary>完整資料<small>成就、進度圖、紀錄、稱號</small></summary><div class="dmore-b">'+more+'</div></details>';
   h+='<div class="s2end">'+DPA.dawn+'</div></div>';
   $('charBody').innerHTML=h;wireData();
   {const x=$('sNext');if(x)x.onclick=()=>NXT[0]&&openPeak(NXT[0].rank,true);const m=$('sMore');if(m)m.ontoggle=()=>{S.statMore=m.open};
@@ -3016,12 +3018,13 @@ function bagRender(){
       '<h2 class="gb-h">打包<i>·</i>'+E(kitName())+'</h2><p class="gb-sub gb-sub2" aria-live="polite">已放好 <b>'+done+'</b>／'+n+' 件'+(n&&done===n?'，都帶齊了':'')+'</p><div class="gb-prog" aria-hidden="true"><i style="width:'+(n?done/n*100:0).toFixed(1)+'%"></i></div>'+
       (n?['head','eyes','torso','hands','wrist','legs','feet','pack','cam'].concat(Object.keys(ZONES)).filter((z,q,a)=>a.indexOf(z)===q).map(z=>{const G=slotSort(T.all.filter(i=>i.zone===z));if(!G.length)return '';const gd=G.filter(i=>PK.ids.includes(i.id)).length;
           return '<p class="gl-h gp-h"><span>'+E(ZONES[z]||'其他')+'</span><i>'+gd+'／'+G.length+'</i></p><ul class="gb-pl">'+G.map(i=>{const pk=PK.ids.includes(i.id);return '<li><button type="button" class="gp'+(pk?' done':'')+'" role="checkbox" aria-checked="'+pk+'" data-pk="'+i.id+'"><span class="gp-t">'+icon(i)+'</span><span class="gp-n"><b>'+E(i.name)+'</b><small>'+(place(i)==='body'?(i.zone==='pack'?'背在身上':i.zone==='cam'?'帶在身上':'穿在身上'):'放在背包裡')+(i.borrow?'・借來的':'')+'</small></span><span class="gp-c" aria-hidden="true"></span></button></li>'}).join('')+'</ul>'}).join('')
-        :'<p class="gb-say">這套還沒有裝備，先到「整理裝備」把要帶的放進來。</p>')+'</div>';
+        :'<p class="gb-say">這套還沒有裝備，先到「整理裝備」把要帶的放進來。</p>')+(n&&done===n?'<div class="gb-go"><button type="button" class="ggo" id="gbGo">準備出發</button></div>':'')+'</div>';
     v.prepend(pg);
     pg.querySelector('#gbX').onclick=bagClose;
     pg.querySelector('#gbPackClr').onclick=()=>{PK.ids=[];PK.ready=false;pSave();bagRender();v.querySelector('#gbX').focus()};
-    pg.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk;PK.ids=PK.ids.includes(id)?PK.ids.filter(x=>x!==id):[...PK.ids,id];const all=T.all.every(i=>PK.ids.includes(i.id));PK.ready=all&&T.all.length>0&&PK.ids.includes(id);pSave();bagRender();
-      const nb=v.querySelector('[data-pk="'+id+'"]');nb&&nb.focus({preventScroll:true});if(PK.ready){window.YY.say('都帶齊了，準備出發');setTimeout(()=>{if(BAG.open&&BAG.mode==='pack'&&PK.ready)bagClose()},RMq()?0:650)}});
+    pg.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk;PK.ids=PK.ids.includes(id)?PK.ids.filter(x=>x!==id):[...PK.ids,id];const all=T.all.every(i=>PK.ids.includes(i.id));if(!all)PK.ready=false;pSave();bagRender();
+      const nb=v.querySelector('[data-pk="'+id+'"]');nb&&nb.focus({preventScroll:true});if(all&&T.all.length&&PK.ids.includes(id))window.YY.say('都帶齊了，按下面的「準備出發」')});
+    const go=pg.querySelector('#gbGo');if(go)go.onclick=()=>{PK.ready=true;pSave();bagClose()};
     return}
   const by=p=>GS.items.filter(i=>place(i)===p),body=by('body'),pack=by('pack'),store=by('store');
   const slot=i=>'<div class="gsw"><button type="button" class="gs'+(BAG.sel===i.id?' sel':'')+'" data-id="'+i.id+'" aria-label="'+E(i.name)+(i.borrow?'，借來的':'')+'。'+(place(i)==='store'?'點一下帶上「'+E(kitName())+'」':'點一下改成不帶')+'">'+
