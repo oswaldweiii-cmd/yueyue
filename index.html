@@ -1053,6 +1053,11 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .dpair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .dwarn{display:block;color:#F0A35E!important;font-weight:500}
 .sp .dmore .xprule,.sp .dmore .ab,.sp .dmore .badges{margin-top:10px}
+.dverify{display:flex;flex-direction:column;gap:12px;margin-top:4px}.dverify .dnote{text-align:left;line-height:1.6}.dverify b,.mcard b{font-weight:700;color:var(--gold)}.dverify b.ag,.mcard b.ag{color:#D5DDE6}
+.dverify [hidden],.vstep:empty{display:none}.vstep{display:flex;flex-direction:column;gap:6px}.vmsg{margin:0;font:400 14px/1.6 var(--body);color:#C8D3E2}.vmsg.ok{font:500 18px/1.4 var(--display);color:#8FD3A8}.vmsg.bad{color:#F2A37B}
+.dmedal{margin:0;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--gold)}.dmedal.ag{color:#D5DDE6}
+.mcard .mkick{margin:0 0 6px;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--gold)}.mcard>p{line-height:1.7}.mcard .dbtn{margin-top:18px}
+.mlater{display:block;margin:8px auto 0;min-height:44px;padding:0 16px;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px}
 .dman{margin-top:4px}.dman>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;min-height:44px;font:500 18px var(--body);color:#C8D3E2;text-decoration:underline;text-underline-offset:4px}
 .dman>summary::-webkit-details-marker{display:none}.dman[open]>summary{color:var(--ink)}.dman .dghost{margin-top:10px}
 .dvf{margin-left:10px;padding:3px 9px;border-radius:10px;border:1px solid rgba(244,193,82,.5);font:500 14px/1.3 var(--body);color:#F4C152;vertical-align:3px}
@@ -1364,6 +1369,15 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
     <div id="sheetBody"></div>
   </section>
 
+  <div class="help" id="migr" role="dialog" aria-modal="true" aria-labelledby="migrT" hidden>
+    <div class="hcard mcard">
+      <p class="mkick">規則更新</p><h2 id="migrT">登頂要驗證了</h2>
+      <p>從現在起，只有兩種算登頂：<b class="ag">山頂打卡</b>（定位＋拍三角點，銀章），和<b>上傳手錶軌跡</b>（經過山頂 50 公尺內，金章）。手動補登不再算。</p>
+      <p>手機上這 <b id="migrN">0</b> 筆舊紀錄會清空重來。清空前，先存一份備份檔。以前的手錶軌跡，之後可以重新上傳。</p>
+      <button type="button" class="dbtn" id="migrGo">備份並清空</button>
+      <button type="button" class="mlater" id="migrLater">之後再說</button>
+    </div>
+  </div>
   <div class="help" id="help" role="dialog" aria-modal="true" aria-labelledby="helpT" hidden>
     <div class="hcard">
       <h2 id="helpT">怎麼看這張地圖</h2>
@@ -2135,11 +2149,11 @@ function edName(n){const m=String(n).match(/^(.+?)(大山|主山|主峰|[東西�
   return '<h2 class="dname" aria-label="'+esc(n)+'"><span class="nb">'+esc(a)+'</span>'+(b?'<span class="ns">'+esc(b)+'</span>':'')+'</h2>'}
 // a summit stamp (山頂章), like the ink stamps hikers collect: double ring, the date, the peak's name around the edge
 let stampSeq=0;
-function dStamp(p,r){const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[1]+'.'+d[2]:'',id='stp'+(++stampSeq),nm=String(p.name);
+function dStamp(p,r){const sc=r.verified==='checkin'?'#D5DDE6':'#F4C152';const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[1]+'.'+d[2]:'',id='stp'+(++stampSeq),nm=String(p.name);
   return '<svg class="dstamp" viewBox="0 0 120 120" role="img" aria-label="'+esc(nm)+' '+dt+' 登頂"><defs><path id="'+id+'" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0"/>'+
     '<filter id="'+id+'f"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="'+(p.rank%9)+'"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs>'+
-    '<g filter="url(#'+id+'f)" fill="none" stroke="#F4C152"><circle cx="60" cy="60" r="55" stroke-width="2.6"/><circle cx="60" cy="60" r="33" stroke-width="1.2"/></g>'+
-    '<g filter="url(#'+id+'f)" fill="#F4C152"><text class="sring"><textPath href="#'+id+'" startOffset="50%" text-anchor="middle">月岳・'+esc(nm)+'・'+fmt(p.h)+'M</textPath></text>'+
+    '<g filter="url(#'+id+'f)" fill="none" stroke="'+sc+'"><circle cx="60" cy="60" r="55" stroke-width="2.6"/><circle cx="60" cy="60" r="33" stroke-width="1.2"/></g>'+
+    '<g filter="url(#'+id+'f)" fill="'+sc+'"><text class="sring"><textPath href="#'+id+'" startOffset="50%" text-anchor="middle">月岳・'+esc(nm)+'・'+fmt(p.h)+'M</textPath></text>'+
     '<text x="60" y="61" text-anchor="middle" class="sbigc">登頂</text><text x="60" y="78" text-anchor="middle" class="sdate">'+esc(dt)+'</text>'+
     '<path d="M60 26 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/></g></svg>'}
 /* ---------- 音效：全部用程式合成（Web Audio），0 檔案；跟著手機靜音鍵，不打斷使用者的音樂 ---------- */
@@ -2280,7 +2294,7 @@ function celeCard(p,r,prev,ps){
   if(bai)BADGES.forEach(([nm,rs])=>{if(rs.includes(p.rank)){const d=rs.filter(x=>RECS[x]).length;lines.push(['成就',nm+' '+d+' / '+rs.length,d===rs.length?'全部集滿！':'再 '+(rs.length-d)+' 座'])}});
   if(bai&&NXT[0])lines.push(['下一關',esc(NXT[0].name),'難度 '+NXT[0].grade+' / 5']);
   if(ps.length>1)lines.push(['同一趟',ps.filter(x=>x!==p).map(x=>esc(x.name)).join('、'),'也一起點亮了']);
-  return '<div class="ce-card yytex"><button type="button" class="ce-snd" id="ceSnd"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="on" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button><p class="ce-k">登頂成功</p><h2 class="ce-n">'+esc(p.name)+'</h2><p class="ce-d">'+esc(r.date||'')+'・海拔 '+fmt(p.h)+' 公尺</p>'+
+  return '<div class="ce-card yytex"><button type="button" class="ce-snd" id="ceSnd"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="on" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button><p class="ce-k">登頂成功・'+(r.verified==='checkin'?'銀章':'金章')+'</p><h2 class="ce-n">'+esc(p.name)+'</h2><p class="ce-d">'+esc(r.date||'')+'・海拔 '+fmt(p.h)+' 公尺</p>'+
     '<div class="ce-xp"><b data-cnt="'+gain+'">+0</b><span>點</span></div>'+
     '<div class="ce-lv"><span>'+(lvUp?'升級！':'')+'第 '+G.lv+' 級・'+titleOf(G.lv)+'</span><span>'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升級')+'</span></div><div class="ce-bar"><i style="width:'+(from*100).toFixed(1)+'%" data-to="'+(to*100).toFixed(1)+'%"></i></div>'+
     (lines.length?'<div class="ce-lines">'+lines.map(l=>'<p><small>'+l[0]+'</small><b>'+l[1]+'</b><em>'+l[2]+'</em></p>').join('')+'</div>':'')+
@@ -2293,9 +2307,9 @@ function renderDPage(p){
   const huts=hutsOf(p),hut=huts[0];
   let h='<div class="dp yytex">';
   // hero: name, status, and the climb up to this summit
-  const d=r?(r.date||'').split('-'):null,vf=r?(r.verified==='gps'||parseTrack(r.track)?'手錶軌跡':r.verified==='photo'||r.photoId?'照片佐證':'自述'):'';
+  const d=r?(r.date||'').split('-'):null,vf=r?medalTxt(r):'';
   h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle ed">'+edName(p.name)+'<div class="dmeta"><p class="dk">'+(bai?'百岳・第 '+p.rank+' 高':sh?'小山':'小百岳・第 '+p.no+' 號')+'</p><p class="dnum">'+fmt(p.h)+'<small>m</small></p><p class="dk">海拔</p>'+
-    '</div></div></div>'+'<div class="dseam">'+(r?dStamp(p,r):'<p class="dstat2 '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div>';
+    '</div></div></div>'+'<div class="dseam">'+(r?dStamp(p,r)+'<p class="dmedal'+(r.verified==='checkin'?' ag':'')+'">'+medalTxt(r)+'</p>':'<p class="dstat2 '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div>';
   // three key numbers
   const kpi=[];
   if(bai)kpi.push(['難度',p.grade+'<u>/ 5</u>']);else kpi.push([sh?'小山':'小百岳',sh?esc(p.route):'第 '+p.no+' 號']);
@@ -2306,9 +2320,9 @@ function renderDPage(p){
   h+='<div class="dlead2">';
   if(r){const bits=[];if(+r.distanceKm)bits.push('走了 '+(+r.distanceKm).toFixed(1)+' 公里');if(+r.durationMin)bits.push('花了 '+durTxt(+r.durationMin));h+='<p>'+(bits.length?'你那次'+bits.join('，')+'。':'你在 '+esc(r.date||'')+' 登頂了這座山。')+'</p>'}
   else h+='<p>'+(bai?reason(p):sh?'不上鎖，出發前先確認路況和交通。':'郊山暖身，不上鎖，隨時可以去。')+'</p>';
-  if(bai&&!r&&DBH)h+='<details class="dman"><summary>以前爬過？補登這座山</summary><div class="xmark dmark"><input type="date" id="xDate" value="'+today+'" max="'+today+'" aria-label="登頂日期"><button type="button" class="dbtn" id="xMark">補登</button></div>'+
-    '<button type="button" class="dghost" id="mPhB">＋ 附一張山頂照（選填）</button><input type="file" id="mPh" accept="image/*" hidden><p class="dnote" style="text-align:left">有附照片標成「照片佐證」，沒有就是「自述」。有手錶軌跡的話，到「數據」上傳 GPX 最準。</p></details>';
-  if(!bai&&!r&&DBH)h+='<div class="xmark dmark"><input type="date" id="xDate" value="'+today+'" max="'+today+'" aria-label="登頂日期"><button type="button" class="dbtn" id="xMark">＋ 標記登頂</button></div>';
+  if(!r&&DBH)h+='<div class="dverify"><button type="button" class="dbtn" id="vChk">山頂打卡</button><div class="vstep" id="vStep" aria-live="polite"></div>'+
+    '<button type="button" class="dghost" id="vGpx">上傳當時的 GPX</button><input type="file" id="vCam" accept="image/*" capture="environment" hidden>'+
+    '<p class="dnote">只有兩種算登頂：在山頂打卡並拍三角點，拿<b class="ag">銀章</b>；上傳手錶軌跡、經過山頂 50 公尺內，拿<b>金章</b>。</p></div>';
   h+='</div>';
   // route
   h+='<section class="s2sec"><div class="s2hd"><h3>路線</h3><span>'+(t?esc(t.n):'整理中')+'</span></div>';
@@ -2348,7 +2362,7 @@ function renderDPage(p){
   if(p.set==='xiao'&&typeof XOFF!=='undefined'&&XOFF[p.no])more+='<h3 class="s-sub">官方步程</h3><p class="offs">'+esc(XOFF[p.no]).replace(/\n/g,'<br>')+'</p><p class="s-foot">來源：<a href="https://isports.sa.gov.tw/apps/TIS/TIS05/TIS0550M_02V1.aspx?PKNO='+p.no+'" target="_blank" rel="noopener">i運動資訊平台・臺灣小百岳（運動部全民運動署）</a></p>';
   more+=routeBlock(p);
   if(!bai)more+='<p class="s-foot">'+(sh?'名單為本地圖精選；海拔與座標取自 OpenStreetMap，少數取自 Wikidata。':'名單、海拔與座標：中文維基百科「臺灣小百岳」與 Wikidata；少數座標取自 OpenStreetMap。')+'</p>';
-  if(r&&DBH&&(!bai||r.source==='補登'))more+='<button type="button" class="s-up" id="xMark">'+(bai?'取消補登':'取消登頂紀錄')+'</button>';
+  if(r&&DBH)more+='<button type="button" class="s-up" id="xDel">刪除這筆紀錄</button>';
   h+='<details class="dmore" open><summary>完整資料<small>路線圖、剖面、每一站</small></summary><div class="dmore-b">'+more+'</div></details>';
   h+='<div class="dlead2"><button type="button" class="dghost s-act tomap" id="toMap">在地圖上看</button></div><div class="s2end">'+DPA.dawn+'</div></div>';
   return h;
@@ -2357,11 +2371,9 @@ function renderDPage(p){
 function wireDPage(p){
   const bai=p.set==='bai',key=bai?p.rank:(p.set==='shan'?'s':'x')+p.no,r=bai?RECS[p.rank]:REC(p),xp=bai?XP_BY_GRADE[p.grade]:p.set==='shan'?XP_SHAN:XP_XIAO;
   {const ub=$('upPh'),ui=$('upIn');if(ub&&ui){ub.onclick=()=>ui.click();ui.onchange=()=>{const f=ui.files&&ui.files[0];if(f)uploadPhoto(key,f,ub)}}}
-  let mFile=null;{const pb=$('mPhB'),pi=$('mPh');if(pb&&pi){pb.onclick=()=>pi.click();pi.onchange=()=>{mFile=pi.files&&pi.files[0]||null;pb.textContent=mFile?'✓ 已選照片：'+mFile.name.slice(0,18):'＋ 附一張山頂照（選填）'}}}
-  {const b=$('xMark');if(b)b.onclick=async()=>{if(r&&!confirm((bai?'取消補登 ':'取消 ')+p.name+'？'))return;b.disabled=true;const prevG=snapG();try{if(r)await DBH.doc('climbs/'+key).delete();else{const di=$('xDate'),day=di&&/^\d{4}-\d{2}-\d{2}$/.test(di.value)?di.value:new Date().toISOString().slice(0,10);
-      await DBH.doc('climbs/'+key).set(bai?{rank:p.rank,name:p.name,date:day,verified:mFile?'photo':'self',source:'補登'}:{set:p.set,no:p.no,name:p.name,date:day});
-      if(bai&&mFile){const tb=$('upPh')||b;await uploadPhoto(key,mFile,tb)}}
-    if(r)say('已取消 '+p.name);else setTimeout(()=>celebrate([p],prevG),120)}catch(e){b.disabled=false;say('存檔失敗，請再試一次。',true)}}}
+  {const b=$('xDel');if(b)b.onclick=async()=>{if(!confirm('刪除 '+p.name+' 的登頂紀錄？刪了要重新驗證才會回來。'))return;b.disabled=true;try{await DBH.doc('climbs/'+key).delete();say('已刪除 '+p.name)}catch(e){b.disabled=false;say('刪除失敗，請再試一次。',true)}}}
+  {const g=$('vGpx');if(g)g.onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',f=>importGPX(f,p))}
+  wireCheckin(p,key);
   const b=$('toMap');if(b)b.onclick=()=>{const rk=S.sel;setTab('map');requestAnimationFrame(()=>{resize();focusPeak(byRank[rk])})};
   const hb=$('dHut');if(hb)hb.onclick=()=>say(r?'山屋會在帳號功能上線後開放，到時候就能看到同一間山屋的山友。':'先登頂這座山，就能進入這間山屋。');
 }
@@ -2506,7 +2518,7 @@ function renderXSheet(p){sheet.classList.remove('dpage');
   h+='<div class="s-st"><span class="tag '+st+'">'+stTxt(p,st)+'</span><span>'+(r?'已點亮。'+SETN[p.set]+'的經驗值會算進總等級。':sh?'不上鎖。出發前請先確認路況和交通。':'郊山暖身，不上鎖，隨時可以去。')+'</span></div>';
   if(r)h+='<h3 class="s-sub">登頂紀錄</h3><div class="facts"><div><small>日期</small><b>'+esc(r.date||'—')+'</b></div><div><small>獲得</small><b>+'+xp+' XP</b></div><div></div></div>';
   else h+='<div class="facts"><div><small>海拔</small><b>'+fmt(p.h)+'<u>m</u></b></div><div><small>地區</small><b class="t">'+esc(p.route)+'</b></div><div><small>登頂獎勵</small><b>+'+xp+' XP</b></div></div>';
-  if(DBH)h+=r?'<button type="button" class="s-up" id="xMark">取消登頂紀錄</button>':'<div class="xmark"><input type="date" id="xDate" value="'+today+'" max="'+today+'" aria-label="登頂日期"><button type="button" class="s-up" id="xMark">＋ 標記登頂</button></div>';
+  if(DBH&&r)h+='<button type="button" class="s-up" id="xMark">刪除這筆紀錄</button>';
   if(p.set==='xiao'&&typeof XOFF!=='undefined'&&XOFF[p.no])h+='<h3 class="s-sub">官方步程</h3><p class="offs">'+esc(XOFF[p.no]).replace(/\n/g,'<br>')+'</p><p class="s-foot">來源：<a href="https://isports.sa.gov.tw/apps/TIS/TIS05/TIS0550M_02V1.aspx?PKNO='+p.no+'" target="_blank" rel="noopener">i運動資訊平台・臺灣小百岳（運動部全民運動署）</a></p>';
   {const rb=routeBlock(p);if(rb)h+=rb;else h+='<p class="rnote">'+(p.set==='xiao'?'官方第一條路線可以開車或騎車抵達、自動推估不夠準，或位在外島，所以暫時沒有步行剖面。':'這座山的路線還在整理中。')+'</p>'+'<div class="links"><a href="https://www.google.com/search?q='+encodeURIComponent('健行筆記 '+p.name)+'" target="_blank" rel="noopener">查健行筆記</a><a href="https://www.google.com/maps/search/?api=1&query='+p.lat+','+p.lon+'" target="_blank" rel="noopener">在 Google 地圖開啟</a></div>';}
   h+='<p class="s-foot">'+(sh?'名單為本地圖精選；海拔與座標取自 OpenStreetMap，少數取自 Wikidata。':'名單、海拔與座標：中文維基百科「臺灣小百岳」與 Wikidata；少數座標取自 OpenStreetMap。')+'</p>';
@@ -2601,7 +2613,7 @@ function wireData(){const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=(
 function dataSec(){let t=0;try{t=+localStorage.getItem(BKEY)||0}catch(e){}
   const n=Object.keys(LDB.raw()).length,old=!t||Date.now()-t>30*864e5,when=t?new Date(t).toLocaleDateString('zh-TW'):'還沒備份過';
   return '<div class="dsec"><h3 class="dh">我的紀錄</h3><p class="dsay">共 '+n+' 筆紀錄，上次備份：'+when+'。'+(old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
-    '<button type="button" class="dbtn" id="gpxIn">上傳手錶 GPX 軌跡</button><p class="dnote">軌跡經過山頂 120 公尺內，就自動算登頂。</p>'+
+    '<button type="button" class="dbtn" id="gpxIn">上傳手錶 GPX 軌跡</button><p class="dnote">軌跡經過山頂 50 公尺內、速度像是走路，就算登頂，拿金章。舊的軌跡也可以傳。</p>'+
     '<div class="dpair"><button type="button" class="dghost" id="bkOut">備份紀錄</button><button type="button" class="dghost" id="bkIn">匯入備份</button></div></div>'}
 function statTrail(fr){const W=334,pts=[];for(let i=0;i<=40;i++){const x=i/40*W;pts.push([x,52-30*Math.pow(i/40,1.4)+3*Math.sin(i/40*9)])}
   const k=Math.round(clamp(fr,0,1)*40),d=pts.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' '),dn=pts.slice(0,k+1).map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' '),me=pts[k];
@@ -2735,7 +2747,7 @@ function refresh(){
 }
 function applySnapshot(snap){
   const next={},prev=RECS;
-  const xn={},sn={};try{snap.docs.forEach(d=>{const v=d.data()||{};if(/^s\d+$/.test(d.id)||v.set==='shan'){const no=parseInt(String(d.id).replace('s',''),10)||parseInt(v.no,10);if(SH[no-1])sn[no]=v;return}if(/^x\d+$/.test(d.id)||v.set==='xiao'){const no=parseInt(String(d.id).replace('x',''),10)||parseInt(v.no,10);if(byNo[no])xn[no]=v;return}const rk=parseInt(d.id,10)||parseInt(v.rank,10);if(byRank[rk])next[rk]=v})}catch(e){}
+  const xn={},sn={};try{snap.docs.forEach(d=>{const v=d.data()||{};if(!isVerified(v))return;if(/^s\d+$/.test(d.id)||v.set==='shan'){const no=parseInt(String(d.id).replace('s',''),10)||parseInt(v.no,10);if(SH[no-1])sn[no]=v;return}if(/^x\d+$/.test(d.id)||v.set==='xiao'){const no=parseInt(String(d.id).replace('x',''),10)||parseInt(v.no,10);if(byNo[no])xn[no]=v;return}const rk=parseInt(d.id,10)||parseInt(v.rank,10);if(byRank[rk])next[rk]=v})}catch(e){}
   XRECS=xn;SRECS=sn;
   const fresh=Object.keys(next).filter(k=>!prev[k]);
   RECS=next;S.loaded=true;refresh();
@@ -2774,8 +2786,8 @@ async function exportBackup(){
   const blob=new Blob([JSON.stringify(out)],{type:'application/json'}),d=new Date(),name='月岳備份-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'.json';
   const file=new File([blob],name,{type:'application/json'});
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'月岳備份'});}else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
-    try{localStorage.setItem(BKEY,String(Date.now()))}catch(e){}say('備份好了：'+name+'。記得存到 iCloud 雲碟。');renderChar()}
-  catch(e){if(e&&e.name==='AbortError')return;say('備份沒有完成，請再試一次。',true)}
+    try{localStorage.setItem(BKEY,String(Date.now()))}catch(e){}say('備份好了：'+name+'。記得存到 iCloud 雲碟。');renderChar();return true}
+  catch(e){if(e&&e.name==='AbortError')return false;say('備份沒有完成，請再試一次。',true);return false}
 }
 async function importBackup(file){
   let d;try{d=JSON.parse(await file.text())}catch(e){say('這個檔案讀不出來，請選「月岳備份」的 .json 檔。',true);return}
@@ -2801,31 +2813,82 @@ function parseGPX(text){
   const t0=T[0][3],t1=T[T.length-1][3],hasT=isFinite(t0)&&isFinite(t1)&&t1>t0;
   return{T,K,km,gain:hasE?Math.round(gain):null,maxE:hasE?Math.round(maxE):null,t0:hasT?t0:null,dur:hasT?Math.round((t1-t0)/60000):null,loop:hav(T[0][0],T[0][1],T[T.length-1][0],T[T.length-1][1])<600};
 }
-async function importGPX(file){
+async function importGPX(file,only){
   const g=parseGPX(await file.text());if(!g){say('這個 GPX 讀不出軌跡，請確認是手錶匯出的 .gpx 檔。',true);return}
-  const found=[];const scan=(list,lim,key)=>list.forEach(p=>{let best=1e9,bi=0;for(let i=0;i<g.T.length;i++){const d=hav(p.lat,p.lon,g.T[i][0],g.T[i][1]);if(d<best){best=d;bi=i}}if(best<=lim)found.push({p,key:key(p),i:bi,d:best})});
-  scan(P,120,p=>String(p.rank));scan(XB,150,p=>'x'+p.no);scan(SH,150,p=>'s'+p.no);
-  if(!found.length){say('這條軌跡沒有經過任何百岳、小百岳或小山的山頂（120 公尺內）。',true);return}
+  const cand=only?[only]:[...P,...XB,...SH],keyOf=p=>p.set==='xiao'?'x'+p.no:p.set==='shan'?'s'+p.no:String(p.rank);
+  const found=[],miss=[];for(const p of cand){const v=verifyTrack(g,p);if(v.ok)found.push({p,key:keyOf(p),i:v.i,d:v.d});else if(only||v.near)miss.push(v)}
+  if(!found.length){say(miss.length?miss[0].why:'這條軌跡沒有經過任何百岳、小百岳或小山的山頂（50 公尺內）。',true);return}
   const step=Math.max(1,Math.ceil(g.T.length/1500)),track=[];for(let i=0;i<g.T.length;i+=step){const p=g.T[i];track.push([p[0].toFixed(5),p[1].toFixed(5),isFinite(p[2])?Math.round(p[2]):0,g.t0&&isFinite(p[3])?((p[3]-g.t0)/60000).toFixed(1):'0',g.K[i].toFixed(2)].join(','))}
   const raw=LDB.raw(),add=[],skip=[];
-  for(const f of found){if(raw[f.key]){skip.push(f);continue}add.push(f)}
+  for(const f of found){if(raw[f.key]&&isVerified(raw[f.key])){skip.push(f);continue}add.push(f)}
   if(skip.length&&confirm(skip.map(f=>f.p.name).join('、')+' 已經有紀錄了。要用這條軌跡取代嗎？'))add.push(...skip);
   const prevG=snapG();
   for(const f of add){const st=g.T[f.i][3],dt=isFinite(st)?new Date(st):(g.t0?new Date(g.t0):new Date()),hh=isFinite(st)?String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0'):'';
     const day=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
-    const rec={name:f.p.name,date:day,summitTime:hh,distanceKm:+g.km.toFixed(1),track:track.join(';'),source:'GPX：'+file.name,verified:'gps',style:g.loop?'來回':'縱走'};
+    const rec={name:f.p.name,date:day,summitTime:hh,distanceKm:+g.km.toFixed(1),track:track.join(';'),source:'GPX：'+file.name,verified:'gps',summitD:Math.round(f.d),style:g.loop?'來回':'縱走'};
     if(g.gain!=null)rec.gainM=g.gain;if(g.maxE!=null)rec.maxEle=g.maxE;if(g.dur!=null)rec.durationMin=g.dur;
     if(f.p.set==='xiao'||f.p.set==='shan'){rec.set=f.p.set;rec.no=f.p.no}else rec.rank=f.p.rank;
-    const old=raw[f.key];if(old){if(old.photoId)rec.photoId=old.photoId;if(old.thumbId)rec.thumbId=old.thumbId;if(old.note)rec.note=old.note}
+    const old=raw[f.key];if(old){for(const k of ['photo','photoId','thumb','thumbId','note'])if(old[k])rec[k]=old[k]}
     await LDB.doc('climbs/'+f.key).set(rec)}
   if(add.length){const fresh=add.filter(f=>!skip.includes(f)).map(f=>byRank[f.p.rank]||f.p);if(fresh.length)setTimeout(()=>celebrate(fresh,prevG),120);else say('已更新：'+add.map(f=>f.p.name).join('、'))}else say('沒有新增紀錄。');
 }
+/* ---------- 登頂驗證：只有兩種算數。都是純函式，之後可原封搬到後台 ---------- */
+const VR={gpsR:50,nearR:300,chkR:120,chkAcc:60,maxKmh:20,avgKmh:12,eleTol:250,photoMin:15};
+const isVerified=v=>!!v&&(v.verified==='gps'||v.verified==='checkin');
+const medalTxt=r=>r.verified==='gps'?'金章・軌跡登頂':r.verified==='checkin'?'銀章・現地打卡':'未驗證';
+function verifyTrack(g,p){ // 金章：真的走過，而且走到山頂
+  let best=1e9,bi=0;for(let i=0;i<g.T.length;i++){const d=hav(p.lat,p.lon,g.T[i][0],g.T[i][1]);if(d<best){best=d;bi=i}}
+  const near=best<=VR.nearR,no=why=>({ok:false,near,d:best,why});
+  if(best>VR.gpsR)return no('軌跡離'+p.name+'山頂最近 '+Math.round(best)+' 公尺，要在 50 公尺內才算登頂。');
+  if(!g.t0)return no('這個檔案沒有時間紀錄，像是規劃好的路線，不是實際走過的軌跡。');
+  if(g.t0>Date.now()+864e5)return no('軌跡的時間在未來，檔案可能有問題。');
+  if(g.dur&&g.km/(g.dur/60)>VR.avgKmh)return no('整趟平均時速 '+(g.km/(g.dur/60)).toFixed(0)+' 公里，比走路快太多，像是騎車或開車。');
+  const T=g.T,K=g.K;for(let i=bi;i>0&&K[bi]-K[i]<=3;i--){let j=i;while(j<bi&&K[j]-K[i]<.5)j++;const h=(T[j][3]-T[i][3])/36e5;
+    if(K[j]-K[i]>=.5&&h>0&&(K[j]-K[i])/h>VR.maxKmh)return no('登頂前有一段時速 '+((K[j]-K[i])/h).toFixed(0)+' 公里，比走路快太多，這條軌跡不能算。')}
+  const e=T[bi][2];if(isFinite(e)&&e>0&&Math.abs(e-p.h)>VR.eleTol)return no('軌跡在山頂的高度是 '+Math.round(e)+' 公尺，跟 '+p.name+' 的 '+fmt(p.h)+' 公尺差太多。');
+  return{ok:true,i:bi,d:best};
+}
+function verifyCheckin(pos,p){ // 銀章：人在山頂
+  const c=pos.coords,d=hav(p.lat,p.lon,c.latitude,c.longitude);
+  if(c.accuracy>VR.chkAcc)return{ok:false,d,why:'定位誤差 '+Math.round(c.accuracy)+' 公尺，不夠準。到空曠一點的地方再試一次。'};
+  if(d>VR.chkR)return{ok:false,d,why:'你離'+p.name+'山頂還有 '+fmt(Math.round(d))+' 公尺，要在 120 公尺內才能打卡。'};
+  return{ok:true,d};
+}
+const photoFresh=f=>!!f&&Date.now()-(f.lastModified||0)<=VR.photoMin*6e4;
+function wireCheckin(p,key){
+  const b=$('vChk'),st=$('vStep'),cam=$('vCam');if(!b||!st||!cam)return;let fix=null;
+  const show=(html)=>{st.innerHTML=html;const s=$('vShot');if(s)s.onclick=()=>{if(!fix||Date.now()-fix.t>VR.photoMin*6e4){fix=null;st.innerHTML='';b.hidden=false;say('定位太久了，請重新打卡。',true);return}cam.click()}};
+  b.onclick=()=>{if(!navigator.geolocation){say('這支手機沒辦法定位。',true);return}
+    b.disabled=true;b.textContent='定位中…';show('');
+    navigator.geolocation.getCurrentPosition(pos=>{b.disabled=false;b.textContent='再定位一次';const v=verifyCheckin(pos,p);
+      if(!v.ok){show('<p class="vmsg bad">'+v.why+'</p>');return}
+      fix={lat:+pos.coords.latitude.toFixed(6),lon:+pos.coords.longitude.toFixed(6),acc:Math.round(pos.coords.accuracy),d:Math.round(v.d),t:Date.now()};b.hidden=true;
+      show('<p class="vmsg ok">你在山頂 '+fix.d+' 公尺內</p><p class="vmsg">最後一步：拍一張三角點。</p><button type="button" class="dbtn" id="vShot">拍三角點</button>')},
+    e=>{b.disabled=false;b.textContent='山頂打卡';show('<p class="vmsg bad">'+(e&&e.code===1?'沒有定位權限。到手機設定打開定位，再試一次。':'定位失敗。到空曠一點的地方再試一次。')+'</p>')},
+    {enableHighAccuracy:true,timeout:20000,maximumAge:0})};
+  cam.onchange=async()=>{const f=cam.files&&cam.files[0];cam.value='';if(!f||!fix)return;
+    if(!photoFresh(f)){say('要現場拍的照片才行，請直接用相機拍三角點。',true);return}
+    const s=$('vShot')||b,d=new Date(),day=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const rec={name:p.name,date:day,summitTime:String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'),verified:'checkin',checkin:fix,source:'山頂打卡'};
+    if(p.set==='bai')rec.rank=p.rank;else{rec.set=p.set;rec.no=p.no}
+    const prevG=snapG();try{s.disabled=true;await DBH.doc('climbs/'+key).set(rec);await uploadPhoto(key,f,s);setTimeout(()=>celebrate([byRank[p.rank]||p],prevG),120)}catch(e){s.disabled=false;say('存檔失敗，請再試一次。',true)}};
+}
+/* ---------- 規則更新：舊紀錄先備份，再清空重來（只跑一次） ---------- */
+const MKEY='yy-verify-v1';
+function migrateNag(){try{if(localStorage.getItem(MKEY))return;const n=Object.keys(LDB.raw()).length;if(!n){localStorage.setItem(MKEY,'1');return}
+  const m=$('migr');$('migrN').textContent=n;m.hidden=false;
+  $('migrLater').onclick=()=>{m.hidden=true};
+  $('migrGo').onclick=async()=>{const b=$('migrGo');b.disabled=true;const ok=await exportBackup();b.disabled=false;if(!ok)return;
+    if(!confirm('備份好了。確定清空 '+n+' 筆舊紀錄？清空後只能用備份檔救回。'))return;
+    const ids=[];Object.values(LDB.raw()).forEach(r=>{if(r.photoId)ids.push(r.photoId);if(r.thumbId)ids.push(r.thumbId)});
+    LDB.replace({});for(const id of ids){try{await IDB.del(id)}catch(e){}}
+    try{localStorage.setItem(MKEY,'1')}catch(e){}m.hidden=true;say('清空了。從現在起，山頂打卡或上傳軌跡才算登頂。')}}catch(e){}}
 function pickFile(accept,fn){const i=document.createElement('input');i.type='file';i.accept=accept;i.onchange=()=>{const f=i.files&&i.files[0];if(f)fn(f)};i.click()}
 async function load(){
   try{const all=await IDB.all();for(const [k,v] of Object.entries(all))PH[k]=URL.createObjectURL(v)}catch(e){}
   DBH=LDB;ASSETS=LASSETS;
   LDB.collection('climbs').onSnapshot(snap=>applySnapshot(snap));
-  backupNag();
+  if(localStorage.getItem(MKEY))backupNag();else setTimeout(migrateNag,600);
 }
 
 /* ---------- summit photos: shrink on the phone, store as assets, keep only the urls in the record ---------- */
