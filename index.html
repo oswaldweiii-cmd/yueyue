@@ -2833,7 +2833,7 @@ async function importGPX(file,only){
   if(add.length){const fresh=add.filter(f=>!skip.includes(f)).map(f=>byRank[f.p.rank]||f.p);if(fresh.length)setTimeout(()=>celebrate(fresh,prevG),120);else say('已更新：'+add.map(f=>f.p.name).join('、'))}else say('沒有新增紀錄。');
 }
 /* ---------- 登頂驗證：只有兩種算數。都是純函式，之後可原封搬到後台 ---------- */
-const VR={gpsR:50,nearR:300,chkR:120,chkAcc:60,maxKmh:20,avgKmh:12,eleTol:250,photoMin:15};
+const VR={gpsR:50,nearR:300,chkR:120,chkAcc:60,maxKmh:20,avgKmh:12,eleTol:250,photoMin:30};
 const isVerified=v=>!!v&&(v.verified==='gps'||v.verified==='checkin');
 const medalTxt=r=>r.verified==='gps'?'金章・軌跡登頂':r.verified==='checkin'?'銀章・現地打卡':'未驗證';
 function verifyTrack(g,p){ // 金章：真的走過，而且走到山頂
