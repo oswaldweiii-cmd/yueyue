@@ -721,6 +721,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gl-bag{color:#F4C152}
 .gl-mv{width:44px;height:44px;flex:none;padding:0;background:none;border:0;font:400 18px var(--body);color:var(--t2);cursor:pointer}.gl-mv:hover{color:var(--t1)}.gl-mv[disabled]{opacity:.2;cursor:default}
 .gl-note{margin:12px 0 0;text-align:center;font:400 11px var(--body);letter-spacing:.08em;color:var(--t2)}
+.gb-off-h{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 0;padding-top:14px;border-top:1px dashed rgba(238,241,236,.14);font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}.gb-off-h i{font-style:normal;letter-spacing:.08em;color:rgba(238,241,236,.4)}
+.gsw.off .gs-t{opacity:.38;filter:saturate(.35)}.gsw.off .gs-n{color:rgba(238,241,236,.45)}.gsw.off .gs:hover .gs-t{opacity:.7;filter:none}
+.gb-more{display:block;margin:10px auto 0;min-height:44px}
 /* 打包 */
 .gb-h i{font-style:normal;margin:0 .3em;color:var(--t2)}
 .gb-sub2{display:block}.gb-sub2 b{margin:0 .15em}
@@ -2878,7 +2881,7 @@ const kSave=()=>{try{localStorage.setItem(KKEY,JSON.stringify({kits:GS.kits,cur:
 if(fresh)gSave();
 const inKit=i=>i.kits.includes(GS.kit),kitName=()=>(GS.kits.find(k=>k.id===GS.kit)||GS.kits[0]).name;
 const place=i=>!inKit(i)?'store':i.worn?'body':'pack';
-const PLACE={body:'身上',pack:'背包',store:'倉庫'};
+const PLACE={body:'身上',pack:'背包',store:'沒帶的'};
 // packing checklist: ticks are kept for 12 hours, then start fresh
 let PK={on:false,kit:null,ids:[],t:0};try{const p=JSON.parse(localStorage.getItem(PKEY)||'null');if(p&&Date.now()-p.t<12*3600e3)PK={on:false,kit:p.kit,ids:p.ids||[],t:p.t}}catch(e){}
 const pSave=()=>{PK.t=Date.now();try{localStorage.setItem(PKEY,JSON.stringify({kit:PK.kit,ids:PK.ids,t:PK.t}))}catch(e){}};
@@ -2970,7 +2973,7 @@ document.addEventListener('keydown',e=>{if(!BAG.open||!document.getElementById('
 // Esc: first closes the detail sheet, then the screen
 document.addEventListener('keydown',e=>{if(e.key!=='Escape'||!BAG.open||!document.getElementById('gedit').hidden)return;e.preventDefault();
   if(BAG.pick){const k=BAG.pick;BAG.pick=null;bagRender();const b=document.querySelector('#gbag .pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})}else if(BAG.sel&&BAG.slot){const id=BAG.sel;BAG.sel=null;bagRender();const b=document.querySelector('#gbag [data-open="'+id+'"]');b&&b.focus({preventScroll:true})}else if(BAG.slot){const k=BAG.slot;BAG.slot=null;bagRender();const b=document.querySelector('#gbag .pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})}else if(BAG.sel){const id=BAG.sel;BAG.sel=null;bagRender();const b=document.querySelector('#gbag [data-info="'+id+'"]')||document.querySelector('#gbag [data-ids~="'+id+'"]');b&&b.focus({preventScroll:true})}else bagClose()});
-const MOVED={body:'穿上了',pack:'放進背包了',store:'收回倉庫了'},moved=(i,to)=>to==='body'&&i.zone==='pack'?'背上了':to==='body'&&i.zone==='cam'?'帶在身上了':MOVED[to];
+const MOVED={body:'穿上了',pack:'放進背包了',store:'這次不帶了'},moved=(i,to)=>to==='body'&&i.zone==='pack'?'背上了':to==='body'&&i.zone==='cam'?'帶在身上了':MOVED[to];
 function moveTo(it,to){const was={kits:[...it.kits],worn:it.worn};
   if(to==='store')it.kits=it.kits.filter(k=>k!==GS.kit);else{if(!it.kits.includes(GS.kit))it.kits=[...it.kits,GS.kit];it.worn=to==='body'}
   gSave();return was}
@@ -2994,27 +2997,27 @@ function bagRender(){
       const nb=v.querySelector('[data-pk="'+id+'"]');nb&&nb.focus({preventScroll:true});if(all&&T.all.length&&PK.ids.includes(id))window.YY.say('都帶齊了，出發吧')});
     return}
   const by=p=>GS.items.filter(i=>place(i)===p),body=by('body'),pack=by('pack'),store=by('store');
-  const slot=i=>'<div class="gsw"><button type="button" class="gs'+(BAG.sel===i.id?' sel':'')+'" data-id="'+i.id+'" aria-label="'+E(i.name)+(i.borrow?'，借來的':'')+'。'+(place(i)==='store'?'點一下帶上「'+E(kitName())+'」':'點一下收回倉庫')+'">'+
+  const slot=i=>'<div class="gsw"><button type="button" class="gs'+(BAG.sel===i.id?' sel':'')+'" data-id="'+i.id+'" aria-label="'+E(i.name)+(i.borrow?'，借來的':'')+'。'+(place(i)==='store'?'點一下帶上「'+E(kitName())+'」':'點一下改成不帶')+'">'+
     '<span class="gs-t">'+icon(i)+(i.borrow?'<em class="gs-b">借</em>':'')+'</span><span class="gs-n">'+E(i.name)+'</span></button><button type="button" class="gs-i" data-info="'+i.id+'" aria-label="「'+E(i.name)+'」的詳細資料"><span aria-hidden="true">i</span></button></div>';
   const grid=(L,empty,lbl)=>L.length?'<div class="gb-grid" role="group" aria-label="'+lbl+'">'+L.map(slot).join('')+'</div>':'<p class="gb-empty">'+empty+'</p>';
   const s=BAG.sel&&GS.items.find(i=>i.id===BAG.sel),here=s&&place(s);
   const SL={},SLP={},fill={};SLOTS.forEach(([k])=>{SL[k]=slotSort(body.filter(i=>slotOf(i)===k));SLP[k]=slotSort(pack.filter(i=>slotOf(i)===k))});
   SLOTS.forEach(([k])=>{const f=SL[k][0];if(f)fill[k]=tintOf(f)||PXC[iconOf(f)]||'#5E9E78'});if(fill.back)fill.back='color-mix(in srgb,'+fill.back+' 55%,#0d1320)';const miss=SLOTS.filter(([k])=>!SL[k].length).length;
   const pds=([k,z,verb])=>{const L=SL[k],f=L[0],on=BAG.pick===k||BAG.slot===k||(s&&here==='body'&&slotOf(s)===k);
-    return '<div class="pdw"><button type="button" class="pds'+(f?'':' e')+(L.length>1?' stk':'')+(L.length>2?' stk3':'')+(on?' sel':'')+'" data-slot="'+k+'" data-ids="'+L.map(i=>i.id).join(' ')+'" aria-label="'+z+'：'+(f?E(L.map(i=>i.name).join('、'))+'。點一下看全部':'還沒有，點一下從倉庫挑')+'">'+
+    return '<div class="pdw"><button type="button" class="pds'+(f?'':' e')+(L.length>1?' stk':'')+(L.length>2?' stk3':'')+(on?' sel':'')+'" data-slot="'+k+'" data-ids="'+L.map(i=>i.id).join(' ')+'" aria-label="'+z+'：'+(f?E(L.map(i=>i.name).join('、'))+'。點一下看全部':'還沒有，點一下挑一件')+'">'+
       (f?icon(f)+(L.length>1?'<em>'+L.length+' 件</em>':''):'<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gs-'+SLOTSIL[k]+'"/></svg>')+'</button><span class="pdn'+(f?'':' z')+'">'+(f?E(f.name):z)+'</span></div>'};
   const doll='<div class="gb-pd"><div class="gb-pdc">'+SLOTS.slice(0,4).map(pds).join('')+'</div>'+dollSVG(fill)+'<div class="gb-pdc">'+SLOTS.slice(4).map(pds).join('')+'</div></div>';
   pg.innerHTML='<div class="gb-in"><div class="gb-top"><button type="button" class="ge-x" id="gbX">‹ 返回</button><button type="button" class="ge-link" id="gbAdd">＋ 新增</button></div><h2 class="gb-h">整理<i>·</i>'+E(kitName())+'</h2>'+
     '<section class="gb-kit" aria-label="'+E(kitName())+'帶的"><div class="gb-kh"><h2>這套帶的</h2>'+(GS.body&&T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤<i>·</i><em>'+(T.carry/(GS.body*1000)<.1?'輕裝':T.carry/(GS.body*1000)<.2?'標準':'重裝')+'</em></span>':T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤</span>':'')+'</div>'+
       '<div class="gb-rl"><span>穿在身上</span><span>'+(miss?'還缺 <b>'+miss+'</b> 個部位':T.worn?'<b>'+kg(T.worn)+'</b> 公斤':'都穿好了')+'</span></div>'+doll+
-      '<div class="gb-rl"><span>放在背包</span>'+(T.carry?'<span><b>'+kg(T.carry)+'</b> 公斤</span>':'')+'</div>'+grid(pack,'背包是空的','放在背包')+'</section>'+
-    '<p class="gb-mid" aria-hidden="true"><i>↑</i>點一下就搬過去<i>↓</i></p>'+
-    '<section class="gb-store" aria-label="倉庫"><div class="gb-kh"><h2>倉庫</h2><span>沒帶的 <b>'+store.length+'</b> 件</span></div>'+grid(store,'全部都帶上了','倉庫')+'</section>'+
-    '<p class="gb-foot">點 <span class="gs-i0">i</span> 看詳細、修改，或換成穿／背</p></div>';
+      '<div class="gb-rl"><span>放在背包</span><span><b>'+pack.length+'</b> 件'+(T.carry?'<i>·</i><b>'+kg(T.carry)+'</b> 公斤':'')+'</span></div>'+
+      (pack.length||store.length?'<div class="gb-grid" role="group" aria-label="放在背包">'+pack.map(slot).join('')+(store.length?'<p class="gb-off-h"><span>沒帶的 '+store.length+' 件</span><i>點一下就帶上</i></p>'+(BAG.more||store.length<=4?store:store.slice(0,4)).map(i=>slot(i).replace('class="gsw"','class="gsw off"')).join(''):'')+'</div>'+
+        (store.length>4?'<button type="button" class="ge-link gb-more" id="gbMore" aria-expanded="'+!!BAG.more+'">'+(BAG.more?'收起':'展開全部 '+store.length+' 件')+'</button>':''):'<p class="gb-empty">還沒有裝備，按右上角「＋ 新增」</p>')+'</section>'+
+    '<p class="gb-foot">點一下帶或不帶，點 <span class="gs-i0">i</span> 看詳細、修改</p></div>';
   v.prepend(pg);
   if(s){const d=document.createElement('div');d.className='gb-det';d.setAttribute('role','region');d.setAttribute('aria-label',s.name+' 的詳細資料');
-    const on=s.zone==='pack'?'背上':s.zone==='cam'?'帶在身上':'穿上',acts=(here==='store'?[['body',on],['pack','放進背包']]:[[here==='body'?'pack':'body',here==='body'?'改放背包':'改成'+on],['store','收回倉庫']]);
-    d.innerHTML='<div class="gb-dt">'+icon(s,'gb-di')+'<div><small><span>'+E(ZONES[s.zone])+'</span><i>·</i><span>'+(here==='store'?'在倉庫':here==='body'?(s.zone==='pack'?'背在身上':s.zone==='cam'?'帶在身上':'穿在身上'):'放在背包')+'</span>'+(s.borrow?'<i>·</i><span>借來的</span>':'')+'</small><h3>'+E(s.name)+'</h3><p>'+E([s.brand,s.note].filter(Boolean).join(' · ')||' ')+'</p></div><em>'+(s.g?s.g.toLocaleString()+' <s>公克</s>':'<s>還沒秤重</s>')+'</em></div>'+
+    const on=s.zone==='pack'?'背上':s.zone==='cam'?'帶在身上':'穿上',acts=(here==='store'?[['body',on],['pack','放進背包']]:[[here==='body'?'pack':'body',here==='body'?'改放背包':'改成'+on],['store','這次不帶']]);
+    d.innerHTML='<div class="gb-dt">'+icon(s,'gb-di')+'<div><small><span>'+E(ZONES[s.zone])+'</span><i>·</i><span>'+(here==='store'?'這次沒帶':here==='body'?(s.zone==='pack'?'背在身上':s.zone==='cam'?'帶在身上':'穿在身上'):'放在背包')+'</span>'+(s.borrow?'<i>·</i><span>借來的</span>':'')+'</small><h3>'+E(s.name)+'</h3><p>'+E([s.brand,s.note].filter(Boolean).join(' · ')||' ')+'</p></div><em>'+(s.g?s.g.toLocaleString()+' <s>公克</s>':'<s>還沒秤重</s>')+'</em></div>'+
       '<div class="gb-acts">'+acts.map(([p,l])=>'<button type="button" class="gb-a" data-mv="'+p+'">'+l+'</button>').join('')+'<button type="button" class="gb-a mute" data-ed>編輯</button><button type="button" class="gb-a mute gb-dx" data-close aria-label="關掉詳細資料">關閉</button></div>'+(BAG.slot?'<button type="button" class="ge-link gb-pk-add" data-back>‹ 回到'+SLOTS.find(x=>x[0]===BAG.slot)[1]+'全部</button>':'');
     v.appendChild(d);
     d.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const it=s,to=b.dataset.mv,was=moveTo(it,to);BAG.sel=null;if(BAG.slot&&!GS.items.some(i=>place(i)!=='store'&&slotOf(i)===BAG.slot))BAG.slot=null;gearRender();toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id);
@@ -3042,7 +3045,7 @@ function bagRender(){
   if(BAG.pick){const k=BAG.pick,[,z,verb]=SLOTS.find(x=>x[0]===k),zs=k==='back'?['pack','cam']:[k],C=GS.items.filter(i=>zs.includes(i.zone)&&place(i)!=='body').sort((a,b)=>(place(a)==='pack')-(place(b)==='pack'));
     const d=document.createElement('div');d.className='gb-det gb-pick';d.setAttribute('role','region');d.setAttribute('aria-label',z+'：挑一件'+verb);
     d.innerHTML='<div class="gb-pk-h"><small>'+z+'<i>·</i>挑一件'+verb+'</small><button type="button" class="gb-a mute" data-close aria-label="關閉">關閉</button></div>'+
-      (C.length?C.map(i=>'<button type="button" class="gpk" data-put="'+i.id+'"><span class="gp-t">'+icon(i)+'</span><span class="gp-n"><b>'+E(i.name)+'</b><small>'+E([place(i)==='pack'?'現在放在背包':'',i.borrow?'借來的':'',i.brand,i.g?i.g+' 公克':''].filter(Boolean).join(' · ')||ZONES[i.zone])+'</small></span><i>'+verb+'</i></button>').join(''):'<p class="gb-say">倉庫裡還沒有'+z+'的裝備。</p>')+
+      (C.length?C.map(i=>'<button type="button" class="gpk" data-put="'+i.id+'"><span class="gp-t">'+icon(i)+'</span><span class="gp-n"><b>'+E(i.name)+'</b><small>'+E([place(i)==='pack'?'現在放在背包':'',i.borrow?'借來的':'',i.brand,i.g?i.g+' 公克':''].filter(Boolean).join(' · ')||ZONES[i.zone])+'</small></span><i>'+verb+'</i></button>').join(''):'<p class="gb-say">還沒有'+z+'的裝備。</p>')+
       '<button type="button" class="ge-link gb-pk-add" data-new>＋ 新增'+(k==='back'?'背包':z)+'的裝備</button>';
     v.appendChild(d);
     const back=()=>{BAG.pick=null;bagRender();const b=v.querySelector('.pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})};
@@ -3051,6 +3054,7 @@ function bagRender(){
     d.querySelectorAll('[data-put]').forEach(b=>b.onclick=()=>{const it=GS.items.find(i=>i.id===b.dataset.put),was=moveTo(it,'body');BAG.pick=null;gearRender();toast('「'+it.name+'」'+verb.replace('上','')+'上了',()=>{Object.assign(it,was);gSave();gearRender()},it.id);
       const nb=v.querySelector('.pds[data-slot="'+k+'"]');if(nb){nb.focus({preventScroll:true});nb.classList.add('land');setTimeout(()=>nb.classList.remove('land'),900)}})}
   pg.querySelector('#gbX').onclick=bagClose;
+  const mo=pg.querySelector('#gbMore');if(mo)mo.onclick=()=>{BAG.more=!BAG.more;bagRender();const b=v.querySelector('#gbMore');b&&b.focus({preventScroll:true})};
   pg.querySelector('#gbAdd').onclick=()=>gearEdit(null,null,'kit');
   pg.querySelectorAll('.pds').forEach(b=>b.onclick=()=>{const ids=b.dataset.ids.split(' ').filter(Boolean),k=b.dataset.slot,was=BAG.pick;BAG.pick=null;
     const wasS=BAG.slot;BAG.sel=null;BAG.slot=null;if(ids.length)BAG.slot=wasS===k?null:k;else BAG.pick=was===k?null:k;bagRender();const f=v.querySelector('.gb-det [data-open],.gb-det [data-put],.gb-det [data-new]');f&&f.focus({preventScroll:true})});
