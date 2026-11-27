@@ -719,6 +719,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gl-main:focus-visible,.gl-mv:focus-visible{outline:1px solid #F4C152;outline-offset:2px}
 .gl-top{display:block;margin:2px 0 0;font:500 11px var(--body);font-style:normal;letter-spacing:.16em;color:#F4C152;white-space:nowrap}
 .gl-bag{color:#F4C152}
+.gl-row{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.gl-row.drag{touch-action:none}
 .gl-grip{width:48px;height:56px;flex:none;padding:0;background:none;border:0;cursor:grab;touch-action:none;display:grid;place-items:center;color:var(--t2)}
 .gl-grip i,.gl-grip0 i{display:block;width:12px;height:18px;background:radial-gradient(circle,currentColor 1.6px,transparent 1.8px) 0 0/6px 6px}
 .gl-grip:hover,.gl-grip:focus-visible{color:#F4C152}.gl-grip:focus-visible{outline:1px solid #F4C152;outline-offset:-6px}
@@ -3033,13 +3034,14 @@ function bagRender(){
     d.querySelector('[data-close]').onclick=()=>{const id=s.id;BAG.sel=null;bagRender();const b=v.querySelector('[data-info="'+id+'"]')||v.querySelector('[data-ids~="'+id+'"]');b&&b.focus({preventScroll:true})}}
   if(BAG.slot&&!BAG.sel){const k=BAG.slot,[,z]=SLOTS.find(x=>x[0]===k),M=slotSort([...SL[k],...SLP[k]]),lay=LAYZ.includes(k),top=SL[k][0];
     const d=document.createElement('div');d.className='gb-det gb-slot';d.setAttribute('role','region');d.setAttribute('aria-label',z+'的全部裝備');
-    const drag=M.length>1;
+    const drag=M.length>1;// row cursor
+
     const row=i=>'<div class="gl-row" data-id="'+i.id+'"><button type="button" class="gl-main" data-open="'+i.id+'"><span class="gp-t">'+icon(i)+'</span><span class="gp-n"><b>'+E(i.name)+(i===top&&SL[k].length>1?'<em class="gl-top">人偶顯示這件</em>':'')+'</b><small>'+E([i.brand,i.g?i.g+' 公克':''].filter(Boolean).join(' · '))+(place(i)==='pack'?'<span class="gl-bag">'+(i.brand||i.g?' · ':'')+'在背包</span>':'')+'</small></span></button>'+
       (drag?'<button type="button" class="gl-grip" data-grip="'+i.id+'" aria-label="拖曳調整「'+E(i.name)+'」的順序，也可以按上下鍵"><i aria-hidden="true"></i></button>':'')+'</div>';
     let h='<div class="gb-pk-h"><small>'+z+'<i>·</i>穿 '+SL[k].length+' 件'+(SLP[k].length?'<i>·</i>背包 '+SLP[k].length+' 件':'')+'</small><button type="button" class="gb-a mute" data-close aria-label="關閉">關閉</button></div><div class="gl-list">';
     if(lay)['out','mid','in'].forEach(L=>{const G=M.filter(i=>layerOf(i)===L);h+='<p class="gl-h" data-lay="'+L+'">'+LAYN[L]+'<i>·</i>'+LAYD[L]+'</p>'+(G.length?G.map(row).join(''):'<p class="gl-empty">'+(drag?'拖到這裡':'還沒有')+'</p>')});
     else h+=M.map(row).join('');
-    h+='</div>'+(drag?'<p class="gl-note">按住右邊 <span class="gl-grip0"><i></i></span> 上下拖曳，最外面那件決定人偶顏色</p>':'')+'<button type="button" class="ge-link gb-pk-add" data-add>＋ 加一件到'+z+'</button>';
+    h+='</div>'+(drag?'<p class="gl-note">按住任一列約半秒，就能上下拖曳；最外面那件決定人偶顏色</p>':'')+'<button type="button" class="ge-link gb-pk-add" data-add>＋ 加一件到'+z+'</button>';
     d.innerHTML=h;v.appendChild(d);
     const back=()=>{BAG.slot=null;bagRender();const b=v.querySelector('.pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})};
     d.querySelector('[data-close]').onclick=back;
@@ -3055,14 +3057,24 @@ function bagRender(){
         if(e.key==='ArrowUp'){let j=i-1;while(j>=0&&C[j].classList.contains('gl-empty'))j--;if(j<0||(j===0&&C[0].dataset.lay))return;list.insertBefore(row,C[j])}
         else{let j=i+1;while(j<C.length&&C[j].classList.contains('gl-empty'))j++;if(j>=C.length)return;list.insertBefore(row,C[j].nextSibling)}
         commit(id,true)});
-      g.addEventListener('pointerdown',e=>{if(e.button>0)return;e.preventDefault();g.setPointerCapture(e.pointerId);const sc=d,y0=e.clientY,t0=row.offsetTop,st0=sc.scrollTop;let moved=false,raf=0;
-        row.classList.add('drag');const place=cy=>{const C=cands(row);let put=null;for(const c of C){const r=c.getBoundingClientRect();if(cy<r.top+r.height/2){put=c;break}}
-          const list=d.querySelector('.gl-list');if(put&&put===list.firstElementChild&&put.dataset.lay)put=put.nextElementSibling;
-          if(put!==row.nextElementSibling&&put!==row){put?list.insertBefore(row,put):list.appendChild(row);moved=true}
-          row.style.transform='translateY('+(cy-y0-(row.offsetTop-t0)+(sc.scrollTop-st0))+'px)'};
-        const mvH=ev=>{place(ev.clientY);const r=sc.getBoundingClientRect();cancelAnimationFrame(raf);const edge=ev.clientY<r.top+48?-8:ev.clientY>r.bottom-48?8:0;if(edge){const tick=()=>{sc.scrollTop+=edge;place(ev.clientY);raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick)}};
-        const up=()=>{cancelAnimationFrame(raf);g.removeEventListener('pointermove',mvH);g.removeEventListener('pointerup',up);g.removeEventListener('pointercancel',up);row.classList.remove('drag');row.style.transform='';if(moved)commit(id,true)};
-        g.addEventListener('pointermove',mvH);g.addEventListener('pointerup',up);g.addEventListener('pointercancel',up)})})}
+      // the whole row drags: a mouse after a few px, a finger after holding still ~0.4s (a quick swipe still scrolls)
+      let hold=0,sx=0,sy=0,armed=false,dragging=false,raf=0,y0=0,t0=0,st0=0,moved=false,pid=null;
+      const place=cy=>{const C=cands(row);let put=null;for(const c of C){const r=c.getBoundingClientRect();if(cy<r.top+r.height/2){put=c;break}}
+        const list=d.querySelector('.gl-list');if(put&&put===list.firstElementChild&&put.dataset.lay)put=put.nextElementSibling;
+        if(put!==row.nextElementSibling&&put!==row){put?list.insertBefore(row,put):list.appendChild(row);moved=true}
+        row.style.transform='translateY('+(cy-y0-(row.offsetTop-t0)+(d.scrollTop-st0))+'px)'};
+      const start=cy=>{dragging=true;moved=false;y0=cy;t0=row.offsetTop;st0=d.scrollTop;row.classList.add('drag');try{row.setPointerCapture(pid)}catch(e){}if(navigator.vibrate)try{navigator.vibrate(12)}catch(e){}};
+      const stop=()=>{clearTimeout(hold);cancelAnimationFrame(raf);armed=false;if(!dragging)return;dragging=false;row.classList.remove('drag');row.style.transform='';row.dataset.dragged=Date.now();if(moved)commit(id,true)};
+      row.addEventListener('pointerdown',e=>{if(e.button>0)return;pid=e.pointerId;sx=e.clientX;sy=e.clientY;armed=true;
+        if(e.pointerType!=='mouse')hold=setTimeout(()=>{if(armed)start(sy)},380)});
+      row.addEventListener('pointermove',e=>{if(!armed&&!dragging)return;
+        if(!dragging){const dx=Math.abs(e.clientX-sx),dy=Math.abs(e.clientY-sy);if(e.pointerType==='mouse'){if(dy>5)start(sy);else return}else if(dx>8||dy>8){clearTimeout(hold);armed=false;return}else return}
+        e.preventDefault();place(e.clientY);const r=d.getBoundingClientRect();cancelAnimationFrame(raf);const edge=e.clientY<r.top+48?-8:e.clientY>r.bottom-48?8:0;
+        if(edge){const cy=e.clientY,tick=()=>{d.scrollTop+=edge;place(cy);raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick)}});
+      row.addEventListener('touchmove',e=>{if(dragging)e.preventDefault()},{passive:false});
+      row.addEventListener('pointerup',stop);row.addEventListener('pointercancel',stop);
+      row.addEventListener('contextmenu',e=>{if(armed||dragging)e.preventDefault()});
+      row.addEventListener('click',e=>{if(Date.now()-(+row.dataset.dragged||0)<350){e.stopPropagation();e.preventDefault()}},true)})}
   if(BAG.pick){const k=BAG.pick,[,z,verb]=SLOTS.find(x=>x[0]===k),zs=k==='back'?['pack','cam']:[k],C=GS.items.filter(i=>zs.includes(i.zone)&&place(i)!=='body').sort((a,b)=>(place(a)==='pack')-(place(b)==='pack'));
     const d=document.createElement('div');d.className='gb-det gb-pick';d.setAttribute('role','region');d.setAttribute('aria-label',z+'：挑一件'+verb);
     d.innerHTML='<div class="gb-pk-h"><small>'+z+'<i>·</i>挑一件'+verb+'</small><button type="button" class="gb-a mute" data-close aria-label="關閉">關閉</button></div>'+
