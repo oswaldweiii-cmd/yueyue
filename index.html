@@ -700,6 +700,13 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .pds.e{border-color:rgba(244,193,82,.5)}.pds.e svg{color:rgba(244,193,82,.45)}
 .ge-ic input:checked+span{box-shadow:inset 0 -2px 0 #F4C152;background:none}
 .ge-hint{display:block;margin-top:4px;font:400 11px var(--body);letter-spacing:.08em;color:var(--t2)}
+.ge-col{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px 2px}
+.ge-col label{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:52px;padding-top:6px;cursor:pointer}.ge-col input{position:absolute;top:6px;left:50%;opacity:0;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;margin:0;border:0;pointer-events:none}
+.ge-col span{width:26px;height:26px;border-radius:2px;background:var(--sw);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 0 0 1px rgba(13,19,32,.8)}
+.ge-col span.orig{background:conic-gradient(#d9483b,#efc232,#4f9d68,#3d7cc9,#8a5bc4,#d9483b);opacity:.55}
+.ge-col small{font:400 11px/1.2 var(--body);color:var(--t2)}
+.ge-col input:checked+span{box-shadow:0 0 0 2px #0B1626,0 0 0 4px #F4C152}.ge-col input:checked~small{color:var(--t1)}
+.ge-col input:focus-visible+span{outline:1px solid #F4C152;outline-offset:5px}
 /* 打包 */
 .gb-h i{font-style:normal;margin:0 .3em;color:var(--t2)}
 .gb-sub2{display:block}.gb-sub2 b{margin:0 .15em}
@@ -2867,7 +2874,22 @@ const BRANDZ={
   legs:['Arc\'teryx','mont-bell','Patagonia','The North Face','Fjällräven','Mammut','Haglöfs','Kühl','Outdoor Research','Columbia','歐都納 Atunas','荒野 WILDLAND'],
   feet:['Salomon','La Sportiva','HOKA','Merrell','Scarpa','LOWA','Asolo','Altra','KEEN','Kahtoola','Hillsound','Grivel','Darn Tough','Injinji']};
 const brandsFor=z=>[...new Set([...GS.items.filter(i=>i.zone===z&&i.brand).map(i=>i.brand),...(BRANDZ[z]||[])])];
-const icon=(i,cls)=>{const ph=i.photo&&GPH[i.photo];return ph?'<img class="'+(cls||'')+'" src="'+ph+'" alt="">':'<svg class="'+(cls||'')+'" viewBox="0 0 48 48" aria-hidden="true"><use href="#gi-'+iconOf(i)+'"/></svg>'};
+
+// colours an item can be: swap the icon's main colour ramp, tint the doll and the 3D figure
+const COLORS=[['red','紅','#d9483b'],['orange','橘','#ef8a2c'],['yellow','黃','#efc232'],['green','綠','#4f9d68'],['blue','藍','#3d7cc9'],['purple','紫','#8a5bc4'],['pink','粉','#e27aa5'],['brown','咖啡','#8a5a36'],['khaki','卡其','#bfae7e'],['gray','灰','#8b93a1'],['black','黑','#353b47'],['white','白','#ece8dc']];
+const COL=Object.fromEntries(COLORS.map(([k,n,c])=>[k,{n,c}]));
+const h2l=h=>{const r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2;let H=0,S=0;
+  if(mx!==mn){const d=mx-mn;S=l>.5?d/(2-mx-mn):d/(mx+mn);H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;H/=6}return[H,S,l]};
+const l2h=(H,S,L)=>{const f=n=>{const k=(n+H*12)%12,a=S*Math.min(L,1-L);return Math.round(255*(L-a*Math.max(-1,Math.min(k-3,9-k,1)))).toString(16).padStart(2,'0')};return '#'+f(0)+f(8)+f(4)};
+const TINTC={},OLC='#2c3854';
+function tintSVG(name,key){const id=name+'|'+key;if(TINTC[id])return TINTC[id];const sym=document.getElementById('gi-'+name);if(!sym||!COL[key])return '';
+  const [mH,mS,mL]=h2l(PXC[name]||'#888888'),[tH,tS,tL]=h2l(COL[key].c),grey=mS<.14,dh=(a,b)=>Math.min(Math.abs(a-b),1-Math.abs(a-b));
+  const out=[...sym.querySelectorAll('path')].map(pa=>{let f=pa.getAttribute('fill');if(f&&f!==OLC){const [H,S,L]=h2l(f);
+      if(grey?S<.16:(S>.12&&dh(H,mH)<.09)){const nL=Math.max(.08,Math.min(.95,L+(tL-mL)*.85));f=l2h(tH,key==='gray'||key==='black'||key==='white'?Math.min(tS,.12):Math.min(1,tS*(grey?1:Math.max(.6,S/Math.max(mS,.01)))),nL)}}
+    return '<path fill="'+f+'" d="'+pa.getAttribute('d')+'"/>'}).join('');
+  return TINTC[id]=out}
+const tintOf=i=>i.color&&COL[i.color]?COL[i.color].c:null;
+const icon=(i,cls)=>{const ph=i.photo&&GPH[i.photo];if(ph)return '<img class="'+(cls||'')+'" src="'+ph+'" alt="">';const t=i.color&&tintSVG(iconOf(i),i.color);return t?'<svg class="'+(cls||'')+'" viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true">'+t+'</svg>':'<svg class="'+(cls||'')+'" viewBox="0 0 48 48" aria-hidden="true"><use href="#gi-'+iconOf(i)+'"/></svg>'};
 function totals(){const all=GS.items.filter(inKit),wt=f=>all.filter(i=>i.g&&f(i)).reduce((a,i)=>a+i.g,0);return{all,carry:wt(i=>!i.worn),worn:wt(i=>i.worn),weighed:all.some(i=>i.g)}}
 function loadHTML(carry,id){
   if(GS.body&&carry){const p=carry/(GS.body*1000)*100,lv=p<10?'輕裝':p<20?'標準':'重裝';
@@ -2886,7 +2908,8 @@ function gearRender(){
   document.getElementById('gBody').onclick=bodyEdit;
   {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;document.getElementById('gPackB').innerHTML='<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
-  window.__gearLook&&window.__gearLook(window.__gearLookState);
+  {const W=T.all.filter(i=>i.worn&&i.color),pickc=f=>{const x=W.find(f);return x?COL[x.color].c:null};window.__gearTintState={torso:pickc(i=>i.zone==='torso'),legs:pickc(i=>i.zone==='legs'),feet:pickc(i=>i.zone==='feet'&&i.look!=='crampon'),back:pickc(i=>i.zone==='pack'&&i.look)}}
+  window.__gearLook&&window.__gearLook(window.__gearLookState);window.__gearTint&&window.__gearTint(window.__gearTintState);
   window.__gearRetip&&window.__gearRetip();
   if(BAG.open)bagRender();
 }
@@ -2950,7 +2973,7 @@ function bagRender(){
   const grid=(L,empty,lbl)=>L.length?'<div class="gb-grid" role="group" aria-label="'+lbl+'">'+L.map(slot).join('')+'</div>':'<p class="gb-empty">'+empty+'</p>';
   const s=BAG.sel&&GS.items.find(i=>i.id===BAG.sel),here=s&&place(s);
   const SL={},fill={};SLOTS.forEach(([k])=>SL[k]=[]);body.forEach(i=>SL[slotOf(i)]&&SL[slotOf(i)].push(i));
-  SLOTS.forEach(([k])=>{const f=SL[k][0];if(f)fill[k]=PXC[iconOf(f)]||'#5E9E78'});if(fill.back)fill.back='color-mix(in srgb,'+fill.back+' 55%,#0d1320)';const miss=SLOTS.filter(([k])=>!SL[k].length).length;
+  SLOTS.forEach(([k])=>{const f=SL[k][0];if(f)fill[k]=tintOf(f)||PXC[iconOf(f)]||'#5E9E78'});if(fill.back)fill.back='color-mix(in srgb,'+fill.back+' 55%,#0d1320)';const miss=SLOTS.filter(([k])=>!SL[k].length).length;
   const pds=([k,z,verb])=>{const L=SL[k],f=L[0],on=BAG.pick===k||(s&&here==='body'&&slotOf(s)===k);
     return '<div class="pdw"><button type="button" class="pds'+(f?'':' e')+(on?' sel':'')+'" data-slot="'+k+'" data-ids="'+L.map(i=>i.id).join(' ')+'" aria-label="'+z+'：'+(f?E(L.map(i=>i.name).join('、'))+'。點一下看詳細':'還沒有，點一下從倉庫挑')+'">'+
       (f?icon(f)+(L.length>1?'<em>×'+L.length+'</em>':''):'<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gs-'+SLOTSIL[k]+'"/></svg>')+'</button><span class="pdn'+(f?'':' z')+'">'+(f?E(f.name):z)+'</span></div>'};
@@ -3024,6 +3047,7 @@ function gearEdit(id,zone,where){
     '<label class="ge-f ge-g"><span>重量</span><input name="g" type="number" inputmode="numeric" min="0" max="99999" value="'+(it.g||'')+'" placeholder="—"><em>公克</em></label></div>'+
     '<fieldset class="ge-f"><legend>圖示</legend><div class="ge-ic fold" role="radiogroup"><label><input type="radio" name="icon" value=""'+(cur?'':' checked')+'><span title="自動判斷"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#gi-'+iconOf({...it,icon:''})+'"/></svg><small>自動</small></span></label>'+
       Object.entries(ICONS).map(([k,l])=>'<label'+(cur===k?' class="on"':'')+'><input type="radio" name="icon" value="'+k+'"'+(cur===k?' checked':'')+'><span title="'+l+'"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#gi-'+k+'"/></svg><small>'+l+'</small></span></label>').join('')+'</div><button type="button" class="ge-link" id="geIcMore" aria-expanded="false">換圖示</button></fieldset>'+
+    '<fieldset class="ge-f"><legend>顏色</legend><div class="ge-col" role="radiogroup">'+[['','原色',''],...COLORS].map(([k,n,c])=>'<label title="'+n+'"><input type="radio" name="color" value="'+k+'"'+((it.color||'')===k?' checked':'')+' aria-label="'+n+'"><span'+(c?' style="--sw:'+c+'"':' class="orig"')+'></span><small>'+n+'</small></label>').join('')+'</div></fieldset>'+
     '<fieldset class="ge-f"><legend>放在哪幾套</legend><div class="ge-r ge-c">'+GS.kits.map(k=>'<label><input type="checkbox" name="kits" value="'+k.id+'"'+(it.kits.includes(k.id)?' checked':'')+'><span>'+E(k.name)+'</span></label>').join('')+'</div></fieldset>'+
     '<fieldset class="ge-f"><legend>帶的時候</legend>'+radio('worn',it.worn?1:0,[[1,'穿在身上'],[0,'放在背包']])+'</fieldset>'+
     '<div class="ge-row"><label class="ge-f"><span>部位</span><select name="zone">'+Object.entries(ZONES).map(([k,l])=>'<option value="'+k+'"'+(k===it.zone?' selected':'')+'>'+l+'</option>').join('')+'</select></label>'+
@@ -3037,7 +3061,7 @@ function gearEdit(id,zone,where){
       const f=ed.querySelector('form'),v=k=>f.elements[k].value.trim();
       if(!v('name'))return gErr(f.elements.name,'請寫上裝備名稱');
       const gv=v('g')===''?null:Math.round(+v('g'));if(gv!==null&&!(gv>0&&gv<=99999))return gErr(f.elements.g,'請填 1 到 99,999');
-      const zz=f.elements.zone.value;Object.assign(it,{name:v('name'),brand:v('brand'),g:gv,worn:f.elements.worn.value==='1',zone:zz,date:v('date'),note:v('note'),borrow:f.elements.borrow.checked,icon:f.elements.icon.value,
+      const zz=f.elements.zone.value;Object.assign(it,{name:v('name'),brand:v('brand'),g:gv,worn:f.elements.worn.value==='1',zone:zz,date:v('date'),note:v('note'),borrow:f.elements.borrow.checked,icon:f.elements.icon.value,color:f.elements.color.value,
         kits:[...f.querySelectorAll('[name=kits]:checked')].map(x=>x.value),look:zz==='pack'?f.elements.lookpack.value:zz==='feet'?f.elements.lookfeet.value:''});
       if(dropPhoto&&it.photo){window.YY.IDB.del(it.photo).catch(()=>{});delete GPH[it.photo];it.photo=''}
       if(newPhoto){const key='gear:'+it.id;it.photo=key;GPH[key]=URL.createObjectURL(newPhoto);window.YY.IDB.put(key,newPhoto).catch(()=>window.YY.say('照片沒存到，請再試一次',true))}
@@ -3045,6 +3069,8 @@ function gearEdit(id,zone,where){
     },id?'編輯「'+it.name+'」':'新增裝備',()=>document.querySelector('#gbag .gs[data-id="'+it.id+'"]')||document.querySelector('#gbag #gbAdd')||document.getElementById('gSortB'));
   {const ic=ed.querySelector('.ge-ic'),mb=ed.querySelector('#geIcMore');mb.onclick=()=>{const o=ic.classList.toggle('fold');mb.setAttribute('aria-expanded',String(!o));mb.textContent=o?'換圖示':'收起'};
     ic.addEventListener('change',e=>{ic.querySelectorAll('label').forEach(l=>l.classList.toggle('on',l.contains(e.target)&&e.target.checked))})}
+  const prev=()=>{const c=ed.querySelector('[name=color]:checked').value;ed.querySelectorAll('.ge-ic label').forEach((l,n)=>{const k=l.querySelector('input').value||iconOf({...it,icon:'',name:ed.querySelector('[name=name]').value,zone:ed.querySelector('[name=zone]').value}),sv=l.querySelector('svg');if(!sv)return;const t=c&&tintSVG(k,c);sv.setAttribute('viewBox',t?'0 0 24 24':'0 0 48 48');sv.innerHTML=t||'<use href="#gi-'+k+'"/>'})};
+  ed.querySelectorAll('[name=color]').forEach(x=>x.addEventListener('change',prev));if(it.color)prev();
   ed.querySelector('[name=zone]').addEventListener('change',e=>{ed.querySelectorAll('.ge-look').forEach(x=>x.hidden=x.dataset.for!==e.target.value);ed.querySelector('#geBrands').innerHTML=brandsFor(e.target.value).map(n=>'<option value="'+E(n)+'">').join('')});
   const pick=()=>{const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=async()=>{const fl=i.files&&i.files[0];if(!fl)return;try{newPhoto=await window.YY.shrink(fl,1000,false);dropPhoto=false;
       const box=ed.querySelector('#gePhImg'),u=URL.createObjectURL(newPhoto);box.outerHTML='<img src="'+u+'" alt="這件裝備的照片" id="gePhImg">';ed.querySelector('#gePh').textContent='換一張'}catch(e){window.YY.say('這張照片讀不了，換一張試試',true)}};i.click()};
@@ -3100,7 +3126,7 @@ const fill=new THREE.DirectionalLight(0x8fb0de,0.6);fill.position.set(-3,1.2,2);
 /* ---------- the chibi: built from soft shapes, outlined like a game sprite ---------- */
 const C={skin:0xd7a37a,skinSh:0xc48c64,hair:0x15161a,jacket:0x17191f,jacketHi:0x23262d,vest:0x2d3139,vestHi:0x3b404a,pants:0x111216,shoe:0x1e2026,sole:0xd8d2c6,orange:0xf08a2c,flask:0x2b2f36};
 const parts=[];
-const M=(c,r=0.6,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+const TM={};const M=(c,r=0.6,m=0)=>{const x=new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});(TM[c]=TM[c]||[]).push(x);return x};
 const OUT=new THREE.MeshBasicMaterial({color:0x05070b,side:THREE.BackSide});
 function mesh(geo,mat,zone,outline=0.012){const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;m.userData.zone=zone;
   if(outline){const o=new THREE.Mesh(geo,OUT);o.scale.setScalar(1);o.userData.zone=zone;o.onBeforeRender=()=>{};o.userData.out=outline;m.add(o);o.raycast=()=>{};
@@ -3156,6 +3182,9 @@ const big=new THREE.Group();big.visible=false;R.torso.add(big);
  const hb=mesh(new THREE.TorusGeometry(0.232,0.026,8,32).scale(1,0.84,1),M(0x1f2a24,0.8),'pack',0.006);hb.rotation.x=Math.PI/2;hb.position.y=0.06;big.add(hb);
  const pad=mesh(new THREE.CylinderGeometry(0.075,0.075,0.44,20),M(0xb0603a,0.85),'pack',0.008);pad.rotation.z=Math.PI/2;pad.position.set(0,0.0,-0.34);big.add(pad)}
 // which kit is on him: vest, big pack, crampons
+window.__gearTint=o=>{o=o||{};const G={torso:[[C.jacket,.42],[C.jacketHi,.5]],legs:[[C.pants,.38]],feet:[[C.shoe,.42]],back:[[C.vest,.42],[C.vestHi,.52],[0x2f4a3c,.42],[0x23382d,.34]]};
+  for(const[k,L]of Object.entries(G))for(const[c,lv]of L)(TM[c]||[]).forEach(m=>{if(!o[k]){m.color.setHex(c);return}const col=new THREE.Color(o[k]),hsl={};col.getHSL(hsl);m.color.setHSL(hsl.h,hsl.s*.9,Math.min(.62,hsl.l*lv/.5))})};
+window.__gearTintState&&window.__gearTint(window.__gearTintState);
 window.__gearLook=o=>{o=o||{};vest.visible=o.pack==='vest';big.visible=o.pack==='pack';(R.cramps||[]).forEach(c=>c.visible=!!o.crampon)};
 window.__gearLook(window.__gearLookState||{pack:'vest'});
 // action camera on the right strap
