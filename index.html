@@ -447,7 +447,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gearv.scrolled{-webkit-mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 56px),transparent)}
 .app[data-tab="gear"] #gearView{display:block}.app[data-tab="gear"] .mapwrap{visibility:hidden}
 .gstage{position:relative;height:100%;min-height:420px}.gearv.g3off .gstage{height:auto;min-height:0}
-.g3off .gload{position:static;display:block;padding:252px 24px 8px;text-align:left;font:400 14px/1.6 var(--body);letter-spacing:0}.g3off .ghint,.g3off .glead,.g3off .gring,.g3off .g3d{display:none}
+.g3off .gload{position:static;display:block;padding:196px 24px 8px;text-align:left;font:400 14px/1.6 var(--body);letter-spacing:0}.g3off .ghint,.g3off .glead,.g3off .gring,.g3off .g3d{display:none}
 .g3d{position:absolute;inset:0;touch-action:pan-y;-webkit-mask-image:linear-gradient(180deg,#000 84%,transparent);mask-image:linear-gradient(180deg,#000 84%,transparent)}.g3d canvas{display:block;width:100%;height:100%;outline:none;cursor:grab;touch-action:pan-y}
 .ghd{position:absolute;left:24px;top:4px;z-index:7;pointer-events:none}
 .ghd small{display:block;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2)}
@@ -626,15 +626,15 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gkn2 .gkn-in{width:5em;text-align:center;font:600 28px/1.2 var(--display)}
 .gdots{display:flex;justify-content:center;gap:6px;margin-top:2px}.gdots i{width:6px;height:6px;border-radius:3px;background:rgba(238,241,236,.25);transition:width .25s,background .25s}.gdots i.on{width:18px;background:#F4C152}
 .ghd .gsub{margin-top:8px}
-.gwt2{left:0;right:0;bottom:68px;align-items:center;text-align:center;gap:0}
+.gwt2{left:0;right:0;bottom:78px;align-items:center;text-align:center;gap:0}
 .gwt2 .gw1{display:flex;gap:.5em;justify-content:center;align-items:baseline;font:400 14px var(--body);color:var(--t2)}.gwt2 .gw1 b{font:600 18px var(--display);min-width:0;color:var(--t1)}.gwt2 .gw1 i{font-style:normal;color:rgba(238,241,236,.3)}
 .gwt2 .gload2{max-width:none;margin-top:0;flex-wrap:nowrap}.gwt2 .gload2>span:last-child{flex-basis:auto}
-.ghint{bottom:106px}
-.gact{position:absolute;left:24px;right:24px;bottom:16px;z-index:3;display:flex;justify-content:space-between;align-items:center}
+.ghint{bottom:116px}
+.gact{position:absolute;left:24px;right:24px;bottom:26px;z-index:3;display:flex;justify-content:space-between;align-items:center}
 .glk{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 4px 0 0;background:none;border:0;font:500 14px var(--body);color:var(--t1);cursor:pointer}.glk svg{width:28px;height:28px;overflow:visible}.glk i{font-style:normal;font-size:18px;color:var(--t2);margin-left:2px}
 .glk:hover i{color:#F4C152}
 .ggo{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 24px;border:0;border-radius:12px;background:#F4C152;color:#0B1626;font:700 14px var(--body);letter-spacing:.08em;cursor:pointer;box-shadow:0 8px 24px rgba(244,193,82,.18)}.ggo i{font-style:normal}
-.g3off .gact{position:static;order:3;margin:16px 24px}.g3off .ghd{position:relative}
+.g3off .gact{position:static;order:3;margin:16px 24px 34px}.g3off .ghd{position:relative}
 .gtip.dock{left:24px;right:24px;top:auto;bottom:64px;width:auto;text-align:center}.gtip.dock ul{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 16px;margin-top:8px}.gtip.dock li small{display:none}.gtip.dock li b{font-size:14px;line-height:1.5}
 @media (min-width:900px){.gact{left:50%;right:auto;width:480px;margin-left:-240px}.gkn2{font-size:56px;line-height:1.1}.gkn2 .gkn-in{font-size:56px}.gka{font-size:36px}}
 .ghint{transition:opacity .4s}.ghint.bye{opacity:0}.ggo{min-width:148px;justify-content:center;padding:0 18px}.ggo .num{font:600 11px var(--display);margin-left:.4em;letter-spacing:0;opacity:.7}
@@ -2814,7 +2814,7 @@ const PXC={"jacket":"#5da17e","down":"#e68e36","fleece":"#d9cfaf","shirt":"#528d
 const SLOTS=[['head','頭部','戴上'],['torso','上身','穿上'],['hands','手部','戴上'],['legs','腿部','穿上'],['eyes','眼部','戴上'],['back','背','背上'],['wrist','手腕','戴上'],['feet','腳部','穿上']];
 const SLOTSIL={head:'cap',torso:'jacket',hands:'gloves',legs:'pants',eyes:'glasses',back:'vest',wrist:'watch',feet:'boot'};
 const slotOf=i=>i.zone==='pack'||i.zone==='cam'?'back':i.zone;
-const DOLL=["........KKKKKKKK........", "......KKhhhhhhhhKK......", ".....KhhhhhhhhhhhhK.....", "....KhhhhhhhhhhhhhhK....", "....KhhhhhhhhhhhhhhK....", "....KffffffffffffffK....", "....KfffeeffffeefffK....", "....KfffeeffffeefffK....", "....KffffffffffffffK....", ".....KffffffffffffK.....", "......KKffffffffKK......", "........KKffffKK........", ".....KKKKttttttKKKK.....", "....KaaKbbttttbbKaaK....", "...KaaaKbbttttbbKaaaK...", "...KwwwKbbttttbbKwwwK...", "...KwwwKbbttttbbKwwwK...", "...KgggKbbttttbbKgggK...", "...KKKKKttttttttKKKKK...", "......KllllllllllK......", "......KllllKKllllK......", "......KllllKKllllK......", "......KllllKKllllK......", ".....KsssssKKsssssK.....", ".....KKKKKKKKKKKKKK....."],DREG={h:'head',e:'eyes',t:'torso',a:'torso',b:'back',w:'wrist',g:'hands',l:'legs',s:'feet'};
+const DOLL=["........KKKKKKKK........", "......KKhhhhhhhhKK......", ".....KhhhhhhhhhhhhK.....", "....KhhhhhhhhhhhhhhK....", "....KhhhhhhhhhhhhhhK....", "....KffffffffffffffK....", "....KfffeeffffeefffK....", "....KfffeeffffeefffK....", "....KffffffffffffffK....", ".....KffffffffffffK.....", "......KKffffffffKK......", "........KKffffKK........", ".....KKKKttttttKKKK.....", "....KaaKbbttttbbKaaK....", "...KaaaKbbttttbbKaaaK...", "...KwwwKbbttttbbKwwwK...", "...KwwwKbbttttbbKwwwK...", "...KgggKbbttttbbKgggK...", "...KKKKKttttttttKKKKK...", "......KllllllllllK......", "......KllllKKllllK......", "......KllllKKllllK......", "......KssssKKssssK......", ".....KsssssKKsssssK.....", ".....KKKKKKKKKKKKKK....."],DREG={h:'head',e:'eyes',t:'torso',a:'torso',b:'back',w:'wrist',g:'hands',l:'legs',s:'feet'};
 function dollSVG(fill){const by={};DOLL.forEach((r,j)=>{let i=0;while(i<24){const c=r[i];if(c==='.'){i++;continue}let k=i;while(k+1<24&&r[k+1]===c)k++;
   const col=c==='K'?'rgba(238,241,236,.34)':c==='f'?'#7c5f4c':c==='e'&&!fill.eyes?'#2a1f1a':(fill[DREG[c]]||'rgba(238,241,236,.07)');(by[col]=by[col]||[]).push('M'+i+' '+j+'h'+(k-i+1)+'v1h-'+(k-i+1)+'z');i=k+1}});
   return '<svg class="gb-doll" viewBox="0 0 24 25" shape-rendering="crispEdges" aria-hidden="true">'+Object.entries(by).map(([c,d])=>'<path fill="'+c+'" d="'+d.join('')+'"/>').join('')+'</svg>'}
@@ -2929,7 +2929,7 @@ function bagRender(){
   const grid=(L,empty,lbl)=>L.length?'<div class="gb-grid" role="group" aria-label="'+lbl+'">'+L.map(slot).join('')+'</div>':'<p class="gb-empty">'+empty+'</p>';
   const s=BAG.sel&&GS.items.find(i=>i.id===BAG.sel),here=s&&place(s);
   const SL={},fill={};SLOTS.forEach(([k])=>SL[k]=[]);body.forEach(i=>SL[slotOf(i)]&&SL[slotOf(i)].push(i));
-  SLOTS.forEach(([k])=>{const f=SL[k][0];if(f)fill[k]=PXC[iconOf(f)]||'#5E9E78'});const miss=SLOTS.filter(([k])=>!SL[k].length).length;
+  SLOTS.forEach(([k])=>{const f=SL[k][0];if(f)fill[k]=PXC[iconOf(f)]||'#5E9E78'});if(fill.back)fill.back='color-mix(in srgb,'+fill.back+' 55%,#0d1320)';const miss=SLOTS.filter(([k])=>!SL[k].length).length;
   const pds=([k,z,verb])=>{const L=SL[k],f=L[0],on=BAG.pick===k||(s&&here==='body'&&slotOf(s)===k);
     return '<div class="pdw"><button type="button" class="pds'+(f?'':' e')+(on?' sel':'')+'" data-slot="'+k+'" data-ids="'+L.map(i=>i.id).join(' ')+'" aria-label="'+z+'：'+(f?E(L.map(i=>i.name).join('、'))+'。點一下看詳細':'還沒有，點一下從倉庫挑')+'">'+
       (f?icon(f)+(L.length>1?'<em>×'+L.length+'</em>':''):'<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gs-'+SLOTSIL[k]+'"/></svg>')+'</button><span class="pdn'+(f?'':' z')+'">'+(f?E(f.name):z)+'</span></div>'};
