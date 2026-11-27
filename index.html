@@ -742,7 +742,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gready small{display:block;font:500 11px var(--body);letter-spacing:.32em;color:#F4C152}.gready b{display:block;margin-top:6px;font:600 28px/1.2 var(--display);color:var(--t1);text-shadow:0 2px 18px rgba(244,193,82,.35)}
 .gready p{margin:4px 0 0;font:400 14px var(--body);color:var(--t2)}.gready button{margin-top:2px;min-height:44px}
 .gearv.ready .gwt2,.gearv.ready .ghint,.gearv.ready .ghd .gsub,.gearv.ready .gdots{display:none}
-.ggo.cancel{background:none;color:#F4C152;box-shadow:inset 0 0 0 1.5px #F4C152}
+.ggo.cancel{background:rgba(11,22,38,.62);color:#F4C152;box-shadow:inset 0 0 0 1.5px #F4C152;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}.gearv.ready .glk{text-shadow:0 1px 8px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8)}
 .gearv.ready .gready{animation:gReadyIn .5s cubic-bezier(.2,.8,.2,1) both}@keyframes gReadyIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.gearv.ready .gready{animation:none}}
 /* 打包 */
@@ -3375,14 +3375,14 @@ function animate(t,dt){rk+=(readyTo-rk)*Math.min(1,dt*(readyTo?5:4));if(hop>0)ho
 function sayHi(){if(!RM&&wave<=0)wave=2.4}
 // 'ready': he steps onto a little moon (月岳) that turns under his feet as he walks
 const tex=(w,h,paint)=>{const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t};
-const MOON=new THREE.Group();MOON.visible=false;scene.add(MOON);const MR=0.9;
+const MOON=new THREE.Group();MOON.visible=false;scene.add(MOON);const MR=2.6;
 const moonT=tex(1024,512,(x,w,h)=>{let sd=7;const rnd=()=>(sd=(sd*9301+49297)%233280)/233280;x.fillStyle='#b4b1a8';x.fillRect(0,0,w,h);
   for(let i=0;i<9;i++){const cx=rnd()*w,cy=h*.2+rnd()*h*.6,r=60+rnd()*120,g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,'rgba(120,118,112,.55)');g.addColorStop(1,'rgba(120,118,112,0)');x.fillStyle=g;x.fillRect(cx-r,cy-r,r*2,r*2)}
   for(let i=0;i<9000;i++){const v=150+rnd()*60|0;x.fillStyle='rgba('+v+','+v+','+(v-6)+','+(.25+rnd()*.3)+')';x.fillRect(rnd()*w,rnd()*h,1+rnd()*2,1+rnd()*2)}
   for(let i=0;i<120;i++){const cx=rnd()*w,cy=h*.08+rnd()*h*.84,r=3+Math.pow(rnd(),2.2)*34;const g=x.createRadialGradient(cx-r*.15,cy-r*.15,0,cx,cy,r);g.addColorStop(0,'rgba(95,93,88,.75)');g.addColorStop(.8,'rgba(125,122,116,.5)');g.addColorStop(1,'rgba(125,122,116,0)');x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();
     x.strokeStyle='rgba(225,222,212,.55)';x.lineWidth=Math.max(1,r*.12);x.beginPath();x.arc(cx,cy,r*.92,3.6,6.0);x.stroke()}});
-const moon=new THREE.Mesh(new THREE.SphereGeometry(MR,72,48),new THREE.MeshStandardMaterial({map:moonT,bumpMap:moonT,bumpScale:0.015,roughness:.96,metalness:0}));moon.position.y=-MR;moon.receiveShadow=true;MOON.add(moon);
-function fxTick(t,dt,e){const on=e>0.02;MOON.visible=on;MOON.scale.setScalar(Math.max(0.001,e));(scene.userData.floor||[]).forEach(m=>m.visible=e<0.35);if(on&&!RM)moon.rotation.x-=dt*0.42}
+const moon=new THREE.Mesh(new THREE.SphereGeometry(MR,128,64),new THREE.MeshStandardMaterial({map:moonT,bumpMap:moonT,bumpScale:0.015,roughness:.96,metalness:0}));moon.position.y=-MR;moon.receiveShadow=true;MOON.add(moon);
+function fxTick(t,dt,e){const on=e>0.02;MOON.visible=on;MOON.scale.setScalar(Math.max(0.001,e));(scene.userData.floor||[]).forEach(m=>m.visible=e<0.35);if(on&&!RM)moon.rotation.x-=dt*0.16}
 let readyTo=0,rk=0;window.__gearReady=on=>{readyTo=on?1:0;if(on&&!RM)hop=0.5;if(RM){rk=readyTo;poseReady(0)}};let hop=0;
 // game-style 'ready': camera leans in, feet set wide, one fist up, the other at the chest, eyes narrowed
 function poseReady(t,dt=0.016){const k=rk;fxTick(t,dt,k<=0.001?0:k*k*(3-2*k));if(k<=0.001&&cam.zoom===1&&!R.torso.rotation.x)return;const e=k<=0.001?0:k*k*(3-2*k);cam.zoom=1-0.04*e;if(e>0)cam.setViewOffset(W(),H(),0,-H()*0.02*e,W(),H());else cam.clearViewOffset();cam.updateProjectionMatrix();R.torso.rotation.x=0.07*e;if(e===0)return;
