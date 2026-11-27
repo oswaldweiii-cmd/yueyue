@@ -684,7 +684,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .gbag,.gedit{background:none}
 .gbag::before,.gedit::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(11,22,38,.62),rgba(11,22,38,.9));-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .gedit::before{background:linear-gradient(180deg,rgba(11,22,38,.88),rgba(11,22,38,.96))}
-.gedit:not([hidden])~.gbag{visibility:hidden}
+.gedit.in~.gbag{visibility:hidden}
 .ge-ic span{border-radius:0}
 @media (min-width:900px){.gbag::before,.gedit::before{left:auto;width:520px}body.bagopen .gstage{width:calc(100% - 520px)}}
 @media (min-width:900px){.gbag.in{box-shadow:0 0 0 100vmax rgba(8,15,27,.55)}}
@@ -708,6 +708,19 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .ge-col small{font:400 11px/1.2 var(--body);color:var(--t2)}
 .ge-col input:checked+span{box-shadow:0 0 0 2px #0B1626,0 0 0 4px #F4C152}.ge-col input:checked~small{color:var(--t1)}
 .ge-col input:focus-visible+span{outline:1px solid #F4C152;outline-offset:5px}
+.pds.stk::before,.pds.stk3::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:14px;background:#16243a;box-shadow:inset 0 0 0 1px rgba(238,241,236,.16);transform:translate(5px,-5px)}
+.pds.stk3::after{transform:translate(10px,-10px);opacity:.55;z-index:-2}.pdw{isolation:isolate}.pds.stk~.pdn{margin-top:6px}
+.pds.stk{background:#1a2840}
+.pds em{right:auto;left:50%;transform:translateX(-50%);bottom:-7px;padding:0 4px;background:#0B1626;white-space:nowrap}
+.gb-slot{max-height:82vh;overflow-y:auto;overscroll-behavior:contain}.gl-list{margin-top:4px}
+.gl-h{margin:16px 0 2px;font:500 11px/1 var(--body);letter-spacing:.32em;color:#F4C152}.gl-h i{font-style:normal;margin:0 .4em}
+.gl-row{display:flex;align-items:center;border-bottom:1px solid rgba(238,241,236,.08)}
+.gl-main{flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:64px;padding:6px 0;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.gl-main:focus-visible,.gl-mv:focus-visible{outline:1px solid #F4C152;outline-offset:2px}
+.gl-top{display:block;margin:2px 0 0;font:500 11px var(--body);font-style:normal;letter-spacing:.16em;color:#F4C152;white-space:nowrap}
+.gl-bag{color:#F4C152}
+.gl-mv{width:44px;height:44px;flex:none;padding:0;background:none;border:0;font:400 18px var(--body);color:var(--t2);cursor:pointer}.gl-mv:hover{color:var(--t1)}.gl-mv[disabled]{opacity:.2;cursor:default}
+.gl-note{margin:12px 0 0;text-align:center;font:400 11px var(--body);letter-spacing:.08em;color:var(--t2)}
 /* 打包 */
 .gb-h i{font-style:normal;margin:0 .3em;color:var(--t2)}
 .gb-sub2{display:block}.gb-sub2 b{margin:0 .15em}
@@ -2843,6 +2856,15 @@ const PXC={"jacket":"#5da17e","down":"#e68e36","fleece":"#d9cfaf","shirt":"#528d
 const SLOTS=[['head','頭部','戴上'],['torso','上身','穿上'],['hands','手部','戴上'],['legs','腿部','穿上'],['eyes','眼部','戴上'],['back','背','背上'],['wrist','手腕','戴上'],['feet','腳部','穿上']];
 const SLOTSIL={head:'cap',torso:'jacket',hands:'gloves',legs:'pants',eyes:'glasses',back:'vest',wrist:'watch',feet:'boot'};
 const slotOf=i=>i.zone==='pack'||i.zone==='cam'?'back':i.zone;
+// layering: torso / legs / hands wear in shells, mid layers and base layers; everything else is just an ordered list
+const LAYZ=['torso','legs','hands'],LAYN={out:'外層',mid:'中層',in:'內層'},LAYD={out:'防風雨',mid:'保暖',in:'排汗'},LR={out:0,mid:1,in:2};
+const layerOf=i=>{if(!LAYZ.includes(i.zone))return '';if(i.layer)return i.layer;const n=(i.name||'')+' '+(i.note||''),ic=iconOf(i);
+  if(/刷毛|羽絨|保暖|中層|fleece|down|primaloft/i.test(n)||ic==='fleece'||ic==='down')return 'mid';
+  if(/排汗|內搭|內層|底層|base|T恤|短袖|緊身/i.test(n)||ic==='shirt')return 'in';
+  if(/雨|硬殼|風衣|外套|外褲|shell|gore/i.test(n)||ic==='rain'||ic==='jacket')return 'out';
+  return i.zone==='torso'?'mid':'out'};
+const ordOf=i=>i.ord!=null?i.ord:GS.items.indexOf(i)*10;
+const slotSort=L=>[...L].sort((a,b)=>((LR[layerOf(a)]??1)-(LR[layerOf(b)]??1))||ordOf(a)-ordOf(b));
 const DOLL=["........KKKKKKKK........", "......KKhhhhhhhhKK......", ".....KhhhhhhhhhhhhK.....", "....KhhhhhhhhhhhhhhK....", "....KhhhhhhhhhhhhhhK....", "....KffffffffffffffK....", "....KfffeeffffeefffK....", "....KfffeeffffeefffK....", "....KffffffffffffffK....", ".....KffffffffffffK.....", "......KKffffffffKK......", "........KKffffKK........", ".....KKKKttttttKKKK.....", "....KaaKbbttttbbKaaK....", "...KaaaKbbttttbbKaaaK...", "...KwwwKbbttttbbKwwwK...", "...KwwwKbbttttbbKwwwK...", "...KgggKbbttttbbKgggK...", "...KKKKKttttttttKKKKK...", "......KllllllllllK......", "......KllllKKllllK......", "......KllllKKllllK......", "......KssssKKssssK......", ".....KsssssKKsssssK.....", ".....KKKKKKKKKKKKKK....."],DREG={h:'head',e:'eyes',t:'torso',a:'torso',b:'back',w:'wrist',g:'hands',l:'legs',s:'feet'};
 function dollSVG(fill){const by={};DOLL.forEach((r,j)=>{let i=0;while(i<24){const c=r[i];if(c==='.'){i++;continue}let k=i;while(k+1<24&&r[k+1]===c)k++;
   const col=c==='K'?'rgba(238,241,236,.34)':c==='f'?'#7c5f4c':c==='e'&&!fill.eyes?'#2a1f1a':(fill[DREG[c]]||'rgba(238,241,236,.07)');(by[col]=by[col]||[]).push('M'+i+' '+j+'h'+(k-i+1)+'v1h-'+(k-i+1)+'z');i=k+1}});
@@ -2912,7 +2934,7 @@ function gearRender(){
   document.getElementById('gBody').onclick=bodyEdit;
   {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;document.getElementById('gPackB').innerHTML='<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
-  {const W=T.all.filter(i=>i.worn&&i.color),pickc=f=>{const x=W.find(f);return x?COL[x.color].c:null};window.__gearTintState={torso:pickc(i=>i.zone==='torso'),legs:pickc(i=>i.zone==='legs'),feet:pickc(i=>i.zone==='feet'&&i.look!=='crampon'),back:pickc(i=>i.zone==='pack'&&i.look)}}
+  {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i&&i.color&&COL[i.color]?COL[i.color].c:null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
   window.__gearLook&&window.__gearLook(window.__gearLookState);window.__gearTint&&window.__gearTint(window.__gearTintState);
   window.__gearRetip&&window.__gearRetip();
   if(BAG.open)bagRender();
@@ -2936,7 +2958,7 @@ document.getElementById('gKitT').onclick=()=>{const p=document.getElementById('g
 /* ---------- 整理裝備: this set on top (worn / carried), 倉庫 below; one tap moves a thing across ---------- */
 const BAG={open:false,mode:'sort',sel:null,toast:null};
 let bTimer=0,tTimer=0;
-function bagOpen(mode){clearTimeout(bTimer);BAG.open=true;BAG.mode=mode||'sort';BAG.sel=null;BAG.pick=null;BAG.toast=null;const v=document.getElementById('gbag'),app=document.getElementById('app');
+function bagOpen(mode){clearTimeout(bTimer);BAG.open=true;BAG.mode=mode||'sort';BAG.sel=null;BAG.pick=null;BAG.slot=null;BAG.toast=null;const v=document.getElementById('gbag'),app=document.getElementById('app');
   if(BAG.mode==='pack'){if(PK.kit!==GS.kit){PK={on:true,kit:GS.kit,ids:[],t:Date.now()};pSave()}else PK.on=true}
   document.body.classList.add('bagopen');v.setAttribute('aria-label',BAG.mode==='pack'?'打包清單':'整理裝備');BAG.back=document.activeElement;v.hidden=false;v.scrollTop=0;app.inert=true;bagRender();requestAnimationFrame(()=>v.classList.add('in'));setTimeout(()=>{const f=v.querySelector('#gbX');f&&f.focus({preventScroll:true})},60)}
 function bagClose(){document.body.classList.remove('bagopen');BAG.open=false;PK.on=false;clearTimeout(tTimer);const v=document.getElementById('gbag'),app=document.getElementById('app');v.classList.remove('in');app.inert=false;
@@ -2947,7 +2969,7 @@ document.addEventListener('keydown',e=>{if(!BAG.open||!document.getElementById('
   if(e.shiftKey&&a===F[0]){e.preventDefault();F[F.length-1].focus()}else if(!e.shiftKey&&a===F[F.length-1]){e.preventDefault();F[0].focus()}},true);
 // Esc: first closes the detail sheet, then the screen
 document.addEventListener('keydown',e=>{if(e.key!=='Escape'||!BAG.open||!document.getElementById('gedit').hidden)return;e.preventDefault();
-  if(BAG.pick){const k=BAG.pick;BAG.pick=null;bagRender();const b=document.querySelector('#gbag .pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})}else if(BAG.sel){const id=BAG.sel;BAG.sel=null;bagRender();const b=document.querySelector('#gbag [data-info="'+id+'"]')||document.querySelector('#gbag [data-ids~="'+id+'"]');b&&b.focus({preventScroll:true})}else bagClose()});
+  if(BAG.pick){const k=BAG.pick;BAG.pick=null;bagRender();const b=document.querySelector('#gbag .pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})}else if(BAG.sel&&BAG.slot){const id=BAG.sel;BAG.sel=null;bagRender();const b=document.querySelector('#gbag [data-open="'+id+'"]');b&&b.focus({preventScroll:true})}else if(BAG.slot){const k=BAG.slot;BAG.slot=null;bagRender();const b=document.querySelector('#gbag .pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})}else if(BAG.sel){const id=BAG.sel;BAG.sel=null;bagRender();const b=document.querySelector('#gbag [data-info="'+id+'"]')||document.querySelector('#gbag [data-ids~="'+id+'"]');b&&b.focus({preventScroll:true})}else bagClose()});
 const MOVED={body:'穿上了',pack:'放進背包了',store:'收回倉庫了'},moved=(i,to)=>to==='body'&&i.zone==='pack'?'背上了':to==='body'&&i.zone==='cam'?'帶在身上了':MOVED[to];
 function moveTo(it,to){const was={kits:[...it.kits],worn:it.worn};
   if(to==='store')it.kits=it.kits.filter(k=>k!==GS.kit);else{if(!it.kits.includes(GS.kit))it.kits=[...it.kits,GS.kit];it.worn=to==='body'}
@@ -2976,11 +2998,11 @@ function bagRender(){
     '<span class="gs-t">'+icon(i)+(i.borrow?'<em class="gs-b">借</em>':'')+'</span><span class="gs-n">'+E(i.name)+'</span></button><button type="button" class="gs-i" data-info="'+i.id+'" aria-label="「'+E(i.name)+'」的詳細資料"><span aria-hidden="true">i</span></button></div>';
   const grid=(L,empty,lbl)=>L.length?'<div class="gb-grid" role="group" aria-label="'+lbl+'">'+L.map(slot).join('')+'</div>':'<p class="gb-empty">'+empty+'</p>';
   const s=BAG.sel&&GS.items.find(i=>i.id===BAG.sel),here=s&&place(s);
-  const SL={},fill={};SLOTS.forEach(([k])=>SL[k]=[]);body.forEach(i=>SL[slotOf(i)]&&SL[slotOf(i)].push(i));
-  SLOTS.forEach(([k])=>{const f=SL[k].find(i=>i.color)||SL[k][0];if(f)fill[k]=tintOf(f)||PXC[iconOf(f)]||'#5E9E78'});if(fill.back)fill.back='color-mix(in srgb,'+fill.back+' 55%,#0d1320)';const miss=SLOTS.filter(([k])=>!SL[k].length).length;
-  const pds=([k,z,verb])=>{const L=SL[k],f=L[0],on=BAG.pick===k||(s&&here==='body'&&slotOf(s)===k);
-    return '<div class="pdw"><button type="button" class="pds'+(f?'':' e')+(on?' sel':'')+'" data-slot="'+k+'" data-ids="'+L.map(i=>i.id).join(' ')+'" aria-label="'+z+'：'+(f?E(L.map(i=>i.name).join('、'))+'。點一下看詳細':'還沒有，點一下從倉庫挑')+'">'+
-      (f?icon(f)+(L.length>1?'<em>×'+L.length+'</em>':''):'<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gs-'+SLOTSIL[k]+'"/></svg>')+'</button><span class="pdn'+(f?'':' z')+'">'+(f?E(f.name):z)+'</span></div>'};
+  const SL={},SLP={},fill={};SLOTS.forEach(([k])=>{SL[k]=slotSort(body.filter(i=>slotOf(i)===k));SLP[k]=slotSort(pack.filter(i=>slotOf(i)===k))});
+  SLOTS.forEach(([k])=>{const f=SL[k][0];if(f)fill[k]=tintOf(f)||PXC[iconOf(f)]||'#5E9E78'});if(fill.back)fill.back='color-mix(in srgb,'+fill.back+' 55%,#0d1320)';const miss=SLOTS.filter(([k])=>!SL[k].length).length;
+  const pds=([k,z,verb])=>{const L=SL[k],f=L[0],on=BAG.pick===k||BAG.slot===k||(s&&here==='body'&&slotOf(s)===k);
+    return '<div class="pdw"><button type="button" class="pds'+(f?'':' e')+(L.length>1?' stk':'')+(L.length>2?' stk3':'')+(on?' sel':'')+'" data-slot="'+k+'" data-ids="'+L.map(i=>i.id).join(' ')+'" aria-label="'+z+'：'+(f?E(L.map(i=>i.name).join('、'))+'。點一下看全部':'還沒有，點一下從倉庫挑')+'">'+
+      (f?icon(f)+(L.length>1?'<em>'+L.length+' 件</em>':''):'<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gs-'+SLOTSIL[k]+'"/></svg>')+'</button><span class="pdn'+(f?'':' z')+'">'+(f?E(f.name):z)+'</span></div>'};
   const doll='<div class="gb-pd"><div class="gb-pdc">'+SLOTS.slice(0,4).map(pds).join('')+'</div>'+dollSVG(fill)+'<div class="gb-pdc">'+SLOTS.slice(4).map(pds).join('')+'</div></div>';
   pg.innerHTML='<div class="gb-in"><div class="gb-top"><button type="button" class="ge-x" id="gbX">‹ 返回</button><button type="button" class="ge-link" id="gbAdd">＋ 新增</button></div><h2 class="gb-h">整理<i>·</i>'+E(kitName())+'</h2>'+
     '<section class="gb-kit" aria-label="'+E(kitName())+'帶的"><div class="gb-kh"><h2>這套帶的</h2>'+(GS.body&&T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤<i>·</i><em>'+(T.carry/(GS.body*1000)<.1?'輕裝':T.carry/(GS.body*1000)<.2?'標準':'重裝')+'</em></span>':T.carry?'<span>背 <b>'+kg(T.carry)+'</b> 公斤</span>':'')+'</div>'+
@@ -2993,13 +3015,30 @@ function bagRender(){
   if(s){const d=document.createElement('div');d.className='gb-det';d.setAttribute('role','region');d.setAttribute('aria-label',s.name+' 的詳細資料');
     const on=s.zone==='pack'?'背上':s.zone==='cam'?'帶在身上':'穿上',acts=(here==='store'?[['body',on],['pack','放進背包']]:[[here==='body'?'pack':'body',here==='body'?'改放背包':'改成'+on],['store','收回倉庫']]);
     d.innerHTML='<div class="gb-dt">'+icon(s,'gb-di')+'<div><small><span>'+E(ZONES[s.zone])+'</span><i>·</i><span>'+(here==='store'?'在倉庫':here==='body'?(s.zone==='pack'?'背在身上':s.zone==='cam'?'帶在身上':'穿在身上'):'放在背包')+'</span>'+(s.borrow?'<i>·</i><span>借來的</span>':'')+'</small><h3>'+E(s.name)+'</h3><p>'+E([s.brand,s.note].filter(Boolean).join(' · ')||' ')+'</p></div><em>'+(s.g?s.g.toLocaleString()+' <s>公克</s>':'<s>還沒秤重</s>')+'</em></div>'+
-      '<div class="gb-acts">'+acts.map(([p,l])=>'<button type="button" class="gb-a" data-mv="'+p+'">'+l+'</button>').join('')+'<button type="button" class="gb-a mute" data-ed>編輯</button><button type="button" class="gb-a mute gb-dx" data-close aria-label="關掉詳細資料">關閉</button></div>'+(here==='body'?SL[slotOf(s)].filter(i=>i!==s).map(i=>'<button type="button" class="gpk" data-sw="'+i.id+'"><span class="gp-t">'+icon(i)+'</span><span class="gp-n"><b>'+E(i.name)+'</b><small>同部位的另一件</small></span><i aria-hidden="true">›</i></button>').join(''):'');
+      '<div class="gb-acts">'+acts.map(([p,l])=>'<button type="button" class="gb-a" data-mv="'+p+'">'+l+'</button>').join('')+'<button type="button" class="gb-a mute" data-ed>編輯</button><button type="button" class="gb-a mute gb-dx" data-close aria-label="關掉詳細資料">關閉</button></div>'+(BAG.slot?'<button type="button" class="ge-link gb-pk-add" data-back>‹ 回到'+SLOTS.find(x=>x[0]===BAG.slot)[1]+'全部</button>':'');
     v.appendChild(d);
-    d.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const it=s,to=b.dataset.mv,was=moveTo(it,to);BAG.sel=null;gearRender();toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id);
+    d.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const it=s,to=b.dataset.mv,was=moveTo(it,to);BAG.sel=null;if(BAG.slot&&!GS.items.some(i=>place(i)!=='store'&&slotOf(i)===BAG.slot))BAG.slot=null;gearRender();toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id);
       const nb=v.querySelector('[data-info="'+it.id+'"]')||v.querySelector('.pds[data-slot="'+slotOf(it)+'"]');nb&&nb.focus({preventScroll:true})});
     d.querySelector('[data-ed]').onclick=()=>gearEdit(s.id);
-    d.querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{BAG.sel=b.dataset.sw;bagRender();const f=v.querySelector('.gb-det [data-mv]');f&&f.focus({preventScroll:true})});
+    const bk=d.querySelector('[data-back]');if(bk)bk.onclick=()=>{const id=s.id;BAG.sel=null;bagRender();const f=v.querySelector('[data-open="'+id+'"]');f&&f.focus({preventScroll:true})};
     d.querySelector('[data-close]').onclick=()=>{const id=s.id;BAG.sel=null;bagRender();const b=v.querySelector('[data-info="'+id+'"]')||v.querySelector('[data-ids~="'+id+'"]');b&&b.focus({preventScroll:true})}}
+  if(BAG.slot&&!BAG.sel){const k=BAG.slot,[,z]=SLOTS.find(x=>x[0]===k),M=slotSort([...SL[k],...SLP[k]]),lay=LAYZ.includes(k),top=SL[k][0];
+    const d=document.createElement('div');d.className='gb-det gb-slot';d.setAttribute('role','region');d.setAttribute('aria-label',z+'的全部裝備');
+    const row=(i,n)=>'<div class="gl-row"><button type="button" class="gl-main" data-open="'+i.id+'"><span class="gp-t">'+icon(i)+'</span><span class="gp-n"><b>'+E(i.name)+(i===top&&SL[k].length>1?'<em class="gl-top">人偶顯示這件</em>':'')+'</b><small>'+E([i.brand,i.g?i.g+' 公克':''].filter(Boolean).join(' · '))+(place(i)==='pack'?'<span class="gl-bag">'+(i.brand||i.g?' · ':'')+'在背包</span>':'')+'</small></span></button>'+
+      (M.length>1?'<button type="button" class="gl-mv" data-mvo="'+i.id+'" aria-label="「'+E(i.name)+'」往外移一格"'+(n===0?' disabled':'')+'>↑</button><button type="button" class="gl-mv" data-mvi="'+i.id+'" aria-label="「'+E(i.name)+'」往內移一格"'+(n===M.length-1?' disabled':'')+'>↓</button>':'')+'</div>';
+    let h='<div class="gb-pk-h"><small>'+z+'<i>·</i>穿 '+SL[k].length+' 件'+(SLP[k].length?'<i>·</i>背包 '+SLP[k].length+' 件':'')+'</small><button type="button" class="gb-a mute" data-close aria-label="關閉">關閉</button></div><div class="gl-list">',last=null;
+    M.forEach((i,n)=>{const L=layerOf(i);if(lay&&L!==last){h+='<p class="gl-h">'+LAYN[L]+'<i>·</i>'+LAYD[L]+'</p>';last=L}h+=row(i,n)});
+    h+='</div>'+(M.length>1?'<p class="gl-note">↑↓ 換順序，最外面那件決定人偶顏色</p>':'')+'<button type="button" class="ge-link gb-pk-add" data-add>＋ 加一件到'+z+'</button>';
+    d.innerHTML=h;v.appendChild(d);
+    const back=()=>{BAG.slot=null;bagRender();const b=v.querySelector('.pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})};
+    d.querySelector('[data-close]').onclick=back;
+    d.querySelector('[data-add]').onclick=()=>{BAG.slot=null;BAG.pick=k;bagRender();const f=v.querySelector('.gb-det [data-put],.gb-det [data-new]');f&&f.focus({preventScroll:true})};
+    d.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{BAG.sel=b.dataset.open;bagRender();const f=v.querySelector('.gb-det [data-mv]');f&&f.focus({preventScroll:true})});
+    const mv=(id,dir)=>{const n=M.findIndex(i=>i.id===id),j=n+dir;if(j<0||j>=M.length)return;M.forEach((x,q)=>x.ord=q*10);const a=M[n],b=M[j];
+      if(lay&&layerOf(a)!==layerOf(b)){a.layer=layerOf(b);a.ord=b.ord+(dir<0?5:-5)}else{const t=a.ord;a.ord=b.ord;b.ord=t}
+      gSave();gearRender();const f=v.querySelector('[data-'+(dir<0?'mvo':'mvi')+'="'+id+'"]');(f&&!f.disabled?f:v.querySelector('[data-open="'+id+'"]')).focus({preventScroll:true});
+      window.YY.say('「'+a.name+'」'+(lay?'在'+LAYN[layerOf(a)]:'')+'第 '+(slotSort([...SL[k],...SLP[k]].map(x=>GS.items.find(y=>y.id===x.id))).findIndex(x=>x.id===id)+1)+' 件')};
+    d.querySelectorAll('[data-mvo]').forEach(b=>b.onclick=()=>mv(b.dataset.mvo,-1));d.querySelectorAll('[data-mvi]').forEach(b=>b.onclick=()=>mv(b.dataset.mvi,1))}
   if(BAG.pick){const k=BAG.pick,[,z,verb]=SLOTS.find(x=>x[0]===k),zs=k==='back'?['pack','cam']:[k],C=GS.items.filter(i=>zs.includes(i.zone)&&place(i)!=='body').sort((a,b)=>(place(a)==='pack')-(place(b)==='pack'));
     const d=document.createElement('div');d.className='gb-det gb-pick';d.setAttribute('role','region');d.setAttribute('aria-label',z+'：挑一件'+verb);
     d.innerHTML='<div class="gb-pk-h"><small>'+z+'<i>·</i>挑一件'+verb+'</small><button type="button" class="gb-a mute" data-close aria-label="關閉">關閉</button></div>'+
@@ -3008,20 +3047,20 @@ function bagRender(){
     v.appendChild(d);
     const back=()=>{BAG.pick=null;bagRender();const b=v.querySelector('.pds[data-slot="'+k+'"]');b&&b.focus({preventScroll:true})};
     d.querySelector('[data-close]').onclick=back;
-    d.querySelector('[data-new]').onclick=()=>{BAG.pick=null;gearEdit(null,k==='back'?'pack':k,'kit')};
+    d.querySelector('[data-new]').onclick=()=>{BAG.pick=null;BAG.slot=k;gearEdit(null,k==='back'?'pack':k,'kit')};
     d.querySelectorAll('[data-put]').forEach(b=>b.onclick=()=>{const it=GS.items.find(i=>i.id===b.dataset.put),was=moveTo(it,'body');BAG.pick=null;gearRender();toast('「'+it.name+'」'+verb.replace('上','')+'上了',()=>{Object.assign(it,was);gSave();gearRender()},it.id);
       const nb=v.querySelector('.pds[data-slot="'+k+'"]');if(nb){nb.focus({preventScroll:true});nb.classList.add('land');setTimeout(()=>nb.classList.remove('land'),900)}})}
   pg.querySelector('#gbX').onclick=bagClose;
   pg.querySelector('#gbAdd').onclick=()=>gearEdit(null,null,'kit');
   pg.querySelectorAll('.pds').forEach(b=>b.onclick=()=>{const ids=b.dataset.ids.split(' ').filter(Boolean),k=b.dataset.slot,was=BAG.pick;BAG.pick=null;
-    if(ids.length)BAG.sel=BAG.sel===ids[0]?null:ids[0];else{BAG.sel=null;BAG.pick=was===k?null:k}bagRender();const f=v.querySelector('.gb-det [data-mv],.gb-det [data-put],.gb-det [data-new]');f&&f.focus({preventScroll:true})});
+    const wasS=BAG.slot;BAG.sel=null;BAG.slot=null;if(ids.length)BAG.slot=wasS===k?null:k;else BAG.pick=was===k?null:k;bagRender();const f=v.querySelector('.gb-det [data-open],.gb-det [data-put],.gb-det [data-new]');f&&f.focus({preventScroll:true})});
   pg.querySelectorAll('.gs[data-id]').forEach(b=>b.onclick=()=>{const it=GS.items.find(i=>i.id===b.dataset.id);if(!it)return;
     const from=b.querySelector('.gs-t').getBoundingClientRect(),to=place(it)==='store'?(it.worn?'body':'pack'):'store',was=moveTo(it,to);BAG.sel=null;gearRender();
     const nb=v.querySelector('.gs[data-id="'+it.id+'"]');if(nb){nb.focus({preventScroll:true});const t=nb.querySelector('.gs-t'),r=t.getBoundingClientRect();
       if(!RMq()&&t.animate){t.animate([{transform:'translate('+(from.left-r.left)+'px,'+(from.top-r.top)+'px)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.2,.75,.25,1)'});nb.classList.add('land');setTimeout(()=>nb.classList.remove('land'),900)}
       const rr=nb.getBoundingClientRect();if(rr.top<60||rr.bottom>innerHeight-110)nb.scrollIntoView({block:'center',behavior:RMq()?'auto':'smooth'})}
     toast('「'+it.name+'」'+moved(it,to),()=>{Object.assign(it,was);gSave();gearRender()},it.id)});
-  pg.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>{BAG.pick=null;BAG.sel=BAG.sel===b.dataset.info?null:b.dataset.info;bagRender();const f=v.querySelector('.gb-det [data-mv]')||v.querySelector('[data-info="'+b.dataset.info+'"]');f&&f.focus({preventScroll:true})});
+  pg.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>{BAG.pick=null;BAG.slot=null;BAG.sel=BAG.sel===b.dataset.info?null:b.dataset.info;bagRender();const f=v.querySelector('.gb-det [data-mv]')||v.querySelector('[data-info="'+b.dataset.info+'"]');f&&f.focus({preventScroll:true})});
   if(BAG.toast)drawToast();
   const sh=v.querySelector('.gb-det'),sl=v.querySelector('.pds.sel');if(sh){pg.querySelector('.gb-in').style.paddingBottom=(sh.offsetHeight+40)+'px';
     if(sl){const r=sl.getBoundingClientRect(),t=sh.getBoundingClientRect().top;if(r.bottom>t-16)v.scrollBy({top:r.bottom-t+28,behavior:RMq()?'auto':'smooth'})}}
@@ -3057,6 +3096,7 @@ function gearEdit(id,zone,where){
     '<div class="ge-row"><label class="ge-f"><span>部位</span><select name="zone">'+Object.entries(ZONES).map(([k,l])=>'<option value="'+k+'"'+(k===it.zone?' selected':'')+'>'+l+'</option>').join('')+'</select></label>'+
     '<label class="ge-f"><span>哪天買的</span><input name="date" type="date" max="'+today+'" value="'+E(it.date)+'" aria-describedby="geDateH"><small class="ge-hint" id="geDateH">點一下選日期，可以不填</small></label></div>'+
     '<fieldset class="ge-f ge-look" data-for="pack"'+(it.zone==='pack'?'':' hidden')+'><legend>角色身上顯示成</legend>'+radio('lookpack',it.zone==='pack'?it.look:'vest',[['vest','越野背心包'],['pack','大背包'],['','不顯示']])+'</fieldset>'+
+    '<fieldset class="ge-f ge-lay"'+(LAYZ.includes(it.zone)?'':' hidden')+'><legend>穿在第幾層</legend>'+radio('layer',it.layer||'',[['','自動（'+LAYN[layerOf({...it,layer:''})||'out']+'）'],['out','外層'],['mid','中層'],['in','內層']])+'</fieldset>'+
     '<fieldset class="ge-f ge-look" data-for="feet"'+(it.zone==='feet'?'':' hidden')+'><legend>角色身上顯示成</legend>'+radio('lookfeet',it.zone==='feet'?it.look:'',[['','一般鞋子'],['crampon','冰爪']])+'</fieldset>'+
     '<div class="ge-r ge-c"><label><input type="checkbox" name="borrow"'+(it.borrow?' checked':'')+'><span>跟朋友借的（記得還）</span></label></div>'+
     '<label class="ge-f"><span>備註</span><textarea name="note" rows="2" placeholder="例如：雪季才帶、拉鍊有點卡">'+E(it.note)+'</textarea></label>'+
@@ -3065,17 +3105,19 @@ function gearEdit(id,zone,where){
       const f=ed.querySelector('form'),v=k=>f.elements[k].value.trim();
       if(!v('name'))return gErr(f.elements.name,'請寫上裝備名稱');
       const gv=v('g')===''?null:Math.round(+v('g'));if(gv!==null&&!(gv>0&&gv<=99999))return gErr(f.elements.g,'請填 1 到 99,999');
-      const zz=f.elements.zone.value;Object.assign(it,{name:v('name'),brand:v('brand'),g:gv,worn:f.elements.worn.value==='1',zone:zz,date:v('date'),note:v('note'),borrow:f.elements.borrow.checked,icon:f.elements.icon.value,color:f.elements.color.value,
+      const zz=f.elements.zone.value;Object.assign(it,{name:v('name'),brand:v('brand'),g:gv,worn:f.elements.worn.value==='1',zone:zz,date:v('date'),note:v('note'),borrow:f.elements.borrow.checked,icon:f.elements.icon.value,color:f.elements.color.value,layer:LAYZ.includes(zz)?f.elements.layer.value:'',
         kits:[...f.querySelectorAll('[name=kits]:checked')].map(x=>x.value),look:zz==='pack'?f.elements.lookpack.value:zz==='feet'?f.elements.lookfeet.value:''});
       if(dropPhoto&&it.photo){window.YY.IDB.del(it.photo).catch(()=>{});delete GPH[it.photo];it.photo=''}
       if(newPhoto){const key='gear:'+it.id;it.photo=key;GPH[key]=URL.createObjectURL(newPhoto);window.YY.IDB.put(key,newPhoto).catch(()=>window.YY.say('照片沒存到，請再試一次',true))}
       if(!GS.items.includes(it))GS.items.push(it);gSave();gearRender();window.YY.say(id?'已更新「'+it.name+'」':'已新增「'+it.name+'」');
-    },id?'編輯「'+it.name+'」':'新增裝備',()=>document.querySelector('#gbag .gs[data-id="'+it.id+'"]')||document.querySelector('#gbag #gbAdd')||document.getElementById('gSortB'));
+    },id?'編輯「'+it.name+'」':'新增裝備',()=>document.querySelector('#gbag [data-open="'+it.id+'"]')||document.querySelector('#gbag .gs[data-id="'+it.id+'"]')||document.querySelector('#gbag .pds[data-ids~="'+it.id+'"]')||document.querySelector('#gbag #gbAdd')||document.getElementById('gSortB'));
   {const ic=ed.querySelector('.ge-ic'),mb=ed.querySelector('#geIcMore');mb.onclick=()=>{const o=ic.classList.toggle('fold');mb.setAttribute('aria-expanded',String(!o));mb.textContent=o?'換圖示':'收起'};
     ic.addEventListener('change',e=>{ic.querySelectorAll('label').forEach(l=>l.classList.toggle('on',l.contains(e.target)&&e.target.checked))})}
   const prev=()=>{const c=ed.querySelector('[name=color]:checked').value;ed.querySelectorAll('.ge-ic label').forEach((l,n)=>{const k=l.querySelector('input').value||iconOf({...it,icon:'',name:ed.querySelector('[name=name]').value,zone:ed.querySelector('[name=zone]').value}),sv=l.querySelector('svg');if(!sv)return;const t=c&&tintSVG(k,c);sv.setAttribute('viewBox',t?'0 0 24 24':'0 0 48 48');sv.innerHTML=t||'<use href="#gi-'+k+'"/>'})};
-  ed.querySelectorAll('[name=color]').forEach(x=>x.addEventListener('change',prev));if(it.color)prev();
-  ed.querySelector('[name=zone]').addEventListener('change',e=>{ed.querySelector('#geColH').hidden=['torso','legs','feet','pack'].includes(e.target.value);prev();ed.querySelectorAll('.ge-look').forEach(x=>x.hidden=x.dataset.for!==e.target.value);ed.querySelector('#geBrands').innerHTML=brandsFor(e.target.value).map(n=>'<option value="'+E(n)+'">').join('')});
+  ed.querySelectorAll('[name=color]').forEach(x=>x.addEventListener('change',prev));
+  const lauto=()=>{const sp=ed.querySelector('.ge-lay label span');if(sp)sp.textContent='自動（'+(LAYN[layerOf({...it,layer:'',name:ed.querySelector('[name=name]').value,zone:ed.querySelector('[name=zone]').value,icon:(ed.querySelector('[name=icon]:checked')||{}).value||''})]||'外層')+'）'};
+  ed.querySelector('[name=name]').addEventListener('input',lauto);ed.querySelectorAll('[name=icon]').forEach(x=>x.addEventListener('change',lauto));ed.querySelector('[name=zone]').addEventListener('change',lauto);if(it.color)prev();
+  ed.querySelector('[name=zone]').addEventListener('change',e=>{ed.querySelector('#geColH').hidden=['torso','legs','feet','pack'].includes(e.target.value);ed.querySelector('.ge-lay').hidden=!LAYZ.includes(e.target.value);prev();ed.querySelectorAll('.ge-look').forEach(x=>x.hidden=x.dataset.for!==e.target.value);ed.querySelector('#geBrands').innerHTML=brandsFor(e.target.value).map(n=>'<option value="'+E(n)+'">').join('')});
   const pick=()=>{const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=async()=>{const fl=i.files&&i.files[0];if(!fl)return;try{newPhoto=await window.YY.shrink(fl,1000,false);dropPhoto=false;
       const box=ed.querySelector('#gePhImg'),u=URL.createObjectURL(newPhoto);box.outerHTML='<img src="'+u+'" alt="這件裝備的照片" id="gePhImg">';ed.querySelector('#gePh').textContent='換一張'}catch(e){window.YY.say('這張照片讀不了，換一張試試',true)}};i.click()};
   ed.querySelector('#gePh').onclick=pick;
