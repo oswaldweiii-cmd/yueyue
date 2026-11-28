@@ -1154,6 +1154,39 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .pickbar{max-width:520px;width:100%;margin:0 auto;padding:12px 24px calc(env(safe-area-inset-bottom,0px) + 16px);background:linear-gradient(180deg,rgba(5,10,18,0),#050A12 30%)}
 .pickchips{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:10px}.pickchips:empty{display:none}.pickchips button{min-height:32px;padding:0;background:none;border:0;color:var(--gold);font:500 14px var(--body)}
 .pickbar .dbtn{width:100%}.pickbar .dbtn:disabled{opacity:.45}
+.plan{position:fixed;inset:0;z-index:3;overflow-y:auto;background:radial-gradient(110% 60% at 85% 0%,rgba(94,158,120,.16),transparent 60%),linear-gradient(180deg,#0B1626,#050A12);animation:calIn .3s cubic-bezier(.2,.8,.2,1)}.plan[hidden]{display:none}
+.plan>.calx{position:absolute}
+.trip{flex-wrap:wrap;row-gap:0}.tpack.sub{flex-basis:100%;min-height:32px;margin-top:-6px;text-align:left;text-decoration:none;font-size:14px}
+.planin{max-width:520px;margin:0 auto;padding:calc(var(--top) + 64px) 24px calc(env(safe-area-inset-bottom,0px) + 48px)}
+.planin h2{margin:10px 0 0;font:900 56px/1.1 var(--display);letter-spacing:.04em}.planin h2.long{font-size:28px;line-height:1.35}
+.plsub{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;font:600 18px var(--display);color:var(--ink)}.plsub span{font:400 14px var(--body);color:#C8D3E2}.plsub em{font:600 14px var(--body);font-style:normal;color:var(--gold)}
+.pls{margin-top:36px}.plh{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(244,193,82,.3)}
+.plh h3{margin:0;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--gold)}.plh>span{font:400 14px var(--body);color:#C8D3E2}.plh>span b{font:600 18px var(--display);color:var(--ink)}
+.pled{margin-left:auto;min-height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px}
+.plr{display:flex;align-items:center;border-bottom:1px solid rgba(200,211,226,.1)}
+.plc{flex:1;display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;column-gap:14px;min-height:56px;padding:0;background:none;border:0;color:var(--ink);text-align:left;cursor:pointer}
+.plc>i{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(200,211,226,.45);display:grid;place-items:center}
+.plr.on .plc>i{background:#5E9E78;border-color:#5E9E78}.plr.on .plc>i::after{content:'';width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(-45deg)}
+.plc b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.plr.on .plc b{color:#8FA3BD;text-decoration:line-through;text-decoration-color:rgba(143,163,189,.5)}
+.plc span{font:400 14px var(--body);color:#8FA3BD;white-space:nowrap}.plr.late .plc span{color:#F2A37B}.plr.late .plc>i{border-color:#F2A37B}
+.plc .ring{border:0;background:conic-gradient(var(--gold) calc(var(--k)*360deg),rgba(200,211,226,.2) 0);-webkit-mask:radial-gradient(circle,transparent 7.5px,#000 8.5px);mask:radial-gradient(circle,transparent 7.5px,#000 8.5px)}
+.plr.on .plc .ring{background:#5E9E78;-webkit-mask:none;mask:none}
+.pldel{min-height:44px;padding:0 0 0 16px;background:none;border:0;color:#F2A37B;font:400 14px var(--body)}
+.pladd{display:flex;align-items:center;gap:12px;margin-top:6px}.pladd input{flex:1;min-width:0;min-height:48px;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.3);border-radius:0;color:var(--ink);font:400 14px var(--body);padding:0}.pladd input::placeholder{color:#5D6E84}
+.pladd button{min-height:44px;padding:0;background:none;border:0;color:var(--gold);font:700 14px var(--body)}
+.plgo{margin-left:auto;display:flex;align-items:center;gap:10px;font:400 14px var(--body);color:#C8D3E2}.plgo input{min-height:40px;background:none;border:0;border-bottom:1px solid rgba(244,193,82,.5);border-radius:0;color:var(--gold);font:600 18px var(--display);padding:0;color-scheme:dark}
+.pltl{list-style:none;margin:6px 0 0;padding:0;position:relative}
+.pltl::before{content:'';position:absolute;left:58px;top:22px;bottom:22px;width:1px;background:linear-gradient(180deg,rgba(244,193,82,.6),rgba(200,211,226,.2))}
+.pltl li{position:relative;display:grid;grid-template-columns:52px minmax(0,1fr);column-gap:22px;padding:12px 0}
+.pltl li::before{content:'';position:absolute;left:55px;top:21px;width:7px;height:7px;border-radius:50%;background:#C8D3E2}
+.pltl li.pk::before{background:var(--gold);box-shadow:0 0 10px rgba(244,193,82,.8)}.pltl li.turn::before{background:#F2A37B}
+.pltl time{grid-row:span 2;font:600 18px/1.3 var(--display);font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.pltl li.turn time{color:#F2A37B}.pltl b{font:600 18px/1.3 var(--display)}.pltl span{font:400 14px/1.5 var(--body);color:#8FA3BD}.pltl .warn{color:#F2A37B}
+.plnote{margin:8px 0 0;font:400 14px/1.6 var(--body);color:#5D6E84}
+.plkits{display:flex;gap:28px;margin:6px 0 4px}.plkits button{min-height:56px;padding:0;background:none;border:0;border-bottom:2px solid transparent;color:#8FA3BD;font:600 18px var(--display);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
+.plkits button small{font:400 11px var(--body);letter-spacing:.12em}.plkits button[aria-checked="true"]{color:var(--ink);border-color:var(--gold)}
+.pls .dbtn{width:100%;margin-top:16px}
+.plfoot{margin-top:36px;padding-top:12px;border-top:1px solid rgba(200,211,226,.12)}.plfoot .del{margin-left:auto}
 .mcard .mbig{font:600 18px/1.6 var(--display);color:var(--ink)}
 .cd.mute{visibility:hidden}.cd.past{color:#5D6E84}
 .cd.today::after{content:'';position:absolute;inset:6px 9px;border:1px solid rgba(200,211,226,.45);border-radius:50%}
@@ -1499,6 +1532,10 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
       <div class="calgr" id="calGr"></div>
       <div class="calfoot" id="calFoot" aria-live="polite" hidden></div>
       <div class="callist" id="calList"></div>
+    </div>
+    <div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="planT" hidden>
+      <button type="button" class="calx" id="planX" aria-label="返回月曆"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+      <div class="planin" id="planIn"></div>
     </div>
     <div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickT" hidden>
       <div class="pickin">
@@ -2564,7 +2601,7 @@ function renderSheet(){
   const b=$('toMap');if(b)b.onclick=()=>{const rk=S.sel;setTab('map');requestAnimationFrame(()=>{resize();focusPeak(byRank[rk])})};
 }
 $('sx').onclick=closeSheet;
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('cal').hidden)calClose();else if(!help.hidden)closeHelp();else closeSheet()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('plan').hidden)planClose();else if(!$('pick').hidden)$('pickX').click();else if(!$('cal').hidden)calClose();else if(!help.hidden)closeHelp();else closeSheet()}});
 
 /* ---------- player bar, quest card ---------- */
 function moonPath(cx,cy,r,f){if(f<=0)return '';f=Math.max(f,.03);if(f>=1)return 'M'+cx+' '+(cy-r)+'a'+r+' '+r+' 0 1 1 0 '+2*r+'a'+r+' '+r+' 0 1 1 0 '+(-2*r)+'z';
@@ -2941,7 +2978,7 @@ async function importBackup(file){
   const n=Object.keys(d.climbs).length,cur=Object.keys(LDB.raw()).length;
   if(cur&&!confirm('匯入會用備份裡的 '+n+' 筆紀錄，取代手機上現有的 '+cur+' 筆。要繼續嗎？'))return;
   for(const [id,u] of Object.entries(d.photos||{})){try{const blob=await (await fetch(u)).blob();await IDB.put(id,blob);PH[id]=URL.createObjectURL(blob)}catch(e){}}
-  if(Array.isArray(d.trips)){TRIPS=d.trips.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created}));try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}
+  if(Array.isArray(d.trips)){TRIPS=d.trips.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created,plan:t.plan}));try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}
   LDB.replace(d.climbs);say('匯入完成：'+n+' 筆紀錄');
 }
 function backupNag(){try{const n=Object.keys(LDB.raw()).length,t=+localStorage.getItem(BKEY)||0;if(n&&Date.now()-t>30*864e5)setTimeout(()=>say('已經超過一個月沒備份紀錄了，到「數據」頁按一下「備份紀錄」。',true),4000)}catch(e){}}
@@ -3054,7 +3091,7 @@ function wireCheckin(p,key){ // 長按蓄力：按住的這 1.6 秒同時在定�
 }
 /* ---------- 行程：日期＋一座或多座山。只存手機，格式照雲端設計（第二階段直接上 Supabase） ---------- */
 const TKEY='yueyue.trips.v1';let TRIPS=[];try{TRIPS=JSON.parse(localStorage.getItem(TKEY)||'[]')||[]}catch(e){TRIPS=[]}
-TRIPS=TRIPS.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created}));
+TRIPS=TRIPS.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created,plan:t.plan}));
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const pymd=s=>{const a=String(s).split('-');return new Date(+a[0],+a[1]-1,+a[2])};
 const dAdd=(s,n)=>{const d=pymd(s);d.setDate(d.getDate()+n);return ymd(d)};
@@ -3088,7 +3125,7 @@ function tripRender(){try{
   tripPrune();const el=$('trip');if(!el)return;const st=tripState();let h='';
   if(st.k==='none')h='<button type="button" class="tline none" id="tripOpen"><span class="tk">行程</span><b>排一趟行程</b></button>';
   else if(st.k==='on')h='<button type="button" class="tline" id="tripOpen"><span class="tk">出發中</span><b>'+esc(tNames(st.t,1))+'</b><span class="tn">注意安全</span></button>';
-  else if(st.k==='next'||st.k==='pack')h='<button type="button" class="tline" id="tripOpen"><span class="tk">下一趟</span><b>'+esc(tNames(st.t,1))+'</b><span class="tn">還有<em>'+st.n+'</em>天</span></button>'+(st.k==='pack'?'<button type="button" class="tpack" id="tripPack">開始打包</button>':'');
+  else if(st.k==='next'||st.k==='pack'){const td=st.k==='next'&&todoDue(st.t);h='<button type="button" class="tline" id="tripOpen"><span class="tk">下一趟</span><b>'+esc(tNames(st.t,1))+'</b><span class="tn">還有<em>'+st.n+'</em>天</span></button>'+(st.k==='pack'?'<button type="button" class="tpack" id="tripPack">開始打包</button>':td?'<button type="button" class="tpack sub" id="tripTodo">該'+esc(td.txt)+'了 ›</button>':'')}
   el.innerHTML=h;
   let due=$('tdue');
   if(st.k==='due'&&!dueSkip){const fresh=!due,nm=tNames(st.t);if(fresh){due=document.createElement('div');due.id='tdue';due.className='tdue';due.setAttribute('role','dialog');due.setAttribute('aria-modal','true');due.setAttribute('aria-labelledby','tdT');document.body.appendChild(due);document.body.classList.add('duefocus')}
@@ -3100,8 +3137,9 @@ function tripRender(){try{
     $('tdX').onclick=()=>{dueSkip=true;dueClose()};
     if(fresh)try{$('tripGpx').focus({preventScroll:true})}catch(e){}}
   else if(due)dueClose();
-  const to=$('tripOpen');if(to)to.onclick=()=>calOpen();
-  const pk=$('tripPack');if(pk)pk.onclick=()=>{setTab('gear');setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},350)};
+  const to=$('tripOpen');if(to)to.onclick=()=>st.t?planOpen(st.t.id):calOpen();
+  const tt=$('tripTodo');if(tt)tt.onclick=()=>planOpen(st.t.id);
+  const pk=$('tripPack');if(pk)pk.onclick=()=>goPack(st.t);
 }catch(e){}}
 /* ---------- 月曆：點一天、或按住往右滑選好幾天 → 挑山（可複選）→ 排好了 ---------- */
 function calOpen(o){o=o||{};calFocus=document.activeElement;EDIT=null;SEL=null;
@@ -3126,7 +3164,7 @@ function calRender(){
 function calFoot(){const f=$('calFoot');let h='';
   if(EDIT&&!SEL){const t=EDIT;h='<p class="cfk">行程</p><p class="cfd">'+rngH(t.start,t.end)+'</p>'+
       '<div class="cfp">'+t.ranks.map(r=>byRank[r]?'<button type="button" class="cfpk" data-rank="'+r+'">'+esc(byRank[r].name)+'<i>›</i></button>':'').join('')+'</div>'+
-      '<div class="cfa"><button type="button" id="cfDate">改日期</button><button type="button" id="cfPeak">改山</button><button type="button" id="cfDel" class="del">刪除行程</button><button type="button" id="cfX">完成</button></div>'}
+      '<button type="button" class="dbtn" id="cfPlan">看登山計劃</button><div class="cfa"><button type="button" id="cfDate">改日期</button><button type="button" id="cfPeak">改山</button><button type="button" id="cfDel" class="del">刪除行程</button><button type="button" id="cfX">完成</button></div>'}
   else if(SEL){const has=SEL.ranks.length,dt=SEL.start;
     h='<p class="cfk">'+(EDIT?'改這趟行程':'新的行程')+'</p><p class="cfd">'+(dt?rngH(SEL.start,SEL.end):'<span class="mutet">在日曆上點出發日</span>')+'</p>'+
       (dt&&(!SEL.end||SEL.end===SEL.start)?'<p class="cfh">好幾天？再點最後一天，或按住往右滑。</p>':'')+
@@ -3138,6 +3176,7 @@ function calFoot(){const f=$('calFoot');let h='';
   on('cfX',()=>{SEL=null;EDIT=null;calRender()});
   on('cfDate',()=>{SEL={start:null,end:null,ranks:EDIT.ranks.slice(),len:dDiff(EDIT.start,EDIT.end)+1};calRender();say('在日曆上點新的出發日')});
   on('cfPeak',()=>pickOpen(SEL?SEL.ranks:EDIT.ranks));
+  on('cfPlan',()=>planOpen(EDIT.id));
   on('cfDel',()=>{if(!confirm('刪除 '+trTxt(EDIT)+' 的行程？'))return;TRIPS=TRIPS.filter(x=>x.id!==EDIT.id);EDIT=null;saveTrips();say('行程刪除了')});
   on('cfGo',()=>{if(!SEL.ranks.length){pickOpen([]);return}if(!SEL.start)return;tripCommit()});
   f.querySelectorAll('[data-rank]').forEach(b=>b.onclick=()=>{calClose();openPeak(+b.dataset.rank,true)});
@@ -3147,11 +3186,11 @@ function calList(){const T=todayS(),up=TRIPS.filter(t=>t.end>=T).sort((a,b)=>a.s
   if(!up.length&&!SEL)lh='<p class="cempty">點一天，或按住往右滑選好幾天，再挑要爬的山。</p>';
   if(!SEL)lh+='<button type="button" class="dghost" id="calPick">挑山</button>';
   $('calList').innerHTML=lh;
-  $('calList').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{EDIT=TRIPS.find(x=>x.id===b.dataset.id);SEL=null;const d=pymd(EDIT.start);calM=new Date(d.getFullYear(),d.getMonth(),1);calRender();$('calFoot').scrollIntoView({block:'nearest',behavior:'smooth'})});
+  $('calList').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>planOpen(b.dataset.id));
   const cp=$('calPick');if(cp)cp.onclick=()=>{SEL={start:null,end:null,ranks:[]};EDIT=null;pickOpen([])};
 }
-function tripCommit(){const old=EDIT,t={id:old?old.id:'t'+Date.now().toString(36),start:SEL.start,end:SEL.end&&SEL.end>SEL.start?SEL.end:SEL.start,ranks:SEL.ranks.slice(),created:old?old.created:new Date().toISOString()};
-  TRIPS=TRIPS.filter(x=>x.id!==t.id);TRIPS.push(t);SEL=null;EDIT=t;saveTrips();const n=dDiff(todayS(),t.start);say('排好了'+(n>0?'，還有 '+n+' 天':''));
+function tripCommit(){const old=EDIT,t={id:old?old.id:'t'+Date.now().toString(36),start:SEL.start,end:SEL.end&&SEL.end>SEL.start?SEL.end:SEL.start,ranks:SEL.ranks.slice(),created:old?old.created:new Date().toISOString(),plan:old?old.plan:undefined};
+  TRIPS=TRIPS.filter(x=>x.id!==t.id);TRIPS.push(t);SEL=null;EDIT=t;saveTrips();const n=dDiff(todayS(),t.start);say('排好了'+(n>0?'，還有 '+n+' 天':''));if(!old)setTimeout(()=>planOpen(t.id),450);
   const g=$('calGr').querySelector('[data-d="'+t.start+'"]');if(g){g.classList.add('pop')}}
 function calDay(s){ // 點一下：有行程就打開，沒有就開始選日期；已選一天再點後面的日子 = 選範圍
   if(SEL&&SEL.start&&(!SEL.end||SEL.end===SEL.start)&&s>SEL.start){SEL.end=s;calRender();return}
@@ -3198,6 +3237,60 @@ function tripBlock(p){
   return '<button type="button" class="dtrow none" id="tEdit"><span class="dtk">行程</span><b>排進行程</b><i aria-hidden="true">›</i></button>';
 }
 function wireTrip(p){const ed=$('tEdit');if(!ed)return;ed.onclick=()=>{const t=tripOf(p.rank);closeSheet();setTimeout(()=>{calOpen(t?{trip:t}:{ranks:[p.rank]});if(!t)say('在日曆上點出發日')},200)}}
+/* ---------- 登山計劃：準備清單（從出發日往回推）＋時程推算＋裝備套裝 ---------- */
+const TODO0=[['申請入山入園',30],['訂交通、住宿',14],['找留守人',3],['看天氣',2],['打包',1,'pack']];
+function planOf(t){if(!t.plan)t.plan={};const p=t.plan;if(!Array.isArray(p.todo))p.todo=TODO0.map((x,i)=>({id:'d'+i,txt:x[0],days:x[1],kind:x[2]||'',done:false}));
+  if(!p.go)p.go='05:00';if(!p.kit){const ks=(window.__gearKits&&window.__gearKits())||[],multi=dDiff(t.start,t.end)>0;p.kit=(ks.find(k=>k.name===(multi?'過夜':'單攻'))||ks[0]||{}).id||'k1'}return p}
+const dueOf=(t,x)=>dAdd(t.start,-x.days);
+function todoDue(t){const p=planOf(t),T=todayS();return p.todo.filter(x=>!x.done&&x.kind!=='pack'&&dueOf(t,x)<=T).sort((a,b)=>b.days-a.days)[0]}
+function goPack(t){const p=t?planOf(t):null;$('cal').hidden=true;setTab('gear');setTimeout(()=>{if(p&&window.__gearUseKit)window.__gearUseKit(p.kit);setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},120)},350)}
+const hhmm=m=>{m=Math.round(m);return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const toMin=s=>{const a=String(s).split(':');return(+a[0])*60+(+a[1]||0)};
+function walkH(km,up,down){return (km/4+up/400+down/800)*1.15} // 平路 4 km/h、上坡每小時 400 m、下坡 800 m，再加休息
+function schedOf(t){const p=byRank[t.ranks[0]];if(!p)return null;const r=mainRoute(p,null);if(!r)return null;
+  const km=+(r.rkm||r.km)||0,up=+(r.rup||r.gain)||Math.max(0,(p.h||0)-(r.ch&&r.ch[0]?r.ch[0][1]:p.h-800));if(!km)return null;
+  const days=+r.d||1,oneWay=r.kt&&r.kt!=='來回',go=toMin(planOf(t).go),hs=walkH(oneWay?km:km/2,up,0)*60,back=oneWay?0:walkH(km/2,0,up)*60,tot=hs+30+back;
+  return{p,r,days,km,up,go,summit:go+hs,back:go+hs+30+back,turn:Math.min(go+hs+90,17*60-back),tot,trail:r.ch&&r.ch[0]?r.ch[0][0]:'登山口',huts:hutsOf(p)}}
+let PLAN=null,planEditing=false;
+function planOpen(id){const t=TRIPS.find(x=>x.id===id);if(!t)return;PLAN=id;planEditing=false;planOf(t);if($('cal').hidden){calFocus=document.activeElement;$('cal').hidden=false;const d=pymd(t.start);calM=new Date(d.getFullYear(),d.getMonth(),1);calRender()}$('plan').hidden=false;$('plan').scrollTop=0;planRender();try{$('planX').focus({preventScroll:true})}catch(e){}}
+function planClose(){$('plan').hidden=true;PLAN=null;calRender()}
+function planRender(){const t=TRIPS.find(x=>x.id===PLAN);if(!t){planClose();return}const p=planOf(t),T=todayS(),n=dDiff(T,t.start);
+  const ks=(window.__gearKits&&window.__gearKits())||[],kit=ks.find(k=>k.id===p.kit)||ks[0];
+  const done=p.todo.filter(x=>x.kind==='pack'?kit&&kit.n&&kit.done===kit.n:x.done).length;
+  let h='<p class="calk">登山計劃</p><h2 id="planT"'+(tNames(t).length>6?' class="long"':'')+'>'+esc(tNames(t))+'</h2><p class="plsub">'+rngH(t.start,t.end).replace('<small>','<span>').replace('</small>','</span>')+(n>0?'<em>還有 '+n+' 天</em>':n===0?'<em>今天出發</em>':'')+'</p>';
+  // 準備
+  h+='<section class="pls"><div class="plh"><h3>準備</h3><span><b>'+done+'</b> / '+p.todo.length+'</span><button type="button" class="pled" id="plEdit">'+(planEditing?'完成':'編輯')+'</button></div>';
+  h+=p.todo.slice().sort((a,b)=>b.days-a.days).map(x=>{const due=dueOf(t,x),late=!x.done&&due<=T&&x.kind!=='pack';
+    if(x.kind==='pack'){const ok=kit&&kit.n&&kit.done===kit.n;return '<div class="plr'+(ok?' on':'')+'"><button type="button" class="plc" data-pack="1" aria-label="去打包"><i class="ring" style="--k:'+(kit&&kit.n?kit.done/kit.n:0)+'"></i><b>打包「'+esc(kit?kit.name:'')+'」</b><span>'+(kit?kit.done+' / '+kit.n+' 件':'')+' ›</span></button>'+(planEditing?'<button type="button" class="pldel" data-del="'+x.id+'" aria-label="刪除 打包">刪除</button>':'')+'</div>'}
+    return '<div class="plr'+(x.done?' on':'')+(late?' late':'')+'"><button type="button" class="plc" data-tg="'+x.id+'" aria-pressed="'+x.done+'"><i></i><b>'+esc(x.txt)+'</b><span>'+(x.days?'出發前 '+x.days+' 天':'出發當天')+(late?'・該做了':'')+'</span></button>'+(planEditing?'<button type="button" class="pldel" data-del="'+x.id+'" aria-label="刪除 '+esc(x.txt)+'">刪除</button>':'')+'</div>'}).join('');
+  h+='<div class="pladd"><input type="text" id="plNew" placeholder="＋ 自己加一項，例如 借冰爪" maxlength="20" enterkeyhint="done"><button type="button" id="plAdd">加入</button></div></section>';
+  // 時程
+  const sc=schedOf(t);h+='<section class="pls"><div class="plh"><h3>時程</h3><label class="plgo">出發<input type="time" id="plGo" value="'+p.go+'"></label></div>';
+  if(sc&&sc.days<=1){const dark=sc.back>17.5*60;h+='<ol class="pltl"><li><time>'+hhmm(sc.go)+'</time><b>'+esc(sc.trail)+'出發</b></li><li class="pk"><time>'+hhmm(sc.summit)+'</time><b>抵達'+esc(sc.p.name)+'</b><span>單程約 '+(Math.round((sc.summit-sc.go)/30)/2)+' 小時</span></li>'+
+      '<li class="turn"><time>'+hhmm(sc.turn)+'</time><b>折返時間</b><span>這時候還沒到山頂，就下撤</span></li><li><time>'+hhmm(sc.back)+'</time><b>回到'+esc(sc.trail)+'</b>'+(dark?'<span class="warn">會摸黑，建議提早出發</span>':'')+'</li></ol>'}
+  else if(sc){h+='<ol class="pltl"><li><time>'+hhmm(sc.go)+'</time><b>第 1 天　'+esc(sc.trail)+'出發</b>'+(sc.huts[0]?'<span>今晚住 '+esc(sc.huts[0])+'</span>':'')+'</li><li class="pk"><time>第 2 天</time><b>攻頂'+esc(sc.p.name)+'</b><span>整條路線 '+sc.km+' 公里、'+sc.days+' 天</span></li></ol>'}
+  else h+='<p class="plnote">這座山還沒有路線資料，時間先自己抓。</p>';
+  if(sc)h+='<p class="plnote">依路線距離和爬升估算，實際要看體力和天氣。</p>';
+  h+='</section>';
+  // 裝備
+  h+='<section class="pls"><div class="plh"><h3>裝備</h3></div><div class="plkits" role="radiogroup" aria-label="這趟用哪一套">'+ks.map(k=>'<button type="button" role="radio" aria-checked="'+(k.id===p.kit)+'" data-kit="'+k.id+'">'+esc(k.name)+'<small>'+k.n+' 件</small></button>').join('')+'</div>'+
+    '<button type="button" class="dbtn" id="plPack">去打包「'+esc(kit?kit.name:'')+'」</button></section>';
+  h+='<div class="cfa plfoot"><button type="button" id="plDate">改日期、改山</button><button type="button" class="del" id="plDel">刪除行程</button></div>';
+  $('planIn').innerHTML=h;
+  const save=()=>{try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}tripRender()};
+  $('planIn').querySelectorAll('[data-tg]').forEach(b=>b.onclick=()=>{const x=p.todo.find(y=>y.id===b.dataset.tg);x.done=!x.done;save();planRender()});
+  $('planIn').querySelectorAll('[data-pack]').forEach(b=>b.onclick=()=>goPack(t));
+  $('planIn').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{p.todo=p.todo.filter(y=>y.id!==b.dataset.del);save();planRender()});
+  $('plEdit').onclick=()=>{planEditing=!planEditing;planRender()};
+  const add=()=>{const v=$('plNew').value.trim();if(!v)return;p.todo.push({id:'u'+Date.now().toString(36),txt:v,days:1,kind:'',done:false});save();planRender();say('加好了')};
+  $('plAdd').onclick=add;$('plNew').onkeydown=e=>{if(e.key==='Enter')add()};
+  $('plGo').onchange=e=>{if(/^\d{2}:\d{2}$/.test(e.target.value)){p.go=e.target.value;save();planRender()}};
+  $('planIn').querySelectorAll('[data-kit]').forEach(b=>b.onclick=()=>{p.kit=b.dataset.kit;save();planRender()});
+  $('plPack').onclick=()=>goPack(t);
+  $('plDate').onclick=()=>{$('plan').hidden=true;EDIT=t;SEL=null;calRender();$('calFoot').scrollIntoView({block:'nearest'})};
+  $('plDel').onclick=()=>{if(!confirm('刪除 '+trTxt(t)+' 的行程？'))return;TRIPS=TRIPS.filter(x=>x.id!==t.id);EDIT=null;saveTrips();planClose();say('行程刪除了')};
+}
+$('planX').onclick=planClose;
 /* ---------- 規則更新：舊紀錄先備份，再清空重來（只跑一次） ---------- */
 const MKEY='yy-verify-v1';
 function migrateNag(){try{if(localStorage.getItem(MKEY))return;const n=Object.keys(LDB.raw()).length;if(!n){localStorage.setItem(MKEY,'1');return}
@@ -3259,6 +3352,8 @@ if('serviceWorker' in navigator&&location.protocol!=='file:')window.addEventList
 // gear tab: a chibi of him wearing today's kit; three.js loads only when the tab first opens
 let G3=null,want=false;
 const GV=document.getElementById('gearView');GV.tabIndex=-1;GV.addEventListener('scroll',()=>GV.classList.toggle('scrolled',GV.scrollTop>8),{passive:true});
+window.__gearKits=()=>GS.kits.map(k=>{const all=GS.items.filter(i=>i.kits.includes(k.id));return{id:k.id,name:k.name,n:all.length,done:PK.kit===k.id?all.filter(i=>PK.ids.includes(i.id)).length:0}});
+window.__gearUseKit=id=>{if(GS.kits.some(k=>k.id===id)&&GS.kit!==id){GS.kit=id;PK.on=false;kSave();try{gearRender()}catch(_){}}};
 window.__gearOpen=async()=>{want=true;if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
     G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){console.warn('gear3d',e);const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；背包照常可以打開';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
