@@ -3695,14 +3695,13 @@ const iconOf=i=>i.icon||(IRULES.find(([,re])=>re.test(i.name+' '+(i.brand||'')))
 // migrate older data: own/borrow/none → just a borrowed tag; drop untouched placeholders
 GS.items=GS.items.filter(i=>!(i.status==='none'&&!i.g&&!i.photo&&!i.date&&!(i.brand||'').trim()));
 GS.items.forEach(i=>{if(i.borrow===undefined)i.borrow=i.status==='borrow';delete i.status;if(i.look===undefined)i.look=lookOf(i);if(!Array.isArray(i.kits))i.kits=i.look==='vest'?['k1']:i.look==='pack'?['k2','k3']:i.look==='crampon'?['k3']:GS.kits.map(k=>k.id)});
-// 舊使用者：把還沒有的基本裝備補進包包（只補一次；已經有同一種東西就不加，原本的都保留）
+// 舊使用者：把還沒有的基本裝備放進道具欄（不進背包、不進打包清單；只補一次；已經有同一種東西就不加）
 const BKEY2='yy-gear-base-v1';
 if(!fresh)try{if(!localStorage.getItem(BKEY2)){const have=GS.items,add=[];let n=Date.now();
   SEED.forEach(([zone,name,brand,note,b,w,k,ic])=>{const kind=ic||(IRULES.find(([,re])=>re.test(name))||[ZICON[zone]||'pouch'])[0];
     const dup=have.some(i=>i.name===name||(kind!=='pouch'&&iconOf(i)===kind&&(i.zone===zone||kind==='poles')));if(dup)return;
-    const wornHere=have.some(i=>i.zone===zone&&i.worn);
-    add.push({id:'g'+(n++).toString(36),zone,name,brand,note,borrow:false,g:null,worn:!!w&&!wornHere,date:'',photo:'',kits:k.filter(x=>GS.kits.some(q=>q.id===x)),...(ic?{icon:ic}:{}),base:1})});
-  if(add.length){GS.items=have.concat(add);try{localStorage.setItem(GKEY,JSON.stringify(GS.items))}catch(e){}setTimeout(()=>window.YY&&window.YY.say('幫你把 '+add.length+' 件登山基本裝備放進包包，原本的裝備都還在。'),2500)}
+    add.push({id:'g'+(n++).toString(36),zone,name,brand,note,borrow:false,g:null,worn:false,date:'',photo:'',kits:[],...(ic?{icon:ic}:{}),base:1})});
+  if(add.length){GS.items=have.concat(add);try{localStorage.setItem(GKEY,JSON.stringify(GS.items))}catch(e){}setTimeout(()=>window.YY&&window.YY.say('幫你把 '+add.length+' 件登山基本裝備放進道具欄。需要哪件，到「整理裝備」拖進背包。'),2500)}
   localStorage.setItem(BKEY2,'1')}}catch(e){}
 else try{localStorage.setItem(BKEY2,'1')}catch(e){}
 const gSave=()=>{try{localStorage.setItem(GKEY,JSON.stringify(GS.items))}catch(e){}};
