@@ -3646,7 +3646,7 @@ const KA=['k1','k2','k3'],KO=['k2','k3'],KS=['k3'],KD=['k1'],KN=['k1','k2'];
 const SEED=[ // [zone,name,brand,note,borrowed,worn,kits,icon]
   ['head','遮陽帽','','',0,1,KN],['head','保暖帽','','山頂和清晨很冷',0,0,KA],
   ['eyes','太陽眼鏡','','',0,1,KN],['eyes','雪鏡','','雪地反光會傷眼',0,0,KS],
-  ['torso','排汗衣','','不要穿棉質，濕了容易失溫',0,1,KA],['torso','保暖中層','','刷毛或羽絨，休息、山頂時加穿',0,0,KA],['torso','防水透氣外套','','擋風也擋雨，雨衣要上下分開的兩件式',0,0,KA],
+  ['torso','排汗衣','','不要穿棉質，濕了容易失溫',0,1,KA,'shirt'],['torso','保暖中層','','刷毛或羽絨，休息、山頂時加穿',0,0,KA,'fleece'],['torso','防水透氣外套','','擋風也擋雨，雨衣要上下分開的兩件式',0,0,KA,'jacket'],
   ['legs','登山褲','','快乾、非棉質',0,1,KA],['legs','雨褲','','',0,0,KA],
   ['hands','手套','','保暖防水，抓岩石也不怕割',0,0,KA],['hands','登山杖','','下坡保護膝蓋',0,0,KA,'poles'],
   ['feet','登山鞋','','鞋底要止滑',0,1,KA],['feet','排汗襪','','另外帶一雙備用',0,1,KA],['feet','冰爪','','雪季必備，出發前看國家公園公告',0,0,KS],['feet','雪套','','防止雪灌進鞋子',0,0,KS],
@@ -3695,6 +3695,16 @@ const iconOf=i=>i.icon||(IRULES.find(([,re])=>re.test(i.name+' '+(i.brand||'')))
 // migrate older data: own/borrow/none → just a borrowed tag; drop untouched placeholders
 GS.items=GS.items.filter(i=>!(i.status==='none'&&!i.g&&!i.photo&&!i.date&&!(i.brand||'').trim()));
 GS.items.forEach(i=>{if(i.borrow===undefined)i.borrow=i.status==='borrow';delete i.status;if(i.look===undefined)i.look=lookOf(i);if(!Array.isArray(i.kits))i.kits=i.look==='vest'?['k1']:i.look==='pack'?['k2','k3']:i.look==='crampon'?['k3']:GS.kits.map(k=>k.id)});
+// 舊使用者：把還沒有的基本裝備補進包包（只補一次；已經有同一種東西就不加，原本的都保留）
+const BKEY2='yy-gear-base-v1';
+if(!fresh)try{if(!localStorage.getItem(BKEY2)){const have=GS.items,add=[];let n=Date.now();
+  SEED.forEach(([zone,name,brand,note,b,w,k,ic])=>{const kind=ic||(IRULES.find(([,re])=>re.test(name))||[ZICON[zone]||'pouch'])[0];
+    const dup=have.some(i=>i.name===name||(kind!=='pouch'&&iconOf(i)===kind&&(i.zone===zone||kind==='poles')));if(dup)return;
+    const wornHere=have.some(i=>i.zone===zone&&i.worn);
+    add.push({id:'g'+(n++).toString(36),zone,name,brand,note,borrow:false,g:null,worn:!!w&&!wornHere,date:'',photo:'',kits:k.filter(x=>GS.kits.some(q=>q.id===x)),...(ic?{icon:ic}:{}),base:1})});
+  if(add.length){GS.items=have.concat(add);try{localStorage.setItem(GKEY,JSON.stringify(GS.items))}catch(e){}setTimeout(()=>window.YY&&window.YY.say('幫你把 '+add.length+' 件登山基本裝備放進包包，原本的裝備都還在。'),2500)}
+  localStorage.setItem(BKEY2,'1')}}catch(e){}
+else try{localStorage.setItem(BKEY2,'1')}catch(e){}
 const gSave=()=>{try{localStorage.setItem(GKEY,JSON.stringify(GS.items))}catch(e){}};
 const kSave=()=>{try{localStorage.setItem(KKEY,JSON.stringify({kits:GS.kits,cur:GS.kit}))}catch(e){}};
 if(fresh)gSave();
