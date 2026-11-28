@@ -1204,6 +1204,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .rcard{padding-bottom:12px}.rcard h2{margin-bottom:4px}.rcopt i{grid-column:1}.rcopt b,.rcopt span{grid-column:2}
 .rcopt{display:grid;grid-template-columns:48px minmax(0,1fr) 16px;column-gap:14px;align-items:center;width:100%;min-height:76px;margin-top:10px;padding:12px 14px 12px 12px;border:0;border-radius:18px;background:linear-gradient(100deg,rgba(200,211,226,.10),rgba(200,211,226,.03));box-shadow:inset 0 1px 0 rgba(255,255,255,.06);color:var(--ink);text-align:left;cursor:pointer;transition:transform .15s,background .2s}
 .rcopt:active{transform:scale(.98);background:linear-gradient(100deg,rgba(244,193,82,.18),rgba(244,193,82,.05))}@media (hover:hover){.rcopt:hover{background:linear-gradient(100deg,rgba(244,193,82,.14),rgba(244,193,82,.04))}}
+.rchold{position:relative;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.rchold>*{position:relative}.rcfill{position:absolute!important;inset:0;width:0;background:linear-gradient(90deg,rgba(244,193,82,.35),rgba(244,193,82,.15));pointer-events:none}.rchold.charging{transform:scale(.98)}.rchold.wait .rcfill{width:100%!important;animation:rcpulse 1s ease-in-out infinite}@keyframes rcpulse{50%{opacity:.5}}.rchold.bad span{color:#F2A37B}
 .rcopt em{grid-row:1/3;grid-column:3;font:400 24px/1 var(--display);font-style:normal;color:var(--gold)}#rcHere{background:linear-gradient(100deg,rgba(244,193,82,.2),rgba(244,193,82,.05));box-shadow:inset 0 0 0 1px rgba(244,193,82,.35)}
 .rcopt i{grid-row:span 2;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:900 11px/1 var(--display);font-style:normal;color:#0B1626}
 .rcopt i.au{background:radial-gradient(circle at 35% 30%,#FBE3A6,#E0A93A)}.rcopt i.ag{background:radial-gradient(circle at 35% 30%,#fff,#9AA7B6)}.rcopt i.un{background:none;border:1.5px dashed #7F8FA6;color:#C8D3E2}
@@ -1227,7 +1228,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .app:not([data-tab="map"]) .me{display:none}@media (min-width:900px){.me{top:16px;right:16px}}
 .lcard .gbtn{margin-top:18px}.lcard>p:not(.mkick){margin:6px 0 0}
 .celog{display:block;margin:14px auto 0;min-height:44px;padding:0;background:none;border:0;color:var(--gold);font:500 14px var(--body)}
-.mehd{display:flex;align-items:center;gap:16px}.mehd img,.mehd .mei{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px rgba(244,193,82,.7)}
+.mehd{display:flex;align-items:center;gap:16px;padding-right:32px}.mehd img,.mehd .mei{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px rgba(244,193,82,.7)}
 .mehd .mei{background:radial-gradient(circle at 50% 38%,rgba(200,211,226,.55) 0 9px,transparent 9.5px),radial-gradient(circle at 50% 100%,rgba(200,211,226,.55) 0 19px,transparent 19.5px)}
 .mehd h2{margin:0;font:600 28px/1.2 var(--display);word-break:break-all}.mehd p{margin:6px 0 0;font:400 14px var(--body);color:#C8D3E2}
 .mecnt{display:grid;grid-template-columns:repeat(3,1fr);margin:22px 0 4px;padding:14px 0;border-top:1px solid rgba(200,211,226,.12);border-bottom:1px solid rgba(200,211,226,.12)}
@@ -1236,7 +1237,8 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .mesw{display:flex;align-items:center;gap:14px;margin-top:16px;cursor:pointer}.mesw>span{flex:1;display:flex;flex-direction:column;gap:4px}.mesw b{font:600 18px var(--display)}.mesw small{font:400 14px/1.5 var(--body);color:#8FA3BD}
 .mesw input{position:absolute;opacity:0;width:1px;height:1px}.mesw i{flex:none;width:48px;height:28px;border-radius:14px;background:rgba(200,211,226,.25);position:relative;transition:background .2s}
 .mesw i::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}.mesw input:checked+i{background:#5E9E78}.mesw input:checked+i::after{transform:translateX(20px)}.mesw input:focus-visible+i{outline:2px solid var(--gold);outline-offset:2px}
-.meact{display:flex;align-items:center;gap:16px;margin-top:22px}.meact .dbtn{flex:1;margin:0}.meout{min-height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px}.meout.sure{color:#F2A37B;font-weight:700}
+.mecard{position:relative}.mex{position:absolute;top:10px;right:10px;width:44px;height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:300 28px/1 var(--display);cursor:pointer}.mex:hover{color:var(--ink)}
+.meact{display:flex;justify-content:center;margin-top:24px;padding-top:8px;border-top:1px solid rgba(200,211,226,.12)}.meout{min-height:44px;min-width:120px;padding:0 16px;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);letter-spacing:.1em;cursor:pointer}.meout.sure{color:#F2A37B;font-weight:700}
 .mcard .mbig{font:600 18px/1.6 var(--display);color:var(--ink)}
 .cd.mute{visibility:hidden}.cd.past{color:#5D6E84}
 .cd.today::after{content:'';position:absolute;inset:6px 9px;border:1px solid rgba(200,211,226,.45);border-radius:50%}
@@ -1603,7 +1605,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
   <div class="help" id="recs" role="dialog" aria-modal="true" aria-labelledby="recsT" hidden>
     <div class="hcard rcard">
       <p class="mkick">記錄登頂</p><h2 id="recsT">你想怎麼記錄？</h2>
-      <button type="button" class="rcopt" id="rcHere"><i class="ag">銀章</i><b>我在山頂，打卡</b><span>站在山頂，按住就能拿章</span><em aria-hidden="true">›</em></button>
+      <button type="button" class="rcopt rchold" id="rcHere"><s class="rcfill" aria-hidden="true"></s><i class="ag">銀章</i><b>我在山頂，按住打卡</b><span id="rcHereS">按住不放，等金色跑滿</span><em aria-hidden="true">⦿</em></button>
       <button type="button" class="rcopt" id="rcGpx"><i class="au">金章</i><b>上傳軌跡檔</b><span>手錶或登山 App 的 .gpx 檔</span><em aria-hidden="true">›</em></button>
       <button type="button" class="rcopt" id="rcSelf"><i class="un">補登</i><b>補登以前爬的山</b><span>沒有軌跡也能先點亮</span><em aria-hidden="true">›</em></button>
       <details class="rchow"><summary>怎麼拿到 GPX？</summary><ul>
@@ -3178,6 +3180,7 @@ function wireCheckin(p,key){ // 長按蓄力：按住的這 1.6 秒同時在定�
     box.classList.remove('charging','wait');box.classList.add('done');buzz([20,40,80]);
     setTimeout(()=>{box.hidden=true;st.innerHTML='<div class="medal" aria-hidden="true">'+MEDAL_AG+'</div><p class="vmsg ok">你在山頂 '+fix.d+' 公尺內</p><p class="vmsg">最後一步：拍一張三角點，銀章就是你的。</p><button type="button" class="dbtn" id="vShot">拍三角點</button>';
       $('vShot').onclick=()=>{if(Date.now()-fix.t>VR.photoMin*6e4){fix=null;full=false;st.innerHTML='';box.hidden=false;box.classList.remove('done');setP(0);hint.textContent='按住';say('定位太久了，請重新打卡。',true);return}cam.click()}},380)}
+  b._auto=pos=>{if(fix)return;full=true;res={pos};box.classList.add('wait');settle()};
   b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));
   b.addEventListener('contextmenu',e=>e.preventDefault());
   b.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();start()}});
@@ -3408,11 +3411,27 @@ $('planX').onclick=planClose;
   $('recsX').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close()});
   $('rcGpx').onclick=()=>{close();pickGPX(f=>importGPX(f))};
   $('rcSelf').onclick=()=>{close();$('cal').hidden=false;calFocus=$('recFab');SEL=null;EDIT=null;if(!calM){const d=new Date();calM=new Date(d.getFullYear(),d.getMonth(),1)}calRender();pickOpen([],'log')};
-  $('rcHere').onclick=()=>{close();if(!navigator.geolocation){say('這支手機沒辦法定位。',true);return}say('找你在哪一座山…');
-    navigator.geolocation.getCurrentPosition(pos=>{const c=pos.coords;let best=null,bd=1e12;for(const p of [...P,...XB,...SH]){const d=hav(p.lat,p.lon,c.latitude,c.longitude);if(d<bd){bd=d;best=p}}
-      if(!best||bd>2000){say('附近 2 公里內沒有百岳、小百岳或小山。到山頂再按一次。',true);return}
-      toast.classList.add('hide');openPeak(best.rank,true);setTimeout(()=>{const h=$('vChk');if(h)h.scrollIntoView({block:'center',behavior:'smooth'})},700)},
-      e=>say(e&&e.code===1?'沒有定位權限。到手機設定打開定位，再試一次。':'定位失敗。到空曠一點的地方再試一次。',true),{enableHighAccuracy:true,timeout:60000,maximumAge:30000})}}
+  {const b=$('rcHere'),fill=b.querySelector('.rcfill'),sp=$('rcHereS'),HOLD=1600,DEF=sp.textContent;let t0=0,raf=0,holding=false,full=false,res=null,req=0;
+    const buzz=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
+    const reset=txt=>{holding=false;full=false;cancelAnimationFrame(raf);req++;fill.style.width='0';b.classList.remove('charging','wait');sp.textContent=txt||DEF};
+    const settle=()=>{if(!full||!res)return;b.classList.remove('wait');
+      if(res.err){reset();b.classList.add('bad');sp.textContent=res.err;return}
+      const c=res.pos.coords;let best=null,bd=1e12;for(const p of [...P,...XB,...SH]){const d=hav(p.lat,p.lon,c.latitude,c.longitude);if(d<bd){bd=d;best=p}}
+      if(!best||bd>2000){const r=roast({d:bd},best);reset();b.classList.add('bad');sp.textContent=r.big+' '+r.small;buzz([60,40,120]);const sc=b.closest('.hcard');if(sc&&!matchMedia('(prefers-reduced-motion: reduce)').matches){sc.classList.remove('nshake');void sc.offsetWidth;sc.classList.add('nshake')}return}
+      const pos=res.pos;reset();close();toast.classList.add('hide');openPeak(best.rank,true);
+      setTimeout(()=>{const h=$('vChk');if(h){h.scrollIntoView({block:'center'});if(h._auto)h._auto(pos)}},500)};
+    const tick=()=>{const k=Math.min(1,(performance.now()-t0)/HOLD);fill.style.width=(k*100)+'%';
+      if(k<1){if(holding)raf=requestAnimationFrame(tick);return}
+      full=true;holding=false;b.classList.remove('charging');b.classList.add('wait');sp.textContent='找你在哪一座山…';buzz(25);settle()};
+    const start=e=>{if(holding||full)return;if(e&&e.cancelable)e.preventDefault();b.classList.remove('bad');holding=true;b.classList.add('charging');sp.textContent='繼續按住';t0=performance.now();buzz(10);
+      const id=++req;res=null;if(!navigator.geolocation)res={err:'這支手機沒辦法定位。'};
+      else navigator.geolocation.getCurrentPosition(pos=>{if(id===req){res={pos};settle()}},e=>{if(id===req){res={err:e&&e.code===1?'沒有定位權限，到手機設定打開定位。':'定位失敗，到看得到天空的地方再試。'};settle()}},{enableHighAccuracy:true,timeout:60000,maximumAge:0});
+      raf=requestAnimationFrame(tick)};
+    const stop=()=>{if(!holding)return;const quick=performance.now()-t0<450;reset(quick?'要按住喔，等金色跑滿':DEF)};
+    b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));
+    b.addEventListener('contextmenu',e=>e.preventDefault());
+    b.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();start()}});b.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stop()});
+    $('recFab').addEventListener('click',()=>{reset();b.classList.remove('bad')})}}
 /* ---------- 規則更新：舊紀錄先備份，再清空重來（只跑一次） ---------- */
 const MKEY='yy-verify-v1';
 function migrateNag(){try{if(localStorage.getItem(MKEY))return;const raw=LDB.raw();let n=0;
@@ -3505,7 +3524,8 @@ function meOpen(){const m=$('meS'),u=CL.user,pf=CL.profile||{},av=pf.avatar_url|
     '<div class="mecnt"><div><b class="au">'+cnt.gps+'</b><span>金章</span></div><div><b class="ag">'+cnt.checkin+'</b><span>銀章</span></div><div><b class="un">'+cnt.self+'</b><span>補登</span></div></div>'+
     '<p class="mest '+CL.state+'">'+st+'</p>'+
     '<label class="mesw"><span><b>讓山友看到我</b><small>「也爬過這座山」裡會出現你的名字和等級，不會出現軌跡和照片</small></span><input type="checkbox" id="mePub"'+(pf.is_public!==false?' checked':'')+'><i aria-hidden="true"></i></label>'+
-    '<div class="meact"><button type="button" class="meout" id="meOut">登出</button><button type="button" class="dbtn" id="meX">好</button></div>';
+    '<div class="meact"><button type="button" class="meout" id="meOut">登出</button></div>';
+  $('meIn').insertAdjacentHTML('afterbegin','<button type="button" class="mex" id="meX" aria-label="關閉">×</button>');
   m.hidden=false;try{$('meX').focus({preventScroll:true})}catch(e){}
   $('meX').onclick=()=>{m.hidden=true};
   $('mePub').onchange=async e=>{const v=e.target.checked;try{const {error}=await CL.sb.from('profiles').update({is_public:v}).eq('id',u.id);if(error)throw error;if(CL.profile)CL.profile.is_public=v;say(v?'山友看得到你了':'已隱藏，山友看不到你')}catch(err){e.target.checked=!v;say('沒改成功，請再試一次。',true)}};
