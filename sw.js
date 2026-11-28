@@ -1,5 +1,5 @@
 /* 月岳離線快取：第一次有網路打開時把整個 App 存進手機，山上沒網路也能開 */
-const V='yy-v2';
+const V='yy-v3';
 const CORE=['./','index.html','lit.jpg','veil.jpg',
 "tiles/index.json",
 "tiles/l0_4.jpg",
@@ -106,7 +106,8 @@ const CORE=['./','index.html','lit.jpg','veil.jpg',
 "tiles/v5_3.jpg",
 "tiles/v5_4.jpg",
 "tiles/v6_1.jpg"];
-const EXT=['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.99.3/dist/umd/supabase.js',
+const EXT=['https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap',
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.99.3/dist/umd/supabase.js',
 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js',
 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js',
 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/geometries/RoundedBoxGeometry.js'];
@@ -123,5 +124,5 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
   const cacheable=u.origin===location.origin||/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)$/.test(u.hostname);
   if(!cacheable)return;
   e.respondWith((async()=>{const c=await caches.open(V),hit=await c.match(r);if(hit){if(/fonts\.googleapis/.test(u.hostname))fetch(r).then(x=>x.ok&&c.put(r,x)).catch(()=>{});return hit}
-    try{const res=await fetch(r);if(res.ok||res.type==='opaque')c.put(r,res.clone());return res}catch(err){return Response.error()}})());
+    try{const res=await (u.origin===location.origin?fetch(r):timeout(fetch(r),8000));if(res.ok||res.type==='opaque')c.put(r,res.clone());return res}catch(err){return Response.error()}})());
 });
