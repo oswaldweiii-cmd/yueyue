@@ -637,7 +637,7 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .glk{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 4px 0 0;background:none;border:0;font:500 14px var(--body);color:var(--t1);cursor:pointer}.glk svg{width:28px;height:28px;overflow:visible}.glk i{font-style:normal;font-size:18px;color:var(--t2);margin-left:2px}
 .glk:hover i{color:#F4C152}
 .ggo{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 24px;border:0;border-radius:12px;background:#F4C152;color:#0B1626;font:700 14px var(--body);letter-spacing:.08em;cursor:pointer;box-shadow:0 8px 24px rgba(244,193,82,.18)}.ggo i{font-style:normal}
-.g3off .gact{position:static;order:3;margin:16px 24px 34px}.g3off .ghd{position:relative}
+.g3off .gact{position:static;order:3;margin:16px 24px 34px}.gtrip{margin:10px 0 0;font:500 11px/1.4 var(--body);letter-spacing:.32em;color:var(--gold);text-align:center}.g3off .ghd{position:relative}
 .gtip.dock{left:24px;right:24px;top:auto;bottom:90px;width:auto;text-align:center}.gtip.dock ul{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 16px;margin-top:8px}.gtip.dock li small{display:none}.gtip.dock li b{font-size:14px;line-height:1.5}
 @media (min-width:900px){.gact{left:50%;right:auto;width:480px;margin-left:-240px}.gkn2{font-size:56px;line-height:1.1}.gkn2 .gkn-in{font-size:56px}.gka{font-size:28px}}
 .ghint{transition:opacity .4s}.ghint.bye{opacity:0}.ggo{min-width:148px;justify-content:center;padding:0 18px}.ggo .num{font:600 11px var(--display);margin-left:.4em;letter-spacing:0;opacity:.7}
@@ -1554,7 +1554,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 
   <section class="gearv" id="gearView" aria-label="我的裝備：可旋轉的角色">
     <div class="gstage">
-      <div class="ghd"><small>我的裝備</small><div class="gkp" id="gKitP" role="group" aria-label="套裝，左右滑或點箭頭換一套"><button type="button" class="gka" data-d="-1" aria-label="上一套">‹</button><button type="button" class="gkn2" id="gKitT"></button><button type="button" class="gka" data-d="1" aria-label="下一套">›</button></div><div class="gdots" id="gDots" aria-hidden="true"></div><p class="gsub"><b id="gN">—</b> 件<i>·</i><span id="gSub"></span></p><span class="sr" id="gKitLive" aria-live="polite"></span></div>
+      <div class="ghd"><small>我的裝備</small><div class="gkp" id="gKitP" role="group" aria-label="套裝，左右滑或點箭頭換一套"><button type="button" class="gka" data-d="-1" aria-label="上一套">‹</button><button type="button" class="gkn2" id="gKitT"></button><button type="button" class="gka" data-d="1" aria-label="下一套">›</button></div><div class="gdots" id="gDots" aria-hidden="true"></div><p class="gsub"><b id="gN">—</b> 件<i>·</i><span id="gSub"></span></p><p class="gtrip" id="gTripL" hidden></p><span class="sr" id="gKitLive" aria-live="polite"></span></div>
       <div class="g3d" id="g3d"></div>
       <svg class="glead" aria-hidden="true"><line id="gld" x1="0" y1="0" x2="0" y2="0" stroke="#F4C152" stroke-width="1" stroke-opacity=".7"/></svg>
       <div class="gring" id="gring"></div><div class="gtip" id="gtip" aria-live="polite"></div>
@@ -3201,6 +3201,9 @@ const dAdd=(s,n)=>{const d=pymd(s);d.setDate(d.getDate()+n);return ymd(d)};
 const dDiff=(a,b)=>Math.round((pymd(b)-pymd(a))/864e5);
 const todayS=()=>ymd(new Date());
 const WK='日一二三四五六';
+function tripInfo(t){const p=planOf(t),d=pymd(t.start),nm=t.ranks.map(r=>byRank[r]).filter(Boolean).map(x=>x.name);return{id:t.id,kit:p.kit,label:(d.getMonth()+1)+'/'+d.getDate()+' '+(nm[0]||'')+(nm.length>1?' 等 '+nm.length+' 座':'')}}
+window.__tripsLive=()=>{const T=todayS();return TRIPS.filter(t=>t.end>=T).map(t=>t.id)};
+window.__nextTrip=()=>{const T=todayS(),t=TRIPS.filter(t=>t.end>=T&&dDiff(T,t.start)<=7).sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0)[0];return t?tripInfo(t):null};
 const mdTxt=s=>{const d=pymd(s);return (d.getMonth()+1)+'/'+d.getDate()};
 const mdw=s=>mdTxt(s)+'（'+WK[pymd(s).getDay()]+'）';
 const rngH=(a,b)=>!b||b===a?mdTxt(a)+'<small>週'+WK[pymd(a).getDay()]+'・1 天</small>':mdTxt(a)+'–'+mdTxt(b)+'<small>週'+WK[pymd(a).getDay()]+'到週'+WK[pymd(b).getDay()]+'・'+(dDiff(a,b)+1)+' 天</small>';
@@ -3348,7 +3351,7 @@ function planOf(t){if(!t.plan)t.plan={};const p=t.plan;if(!Array.isArray(p.todo)
   if(!p.go)p.go='05:00';if(!p.kit){const ks=(window.__gearKits&&window.__gearKits())||[],multi=dDiff(t.start,t.end)>0;p.kit=(ks.find(k=>k.name===(multi?'過夜':'單攻'))||ks[0]||{}).id||'k1'}return p}
 const dueOf=(t,x)=>dAdd(t.start,-x.days);
 function todoDue(t){const p=planOf(t),T=todayS();return p.todo.filter(x=>!x.done&&x.kind!=='pack'&&dueOf(t,x)<=T).sort((a,b)=>b.days-a.days)[0]}
-function goPack(t){const p=t?planOf(t):null;$('cal').hidden=true;setTab('gear');setTimeout(()=>{if(p&&window.__gearUseKit)window.__gearUseKit(p.kit);setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},120)},350)}
+function goPack(t){const p=t?planOf(t):null;$('cal').hidden=true;setTab('gear');setTimeout(()=>{if(p&&window.__gearUseKit)window.__gearUseKit(p.kit,tripInfo(t));setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},120)},350)}
 const hhmm=m=>{m=Math.round(m);return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
 const toMin=s=>{const a=String(s).split(':');return(+a[0])*60+(+a[1]||0)};
 function walkH(km,up,down){return (km/4+up/400+down/800)*1.15} // 平路 4 km/h、上坡每小時 400 m、下坡 800 m，再加休息
@@ -3362,7 +3365,7 @@ function linkify(t){return esc(t).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" 
 function planOpen(id){const t=TRIPS.find(x=>x.id===id);if(!t)return;PLAN=id;planEditing=false;planNote=null;planOf(t);if($('cal').hidden){calFocus=document.activeElement;$('cal').hidden=false;const d=pymd(t.start);calM=new Date(d.getFullYear(),d.getMonth(),1);calRender()}$('plan').hidden=false;$('plan').scrollTop=0;planRender();try{$('planX').focus({preventScroll:true})}catch(e){}}
 function planClose(){$('plan').hidden=true;PLAN=null;calRender()}
 function planRender(){const t=TRIPS.find(x=>x.id===PLAN);if(!t){planClose();return}const p=planOf(t),T=todayS(),n=dDiff(T,t.start);
-  const ks=(window.__gearKits&&window.__gearKits())||[],kit=ks.find(k=>k.id===p.kit)||ks[0];
+  const ks=(window.__gearKits&&window.__gearKits(t.id))||[],kit=ks.find(k=>k.id===p.kit)||ks[0];
   const done=p.todo.filter(x=>x.kind==='pack'?kit&&kit.n&&kit.done===kit.n:x.done).length;
   let h='<p class="calk">登山計劃</p><h2 id="planT"'+(tNames(t).length>6?' class="long"':'')+'>'+esc(tNames(t))+'</h2><p class="plsub">'+rngH(t.start,t.end).replace('<small>','<span>').replace('</small>','</span>')+(n>0?'<em>還有 '+n+' 天</em>':n===0?'<em>今天出發</em>':'')+'</p>';
   // 準備
@@ -3586,9 +3589,9 @@ if('serviceWorker' in navigator&&location.protocol!=='file:')window.addEventList
 // gear tab: a chibi of him wearing today's kit; three.js loads only when the tab first opens
 let G3=null,want=false;
 const GV=document.getElementById('gearView');GV.tabIndex=-1;GV.addEventListener('scroll',()=>GV.classList.toggle('scrolled',GV.scrollTop>8),{passive:true});
-window.__gearKits=()=>GS.kits.map(k=>{const all=GS.items.filter(i=>i.kits.includes(k.id));return{id:k.id,name:k.name,n:all.length,done:PK.kit===k.id?all.filter(i=>PK.ids.includes(i.id)).length:0}});
-window.__gearUseKit=id=>{if(GS.kits.some(k=>k.id===id)&&GS.kit!==id){GS.kit=id;PK.on=false;kSave();try{gearRender()}catch(_){}}};
-window.__gearOpen=async()=>{want=true;if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
+window.__gearKits=tid=>GS.kits.map(k=>{const all=GS.items.filter(i=>i.kits.includes(k.id)),pk=PKS[tid||'_'];return{id:k.id,name:k.name,n:all.length,done:pk&&pk.kit===k.id?all.filter(i=>(pk.ids||[]).includes(i.id)).length:0}});
+window.__gearUseKit=(id,trip)=>{if(trip)pkUse(trip.id,trip.label);if(GS.kits.some(k=>k.id===id)&&GS.kit!==id){GS.kit=id;kSave()}PK.on=false;try{gearRender()}catch(_){}};
+window.__gearOpen=async()=>{want=true;try{const nt=window.__nextTrip&&window.__nextTrip();if(nt){if(PKT!==nt.id){pkUse(nt.id,nt.label);if(GS.kits.some(k=>k.id===nt.kit)){GS.kit=nt.kit;kSave()}gearRender()}}else if(PKT!=='_'){pkUse('_');gearRender()}}catch(_){}if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
     G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){console.warn('gear3d',e);const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；背包照常可以打開';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
 if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
@@ -3643,8 +3646,12 @@ const inKit=i=>i.kits.includes(GS.kit),kitName=()=>(GS.kits.find(k=>k.id===GS.ki
 const place=i=>!inKit(i)?'store':i.worn?'body':'pack';
 const PLACE={body:'身上',pack:'背包',store:'沒帶的'};
 // packing checklist: ticks are kept for 12 hours, then start fresh
-let PK={on:false,kit:null,ids:[],t:0};try{const p=JSON.parse(localStorage.getItem(PKEY)||'null');if(p&&Date.now()-p.t<12*3600e3)PK={on:false,kit:p.kit,ids:p.ids||[],t:p.t}}catch(e){}
-const pSave=()=>{PK.t=Date.now();try{localStorage.setItem(PKEY,JSON.stringify({kit:PK.kit,ids:PK.ids,t:PK.t}))}catch(e){}};
+// 打包進度跟著行程走：每一趟一張打包單；沒排行程的用 '_'（12 小時後失效）
+let PKS={},PKT='_',PKL='';try{const p=JSON.parse(localStorage.getItem(PKEY)||'null');if(p&&p.v===2&&p.m)PKS=p.m;else if(p&&p.t)PKS={_:{kit:p.kit,ids:p.ids||[],ready:!!p.ready,t:p.t}}}catch(e){}
+{const live=window.__tripsLive&&window.__tripsLive();if(live)for(const k of Object.keys(PKS))if(k!=='_'&&!live.includes(k))delete PKS[k];if(PKS._&&Date.now()-(PKS._.t||0)>12*3600e3)delete PKS._}
+let PK=PKS._||(PKS._={kit:null,ids:[],t:0});PK.on=false;
+const pkUse=(key,label)=>{PKT=key||'_';PKL=label||'';PK=PKS[PKT]||(PKS[PKT]={kit:null,ids:[],t:0});PK.on=false};
+const pSave=()=>{PK.t=Date.now();PKS[PKT]=PK;try{localStorage.setItem(PKEY,JSON.stringify({v:2,m:PKS},(k,v)=>k==='on'?undefined:v))}catch(e){}};
 const GPH={};const gPhoto=async()=>{try{const all=await window.YY.IDB.all();for(const k in all)if(k.startsWith('gear:'))GPH[k]=URL.createObjectURL(all[k])}catch(e){}};
 const GEAR=new Proxy({},{get:(_,z)=>ZONES[z]?{k:ZONES[z],items:GS.items.filter(i=>i.zone===z&&inKit(i)).map(i=>({n:i.name,d:[i.brand,i.note].filter(Boolean).join(' · '),s:i.borrow?'borrow':'own'}))}:undefined});
 const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3695,7 +3702,7 @@ function gearRender(){
   document.getElementById('gSub').innerHTML=T.weighed?'共 <b>'+kg(T.carry+T.worn)+'</b> 公斤':'還沒秤重';
   document.getElementById('gW').innerHTML=(T.weighed?'<p class="gw1"><span>背的 <b>'+kg(T.carry)+'</b> 公斤</span><i>·</i><span>穿的 <b>'+(T.worn?kg(T.worn):'—')+'</b> 公斤</span></p>':'')+loadHTML(T.carry,'gBody');
   document.getElementById('gBody').onclick=bodyEdit;
-  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
+  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);{const tl=document.getElementById('gTripL');if(tl){tl.hidden=PKT==='_';tl.textContent=PKT==='_'?'':'打包給 '+PKL}}pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
   {const rd=!!(PK.ready&&PK.kit===GS.kit&&T.all.length&&T.all.every(i=>PK.ids.includes(i.id))),g=document.getElementById('gReady');if(g){g.hidden=!rd;document.getElementById('gearView').classList.toggle('ready',rd);if(rd)document.getElementById('gReadyN').textContent=T.all.length}window.__gearReady&&window.__gearReady(rd)}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
   {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i?(i.color&&COL[i.color]?COL[i.color].c:PXC[iconOf(i)]||null):null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
