@@ -1991,7 +1991,7 @@ let PIPS=[],PT=null,stRaf=0,stLast=0,stIntro=0;
 function drawStars(t){
   sctx.setTransform(1,0,0,1,0,0);sctx.clearRect(0,0,stc.width,stc.height);if(!PT||!PIPS.length)return;
   const rm=reduceMotion(),sec=t/1000,ia=stIntro?t-stIntro:1e9;
-  if(!rm&&!document.getElementById('app').classList.contains('panning')){if(t-wvLast>=66||wvKey!==PT.k+'|'+PT.tx+'|'+PT.ty){wvLast=t;drawWaves(sec)}if(wv)sctx.drawImage(wv,0,0)}
+  if(!rm&&!document.getElementById('app').classList.contains('panning')){if(t-wvLast>=150||wvKey!==PT.k+'|'+PT.tx+'|'+PT.ty){wvLast=t;drawWaves(sec)}if(wv)sctx.drawImage(wv,0,0,stc.width,stc.height)}
   sctx.setTransform(PT.d*PT.k,0,0,PT.d*PT.k,PT.d*PT.tx,PT.d*PT.ty);
   for(const q of PIPS){
     let tw=rm?1:.5+.5*Math.sin(sec*q.w+q.ph),sc=rm?1:.8+.35*tw,a=q.a*(rm?1:.45+.55*tw);
@@ -2018,10 +2018,10 @@ function wavePattern(seed){const c=document.createElement('canvas');c.width=c.he
   return c}
 function drawWaves(sec){
   if(!wv){wv=document.createElement('canvas');wx=wv.getContext('2d');wvPat=[wx.createPattern(wavePattern(7),'repeat'),wx.createPattern(wavePattern(23),'repeat')]}
-  if(wv.width!==stc.width||wv.height!==stc.height){wv.width=stc.width;wv.height=stc.height}
+  const hw=Math.ceil(stc.width/2),hh=Math.ceil(stc.height/2);if(wv.width!==hw||wv.height!==hh){wv.width=hw;wv.height=hh}
   wvKey=PT.k+'|'+PT.tx+'|'+PT.ty;
   wx.setTransform(1,0,0,1,0,0);wx.globalCompositeOperation='source-over';wx.clearRect(0,0,wv.width,wv.height);
-  wx.setTransform(PT.d*PT.k,0,0,PT.d*PT.k,PT.d*PT.tx,PT.d*PT.ty);wx.lineJoin='round';
+  wx.setTransform(PT.d*PT.k/2,0,0,PT.d*PT.k/2,PT.d*PT.tx/2,PT.d*PT.ty/2);wx.lineJoin='round';
   const x0=-PT.tx/PT.k,y0=-PT.ty/PT.k,x1=(V.w-PT.tx)/PT.k,y1=(V.h-PT.ty)/PT.k;
   [[0,4.2,1.1,.9],[1,-3.1,-.7,2.6]].forEach(([i,vx,vy,ph])=>{const P=wvPat[i];
     P.setTransform(new DOMMatrix([1,0,0,1,(sec*vx)%220,(sec*vy+Math.sin(sec*.35+ph)*3)%220]));
@@ -2030,7 +2030,7 @@ function drawWaves(sec){
     m.setTransform(r,0,0,r,M*r,M*r);m.lineJoin='round';m.strokeStyle='#000';[[230,.22],[180,.45],[130,.75],[90,1]].forEach(([w,a])=>{m.globalAlpha=a;m.lineWidth=w;m.stroke(landPath)});m.globalAlpha=1;m.fillStyle='#000';m.fill(landPath);wvMask.M=M}
   wx.globalAlpha=1;wx.globalCompositeOperation='destination-out';wx.drawImage(wvMask,-wvMask.M,-wvMask.M,W+2*wvMask.M,H+2*wvMask.M);wx.globalCompositeOperation='source-over';
 }
-function startStars(){if(stRaf||reduceMotion())return;const loop=t=>{stRaf=0;if(document.hidden||!PIPS.length||!wrap.offsetParent)return;if(t-stLast>=40){stLast=t;drawStars(t)}stRaf=requestAnimationFrame(loop)};stRaf=requestAnimationFrame(loop)}
+function startStars(){if(stRaf||reduceMotion())return;const loop=t=>{stRaf=0;if(document.hidden||!PIPS.length||!wrap.offsetParent||(!isDesk()&&S.tab!=='map'))return;if(t-stLast>=90){stLast=t;drawStars(t)}stRaf=requestAnimationFrame(loop)};stRaf=requestAnimationFrame(loop)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)startStars()});
 /* clustering: peaks closer than a thumb merge into one counter; tap it to zoom in */
 let clusters=[],clusterK=0,clusterSig='';
@@ -2863,7 +2863,7 @@ function setTab(t,fromHash){
   S.tab=t;$('app').dataset.tab=t;
   try{if(t==='gear')window.__gearOpen&&window.__gearOpen();else window.__gearClose&&window.__gearClose()}catch(_){}
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
-  if(t==='map')requestAnimationFrame(resize);
+  if(t==='map'){requestAnimationFrame(resize);startStars()}
   if(t==='char'&&!reduceMotion())requestAnimationFrame(s2Count);
   if(!fromHash){try{if(location.hash.slice(1)!==HASH[t])history.replaceState(null,'','#'+HASH[t])}catch(e){}}
 }
@@ -3633,9 +3633,9 @@ function build(THREE,OrbitControls,RoundedBoxGeometry){
 
 const stage=document.getElementById('g3d');const W=()=>stage.clientWidth||1,H=()=>stage.clientHeight||1;
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setClearColor(0x000000,0);
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(W(),H());
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(W(),H());
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;stage.appendChild(renderer.domElement);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;stage.appendChild(renderer.domElement);
 const scene=new THREE.Scene(); // transparent: the page's star sky shows through
 const cam=new THREE.PerspectiveCamera(30,W()/H(),0.1,50);
 const controls=new OrbitControls(cam,renderer.domElement);
@@ -3836,7 +3836,7 @@ const ghDone=()=>{if(gh.hidden)return;gh.classList.add('bye');setTimeout(()=>gh.
 gh.textContent=matchMedia('(hover:hover)').matches?'拖曳旋轉・滑到身上看穿了什麼':'左右拖曳轉一圈・點身上看穿了什麼';
 new ResizeObserver(()=>{renderer.setSize(W(),H());frame()}).observe(stage);
 const clock=new THREE.Clock();
-const loop=()=>{const dt=Math.min(clock.getDelta(),0.05),t=clock.elapsedTime;animate(t,dt);controls.update();if(hoverPt)place();renderer.render(scene,cam)};
+let acc=0;const loop=()=>{acc+=clock.getDelta();if(acc<1/30)return;const dt=Math.min(acc,0.05),t=clock.elapsedTime;acc=0;animate(t,dt);controls.update();if(hoverPt)place();renderer.render(scene,cam)};
 document.getElementById('gload').classList.add('done');
 // stop drawing while the character is scrolled out of view
 let inView=true,running=false;new IntersectionObserver(es=>{inView=es[0].isIntersecting;if(running)renderer.setAnimationLoop(inView?loop:null)}).observe(stage);
