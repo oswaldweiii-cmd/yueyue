@@ -1197,7 +1197,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .plkits button small{font:400 11px var(--body);letter-spacing:.12em}.plkits button[aria-checked="true"]{color:var(--ink);border-color:var(--gold)}
 .pls .dbtn{width:100%;margin-top:16px}
 .plfoot{margin-top:36px;padding-top:12px;border-top:1px solid rgba(200,211,226,.12)}.plfoot .del{margin-left:auto}
-.tabs .tabrec{color:var(--gold)}.tabrec i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#0B1626;background:radial-gradient(circle at 35% 30%,#FBE3A6,#F4C152 55%,#D9A23A);box-shadow:0 0 0 1px rgba(244,193,82,.45),0 0 18px rgba(244,193,82,.35)}
+.tabs .tabrec{color:var(--gold);gap:6px}.tabs .tabrec .ic{width:30px;height:30px}.tabrec i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:radial-gradient(circle,rgba(244,193,82,.16),rgba(244,193,82,0) 70%);box-shadow:inset 0 0 0 1.25px rgba(244,193,82,.85),0 0 14px rgba(244,193,82,.18)}.tabrec i svg{width:14px;height:14px}.tabrec i svg path{stroke-width:1.6}
 .tabrec.hint i{animation:fabHint 1.4s ease-in-out 3}@keyframes fabHint{50%{transform:scale(1.18);box-shadow:0 0 0 8px rgba(244,193,82,.18),0 0 30px rgba(244,193,82,.7)}}
 @media (prefers-reduced-motion:reduce){.tabrec.hint i{animation:none}}
 @media (min-width:900px){.tabs .tabrec .ic{display:grid}.tabrec i{width:22px;height:22px}}
@@ -1218,6 +1218,13 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .acme div{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.acme b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .acst{font:400 14px var(--body);color:#8FA3BD}.acst.ok{color:#8FD3A8}.acst.err{color:#F2A37B}.acst.ok::before{content:'● ';font-size:10px;vertical-align:2px}
 .acout{min-height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px}
+.me{position:absolute;z-index:8;top:calc(var(--top) + 18px);right:max(16px,env(safe-area-inset-right,0px));min-width:48px;height:56px;padding:0;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;color:#C8D3E2;cursor:pointer}
+.me img,.me .mei{width:36px;height:36px;border-radius:50%;object-fit:cover}.me .mei{box-shadow:inset 0 0 0 1.25px rgba(200,211,226,.55);background:radial-gradient(circle at 50% 38%,rgba(200,211,226,.55) 0 5.5px,transparent 6px),radial-gradient(circle at 50% 100%,rgba(200,211,226,.55) 0 11px,transparent 11.5px)}
+.me span{font:500 11px/1 var(--body);letter-spacing:.2em;color:var(--gold)}.me:not(.in) .mei{box-shadow:inset 0 0 0 1.25px rgba(244,193,82,.8),0 0 12px rgba(244,193,82,.2)}
+.me.in img,.me.in .mei{box-shadow:0 0 0 1.5px rgba(244,193,82,.7)}.me{position:absolute}.me b{position:absolute;top:0;right:4px;width:10px;height:10px;border-radius:50%;border:2px solid #0B1626}.me .mesync{background:#8FA3BD;animation:holdPulse 1s ease-in-out infinite}.me .mewarn{background:#F2A37B}
+.app:not([data-tab="map"]) .me{display:none}@media (min-width:900px){.me{top:16px;right:16px}}
+.lcard .gbtn{margin-top:18px}.lcard>p:not(.mkick){margin:6px 0 0}
+.celog{display:block;margin:14px auto 0;min-height:44px;padding:0;background:none;border:0;color:var(--gold);font:500 14px var(--body)}
 .mcard .mbig{font:600 18px/1.6 var(--display);color:var(--ink)}
 .cd.mute{visibility:hidden}.cd.past{color:#5D6E84}
 .cd.today::after{content:'';position:absolute;inset:6px 9px;border:1px solid rgba(200,211,226,.45);border-radius:50%}
@@ -1490,6 +1497,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
     </div>
   </div>
 
+  <button type="button" class="me" id="meBtn" aria-label="登入"><i class="mei"></i><span>登入</span></button>
   <button class="player" id="player" type="button" aria-label="看等級與數據">
     <span class="moonav"><svg aria-hidden="true" viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" fill="#F4E3B4" opacity=".08"/><circle cx="36" cy="36" r="30" fill="none" stroke="#2A3B55" stroke-width="3"/><circle id="pRing" cx="36" cy="36" r="30" fill="none" stroke="#A9C3E6" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 188.5" transform="rotate(-90 36 36)"/><circle cx="36" cy="36" r="23" fill="#24344E"/><path id="pMoon" d="" fill="#F4E3B4"/></svg><span class="lvb"><b id="pLv">1</b> 級</span></span>
     <span class="ptxt"><span class="ptitle" id="pTitle">山腳新手</span><span class="pxp" id="pXpTxt">0 / 100 XP</span></span>
@@ -1592,6 +1600,15 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
         <li><b>健行筆記、其他登山 App</b>：在那次軌跡的頁面找「匯出」或「下載 GPX」。</li>
       </ul></details>
       <button type="button" class="mlater" id="recsX">之後再說</button>
+    </div>
+  </div>
+  <div class="help" id="loginS" role="dialog" aria-modal="true" aria-labelledby="loginT" hidden>
+    <div class="hcard mcard lcard">
+      <p class="mkick" id="loginK">帳號</p><h2 id="loginT">登入月岳</h2>
+      <p class="mbig" id="loginB">紀錄存到雲端，換手機也不會掉。</p>
+      <p>之後還能看到，誰也爬過同一座山。</p>
+      <button type="button" class="gbtn" id="loginGo"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>用 Google 登入</button>
+      <button type="button" class="mlater" id="loginX">之後再說</button>
     </div>
   </div>
   <div class="help" id="gsum" role="dialog" aria-modal="true" aria-labelledby="gsumT" hidden>
@@ -2502,7 +2519,7 @@ function celebrate(ps,prev){
   const card=()=>{if(done)return;done=true;timers.forEach(clearTimeout);box.classList.add('card');box.innerHTML=celeCard(p,r,prev,ps);hit('card');
     requestAnimationFrame(()=>box.classList.add('in'));celeCount(box,prev);
     const sb=box.querySelector('#ceSnd'),ss=()=>{sb.setAttribute('aria-pressed',SFX.on);sb.setAttribute('aria-label',SFX.on?'音效開著，點一下關掉':'音效關著，點一下打開')};ss();sb.onclick=e=>{e.stopPropagation();SFX.on=!SFX.on;if(!SFX.on)bye();ss()};
-    box.querySelector('#ceGo').onclick=()=>{bye();box.remove();openPeak(p.rank,true)};box.querySelector('#ceMap').onclick=()=>{bye();box.remove()}};
+    box.querySelector('#ceGo').onclick=()=>{bye();box.remove();openPeak(p.rank,true)};{const cl=box.querySelector('#ceLog');if(cl)cl.onclick=()=>{bye();box.remove();loginOpen('first')}};box.querySelector('#ceMap').onclick=()=>{bye();box.remove()}};
   box.onclick=e=>{if(!done)card()};
   // ① fly there
   requestAnimationFrame(()=>{try{resize();focusPeak(p)}catch(e){}});
@@ -2529,7 +2546,7 @@ function celeCard(p,r,prev,ps){
     '<div class="ce-xp"><b data-cnt="'+gain+'">+0</b><span>點</span></div>'+
     '<div class="ce-lv"><span>'+(lvUp?'升級！':'')+'第 '+G.lv+' 級・'+titleOf(G.lv)+'</span><span>'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升級')+'</span></div><div class="ce-bar"><i style="width:'+(from*100).toFixed(1)+'%" data-to="'+(to*100).toFixed(1)+'%"></i></div>'+
     (lines.length?'<div class="ce-lines">'+lines.map(l=>'<p><small>'+l[0]+'</small><b>'+l[1]+'</b><em>'+l[2]+'</em></p>').join('')+'</div>':'')+
-    '<div class="dpair"><button type="button" class="dghost" id="ceMap">回到地圖</button><button type="button" class="dbtn" id="ceGo">看這座山</button></div></div>'}
+    '<div class="dpair"><button type="button" class="dghost" id="ceMap">回到地圖</button><button type="button" class="dbtn" id="ceGo">看這座山</button></div>'+(CL.user?'':'<button type="button" class="celog" id="ceLog">登入，把這座山存到雲端 ›</button>')+'</div>'}
 
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
@@ -3465,7 +3482,13 @@ function cloudBlock(){const st=CL.state,u=CL.user,pf=CL.profile;
   const name=(pf&&pf.nickname)||(u.user_metadata&&u.user_metadata.name)||'山友',av=(pf&&pf.avatar_url)||(u.user_metadata&&u.user_metadata.avatar_url)||'';
   const tx=st==='sync'?'同步中…':st==='ok'?'已同步':st==='wait'?'沒有網路，等一下會自動同步':st==='err'?'同步失敗，等一下會再試':'';
   return '<div class="acct on"><p class="dk">帳號</p><div class="acme">'+(av?'<img src="'+esc(av)+'" alt="" referrerpolicy="no-referrer">':'<i></i>')+'<div><b>'+esc(name)+'</b><span class="acst '+st+'">'+tx+'</span></div><button type="button" class="acout" id="acOut">登出</button></div></div>'}
-function cloudUI(){const el=$('acct');if(el)el.innerHTML=cloudBlock();const a=$('acIn');if(a)a.onclick=cloudSignIn;const o=$('acOut');if(o)o.onclick=cloudSignOut}
+function loginOpen(why){const m=$('loginS');if(!m)return;$('loginT').textContent=why==='first'?'第一座，存起來':'登入月岳';$('loginB').textContent=why==='first'?'登入後，這座山會存到雲端，換手機也不會掉。':'紀錄存到雲端，換手機也不會掉。';m.hidden=false;try{$('loginGo').focus({preventScroll:true})}catch(e){}}
+{const m=$('loginS');$('loginGo').onclick=()=>{m.hidden=true;cloudSignIn()};$('loginX').onclick=()=>{m.hidden=true};m.addEventListener('click',e=>{if(e.target===m)m.hidden=true})}
+$('meBtn').onclick=()=>{if(CL.user){if(S.sel!=null&&!isDesk())closeSheet();setTab('char');setTimeout(()=>{const a=$('acct');if(a)a.scrollIntoView({block:'start',behavior:'smooth'})},300)}else loginOpen()};
+function meUI(){const b=$('meBtn');if(!b)return;const u=CL.user,pf=CL.profile,av=u&&((pf&&pf.avatar_url)||(u.user_metadata&&u.user_metadata.avatar_url));
+  b.classList.toggle('in',!!u);b.setAttribute('aria-label',u?'我的帳號：'+((pf&&pf.nickname)||'山友')+(CL.state==='err'?'，同步失敗':''):'登入');
+  b.innerHTML=u?(av?'<img src="'+esc(av)+'" alt="" referrerpolicy="no-referrer">':'<i class="mei"></i>')+(CL.state==='sync'?'<b class="mesync" aria-hidden="true"></b>':CL.state==='err'||CL.state==='wait'?'<b class="mewarn" aria-hidden="true"></b>':''):'<i class="mei"></i><span>登入</span>'}
+function cloudUI(){meUI();const el=$('acct');if(el)el.innerHTML=cloudBlock();const a=$('acIn');if(a)a.onclick=cloudSignIn;const o=$('acOut');if(o)o.onclick=cloudSignOut}
 async function load(){
   try{const all=await IDB.all();for(const [k,v] of Object.entries(all))PH[k]=URL.createObjectURL(v)}catch(e){}
   DBH=LDB;ASSETS=LASSETS;
