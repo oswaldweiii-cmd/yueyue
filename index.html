@@ -102,7 +102,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .quest .qm{font:500 11px/1 var(--mono);color:var(--mute);white-space:nowrap}
 .toast{position:absolute;left:var(--gl);bottom:calc(var(--tabs-h) + 88px);z-index:5;max-width:calc(100% - var(--gl) - var(--gr) - 56px);padding:8px 14px;border-radius:99px;
   font:500 11px/1.3 var(--body);color:var(--mute);background:rgba(15,26,43,.9);border:1px solid var(--line);transition:opacity .5s;pointer-events:none}
-.toast.hide{opacity:0}
+.toast.hide{opacity:0;pointer-events:none}
+body>.toast{position:fixed;z-index:130;left:16px;right:auto;bottom:calc(var(--tabs-h) + 96px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 32px);pointer-events:auto;cursor:pointer;font-size:14px;padding:10px 16px}
+body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1px 0 #F2A37B,0 12px 30px rgba(0,0,0,.45)}
 
 /* ---------- player bar ---------- */
 .player{position:absolute;z-index:6;top:8px;left:var(--gl);right:var(--gr);height:var(--bar-h);display:flex;align-items:center;gap:12px;padding:0 14px 0 12px;
@@ -123,7 +125,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .pcount small{font:500 11px/1 var(--body);color:var(--mute);white-space:nowrap}
 
 /* ---------- tabs ---------- */
-.tabs{position:absolute;z-index:7;left:0;right:0;bottom:0;height:var(--tabs-h);display:grid;grid-template-columns:repeat(4,1fr);
+.tabs{position:absolute;z-index:7;left:0;right:0;bottom:0;height:var(--tabs-h);display:grid;grid-template-columns:repeat(5,1fr);
   padding-left:var(--gl);padding-right:var(--gr);background:rgba(8,15,27,.94);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .tabs button{display:grid;place-items:center;align-content:center;gap:4px;color:var(--dim);font:700 11px/1 var(--body);letter-spacing:.1em;position:relative}
 .tabs button[aria-selected="true"]{color:var(--gold)}
@@ -243,7 +245,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .mk.next .lb{color:var(--ok);font-weight:700}
 .help{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:20px max(20px,env(safe-area-inset-right,0px)) 20px max(20px,env(safe-area-inset-left,0px));background:rgba(4,8,15,.72);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 .help[hidden]{display:none}
-.hcard{width:min(100%,380px);max-height:100%;overflow-y:auto;padding:22px 20px 18px;border-radius:20px;background:var(--panel);border:1px solid var(--line-2);box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.hcard{width:min(100%,380px);max-height:100%;overflow-y:auto;padding:22px 20px 0;border-radius:20px;background:var(--panel);border:1px solid var(--line-2);box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.hokbar{position:sticky;bottom:0;margin:12px -20px 0;padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(15,26,43,0),var(--panel) 35%)}.hokbar .hok{width:100%;margin:0}
 .hcard h2{margin:0;font:900 28px/1.2 var(--display);letter-spacing:.03em}
 .hcard>p{margin:6px 0 0;font:400 14px/1.5 var(--body);color:var(--mute)}
 .hl{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:14px}
@@ -1194,6 +1197,20 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .plkits button small{font:400 11px var(--body);letter-spacing:.12em}.plkits button[aria-checked="true"]{color:var(--ink);border-color:var(--gold)}
 .pls .dbtn{width:100%;margin-top:16px}
 .plfoot{margin-top:36px;padding-top:12px;border-top:1px solid rgba(200,211,226,.12)}.plfoot .del{margin-left:auto}
+.tabs .tabrec{color:var(--gold)}.tabrec i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#0B1626;background:radial-gradient(circle at 35% 30%,#FBE3A6,#F4C152 55%,#D9A23A);box-shadow:0 0 0 1px rgba(244,193,82,.45),0 0 18px rgba(244,193,82,.35)}
+.tabrec.hint i{animation:fabHint 1.4s ease-in-out 3}@keyframes fabHint{50%{transform:scale(1.18);box-shadow:0 0 0 8px rgba(244,193,82,.18),0 0 30px rgba(244,193,82,.7)}}
+@media (prefers-reduced-motion:reduce){.tabrec.hint i{animation:none}}
+@media (min-width:900px){.tabs .tabrec .ic{display:grid}.tabrec i{width:22px;height:22px}}
+.rcard{padding-bottom:12px}.rcard h2{margin-bottom:10px}
+.rcopt{display:grid;grid-template-columns:48px minmax(0,1fr);column-gap:14px;align-items:center;width:100%;min-height:72px;padding:12px 0;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.12);color:var(--ink);text-align:left;cursor:pointer}
+.rcopt i{grid-row:span 2;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:900 11px/1 var(--display);font-style:normal;color:#0B1626}
+.rcopt i.au{background:radial-gradient(circle at 35% 30%,#FBE3A6,#E0A93A)}.rcopt i.ag{background:radial-gradient(circle at 35% 30%,#fff,#9AA7B6)}.rcopt i.un{background:none;border:1.5px dashed #7F8FA6;color:#C8D3E2}
+.rcopt b{font:600 18px/1.3 var(--display)}.rcopt span{font:400 14px/1.5 var(--body);color:#C8D3E2}
+.rchow{margin-top:10px}.rchow summary{min-height:44px;display:flex;align-items:center;font:500 14px var(--body);color:var(--gold);cursor:pointer}.rchow ul{margin:0;padding:0 0 0 18px}.rchow li{margin:6px 0;font:400 14px/1.6 var(--body);color:#C8D3E2}
+.gsok{font:600 18px/1.6 var(--display);color:var(--gold)}.gsdup{font:400 14px/1.6 var(--body);color:#C8D3E2}.gsk{margin:14px 0 4px;font:500 11px/1 var(--body);letter-spacing:.32em;color:#F2A37B}
+.gsbad{list-style:none;margin:0;padding:0;max-height:40vh;overflow-y:auto}.gsbad li{padding:8px 0;border-bottom:1px solid rgba(200,211,226,.1)}.gsbad b{display:block;font:500 14px var(--body);word-break:break-all}.gsbad span{font:400 14px/1.5 var(--body);color:#F2A37B}
+.mk.done.self{color:#9AA7B6}.mk.done.self .lb{color:#C8D3E2;font-weight:500}.mk.done.self::before{background:radial-gradient(circle,rgba(200,211,226,.22),rgba(200,211,226,0) 68%)}.mk.done.self::after{animation:none;opacity:0}
+.dmedal.un{color:#9AA7B6}.dupg{margin:4px 0 0;font:400 14px/1.6 var(--body);color:#C8D3E2;text-align:center}
 .mcard .mbig{font:600 18px/1.6 var(--display);color:var(--ink)}
 .cd.mute{visibility:hidden}.cd.past{color:#5D6E84}
 .cd.today::after{content:'';position:absolute;inset:6px 9px;border:1px solid rgba(200,211,226,.45);border-radius:50%}
@@ -1485,6 +1502,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
   <nav class="tabs" role="tablist" aria-label="畫面切換">
     <button type="button" role="tab" id="tabMap" data-tab="map" aria-selected="true"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5l6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z"></path><path d="M9 4v13.5M15 6.5V20"></path></svg></span>地圖</button>
     <button type="button" role="tab" id="tabList" data-tab="list" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5 20l7.5-11.5 4 6 2-3 5.5 8.5z"></path><path d="M10 8.5V3l5 1.8-5 1.8"></path></svg></span>山頭</button>
+    <button type="button" class="tabrec" id="recFab" aria-label="記錄登頂"><span class="ic"><i><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></i></span>記錄</button>
     <button type="button" role="tab" id="tabChar" data-tab="char" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M5 17L10 6.5 17.5 10 19 19.5Z" stroke-opacity=".7" stroke-dasharray="2 2"></path><circle cx="5" cy="17" r="1.8" fill="currentColor"></circle><circle cx="10" cy="6.5" r="2.2" fill="currentColor"></circle><circle cx="17.5" cy="10" r="1.8" fill="currentColor"></circle><circle cx="19" cy="19.5" r="1.5" fill="currentColor"></circle></svg></span>數據</button>
     <button type="button" role="tab" id="tabGear" data-tab="gear" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M9 7V5.5a3 3 0 0 1 6 0V7"></path><path d="M6 10a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v10.5H6z"></path><path d="M9 14h6v3.5H9z"></path></svg></span>裝備</button>
   </nav>
@@ -1555,6 +1573,23 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
       <div class="pickbar"><div class="pickchips" id="pickChips"></div><button type="button" class="dbtn" id="pickGo" disabled>先點要爬的山</button></div>
     </div>
   </div>
+  <div class="help" id="recs" role="dialog" aria-modal="true" aria-labelledby="recsT" hidden>
+    <div class="hcard rcard">
+      <p class="mkick">記錄登頂</p><h2 id="recsT">這一座怎麼記？</h2>
+      <button type="button" class="rcopt" id="rcGpx"><i class="au">金章</i><b>上傳軌跡</b><span>手錶或手機 App 匯出的 .gpx，可以一次選很多個</span></button>
+      <button type="button" class="rcopt" id="rcHere"><i class="ag">銀章</i><b>我現在在山頂</b><span>用定位找到這座山，按住打卡、拍三角點</span></button>
+      <button type="button" class="rcopt" id="rcSelf"><i class="un">補登</i><b>以前爬過，沒有軌跡</b><span>先點亮成灰色、經驗值少一點，之後補軌跡就升級</span></button>
+      <details class="rchow"><summary>怎麼拿到 GPX？</summary><ul>
+        <li><b>Garmin</b>：用電腦打開 Garmin Connect 網頁版 → 點那次活動 → 右上齒輪 → 匯出為 GPX。</li>
+        <li><b>Strava</b>：電腦版網頁打開活動 → 「⋯」→ 匯出 GPX。</li>
+        <li><b>健行筆記、其他登山 App</b>：在那次軌跡的頁面找「匯出」或「下載 GPX」。</li>
+      </ul></details>
+      <button type="button" class="mlater" id="recsX">之後再說</button>
+    </div>
+  </div>
+  <div class="help" id="gsum" role="dialog" aria-modal="true" aria-labelledby="gsumT" hidden>
+    <div class="hcard mcard"><p class="mkick">匯入完成</p><h2 id="gsumT"></h2><div id="gsumB"></div><button type="button" class="dbtn" id="gsumOk">好</button></div>
+  </div>
   <div class="help" id="migr" role="dialog" aria-modal="true" aria-labelledby="migrT" hidden>
     <div class="hcard mcard">
       <p class="mkick">規則更新</p><h2 id="migrT">登頂要驗證了</h2>
@@ -1580,7 +1615,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
         <li><span class="hi c-ok"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3 9 9H1Z" fill="currentColor"/><circle cx="14" cy="6" r="3.2" fill="currentColor"/><path d="M10 12.5 13 15.5 10 18.5 7 15.5Z" fill="currentColor"/></svg></span>
           <div><b>形狀代表山的種類</b><small>三角形是百岳、圓點是小百岳、菱形是小山。小百岳和小山只分「登頂過」（金色）和「還沒去」。上方標題點一下就能切換。</small></div></li>
         <li><span class="hi c-ok"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="10" r="4.5" fill="currentColor"/></svg></span>
-          <div><b>怎麼算登頂</b><small>只有兩種：在山頂按住「山頂打卡」並拍三角點，拿銀章；上傳手錶軌跡、經過山頂 50 公尺內，拿金章。手動補登不算。</small></div></li>
+          <div><b>怎麼記錄登頂</b><small>按下方中間金色的「＋ 記錄」。上傳手錶或手機 App 的軌跡拿金章；在山頂打卡並拍三角點拿銀章；以前爬過、沒有軌跡的，可以先補登成灰色。</small></div></li>
       </ul>
       <details class="hsrc"><summary>資料來源</summary><ul>
         <li><b>百岳名單、海拔、難度分級</b>：中文維基百科「台灣百岳列表」，分級為國家公園署 2021 年步道分級（0–6 級）。</li>
@@ -1593,7 +1628,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
         <li><b>名山成就</b>：維基百科「台灣百岳」、蕃薯藤旅遊。</li>
         <li><b>你的軌跡與照片</b>：你自己的 Garmin 紀錄與上傳的照片，只有你能修改。</li>
       </ul></details>
-      <button type="button" class="hok" id="helpOk">開始</button>
+      <div class="hokbar"><button type="button" class="hok" id="helpOk">開始</button></div>
     </div>
   </div>
 </div>
@@ -1833,7 +1868,8 @@ function buildNext(){
   if(!a.length)a=P.filter(p=>!RECS[p.rank]).sort((x,y)=>x.grade-y.grade||y.rank-x.rank).slice(0,3);
   const ok=a.filter(p=>statusOf(p)==='ok');NXT=ok.concat(a.filter(p=>statusOf(p)!=='ok'));
 }
-function derive(){const ks=Object.keys(RECS);G.n=ks.length;G.xn=Object.keys(XRECS).length;G.sn=Object.keys(SRECS).length;G.xp=ks.reduce((s,k)=>s+XP_BY_GRADE[byRank[k].grade],0)+G.xn*XP_XIAO+G.sn*XP_SHAN;G.xpX=G.xn*XP_XIAO;G.xpS=G.sn*XP_SHAN;G.xpB=G.xp-G.xpX-G.xpS;G.lv=levelOf(G.xp);buildNext()}
+const xw=r=>r&&r.verified==='self'?SELF_W:1,SELF_W=.3;
+function derive(){const ks=Object.keys(RECS);G.n=ks.length;G.xn=Object.keys(XRECS).length;G.sn=Object.keys(SRECS).length;G.xpX=Math.round(Object.values(XRECS).reduce((s,r)=>s+xw(r)*XP_XIAO,0));G.xpS=Math.round(Object.values(SRECS).reduce((s,r)=>s+xw(r)*XP_SHAN,0));G.xp=Math.round(ks.reduce((s,k)=>s+xw(RECS[k])*XP_BY_GRADE[byRank[k].grade],0))+G.xpX+G.xpS;G.xpB=G.xp-G.xpX-G.xpS;G.lv=levelOf(G.xp);buildNext()}
 // score 0-100 per ability, plus the real measurement behind it and how the scale is set
 function abilities(){
   const r=Object.values(RECS),n=r.length;
@@ -2100,14 +2136,14 @@ function layout(force){
   if(!V.w)return;
   if(force||(flyTargetK==null&&Math.abs(V.k-clusterK)>1e-6))buildClusters();
   const first=S.set==='bai'?nextList()[0]:null;
-  const sig=clusters.map(c=>c.key+(c.m.length===1?(REC(c.m[0])&&REC(c.m[0]).thumb?'t':'')+statusOf(c.m[0])+(S.sel===c.m[0].rank?'s':'')+(first&&first.rank===c.m[0].rank?'n':''):'')).join('|')+'@'+G.lv+S.set;
+  const sig=clusters.map(c=>c.key+(c.m.length===1?(REC(c.m[0])&&REC(c.m[0]).thumb?'t':'')+(REC(c.m[0])&&REC(c.m[0]).verified==='self'?'u':'')+statusOf(c.m[0])+(S.sel===c.m[0].rank?'s':'')+(first&&first.rank===c.m[0].rank?'n':''):'')).join('|')+'@'+G.lv+S.set;
   if(sig!==clusterSig){clusterSig=sig;
     const keep=new Set();
     for(const c of clusters){keep.add(c.key);let el=mkEls.get(c.key);
       if(!el){el=document.createElement('button');el.type='button';el.style.setProperty('--tw-d',(-Math.random()*4).toFixed(2)+'s');el.style.setProperty('--tw-t',(2.4+Math.random()*2.4).toFixed(2)+'s');el.style.setProperty('--in-d',(Math.random()*.7).toFixed(2)+'s');mkBox.appendChild(el);mkEls.set(c.key,el);el._c=c}
       el._c=c;
       if(c.m.length===1){const p=c.m[0],st=statusOf(p),isNext=first&&first.rank===p.rank;
-        el.className='mk '+st+(isNext?' next':'')+(S.sel===p.rank?' sel':'');
+        el.className='mk '+st+(isNext?' next':'')+(S.sel===p.rank?' sel':'')+(st==='done'&&REC(p)&&REC(p).verified==='self'?' self':'');
         const th=st==='done'&&REC(p)&&safeUrl(REC(p).thumb);el.classList.toggle('hasph',!!th);
         el.innerHTML=(th?'<span class="ph" style="background-image:url(&quot;'+esc(th)+'&quot;)"></span>':p.set==='xiao'?(st==='done'?ICO.xdone:ICO.xdot):p.set==='shan'?(st==='done'?ICO.sdone:ICO.sdot):st==='done'?ICO.done:ICO.peak)+'<span class="lb">'+esc(p.name)+'</span>';
         el.setAttribute('aria-label',p.name+'，'+fmt(p.h)+' 公尺，'+stTxt(p,st)+(isNext?'，下一關':''));
@@ -2337,7 +2373,7 @@ function edName(n){const m=String(n).match(/^(.+?)(大山|主山|主峰|[東西�
   return '<h2 class="dname" aria-label="'+esc(n)+'"><span class="nb">'+esc(a)+'</span>'+(b?'<span class="ns">'+esc(b)+'</span>':'')+'</h2>'}
 // a summit stamp (山頂章), like the ink stamps hikers collect: double ring, the date, the peak's name around the edge
 let stampSeq=0;
-function dStamp(p,r){const sc=r.verified==='checkin'?'#D5DDE6':'#F4C152';const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[1]+'.'+d[2]:'',id='stp'+(++stampSeq),nm=String(p.name);
+function dStamp(p,r){const sc=r.verified==='checkin'?'#D5DDE6':r.verified==='self'?'#7F8FA6':'#F4C152';const d=(r.date||'').split('-'),dt=d.length===3?d[0]+'.'+d[1]+'.'+d[2]:'',id='stp'+(++stampSeq),nm=String(p.name);
   return '<svg class="dstamp" viewBox="0 0 120 120" role="img" aria-label="'+esc(nm)+' '+dt+' 登頂"><defs><path id="'+id+'" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0"/>'+
     '<filter id="'+id+'f"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="'+(p.rank%9)+'"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs>'+
     '<g filter="url(#'+id+'f)" fill="none" stroke="'+sc+'"><circle cx="60" cy="60" r="55" stroke-width="2.6"/><circle cx="60" cy="60" r="33" stroke-width="1.2"/></g>'+
@@ -2497,7 +2533,7 @@ function renderDPage(p){
   // hero: name, status, and the climb up to this summit
   const d=r?(r.date||'').split('-'):null,vf=r?medalTxt(r):'';
   h+='<div class="dhero'+(r?' day':'')+'">'+heroProfile(p,r)+'<div class="dtitle ed">'+edName(p.name)+'<div class="dmeta"><p class="dk">'+(bai?'百岳・第 '+p.rank+' 高':sh?'小山':'小百岳・第 '+p.no+' 號')+'</p><p class="dnum">'+fmt(p.h)+'<small>m</small></p><p class="dk">海拔</p>'+
-    '</div></div></div>'+'<div class="dseam">'+(r?dStamp(p,r)+'<p class="dmedal'+(r.verified==='checkin'?' ag':'')+'">'+medalTxt(r)+'</p>':'<p class="dstat2 '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div>';
+    '</div></div></div>'+'<div class="dseam">'+(r?dStamp(p,r)+'<p class="dmedal'+(r.verified==='checkin'?' ag':r.verified==='self'?' un':'')+'">'+medalTxt(r)+'</p>':'<p class="dstat2 '+(bai?st:'ok')+'"><i></i>'+(bai?ST_TXT[st]:'還沒去過')+'</p>')+'</div>';
   // three key numbers
   const kpi=[];
   if(bai)kpi.push(['難度',p.grade+'<u>/ 5</u>']);else kpi.push([sh?'小山':'小百岳',sh?esc(p.route):'第 '+p.no+' 號']);
@@ -2506,10 +2542,11 @@ function renderDPage(p){
   h+='<div class="s2kpi c3">'+kpi.map(([k,v])=>'<div><small>'+k+'</small><b>'+v+'</b></div>').join('')+'</div>';
   // one sentence + one action
   h+='<div class="dlead2">';
-  if(r){const bits=[];if(+r.distanceKm)bits.push('走了 '+(+r.distanceKm).toFixed(1)+' 公里');if(+r.durationMin)bits.push('花了 '+durTxt(+r.durationMin));h+='<p>'+(bits.length?'你那次'+bits.join('，')+'。':'你在 '+esc(r.date||'')+' 登頂了這座山。')+'</p>'}
+  if(r){const bits=[];if(+r.distanceKm)bits.push('走了 '+(+r.distanceKm).toFixed(1)+' 公里');if(+r.durationMin)bits.push('花了 '+durTxt(+r.durationMin));h+='<p>'+(bits.length?'你那次'+bits.join('，')+'。':(r.date?'你在 '+esc(r.date)+' ':'你')+'登頂了這座山。')+'</p>'}
   else h+='<p>'+(bai?reason(p):sh?'不上鎖，出發前先確認路況和交通。':'郊山暖身，不上鎖，隨時可以去。')+'</p>';
   if(!r)h+=tripBlock(p);
-  if(!r&&DBH)h+='<div class="dverify"><div class="hold" id="vHold"><button type="button" class="holdb" id="vChk" aria-label="山頂打卡，按住直到金圈填滿">'+
+  if(r&&!isVerified(r)&&DBH)h+='<p class="dupg">這座是補登，還沒驗證。補傳當時的軌跡，或下次在山頂打卡，就升級成金章／銀章，經驗值拿滿。</p>';
+  if((!r||!isVerified(r))&&DBH)h+='<div class="dverify"><div class="hold" id="vHold"><button type="button" class="holdb" id="vChk" aria-label="山頂打卡，按住直到金圈填滿">'+
     '<svg class="holdr" viewBox="0 0 132 132" aria-hidden="true"><circle cx="66" cy="66" r="62" class="hr0"/><circle cx="66" cy="66" r="62" class="hr1" id="vRing"/></svg>'+
     '<b>山頂打卡</b><small id="vHint">按住</small></button></div><div class="vstep" id="vStep" aria-live="polite"></div>'+
     '<button type="button" class="dlinkb" id="vGpx">已經爬過？<u>上傳當時的 GPX</u></button><input type="file" id="vCam" accept="image/*" capture="environment" hidden></div>';
@@ -2562,7 +2599,7 @@ function wireDPage(p){
   const bai=p.set==='bai',key=bai?p.rank:(p.set==='shan'?'s':'x')+p.no,r=bai?RECS[p.rank]:REC(p),xp=bai?XP_BY_GRADE[p.grade]:p.set==='shan'?XP_SHAN:XP_XIAO;
   {const ub=$('upPh'),ui=$('upIn');if(ub&&ui){ub.onclick=()=>ui.click();ui.onchange=()=>{const f=ui.files&&ui.files[0];if(f)uploadPhoto(key,f,ub)}}}
   {const b=$('xDel');if(b)b.onclick=async()=>{if(!confirm('刪除 '+p.name+' 的登頂紀錄？刪了要重新驗證才會回來。'))return;b.disabled=true;try{await DBH.doc('climbs/'+key).delete();say('已刪除 '+p.name)}catch(e){b.disabled=false;say('刪除失敗，請再試一次。',true)}}}
-  {const g=$('vGpx');if(g)g.onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',f=>importGPX(f,p))}
+  {const g=$('vGpx');if(g)g.onclick=()=>pickGPX(f=>importGPX(f,p))}
   wireCheckin(p,key);wireTrip(p);
   const b=$('toMap');if(b)b.onclick=()=>{const rk=S.sel;setTab('map');requestAnimationFrame(()=>{resize();focusPeak(byRank[rk])})};
   const hb=$('dHut');if(hb)hb.onclick=()=>say(r?'山屋會在帳號功能上線後開放，到時候就能看到同一間山屋的山友。':'先登頂這座山，就能進入這間山屋。');
@@ -2799,7 +2836,7 @@ function cumChart(list){
     (n<=40?pts.map((t,i)=>'<circle cx="'+x(t).toFixed(1)+'" cy="'+y(i+1).toFixed(1)+'" r="2.6" fill="#f4c152"/>').join(''):'')+
     '<text x="'+ml+'" y="'+(Hd-6)+'" '+F+'>'+ymd(t0)+'</text><text x="'+(Wd-mr)+'" y="'+(Hd-6)+'" text-anchor="end" '+F+'>'+ymd(t1)+'</text></svg></div>';
 }
-function wireData(){const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',importGPX);if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
+function wireData(){const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickGPX(f=>importGPX(f));if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
 function dataSec(){let t=0;try{t=+localStorage.getItem(BKEY)||0}catch(e){}
   const n=Object.keys(LDB.raw()).length,old=!t||Date.now()-t>30*864e5,when=t?new Date(t).toLocaleDateString('zh-TW'):'還沒備份過';
   return '<div class="dsec"><h3 class="dh">我的紀錄</h3><p class="dsay">共 '+n+' 筆紀錄，上次備份：'+when+'。'+(old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
@@ -2911,7 +2948,7 @@ function setTab(t,fromHash){
   if(t==='char'&&!reduceMotion())requestAnimationFrame(s2Count);
   if(!fromHash){try{if(location.hash.slice(1)!==HASH[t])history.replaceState(null,'','#'+HASH[t])}catch(e){}}
 }
-document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
+document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.dataset.tab)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
 $('radio').onclick=()=>say('這是無線電廣播的範例。之後登入帳號，就能每週免費發一則，點廣播會打開對方的個人頁。');
 {const w=$('radio').querySelector('.rdw');const f=()=>{try{$('radioT').style.setProperty('--rdw',w.clientWidth+'px')}catch(e){}};f();window.addEventListener('resize',f)}
 {const app=$('app'),mw=$('mapwrap');let t=null,sx=0,sy=0;const pts=new Set();
@@ -2929,7 +2966,8 @@ window.addEventListener('hashchange',readHash);
 
 /* ---------- data ---------- */
 const toast=$('toast');let toastT=0;
-function say(msg,stay){S.msg=msg;toast.textContent=msg;toast.classList.remove('hide');clearTimeout(toastT);if(!stay)toastT=setTimeout(()=>toast.classList.add('hide'),3200)}
+function say(msg,err){const hp=document.getElementById('help');if(hp&&!hp.hidden&&!err){S.pend=msg;return}S.msg=msg;toast.textContent=msg;toast.classList.toggle('err',!!err);toast.classList.remove('hide');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.add('hide'),err?7000:3200)}
+document.body.appendChild(toast);toast.onclick=()=>{clearTimeout(toastT);toast.classList.add('hide')};
 setSet(S.set,true);
 function refresh(){
   derive();tripRender();renderPlayer();renderList();renderChar();if(S.sel!=null)renderSheet();
@@ -2937,7 +2975,7 @@ function refresh(){
 }
 function applySnapshot(snap){
   const next={},prev=RECS;
-  const xn={},sn={};try{snap.docs.forEach(d=>{const v=d.data()||{};if(!isVerified(v))return;if(/^s\d+$/.test(d.id)||v.set==='shan'){const no=parseInt(String(d.id).replace('s',''),10)||parseInt(v.no,10);if(SH[no-1])sn[no]=v;return}if(/^x\d+$/.test(d.id)||v.set==='xiao'){const no=parseInt(String(d.id).replace('x',''),10)||parseInt(v.no,10);if(byNo[no])xn[no]=v;return}const rk=parseInt(d.id,10)||parseInt(v.rank,10);if(byRank[rk])next[rk]=v})}catch(e){}
+  const xn={},sn={};try{snap.docs.forEach(d=>{const v=d.data()||{};if(!isVerified(v)&&v.verified!=='self')return;if(/^s\d+$/.test(d.id)||v.set==='shan'){const no=parseInt(String(d.id).replace('s',''),10)||parseInt(v.no,10);if(SH[no-1])sn[no]=v;return}if(/^x\d+$/.test(d.id)||v.set==='xiao'){const no=parseInt(String(d.id).replace('x',''),10)||parseInt(v.no,10);if(byNo[no])xn[no]=v;return}const rk=parseInt(d.id,10)||parseInt(v.rank,10);if(byRank[rk])next[rk]=v})}catch(e){}
   XRECS=xn;SRECS=sn;
   const fresh=Object.keys(next).filter(k=>!prev[k]);
   RECS=next;S.loaded=true;refresh();
@@ -3004,29 +3042,47 @@ function parseGPX(text){
   const t0=T[0][3],t1=T[T.length-1][3],hasT=isFinite(t0)&&isFinite(t1)&&t1>t0;
   return{T,K,km,gain:hasE?Math.round(gain):null,maxE:hasE?Math.round(maxE):null,t0:hasT?t0:null,dur:hasT?Math.round((t1-t0)/60000):null,loop:hav(T[0][0],T[0][1],T[T.length-1][0],T[T.length-1][1])<600};
 }
-async function importGPX(file,only){
-  const g=parseGPX(await file.text());if(!g){say('這個 GPX 讀不出軌跡，請確認是手錶匯出的 .gpx 檔。',true);return}
-  const cand=only?[only]:[...P,...XB,...SH],keyOf=p=>p.set==='xiao'?'x'+p.no:p.set==='shan'?'s'+p.no:String(p.rank);
-  const found=[],miss=[];for(const p of cand){const v=verifyTrack(g,p);if(v.ok)found.push({p,key:keyOf(p),i:v.i,d:v.d});else if(only||v.near)miss.push(v)}
-  if(!found.length){say(miss.length?miss[0].why:'這條軌跡沒有經過任何百岳、小百岳或小山的山頂（50 公尺內）。',true);return}
+const keyOfP=p=>p.set==='xiao'?'x'+p.no:p.set==='shan'?'s'+p.no:String(p.rank);
+async function gpxCore(file,only,ask){
+  let g=null;try{g=parseGPX(await file.text())}catch(e){}
+  if(!g)return{why:'讀不出軌跡。請確認是手錶或登山 App 匯出的 .gpx 檔。'};
+  const scan=cand=>{const found=[],miss=[];for(const p of cand){const v=verifyTrack(g,p);if(v.ok)found.push({p,key:keyOfP(p),i:v.i,d:v.d});else if(only||v.near)miss.push(v)}return{found,miss}};
+  let {found,miss}=scan(only?[only]:[...P,...XB,...SH]),other=false;
+  if(only&&!found.length){const r2=scan([...P,...XB,...SH]);if(r2.found.length){found=r2.found;other=true}}
+  if(!found.length)return{why:miss.length?miss[0].why:'這條軌跡沒有經過任何百岳、小百岳或小山的山頂（50 公尺內）。'};
   const step=Math.max(1,Math.ceil(g.T.length/1500)),track=[];for(let i=0;i<g.T.length;i+=step){const p=g.T[i];track.push([p[0].toFixed(5),p[1].toFixed(5),isFinite(p[2])?Math.round(p[2]):0,g.t0&&isFinite(p[3])?((p[3]-g.t0)/60000).toFixed(1):'0',g.K[i].toFixed(2)].join(','))}
   const raw=LDB.raw(),add=[],skip=[];
   for(const f of found){if(raw[f.key]&&isVerified(raw[f.key])){skip.push(f);continue}add.push(f)}
-  if(skip.length&&confirm(skip.map(f=>f.p.name).join('、')+' 已經有紀錄了。要用這條軌跡取代嗎？'))add.push(...skip);
-  const prevG=snapG();
+  if(ask&&skip.length&&confirm(skip.map(f=>f.p.name).join('、')+' 已經有紀錄了。要用這條軌跡取代嗎？'))add.push(...skip);
+  const out=[];
   for(const f of add){const st=g.T[f.i][3],dt=isFinite(st)?new Date(st):(g.t0?new Date(g.t0):new Date()),hh=isFinite(st)?String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0'):'';
     const day=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
     const rec={name:f.p.name,date:day,summitTime:hh,distanceKm:+g.km.toFixed(1),track:track.join(';'),source:'GPX：'+file.name,verified:'gps',summitD:Math.round(f.d),style:g.loop?'來回':'縱走'};
     if(g.gain!=null)rec.gainM=g.gain;if(g.maxE!=null)rec.maxEle=g.maxE;if(g.dur!=null)rec.durationMin=g.dur;
     if(f.p.set==='xiao'||f.p.set==='shan'){rec.set=f.p.set;rec.no=f.p.no}else rec.rank=f.p.rank;
     const old=raw[f.key];if(old){for(const k of ['photo','photoId','thumb','thumbId','note'])if(old[k])rec[k]=old[k]}
-    await LDB.doc('climbs/'+f.key).set(rec)}
-  if(add.length){const fresh=add.filter(f=>!skip.includes(f)).map(f=>byRank[f.p.rank]||f.p);if(fresh.length)setTimeout(()=>celebrate(fresh,prevG),120);else say('已更新：'+add.map(f=>f.p.name).join('、'))}else say('沒有新增紀錄。');
+    await LDB.doc('climbs/'+f.key).set(rec);out.push({p:f.p,fresh:!(old&&isVerified(old))})}
+  return{ok:out,skip:skip.filter(f=>!add.includes(f)),other};
 }
+async function importGPX(file,only){const prevG=snapG(),r=await gpxCore(file,only,true);
+  if(r.why){say(r.why,true);return}
+  const fresh=r.ok.filter(x=>x.fresh).map(x=>byRank[x.p.rank]||x.p),nm=r.ok.map(x=>x.p.name).join('、');
+  if(r.other){const sk=r.skip.map(x=>x.p.name).join('、');say('這條軌跡是 '+(nm||sk)+'，不是 '+only.name+'。'+(fresh.length?'已經幫你記在 '+nm+'。':'那座已經有紀錄了。'),!fresh.length);if(fresh.length)setTimeout(()=>celebrate(fresh,prevG),2200);return}
+  if(fresh.length)setTimeout(()=>celebrate(fresh,prevG),120);else if(r.ok.length)say('已更新：'+nm);else say('沒有新增紀錄。')}
+async function importMany(files){const prevG=snapG(),ok=[],bad=[],dup=[];let i=0;
+  for(const f of files){i++;say('匯入中… '+i+' / '+files.length);const r=await gpxCore(f,null,false);if(r.why)bad.push([f.name,r.why]);else{ok.push(...r.ok);r.skip.forEach(x=>dup.push(x.p.name))}}
+  toast.classList.add('hide');
+  const fresh=ok.filter(x=>x.fresh).map(x=>byRank[x.p.rank]||x.p),m=$('gsum');
+  $('gsumT').textContent=fresh.length?'解鎖 '+fresh.length+' 座':'沒有新的登頂';
+  $('gsumB').innerHTML=(fresh.length?'<p class="gsok">'+fresh.map(p=>esc(p.name)).join('、')+'</p>':'')+
+    (dup.length?'<p class="gsdup">已經有紀錄、沒有重複記：'+esc([...new Set(dup)].join('、'))+'</p>':'')+
+    (bad.length?'<p class="gsk">沒通過 '+bad.length+' 個檔案</p><ul class="gsbad">'+bad.map(([n,w])=>'<li><b>'+esc(n)+'</b><span>'+esc(w)+'</span></li>').join('')+'</ul>':'');
+  m.hidden=false;try{$('gsumOk').focus({preventScroll:true})}catch(e){}
+  $('gsumOk').onclick=()=>{m.hidden=true;if(fresh.length)setTimeout(()=>celebrate(fresh,prevG),120)}}
 /* ---------- 登頂驗證：只有兩種算數。都是純函式，之後可原封搬到後台 ---------- */
 const VR={gpsR:50,nearR:300,chkR:120,chkAcc:60,maxKmh:20,avgKmh:12,eleTol:250,photoMin:30};
 const isVerified=v=>!!v&&(v.verified==='gps'||v.verified==='checkin');
-const medalTxt=r=>r.verified==='gps'?'金章・軌跡登頂':r.verified==='checkin'?'銀章・現地打卡':'未驗證';
+const medalTxt=r=>r.verified==='gps'?'金章・軌跡登頂':r.verified==='checkin'?'銀章・現地打卡':'補登・未驗證';
 function verifyTrack(g,p){ // 金章：真的走過，而且走到山頂
   let best=1e9,bi=0;for(let i=0;i<g.T.length;i++){const d=hav(p.lat,p.lon,g.T[i][0],g.T[i][1]);if(d<best){best=d;bi=i}}
   const near=best<=VR.nearR,no=why=>({ok:false,near,d:best,why});
@@ -3070,15 +3126,15 @@ function wireCheckin(p,key){ // 長按蓄力：按住的這 1.6 秒同時在定�
     full=true;box.classList.add('wait');hint.textContent='定位中…';buzz(25);const id0=req;setTimeout(()=>{if(full&&!res&&req===id0){hint.textContent='再等一下';st.innerHTML='<p class="vmsg">山上沒網路時，定位會比較慢，最多等一分鐘。</p>'}},8000);settle()};
   const start=e=>{if(holding||full||fix)return;if(e&&e.cancelable)e.preventDefault();holding=true;
     box.classList.remove('bad');box.classList.add('charging');hint.textContent='繼續按住';st.innerHTML='';t0=performance.now();buzz(10);locate();raf=requestAnimationFrame(tick)};
-  const stop=()=>{if(!holding)return;holding=false;box.classList.remove('charging');if(!full){cancelAnimationFrame(raf);req++;setP(0);hint.textContent='按住'}};
-  const fail=(why,r)=>{full=false;holding=false;box.classList.remove('charging','wait','bad');void box.offsetWidth;box.classList.add('bad');hint.textContent='再按一次';buzz([60,40,60,40,120]);
+  const stop=()=>{if(!holding)return;holding=false;box.classList.remove('charging');if(!full){const quick=performance.now()-t0<450;cancelAnimationFrame(raf);req++;setP(0);hint.textContent=quick?'要按住喔':'按住';if(quick){st.innerHTML='<p class="vmsg">手指按著不要放，等金圈繞滿一圈。</p>';clearTimeout(box._ht);box._ht=setTimeout(()=>{if(!full&&!holding){hint.textContent='按住';if(st.querySelector('.vmsg:only-child'))st.innerHTML=''}},3000)}}};
+  const fail=(why,r)=>{full=false;holding=false;box.classList.remove('charging','wait','bad');void box.offsetWidth;box.classList.add('bad');hint.textContent=r&&!r.near?'到山頂再按':'再按一次';buzz([60,40,60,40,120]);
     const R=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(!R){let sh='';for(let i=0;i<12;i++)sh+='<i class="shard" style="--a:'+(i*30+Math.random()*20)+'deg;--d:'+(80+Math.random()*70)+'px;--r:'+(Math.random()*540-270)+'deg"></i>';
       const sw=document.createElement('div');sw.className='shards';sw.setAttribute('aria-hidden','true');sw.innerHTML=sh;box.appendChild(sw);setTimeout(()=>sw.remove(),900);
       const fl=document.createElement('div');fl.className='nflash';fl.setAttribute('aria-hidden','true');document.body.appendChild(fl);setTimeout(()=>fl.remove(),900);
       const sc=$('sheet');if(sc){sc.classList.remove('nshake');void sc.offsetWidth;sc.classList.add('nshake');setTimeout(()=>sc.classList.remove('nshake'),600)}}
     setP(0);
-    st.innerHTML=r?'<div class="nope'+(r.near?' near':'')+'"><div class="nseal" aria-hidden="true">'+(r.near?'加油':'不算')+'</div><p class="nbig">'+r.big+'</p><p class="nsmall">'+r.small+'</p></div>':'<p class="vmsg bad">'+why+'</p>'};
+    st.innerHTML=r?'<div class="nope'+(r.near?' near':'')+'"><div class="nseal" aria-hidden="true">'+(r.near?'加油':'不算')+'</div><p class="nbig">'+r.big+'</p><p class="nsmall">'+r.small+'</p></div>':'<p class="vmsg bad">'+why+'</p>';setTimeout(()=>{try{st.scrollIntoView({block:'center',behavior:R?'auto':'smooth'})}catch(e){}},R?0:450)};
   function settle(){if(!full||!res)return;
     if(res.err){fail(res.err);return}const pos=res.pos,v=verifyCheckin(pos,p);if(!v.ok){fail(v.why,roast(v,p));return}
     fix={lat:+pos.coords.latitude.toFixed(6),lon:+pos.coords.longitude.toFixed(6),acc:Math.round(pos.coords.accuracy),d:Math.round(v.d),t:Date.now()};
@@ -3139,7 +3195,7 @@ function tripRender(){try{
     due.innerHTML='<button type="button" class="calx" id="tdX" aria-label="之後再說"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5 5 15"/></svg></button>'+
       '<div class="tdin"><p class="tk">'+trTxt(st.t)+' 的行程</p><h2 id="tdT"'+(nm.length>5?' class="long"':'')+'>'+esc(nm)+'</h2><p class="tq">爬完了嗎？</p><p class="td">上傳這次的手錶軌跡，通過就拿金章。</p>'+
       '<button type="button" class="dbtn" id="tripGpx">上傳這次的 GPX</button><button type="button" class="mlater" id="tripNo">沒去成</button></div>';
-    $('tripGpx').onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',f=>importGPX(f));
+    $('tripGpx').onclick=()=>pickGPX(f=>importGPX(f));
     $('tripNo').onclick=()=>{TRIPS=TRIPS.filter(x=>x.id!==st.t.id);saveTrips();say('收掉了，下次再去。')};
     $('tdX').onclick=()=>{dueSkip=true;dueClose()};
     if(fresh)try{$('tripGpx').focus({preventScroll:true})}catch(e){}}
@@ -3217,21 +3273,23 @@ function calDay(s){ // 點一下：有行程就打開，沒有就開始選日期
 })();
 /* ---------- 挑山：可複選，點了就加入 ---------- */
 let PK2={set:'bai',q:'',sel:[]};
-function pickOpen(ranks){PK2.sel=ranks.slice();PK2.q='';$('pickQ').value='';const r0=ranks[0];PK2.set=r0>=2000?'shan':r0>=1000?'xiao':'bai';$('pick').hidden=false;pickRender();try{$('pickQ').focus({preventScroll:true})}catch(e){}}
+function pickOpen(ranks,mode){PK2.mode=mode||'trip';$('pickT').textContent=PK2.mode==='log'?'以前爬過哪幾座？':'這趟要爬哪幾座？';PK2.sel=ranks.slice();PK2.q='';$('pickQ').value='';const r0=ranks[0];PK2.set=r0>=2000?'shan':r0>=1000?'xiao':'bai';$('pick').hidden=false;pickRender();try{$('pickQ').focus({preventScroll:true})}catch(e){}}
 function pickRender(){
   const pool=PK2.set==='bai'?P:PK2.set==='xiao'?XB:SH,q=PK2.q.trim(),src=q?[...P,...XB,...SH]:pool;
   const L=src.filter(p=>!q||p.name.includes(q)).slice(0,q?60:200);
   document.querySelectorAll('#pickTabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.set===PK2.set&&!q)));
   $('pickL').innerHTML=L.map(p=>{const on=PK2.sel.includes(p.rank),r=REC(p);return '<button type="button" class="pkr'+(on?' on':'')+'" data-rank="'+p.rank+'" aria-pressed="'+on+'"><b>'+esc(p.name)+'</b><span>'+(r&&isVerified(r)?'已登頂・':'')+fmt(p.h)+' m</span><i aria-hidden="true"></i></button>'}).join('')||'<p class="cempty">找不到「'+esc(q)+'」。</p>';
-  const n=PK2.sel.length;$('pickGo').textContent=n?'就這 '+n+' 座':'先點要爬的山';$('pickGo').disabled=!n;
+  const n=PK2.sel.length;$('pickGo').textContent=n?(PK2.mode==='log'?'補登這 '+n+' 座':'就這 '+n+' 座'):(PK2.mode==='log'?'先點爬過的山':'先點要爬的山');$('pickGo').disabled=!n;
   $('pickChips').innerHTML=PK2.sel.map(r=>byRank[r]?'<button type="button" data-rank="'+r+'" aria-label="移除 '+esc(byRank[r].name)+'">'+esc(byRank[r].name)+' ×</button>':'').join('');
 }
 $('pickL').addEventListener('click',e=>{const b=e.target.closest('[data-rank]');if(!b)return;const r=+b.dataset.rank,i=PK2.sel.indexOf(r);if(i>=0)PK2.sel.splice(i,1);else PK2.sel.push(r);pickRender()});
 $('pickChips').addEventListener('click',e=>{const b=e.target.closest('[data-rank]');if(!b)return;PK2.sel=PK2.sel.filter(x=>x!==+b.dataset.rank);pickRender()});
 $('pickTabs').addEventListener('click',e=>{const b=e.target.closest('[data-set]');if(!b)return;PK2.set=b.dataset.set;PK2.q='';$('pickQ').value='';pickRender()});
 $('pickQ').addEventListener('input',e=>{PK2.q=e.target.value;pickRender()});
-$('pickX').onclick=()=>{$('pick').hidden=true;if(SEL&&!SEL.ranks.length&&!SEL.start)SEL=null;calRender()};
-$('pickGo').onclick=()=>{if(!PK2.sel.length)return;$('pick').hidden=true;
+$('pickX').onclick=()=>{$('pick').hidden=true;if(PK2.mode==='log'){calClose();return}if(SEL&&!SEL.ranks.length&&!SEL.start)SEL=null;calRender()};
+$('pickGo').onclick=async()=>{if(!PK2.sel.length)return;$('pick').hidden=true;
+  if(PK2.mode==='log'){const raw=LDB.raw();let n=0;for(const rk of PK2.sel){const p=byRank[rk];if(!p)continue;const k=keyOfP(p);if(raw[k])continue;const rec={name:p.name,date:'',verified:'self',source:'補登'};if(p.set==='bai')rec.rank=p.rank;else{rec.set=p.set;rec.no=p.no}await LDB.doc('climbs/'+k).set(rec);n++}
+    calClose();say(n?'補登了 '+n+' 座，地圖上是灰色。補傳軌跡就升級成金章。':'這幾座都已經有紀錄了。');return}
   if(!SEL)SEL={start:null,end:null,ranks:[]};SEL.ranks=PK2.sel.slice();
   if(EDIT&&!SEL.start){SEL.start=EDIT.start;SEL.end=EDIT.end;tripCommit();return}
   if(SEL.start){tripCommit();return}
@@ -3307,16 +3365,24 @@ function planRender(){const t=TRIPS.find(x=>x.id===PLAN);if(!t){planClose();retu
   $('plDel').onclick=()=>{if(!confirm('刪除 '+trTxt(t)+' 的行程？'))return;TRIPS=TRIPS.filter(x=>x.id!==t.id);EDIT=null;saveTrips();planClose();say('行程刪除了')};
 }
 $('planX').onclick=planClose;
+/* ---------- 地圖上的「＋ 記錄」：三種記錄方式 ---------- */
+{const m=$('recs'),close=()=>{m.hidden=true};
+  $('recFab').onclick=()=>{m.hidden=false;try{$('rcGpx').focus({preventScroll:true})}catch(e){}};
+  $('recsX').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close()});
+  $('rcGpx').onclick=()=>{close();pickGPX(f=>importGPX(f))};
+  $('rcSelf').onclick=()=>{close();$('cal').hidden=false;calFocus=$('recFab');SEL=null;EDIT=null;if(!calM){const d=new Date();calM=new Date(d.getFullYear(),d.getMonth(),1)}calRender();pickOpen([],'log')};
+  $('rcHere').onclick=()=>{close();if(!navigator.geolocation){say('這支手機沒辦法定位。',true);return}say('找你在哪一座山…');
+    navigator.geolocation.getCurrentPosition(pos=>{const c=pos.coords;let best=null,bd=1e12;for(const p of [...P,...XB,...SH]){const d=hav(p.lat,p.lon,c.latitude,c.longitude);if(d<bd){bd=d;best=p}}
+      if(!best||bd>2000){say('附近 2 公里內沒有百岳、小百岳或小山。到山頂再按一次。',true);return}
+      toast.classList.add('hide');openPeak(best.rank,true);setTimeout(()=>{const h=$('vChk');if(h)h.scrollIntoView({block:'center',behavior:'smooth'})},700)},
+      e=>say(e&&e.code===1?'沒有定位權限。到手機設定打開定位，再試一次。':'定位失敗。到空曠一點的地方再試一次。',true),{enableHighAccuracy:true,timeout:60000,maximumAge:30000})}}
 /* ---------- 規則更新：舊紀錄先備份，再清空重來（只跑一次） ---------- */
 const MKEY='yy-verify-v1';
-function migrateNag(){try{if(localStorage.getItem(MKEY))return;const n=Object.keys(LDB.raw()).length;if(!n){localStorage.setItem(MKEY,'1');return}
-  const m=$('migr');$('migrN').textContent=n;m.hidden=false;
-  $('migrLater').onclick=()=>{m.hidden=true};
-  $('migrGo').onclick=async()=>{const b=$('migrGo');b.disabled=true;const ok=await exportBackup();b.disabled=false;if(!ok)return;
-    if(!confirm('備份好了。確定清空 '+n+' 筆舊紀錄？清空後只能用備份檔救回。'))return;
-    const ids=[];Object.values(LDB.raw()).forEach(r=>{if(r.photoId)ids.push(r.photoId);if(r.thumbId)ids.push(r.thumbId)});
-    LDB.replace({});for(const id of ids){try{await IDB.del(id)}catch(e){}}
-    try{localStorage.setItem(MKEY,'1')}catch(e){}m.hidden=true;say('清空了。從現在起，山頂打卡或上傳軌跡才算登頂。')}}catch(e){}}
+function migrateNag(){try{if(localStorage.getItem(MKEY))return;const raw=LDB.raw();let n=0;
+  for(const [k,r] of Object.entries(raw)){if(!isVerified(r)&&r.verified!=='self'){LDB.doc('climbs/'+k).update({verified:'self'});n++}}
+  localStorage.setItem(MKEY,'1');if(n)say('以前手動記的 '+n+' 座改成「補登」：地圖上是灰色，補傳軌跡就升級成金章。')}catch(e){}}
+function pickFiles(fn){const i=document.createElement('input');i.type='file';i.multiple=true;i.onchange=()=>{const f=[...(i.files||[])];if(f.length)fn(f)};i.click()}
+const pickGPX=fn=>pickFiles(fs=>fs.length===1?fn(fs[0]):importMany(fs));
 function pickFile(accept,fn){const i=document.createElement('input');i.type='file';i.accept=accept;i.onchange=()=>{const f=i.files&&i.files[0];if(f)fn(f)};i.click()}
 async function load(){
   try{const all=await IDB.all();for(const [k,v] of Object.entries(all))PH[k]=URL.createObjectURL(v)}catch(e){}
@@ -3344,7 +3410,7 @@ async function uploadPhoto(rank,file,btn){
 /* ---------- first-visit guide ---------- */
 const help=$('help');let helpFocus=null;
 function openHelp(){helpFocus=document.activeElement;help.hidden=false;try{$('helpOk').focus({preventScroll:true})}catch(e){}}
-function closeHelp(){if(help.hidden)return;help.hidden=true;try{localStorage.setItem('baiyue.guide','1')}catch(e){}
+function closeHelp(){if(help.hidden)return;help.hidden=true;if(S.pend){const m=S.pend;S.pend=null;setTimeout(()=>say(m),900)}setTimeout(()=>{const f=$('recFab');if(f){f.classList.add('hint');setTimeout(()=>f.classList.remove('hint'),4200)}},400);try{localStorage.setItem('baiyue.guide','1')}catch(e){}
   if(helpFocus&&document.contains(helpFocus)){try{helpFocus.focus({preventScroll:true})}catch(e){}}helpFocus=null}
 $('helpOk').onclick=closeHelp;$('zhelp').onclick=openHelp;
 help.addEventListener('click',e=>{if(e.target===help)closeHelp()});
