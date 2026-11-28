@@ -125,7 +125,7 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .pcount small{font:500 11px/1 var(--body);color:var(--mute);white-space:nowrap}
 
 /* ---------- tabs ---------- */
-.tabs{position:absolute;z-index:7;left:0;right:0;bottom:0;height:var(--tabs-h);display:grid;grid-template-columns:repeat(4,1fr);
+.tabs{position:absolute;z-index:7;left:0;right:0;bottom:0;height:var(--tabs-h);display:grid;grid-template-columns:repeat(5,1fr);
   padding-left:var(--gl);padding-right:var(--gr);background:rgba(8,15,27,.94);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .tabs button{display:grid;place-items:center;align-content:center;gap:4px;color:var(--dim);font:700 11px/1 var(--body);letter-spacing:.1em;position:relative}
 .tabs button[aria-selected="true"]{color:var(--gold)}
@@ -1197,11 +1197,10 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .plkits button small{font:400 11px var(--body);letter-spacing:.12em}.plkits button[aria-checked="true"]{color:var(--ink);border-color:var(--gold)}
 .pls .dbtn{width:100%;margin-top:16px}
 .plfoot{margin-top:36px;padding-top:12px;border-top:1px solid rgba(200,211,226,.12)}.plfoot .del{margin-left:auto}
-.recfab{position:absolute;z-index:7;right:16px;bottom:calc(var(--tabs-h) + 84px);width:64px;height:64px;border-radius:50%;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#0B1626;background:radial-gradient(circle at 35% 30%,#FBE3A6,#F4C152 55%,#D9A23A);box-shadow:0 0 0 1px rgba(244,193,82,.5),0 10px 28px rgba(0,0,0,.45),0 0 30px rgba(244,193,82,.3);cursor:pointer}
-.recfab span{font:700 11px/1 var(--body);letter-spacing:.12em}.app:not([data-tab="map"]) .recfab{display:none}
-.recfab.hint{animation:fabHint 1.4s ease-in-out 3}@keyframes fabHint{50%{transform:scale(1.12);box-shadow:0 0 0 10px rgba(244,193,82,.18),0 10px 28px rgba(0,0,0,.45),0 0 50px rgba(244,193,82,.6)}}
-@media (min-width:900px){.recfab{bottom:28px;right:28px}}
-@media (prefers-reduced-motion:reduce){.recfab.hint{animation:none}}
+.tabs .tabrec{color:var(--gold)}.tabrec i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#0B1626;background:radial-gradient(circle at 35% 30%,#FBE3A6,#F4C152 55%,#D9A23A);box-shadow:0 0 0 1px rgba(244,193,82,.45),0 0 18px rgba(244,193,82,.35)}
+.tabrec.hint i{animation:fabHint 1.4s ease-in-out 3}@keyframes fabHint{50%{transform:scale(1.18);box-shadow:0 0 0 8px rgba(244,193,82,.18),0 0 30px rgba(244,193,82,.7)}}
+@media (prefers-reduced-motion:reduce){.tabrec.hint i{animation:none}}
+@media (min-width:900px){.tabs .tabrec .ic{display:grid}.tabrec i{width:22px;height:22px}}
 .rcard{padding-bottom:12px}.rcard h2{margin-bottom:10px}
 .rcopt{display:grid;grid-template-columns:48px minmax(0,1fr);column-gap:14px;align-items:center;width:100%;min-height:72px;padding:12px 0;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.12);color:var(--ink);text-align:left;cursor:pointer}
 .rcopt i{grid-row:span 2;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:900 11px/1 var(--display);font-style:normal;color:#0B1626}
@@ -1475,7 +1474,6 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
       <svg class="qc" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l4 4-4 4"/></svg>
     </button>
     <div class="trip" id="trip" aria-live="polite"></div>
-    <button type="button" class="recfab" id="recFab" aria-label="記錄登頂"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 4v14M4 11h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span>記錄</span></button>
     <div class="ctrl">
       <button type="button" id="zsearch" aria-label="搜尋百岳"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="8" cy="8" r="5.2"/><path d="M12 12l3.6 3.6"/></svg></button>
       <button type="button" id="zhelp" data-l="圖例" aria-label="圖例與說明"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.4 6.6a2.7 2.7 0 115 1.4c-.6 1-2.2 1.3-2.4 2.7"/><path d="M9 13.9v.1"/></svg></button>
@@ -1504,6 +1502,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
   <nav class="tabs" role="tablist" aria-label="畫面切換">
     <button type="button" role="tab" id="tabMap" data-tab="map" aria-selected="true"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5l6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z"></path><path d="M9 4v13.5M15 6.5V20"></path></svg></span>地圖</button>
     <button type="button" role="tab" id="tabList" data-tab="list" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5 20l7.5-11.5 4 6 2-3 5.5 8.5z"></path><path d="M10 8.5V3l5 1.8-5 1.8"></path></svg></span>山頭</button>
+    <button type="button" class="tabrec" id="recFab" aria-label="記錄登頂"><span class="ic"><i><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></i></span>記錄</button>
     <button type="button" role="tab" id="tabChar" data-tab="char" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M5 17L10 6.5 17.5 10 19 19.5Z" stroke-opacity=".7" stroke-dasharray="2 2"></path><circle cx="5" cy="17" r="1.8" fill="currentColor"></circle><circle cx="10" cy="6.5" r="2.2" fill="currentColor"></circle><circle cx="17.5" cy="10" r="1.8" fill="currentColor"></circle><circle cx="19" cy="19.5" r="1.5" fill="currentColor"></circle></svg></span>數據</button>
     <button type="button" role="tab" id="tabGear" data-tab="gear" aria-selected="false"><span class="ic"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M9 7V5.5a3 3 0 0 1 6 0V7"></path><path d="M6 10a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v10.5H6z"></path><path d="M9 14h6v3.5H9z"></path></svg></span>裝備</button>
   </nav>
@@ -1616,7 +1615,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
         <li><span class="hi c-ok"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3 9 9H1Z" fill="currentColor"/><circle cx="14" cy="6" r="3.2" fill="currentColor"/><path d="M10 12.5 13 15.5 10 18.5 7 15.5Z" fill="currentColor"/></svg></span>
           <div><b>形狀代表山的種類</b><small>三角形是百岳、圓點是小百岳、菱形是小山。小百岳和小山只分「登頂過」（金色）和「還沒去」。上方標題點一下就能切換。</small></div></li>
         <li><span class="hi c-ok"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="10" r="4.5" fill="currentColor"/></svg></span>
-          <div><b>怎麼記錄登頂</b><small>按地圖右下角的「＋ 記錄」。上傳手錶或手機 App 的軌跡拿金章；在山頂打卡並拍三角點拿銀章；以前爬過、沒有軌跡的，可以先補登成灰色。</small></div></li>
+          <div><b>怎麼記錄登頂</b><small>按下方中間金色的「＋ 記錄」。上傳手錶或手機 App 的軌跡拿金章；在山頂打卡並拍三角點拿銀章；以前爬過、沒有軌跡的，可以先補登成灰色。</small></div></li>
       </ul>
       <details class="hsrc"><summary>資料來源</summary><ul>
         <li><b>百岳名單、海拔、難度分級</b>：中文維基百科「台灣百岳列表」，分級為國家公園署 2021 年步道分級（0–6 級）。</li>
@@ -2949,7 +2948,7 @@ function setTab(t,fromHash){
   if(t==='char'&&!reduceMotion())requestAnimationFrame(s2Count);
   if(!fromHash){try{if(location.hash.slice(1)!==HASH[t])history.replaceState(null,'','#'+HASH[t])}catch(e){}}
 }
-document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
+document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.dataset.tab)return;if(S.sel!=null&&!isDesk())closeSheet();setTab(b.dataset.tab)});
 $('radio').onclick=()=>say('這是無線電廣播的範例。之後登入帳號，就能每週免費發一則，點廣播會打開對方的個人頁。');
 {const w=$('radio').querySelector('.rdw');const f=()=>{try{$('radioT').style.setProperty('--rdw',w.clientWidth+'px')}catch(e){}};f();window.addEventListener('resize',f)}
 {const app=$('app'),mw=$('mapwrap');let t=null,sx=0,sy=0;const pts=new Set();
