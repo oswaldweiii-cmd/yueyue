@@ -637,7 +637,10 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .glk{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 4px 0 0;background:none;border:0;font:500 14px var(--body);color:var(--t1);cursor:pointer}.glk svg{width:28px;height:28px;overflow:visible}.glk i{font-style:normal;font-size:18px;color:var(--t2);margin-left:2px}
 .glk:hover i{color:#F4C152}
 .ggo{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 24px;border:0;border-radius:12px;background:#F4C152;color:#0B1626;font:700 14px var(--body);letter-spacing:.08em;cursor:pointer;box-shadow:0 8px 24px rgba(244,193,82,.18)}.ggo i{font-style:normal}
-.g3off .gact{position:static;order:3;margin:16px 24px 34px}.g3off .ghd{position:relative}
+.g3off .gact{position:static;order:3;margin:16px 24px 34px}.gtrip{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0 18px;margin:8px 16px 0;pointer-events:auto;font:500 14px/1.4 var(--body);color:var(--gold)}
+.gtrip small{flex-basis:100%;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);margin-bottom:2px}
+.gtrip button{min-height:44px;padding:0 2px;background:none;border:0;font:inherit;color:var(--t2);cursor:pointer}.gtrip button[aria-pressed=true]{color:var(--gold);text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1.5px}
+.gearv.ready .gtrip{display:none}.grmore{display:flex;flex-direction:column;align-items:center;margin-top:8px}.grmore .glk{min-height:44px;font:400 14px var(--body);color:var(--t2);background:none;border:0}.grmore .glk i{margin-left:6px;color:var(--gold);font-style:normal}.g3off .ghd{position:relative}
 .gtip.dock{left:24px;right:24px;top:auto;bottom:90px;width:auto;text-align:center}.gtip.dock ul{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 16px;margin-top:8px}.gtip.dock li small{display:none}.gtip.dock li b{font-size:14px;line-height:1.5}
 @media (min-width:900px){.gact{left:50%;right:auto;width:480px;margin-left:-240px}.gkn2{font-size:56px;line-height:1.1}.gkn2 .gkn-in{font-size:56px}.gka{font-size:28px}}
 .ghint{transition:opacity .4s}.ghint.bye{opacity:0}.ggo{min-width:148px;justify-content:center;padding:0 18px}.ggo .num{font:600 11px var(--display);margin-left:.4em;letter-spacing:0;opacity:.7}
@@ -744,7 +747,7 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .gready{position:absolute;left:0;right:0;top:60px;z-index:4;text-align:center;pointer-events:none}.gready>*{pointer-events:auto}
 .gready small{display:block;font:500 11px var(--body);letter-spacing:.32em;color:#F4C152}.gready b{display:block;margin-top:6px;font:600 28px/1.2 var(--display);color:var(--t1);text-shadow:0 2px 18px rgba(244,193,82,.35)}
 .gready p{margin:4px 0 0;font:400 14px var(--body);color:var(--t2)}.gready button{margin-top:2px;min-height:44px}
-.gearv.ready .gwt2,.gearv.ready .ghint,.gearv.ready .ghd .gsub,.gearv.ready .gdots{display:none}
+.gearv.ready .gwt2,.gearv.ready .ghint,.gearv.ready .ghd .gsub,.gearv.ready .gdots,.gearv.ready .gtrip{display:none}
 .ggo.cancel{background:rgba(11,22,38,.62);color:#F4C152;box-shadow:inset 0 0 0 1.5px #F4C152;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}.gearv.ready .glk{text-shadow:0 1px 8px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8)}
 .gearv.ready .gready{animation:gReadyIn .5s cubic-bezier(.2,.8,.2,1) both}@keyframes gReadyIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.gearv.ready .gready{animation:none}}
@@ -1197,12 +1200,15 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .plkits button small{font:400 11px var(--body);letter-spacing:.12em}.plkits button[aria-checked="true"]{color:var(--ink);border-color:var(--gold)}
 .pls .dbtn{width:100%;margin-top:16px}
 .plfoot{margin-top:36px;padding-top:12px;border-top:1px solid rgba(200,211,226,.12)}.plfoot .del{margin-left:auto}
-.tabs .tabrec{color:var(--gold)}.tabrec i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#0B1626;background:radial-gradient(circle at 35% 30%,#FBE3A6,#F4C152 55%,#D9A23A);box-shadow:0 0 0 1px rgba(244,193,82,.45),0 0 18px rgba(244,193,82,.35)}
+.tabs .tabrec{color:var(--gold);gap:6px}.tabs .tabrec .ic{width:30px;height:30px}.tabrec i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:radial-gradient(circle,rgba(244,193,82,.16),rgba(244,193,82,0) 70%);box-shadow:inset 0 0 0 1.25px rgba(244,193,82,.85),0 0 14px rgba(244,193,82,.18)}.tabrec i svg{width:14px;height:14px}.tabrec i svg path{stroke-width:1.6}
 .tabrec.hint i{animation:fabHint 1.4s ease-in-out 3}@keyframes fabHint{50%{transform:scale(1.18);box-shadow:0 0 0 8px rgba(244,193,82,.18),0 0 30px rgba(244,193,82,.7)}}
 @media (prefers-reduced-motion:reduce){.tabrec.hint i{animation:none}}
 @media (min-width:900px){.tabs .tabrec .ic{display:grid}.tabrec i{width:22px;height:22px}}
-.rcard{padding-bottom:12px}.rcard h2{margin-bottom:10px}
-.rcopt{display:grid;grid-template-columns:48px minmax(0,1fr);column-gap:14px;align-items:center;width:100%;min-height:72px;padding:12px 0;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.12);color:var(--ink);text-align:left;cursor:pointer}
+.rcard{padding-bottom:12px}.rcard h2{margin-bottom:4px}.rcopt i{grid-column:1}.rcopt b,.rcopt span{grid-column:2}
+.rcopt{display:grid;grid-template-columns:48px minmax(0,1fr) 16px;column-gap:14px;align-items:center;width:100%;min-height:76px;margin-top:10px;padding:12px 14px 12px 12px;border:0;border-radius:18px;background:linear-gradient(100deg,rgba(200,211,226,.10),rgba(200,211,226,.03));box-shadow:inset 0 1px 0 rgba(255,255,255,.06);color:var(--ink);text-align:left;cursor:pointer;transition:transform .15s,background .2s}
+.rcopt:active{transform:scale(.98);background:linear-gradient(100deg,rgba(244,193,82,.18),rgba(244,193,82,.05))}@media (hover:hover){.rcopt:hover{background:linear-gradient(100deg,rgba(244,193,82,.14),rgba(244,193,82,.04))}}
+.rchold{position:relative;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.rchold>*{position:relative}.rcfill{position:absolute!important;inset:0;width:0;background:linear-gradient(90deg,rgba(244,193,82,.35),rgba(244,193,82,.15));pointer-events:none}.rchold.charging{transform:scale(.98)}.rchold.wait .rcfill{width:100%!important;animation:rcpulse 1s ease-in-out infinite}@keyframes rcpulse{50%{opacity:.5}}.rchold.bad span{color:#F2A37B}
+.rcopt em{grid-row:1/3;grid-column:3;font:400 24px/1 var(--display);font-style:normal;color:var(--gold)}#rcHere{background:linear-gradient(100deg,rgba(244,193,82,.2),rgba(244,193,82,.05));box-shadow:inset 0 0 0 1px rgba(244,193,82,.35)}
 .rcopt i{grid-row:span 2;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:900 11px/1 var(--display);font-style:normal;color:#0B1626}
 .rcopt i.au{background:radial-gradient(circle at 35% 30%,#FBE3A6,#E0A93A)}.rcopt i.ag{background:radial-gradient(circle at 35% 30%,#fff,#9AA7B6)}.rcopt i.un{background:none;border:1.5px dashed #7F8FA6;color:#C8D3E2}
 .rcopt b{font:600 18px/1.3 var(--display)}.rcopt span{font:400 14px/1.5 var(--body);color:#C8D3E2}
@@ -1211,6 +1217,31 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .gsbad{list-style:none;margin:0;padding:0;max-height:40vh;overflow-y:auto}.gsbad li{padding:8px 0;border-bottom:1px solid rgba(200,211,226,.1)}.gsbad b{display:block;font:500 14px var(--body);word-break:break-all}.gsbad span{font:400 14px/1.5 var(--body);color:#F2A37B}
 .mk.done.self{color:#9AA7B6}.mk.done.self .lb{color:#C8D3E2;font-weight:500}.mk.done.self::before{background:radial-gradient(circle,rgba(200,211,226,.22),rgba(200,211,226,0) 68%)}.mk.done.self::after{animation:none;opacity:0}
 .dmedal.un{color:#9AA7B6}.dupg{margin:4px 0 0;font:400 14px/1.6 var(--body);color:#C8D3E2;text-align:center}
+.acct{margin:0 0 20px;padding:18px 0 20px;border-top:1px solid rgba(244,193,82,.3);border-bottom:1px solid rgba(200,211,226,.12)}
+.acct .dk{margin:0 0 8px}.acsay{margin:0 0 14px;font:400 14px/1.7 var(--body);color:#C8D3E2}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:52px;border:0;border-radius:26px;background:#fff;color:#1F1F1F;font:500 16px var(--body);cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.acme{display:flex;align-items:center;gap:14px}.acme img,.acme>i{width:48px;height:48px;border-radius:50%;flex:none;object-fit:cover;background:rgba(200,211,226,.15);box-shadow:0 0 0 2px rgba(244,193,82,.5)}
+.acme div{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.acme b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acst{font:400 14px var(--body);color:#8FA3BD}.acst.ok{color:#8FD3A8}.acst.err{color:#F2A37B}.acst.ok::before{content:'● ';font-size:10px;vertical-align:2px}
+.acout{min-height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px}
+.me{position:absolute;z-index:8;top:calc(var(--top) + 18px);right:max(16px,env(safe-area-inset-right,0px));min-width:48px;height:56px;padding:0;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;color:#C8D3E2;cursor:pointer}
+.me img,.me .mei{width:36px;height:36px;border-radius:50%;object-fit:cover}.me .mei{box-shadow:inset 0 0 0 1.25px rgba(200,211,226,.55);background:radial-gradient(circle at 50% 38%,rgba(200,211,226,.55) 0 5.5px,transparent 6px),radial-gradient(circle at 50% 100%,rgba(200,211,226,.55) 0 11px,transparent 11.5px)}
+.me span{font:500 11px/1 var(--body);letter-spacing:.2em;color:var(--gold)}.me:not(.in) .mei{box-shadow:inset 0 0 0 1.25px rgba(244,193,82,.8),0 0 12px rgba(244,193,82,.2)}
+.me.in img,.me.in .mei{box-shadow:0 0 0 1.5px rgba(244,193,82,.7)}.me{position:absolute}.me b{position:absolute;top:0;right:4px;width:10px;height:10px;border-radius:50%;border:2px solid #0B1626}.me .mesync{background:#8FA3BD;animation:holdPulse 1s ease-in-out infinite}.me .mewarn{background:#F2A37B}
+.app:not([data-tab="map"]) .me{display:none}@media (min-width:900px){.me{top:16px;right:16px}}
+.lcard .gbtn{margin-top:18px}.lcard>p:not(.mkick){margin:6px 0 0}
+.celog{display:block;margin:14px auto 0;min-height:44px;padding:0;background:none;border:0;color:var(--gold);font:500 14px var(--body)}
+.mehd{display:flex;align-items:center;gap:16px;padding-right:32px}.mehd img,.mehd .mei{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px rgba(244,193,82,.7)}
+.mehd .mei{background:radial-gradient(circle at 50% 38%,rgba(200,211,226,.55) 0 9px,transparent 9.5px),radial-gradient(circle at 50% 100%,rgba(200,211,226,.55) 0 19px,transparent 19.5px)}
+.mehd h2{margin:0;font:600 28px/1.2 var(--display);word-break:break-all}.mehd p{margin:6px 0 0;font:400 14px var(--body);color:#C8D3E2}
+.mecnt{display:grid;grid-template-columns:repeat(3,1fr);margin:22px 0 4px;padding:14px 0;border-top:1px solid rgba(200,211,226,.12);border-bottom:1px solid rgba(200,211,226,.12)}
+.mecnt div{display:flex;flex-direction:column;align-items:center;gap:6px}.mecnt b{font:600 28px/1 var(--display);color:#C8D3E2}.mecnt b.au{color:var(--gold)}.mecnt b.ag{color:#E4EAF1}.mecnt b.un{color:#7F8FA6!important}.mecnt b.au{color:var(--gold)!important}.mecnt b.ag{color:#E4EAF1!important}.mecnt span{font:500 11px/1 var(--body);letter-spacing:.32em;color:#8FA3BD}
+.mest{margin:12px 0 0;font:400 14px var(--body);color:#8FA3BD}.mest.ok{color:#8FD3A8}.mest.err{color:#F2A37B}
+.mesw{display:flex;align-items:center;gap:14px;margin-top:16px;cursor:pointer}.mesw>span{flex:1;display:flex;flex-direction:column;gap:4px}.mesw b{font:600 18px var(--display)}.mesw small{font:400 14px/1.5 var(--body);color:#8FA3BD}
+.mesw input{position:absolute;opacity:0;width:1px;height:1px}.mesw i{flex:none;width:48px;height:28px;border-radius:14px;background:rgba(200,211,226,.25);position:relative;transition:background .2s}
+.mesw i::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}.mesw input:checked+i{background:#5E9E78}.mesw input:checked+i::after{transform:translateX(20px)}.mesw input:focus-visible+i{outline:2px solid var(--gold);outline-offset:2px}
+.mecard{position:relative}.mex{position:absolute;top:10px;right:10px;width:44px;height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:300 28px/1 var(--display);cursor:pointer}.mex:hover{color:var(--ink)}
+.meact{display:flex;justify-content:center;margin-top:24px;padding-top:8px;border-top:1px solid rgba(200,211,226,.12)}.meout{min-height:44px;width:100%;padding:0;text-align:center;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);letter-spacing:.1em;cursor:pointer}.meout.sure{color:#F2A37B;font-weight:700}
 .mcard .mbig{font:600 18px/1.6 var(--display);color:var(--ink)}
 .cd.mute{visibility:hidden}.cd.past{color:#5D6E84}
 .cd.today::after{content:'';position:absolute;inset:6px 9px;border:1px solid rgba(200,211,226,.45);border-radius:50%}
@@ -1483,6 +1514,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
     </div>
   </div>
 
+  <button type="button" class="me" id="meBtn" aria-label="登入"><i class="mei"></i><span>登入</span></button>
   <button class="player" id="player" type="button" aria-label="看等級與數據">
     <span class="moonav"><svg aria-hidden="true" viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" fill="#F4E3B4" opacity=".08"/><circle cx="36" cy="36" r="30" fill="none" stroke="#2A3B55" stroke-width="3"/><circle id="pRing" cx="36" cy="36" r="30" fill="none" stroke="#A9C3E6" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 188.5" transform="rotate(-90 36 36)"/><circle cx="36" cy="36" r="23" fill="#24344E"/><path id="pMoon" d="" fill="#F4E3B4"/></svg><span class="lvb"><b id="pLv">1</b> 級</span></span>
     <span class="ptxt"><span class="ptitle" id="pTitle">山腳新手</span><span class="pxp" id="pXpTxt">0 / 100 XP</span></span>
@@ -1525,7 +1557,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 
   <section class="gearv" id="gearView" aria-label="我的裝備：可旋轉的角色">
     <div class="gstage">
-      <div class="ghd"><small>我的裝備</small><div class="gkp" id="gKitP" role="group" aria-label="套裝，左右滑或點箭頭換一套"><button type="button" class="gka" data-d="-1" aria-label="上一套">‹</button><button type="button" class="gkn2" id="gKitT"></button><button type="button" class="gka" data-d="1" aria-label="下一套">›</button></div><div class="gdots" id="gDots" aria-hidden="true"></div><p class="gsub"><b id="gN">—</b> 件<i>·</i><span id="gSub"></span></p><span class="sr" id="gKitLive" aria-live="polite"></span></div>
+      <div class="ghd"><small>我的裝備</small><div class="gkp" id="gKitP" role="group" aria-label="套裝，左右滑或點箭頭換一套"><button type="button" class="gka" data-d="-1" aria-label="上一套">‹</button><button type="button" class="gkn2" id="gKitT"></button><button type="button" class="gka" data-d="1" aria-label="下一套">›</button></div><div class="gdots" id="gDots" aria-hidden="true"></div><p class="gsub"><b id="gN">—</b> 件<i>·</i><span id="gSub"></span></p><p class="gtrip" id="gTripL" hidden></p><span class="sr" id="gKitLive" aria-live="polite"></span></div>
       <div class="g3d" id="g3d"></div>
       <svg class="glead" aria-hidden="true"><line id="gld" x1="0" y1="0" x2="0" y2="0" stroke="#F4C152" stroke-width="1" stroke-opacity=".7"/></svg>
       <div class="gring" id="gring"></div><div class="gtip" id="gtip" aria-live="polite"></div>
@@ -1575,16 +1607,26 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
   </div>
   <div class="help" id="recs" role="dialog" aria-modal="true" aria-labelledby="recsT" hidden>
     <div class="hcard rcard">
-      <p class="mkick">記錄登頂</p><h2 id="recsT">這一座怎麼記？</h2>
-      <button type="button" class="rcopt" id="rcGpx"><i class="au">金章</i><b>上傳軌跡</b><span>手錶或手機 App 匯出的 .gpx，可以一次選很多個</span></button>
-      <button type="button" class="rcopt" id="rcHere"><i class="ag">銀章</i><b>我現在在山頂</b><span>用定位找到這座山，按住打卡、拍三角點</span></button>
-      <button type="button" class="rcopt" id="rcSelf"><i class="un">補登</i><b>以前爬過，沒有軌跡</b><span>先點亮成灰色、經驗值少一點，之後補軌跡就升級</span></button>
+      <p class="mkick">記錄登頂</p><h2 id="recsT">你想怎麼記錄？</h2>
+      <button type="button" class="rcopt rchold" id="rcHere"><s class="rcfill" aria-hidden="true"></s><i class="ag">銀章</i><b>我在山頂，按住打卡</b><span id="rcHereS">按住不放，等金色跑滿</span><em aria-hidden="true">⦿</em></button>
+      <button type="button" class="rcopt" id="rcGpx"><i class="au">金章</i><b>上傳軌跡檔</b><span>手錶或登山 App 的 .gpx 檔</span><em aria-hidden="true">›</em></button>
+      <button type="button" class="rcopt" id="rcSelf"><i class="un">補登</i><b>補登以前爬的山</b><span>沒有軌跡也能先點亮</span><em aria-hidden="true">›</em></button>
       <details class="rchow"><summary>怎麼拿到 GPX？</summary><ul>
         <li><b>Garmin</b>：用電腦打開 Garmin Connect 網頁版 → 點那次活動 → 右上齒輪 → 匯出為 GPX。</li>
         <li><b>Strava</b>：電腦版網頁打開活動 → 「⋯」→ 匯出 GPX。</li>
         <li><b>健行筆記、其他登山 App</b>：在那次軌跡的頁面找「匯出」或「下載 GPX」。</li>
       </ul></details>
       <button type="button" class="mlater" id="recsX">之後再說</button>
+    </div>
+  </div>
+  <div class="help" id="meS" role="dialog" aria-modal="true" aria-labelledby="meT" hidden><div class="hcard mcard mecard" id="meIn"></div></div>
+  <div class="help" id="loginS" role="dialog" aria-modal="true" aria-labelledby="loginT" hidden>
+    <div class="hcard mcard lcard">
+      <p class="mkick" id="loginK">帳號</p><h2 id="loginT">登入月岳</h2>
+      <p class="mbig" id="loginB">紀錄存到雲端，換手機也不會掉。</p>
+      <p>之後還能看到，誰也爬過同一座山。</p>
+      <button type="button" class="gbtn" id="loginGo"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>用 Google 登入</button>
+      <button type="button" class="mlater" id="loginX">之後再說</button>
     </div>
   </div>
   <div class="help" id="gsum" role="dialog" aria-modal="true" aria-labelledby="gsumT" hidden>
@@ -2495,7 +2537,7 @@ function celebrate(ps,prev){
   const card=()=>{if(done)return;done=true;timers.forEach(clearTimeout);box.classList.add('card');box.innerHTML=celeCard(p,r,prev,ps);hit('card');
     requestAnimationFrame(()=>box.classList.add('in'));celeCount(box,prev);
     const sb=box.querySelector('#ceSnd'),ss=()=>{sb.setAttribute('aria-pressed',SFX.on);sb.setAttribute('aria-label',SFX.on?'音效開著，點一下關掉':'音效關著，點一下打開')};ss();sb.onclick=e=>{e.stopPropagation();SFX.on=!SFX.on;if(!SFX.on)bye();ss()};
-    box.querySelector('#ceGo').onclick=()=>{bye();box.remove();openPeak(p.rank,true)};box.querySelector('#ceMap').onclick=()=>{bye();box.remove()}};
+    box.querySelector('#ceGo').onclick=()=>{bye();box.remove();openPeak(p.rank,true)};{const cl=box.querySelector('#ceLog');if(cl)cl.onclick=()=>{bye();box.remove();loginOpen('first')}};box.querySelector('#ceMap').onclick=()=>{bye();box.remove()}};
   box.onclick=e=>{if(!done)card()};
   // ① fly there
   requestAnimationFrame(()=>{try{resize();focusPeak(p)}catch(e){}});
@@ -2522,7 +2564,7 @@ function celeCard(p,r,prev,ps){
     '<div class="ce-xp"><b data-cnt="'+gain+'">+0</b><span>點</span></div>'+
     '<div class="ce-lv"><span>'+(lvUp?'升級！':'')+'第 '+G.lv+' 級・'+titleOf(G.lv)+'</span><span>'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升級')+'</span></div><div class="ce-bar"><i style="width:'+(from*100).toFixed(1)+'%" data-to="'+(to*100).toFixed(1)+'%"></i></div>'+
     (lines.length?'<div class="ce-lines">'+lines.map(l=>'<p><small>'+l[0]+'</small><b>'+l[1]+'</b><em>'+l[2]+'</em></p>').join('')+'</div>':'')+
-    '<div class="dpair"><button type="button" class="dghost" id="ceMap">回到地圖</button><button type="button" class="dbtn" id="ceGo">看這座山</button></div></div>'}
+    '<div class="dpair"><button type="button" class="dghost" id="ceMap">回到地圖</button><button type="button" class="dbtn" id="ceGo">看這座山</button></div>'+(CL.user?'':'<button type="button" class="celog" id="ceLog">登入，把這座山存到雲端 ›</button>')+'</div>'}
 
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
@@ -2836,10 +2878,10 @@ function cumChart(list){
     (n<=40?pts.map((t,i)=>'<circle cx="'+x(t).toFixed(1)+'" cy="'+y(i+1).toFixed(1)+'" r="2.6" fill="#f4c152"/>').join(''):'')+
     '<text x="'+ml+'" y="'+(Hd-6)+'" '+F+'>'+ymd(t0)+'</text><text x="'+(Wd-mr)+'" y="'+(Hd-6)+'" text-anchor="end" '+F+'>'+ymd(t1)+'</text></svg></div>';
 }
-function wireData(){const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickGPX(f=>importGPX(f));if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
+function wireData(){cloudUI();const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickGPX(f=>importGPX(f));if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
 function dataSec(){let t=0;try{t=+localStorage.getItem(BKEY)||0}catch(e){}
   const n=Object.keys(LDB.raw()).length,old=!t||Date.now()-t>30*864e5,when=t?new Date(t).toLocaleDateString('zh-TW'):'還沒備份過';
-  return '<div class="dsec"><h3 class="dh">我的紀錄</h3><p class="dsay">共 '+n+' 筆紀錄，上次備份：'+when+'。'+(old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
+  return '<div class="dsec"><div id="acct">'+cloudBlock()+'</div><h3 class="dh">我的紀錄</h3><p class="dsay">共 '+n+' 筆紀錄，'+(CL.user?'已同步到雲端，換手機登入就會回來。':'上次備份：'+when+'。')+(!CL.user&&old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
     '<button type="button" class="dbtn" id="gpxIn">上傳手錶 GPX 軌跡</button><p class="dnote">軌跡經過山頂 50 公尺內、速度像是走路，就算登頂，拿金章。舊的軌跡也可以傳。</p>'+
     '<div class="dpair"><button type="button" class="dghost" id="bkOut">備份紀錄</button><button type="button" class="dghost" id="bkIn">匯入備份</button></div></div>'}
 function statTrail(fr){const W=334,pts=[];for(let i=0;i<=40;i++){const x=i/40*W;pts.push([x,52-30*Math.pow(i/40,1.4)+3*Math.sin(i/40*9)])}
@@ -2896,7 +2938,7 @@ function renderChar(){
   h+='<section class="s2sec"><div class="s2hd"><h3>百岳進度</h3><span>依難度</span></div><div class="s2gr">'+[1,2,3,4,5].map(g=>{const c=chState(g);return'<button type="button" data-gr="'+g+'"><span class="k">'+CH[g]+'<em>第 '+g+' 章</em></span><span class="bar"><i style="width:'+(c.dn/c.all.length*100).toFixed(1)+'%"></i></span><b>'+c.dn+'<i>/</i>'+c.all.length+'</b></button>'}).join('')+'</div>'+
     (NXT[0]?'<button type="button" class="dbtn" id="sNext">下一座推薦：'+esc(NXT[0].name)+'</button>':'')+'</section>';
   // my data
-  h+=dataSec().replace('<div class="dsec">','<section class="s2sec">').replace('<h3 class="dh">我的紀錄</h3>','<div class="s2hd"><h3>我的紀錄</h3><span>存在這支手機</span></div>').replace(/<\/div>$/,'</section>');
+  h+=dataSec().replace('<div class="dsec">','<section class="s2sec">').replace('<h3 class="dh">我的紀錄</h3>','<div class="s2hd"><h3>我的紀錄</h3><span>'+(CL.user?'手機＋雲端':'存在這支手機')+'</span></div>').replace(/<\/div>$/,'</section>');
   // folded
   let more='<h3 class="s-sub">登頂一座拿到的點數</h3><div class="xprule">'+[1,2,3,4,5].map(g=>'<div><small>難度 '+g+'</small><b>+'+XP_BY_GRADE[g]+'</b></div>').join('')+'</div>'+
     '<p class="hint">小百岳每座 +'+XP_XIAO+'，小山每座 +'+XP_SHAN+'。點數來源：百岳 '+fmt(G.xpB)+'・小百岳 '+fmt(G.xpX)+'・小山 '+fmt(G.xpS)+'。等級是遊戲規則，實際出發前，體能、天氣和路況還是要自己評估。</p>';
@@ -3026,7 +3068,7 @@ async function importBackup(file){
   if(Array.isArray(d.trips)){TRIPS=d.trips.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created,plan:t.plan}));try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}
   LDB.replace(d.climbs);say('匯入完成：'+n+' 筆紀錄');
 }
-function backupNag(){try{const n=Object.keys(LDB.raw()).length,t=+localStorage.getItem(BKEY)||0;if(n&&Date.now()-t>30*864e5)setTimeout(()=>say('已經超過一個月沒備份紀錄了，到「數據」頁按一下「備份紀錄」。',true),4000)}catch(e){}}
+function backupNag(){try{const n=Object.keys(LDB.raw()).length,t=+localStorage.getItem(BKEY)||0;if(n&&Date.now()-t>30*864e5)setTimeout(()=>!CL.user&&say('已經超過一個月沒備份紀錄了，到「數據」頁按一下「備份紀錄」。',true),4000)}catch(e){}}
 
 /* ---------- GPX: find every peak the track passes and record it ---------- */
 const hav=(a,b,c,d)=>{const t=Math.PI/180,x=Math.sin((c-a)*t/2)**2+Math.cos(a*t)*Math.cos(c*t)*Math.sin((d-b)*t/2)**2;return 12742000*Math.asin(Math.sqrt(x))};
@@ -3141,6 +3183,7 @@ function wireCheckin(p,key){ // 長按蓄力：按住的這 1.6 秒同時在定�
     box.classList.remove('charging','wait');box.classList.add('done');buzz([20,40,80]);
     setTimeout(()=>{box.hidden=true;st.innerHTML='<div class="medal" aria-hidden="true">'+MEDAL_AG+'</div><p class="vmsg ok">你在山頂 '+fix.d+' 公尺內</p><p class="vmsg">最後一步：拍一張三角點，銀章就是你的。</p><button type="button" class="dbtn" id="vShot">拍三角點</button>';
       $('vShot').onclick=()=>{if(Date.now()-fix.t>VR.photoMin*6e4){fix=null;full=false;st.innerHTML='';box.hidden=false;box.classList.remove('done');setP(0);hint.textContent='按住';say('定位太久了，請重新打卡。',true);return}cam.click()}},380)}
+  b._auto=pos=>{if(fix)return;full=true;res={pos};box.classList.add('wait');settle()};
   b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));
   b.addEventListener('contextmenu',e=>e.preventDefault());
   b.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();start()}});
@@ -3161,13 +3204,16 @@ const dAdd=(s,n)=>{const d=pymd(s);d.setDate(d.getDate()+n);return ymd(d)};
 const dDiff=(a,b)=>Math.round((pymd(b)-pymd(a))/864e5);
 const todayS=()=>ymd(new Date());
 const WK='日一二三四五六';
+function tripInfo(t){const p=planOf(t),d=pymd(t.start),nm=t.ranks.map(r=>byRank[r]).filter(Boolean).map(x=>x.name);return{id:t.id,kit:p.kit,label:(d.getMonth()+1)+'/'+d.getDate()+' '+(nm[0]||'')+(nm.length>1?' 等 '+nm.length+' 座':'')}}
+window.__tripsLive=()=>{const T=todayS();return TRIPS.filter(t=>t.end>=T).map(t=>t.id)};
+window.__upTrips=()=>{const T=todayS();return TRIPS.filter(t=>t.end>=T&&dDiff(T,t.start)<=7).sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0).map(tripInfo)};
 const mdTxt=s=>{const d=pymd(s);return (d.getMonth()+1)+'/'+d.getDate()};
 const mdw=s=>mdTxt(s)+'（'+WK[pymd(s).getDay()]+'）';
 const rngH=(a,b)=>!b||b===a?mdTxt(a)+'<small>週'+WK[pymd(a).getDay()]+'・1 天</small>':mdTxt(a)+'–'+mdTxt(b)+'<small>週'+WK[pymd(a).getDay()]+'到週'+WK[pymd(b).getDay()]+'・'+(dDiff(a,b)+1)+' 天</small>';
 const trTxt=t=>t.start===t.end?mdTxt(t.start):mdTxt(t.start)+'–'+mdTxt(t.end);
 const tNames=(t,max)=>{const n=t.ranks.map(r=>byRank[r]).filter(Boolean).map(p=>p.name);return max&&n.length>max?n.slice(0,max).join('、')+' 等 '+n.length+' 座':n.join('、')};
 const short=n=>n.replace('主峰','').slice(0,3);
-function saveTrips(){try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){say('手機的儲存空間不夠，行程沒有存到。',true)}tripRender();if(!$('cal').hidden)calRender()}
+function saveTrips(){try{setTimeout(cloudQueue,0)}catch(e){}try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){say('手機的儲存空間不夠，行程沒有存到。',true)}tripRender();if(!$('cal').hidden)calRender()}
 const tripOf=rank=>TRIPS.filter(t=>t.ranks.includes(rank)&&t.end>=dAdd(todayS(),-30)).sort((a,b)=>a.start<b.start?-1:1)[0];
 function tripPrune(){ // 山一座一座驗證掉，全部驗證完行程就收掉
   const before=JSON.stringify(TRIPS);
@@ -3308,7 +3354,7 @@ function planOf(t){if(!t.plan)t.plan={};const p=t.plan;if(!Array.isArray(p.todo)
   if(!p.go)p.go='05:00';if(!p.kit){const ks=(window.__gearKits&&window.__gearKits())||[],multi=dDiff(t.start,t.end)>0;p.kit=(ks.find(k=>k.name===(multi?'過夜':'單攻'))||ks[0]||{}).id||'k1'}return p}
 const dueOf=(t,x)=>dAdd(t.start,-x.days);
 function todoDue(t){const p=planOf(t),T=todayS();return p.todo.filter(x=>!x.done&&x.kind!=='pack'&&dueOf(t,x)<=T).sort((a,b)=>b.days-a.days)[0]}
-function goPack(t){const p=t?planOf(t):null;$('cal').hidden=true;setTab('gear');setTimeout(()=>{if(p&&window.__gearUseKit)window.__gearUseKit(p.kit);setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},120)},350)}
+function goPack(t){const p=t?planOf(t):null;$('cal').hidden=true;setTab('gear');setTimeout(()=>{if(p&&window.__gearUseKit)window.__gearUseKit(p.kit,tripInfo(t));setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},120)},350)}
 const hhmm=m=>{m=Math.round(m);return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
 const toMin=s=>{const a=String(s).split(':');return(+a[0])*60+(+a[1]||0)};
 function walkH(km,up,down){return (km/4+up/400+down/800)*1.15} // 平路 4 km/h、上坡每小時 400 m、下坡 800 m，再加休息
@@ -3322,7 +3368,7 @@ function linkify(t){return esc(t).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" 
 function planOpen(id){const t=TRIPS.find(x=>x.id===id);if(!t)return;PLAN=id;planEditing=false;planNote=null;planOf(t);if($('cal').hidden){calFocus=document.activeElement;$('cal').hidden=false;const d=pymd(t.start);calM=new Date(d.getFullYear(),d.getMonth(),1);calRender()}$('plan').hidden=false;$('plan').scrollTop=0;planRender();try{$('planX').focus({preventScroll:true})}catch(e){}}
 function planClose(){$('plan').hidden=true;PLAN=null;calRender()}
 function planRender(){const t=TRIPS.find(x=>x.id===PLAN);if(!t){planClose();return}const p=planOf(t),T=todayS(),n=dDiff(T,t.start);
-  const ks=(window.__gearKits&&window.__gearKits())||[],kit=ks.find(k=>k.id===p.kit)||ks[0];
+  const ks=(window.__gearKits&&window.__gearKits(t.id))||[],kit=ks.find(k=>k.id===p.kit)||ks[0];
   const done=p.todo.filter(x=>x.kind==='pack'?kit&&kit.n&&kit.done===kit.n:x.done).length;
   let h='<p class="calk">登山計劃</p><h2 id="planT"'+(tNames(t).length>6?' class="long"':'')+'>'+esc(tNames(t))+'</h2><p class="plsub">'+rngH(t.start,t.end).replace('<small>','<span>').replace('</small>','</span>')+(n>0?'<em>還有 '+n+' 天</em>':n===0?'<em>今天出發</em>':'')+'</p>';
   // 準備
@@ -3371,11 +3417,27 @@ $('planX').onclick=planClose;
   $('recsX').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close()});
   $('rcGpx').onclick=()=>{close();pickGPX(f=>importGPX(f))};
   $('rcSelf').onclick=()=>{close();$('cal').hidden=false;calFocus=$('recFab');SEL=null;EDIT=null;if(!calM){const d=new Date();calM=new Date(d.getFullYear(),d.getMonth(),1)}calRender();pickOpen([],'log')};
-  $('rcHere').onclick=()=>{close();if(!navigator.geolocation){say('這支手機沒辦法定位。',true);return}say('找你在哪一座山…');
-    navigator.geolocation.getCurrentPosition(pos=>{const c=pos.coords;let best=null,bd=1e12;for(const p of [...P,...XB,...SH]){const d=hav(p.lat,p.lon,c.latitude,c.longitude);if(d<bd){bd=d;best=p}}
-      if(!best||bd>2000){say('附近 2 公里內沒有百岳、小百岳或小山。到山頂再按一次。',true);return}
-      toast.classList.add('hide');openPeak(best.rank,true);setTimeout(()=>{const h=$('vChk');if(h)h.scrollIntoView({block:'center',behavior:'smooth'})},700)},
-      e=>say(e&&e.code===1?'沒有定位權限。到手機設定打開定位，再試一次。':'定位失敗。到空曠一點的地方再試一次。',true),{enableHighAccuracy:true,timeout:60000,maximumAge:30000})}}
+  {const b=$('rcHere'),fill=b.querySelector('.rcfill'),sp=$('rcHereS'),HOLD=1600,DEF=sp.textContent;let t0=0,raf=0,holding=false,full=false,res=null,req=0;
+    const buzz=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
+    const reset=txt=>{holding=false;full=false;cancelAnimationFrame(raf);req++;fill.style.width='0';b.classList.remove('charging','wait');sp.textContent=txt||DEF};
+    const settle=()=>{if(!full||!res)return;b.classList.remove('wait');
+      if(res.err){reset();b.classList.add('bad');sp.textContent=res.err;return}
+      const c=res.pos.coords;let best=null,bd=1e12;for(const p of [...P,...XB,...SH]){const d=hav(p.lat,p.lon,c.latitude,c.longitude);if(d<bd){bd=d;best=p}}
+      if(!best||bd>2000){const r=roast({d:bd},best);reset();b.classList.add('bad');sp.textContent=r.big+' '+r.small;buzz([60,40,120]);const sc=b.closest('.hcard');if(sc&&!matchMedia('(prefers-reduced-motion: reduce)').matches){sc.classList.remove('nshake');void sc.offsetWidth;sc.classList.add('nshake')}return}
+      const pos=res.pos;reset();close();toast.classList.add('hide');openPeak(best.rank,true);
+      setTimeout(()=>{const h=$('vChk');if(h){h.scrollIntoView({block:'center'});if(h._auto)h._auto(pos)}},500)};
+    const tick=()=>{const k=Math.min(1,(performance.now()-t0)/HOLD);fill.style.width=(k*100)+'%';
+      if(k<1){if(holding)raf=requestAnimationFrame(tick);return}
+      full=true;holding=false;b.classList.remove('charging');b.classList.add('wait');sp.textContent='找你在哪一座山…';buzz(25);settle()};
+    const start=e=>{if(holding||full)return;if(e&&e.cancelable)e.preventDefault();b.classList.remove('bad');holding=true;b.classList.add('charging');sp.textContent='繼續按住';t0=performance.now();buzz(10);
+      const id=++req;res=null;if(!navigator.geolocation)res={err:'這支手機沒辦法定位。'};
+      else navigator.geolocation.getCurrentPosition(pos=>{if(id===req){res={pos};settle()}},e=>{if(id===req){res={err:e&&e.code===1?'沒有定位權限，到手機設定打開定位。':'定位失敗，到看得到天空的地方再試。'};settle()}},{enableHighAccuracy:true,timeout:60000,maximumAge:0});
+      raf=requestAnimationFrame(tick)};
+    const stop=()=>{if(!holding)return;const quick=performance.now()-t0<450;reset(quick?'要按住喔，等金色跑滿':DEF)};
+    b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));
+    b.addEventListener('contextmenu',e=>e.preventDefault());
+    b.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();start()}});b.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stop()});
+    $('recFab').addEventListener('click',()=>{reset();b.classList.remove('bad')})}}
 /* ---------- 規則更新：舊紀錄先備份，再清空重來（只跑一次） ---------- */
 const MKEY='yy-verify-v1';
 function migrateNag(){try{if(localStorage.getItem(MKEY))return;const raw=LDB.raw();let n=0;
@@ -3384,10 +3446,106 @@ function migrateNag(){try{if(localStorage.getItem(MKEY))return;const raw=LDB.raw
 function pickFiles(fn){const i=document.createElement('input');i.type='file';i.multiple=true;i.onchange=()=>{const f=[...(i.files||[])];if(f.length)fn(f)};i.click()}
 const pickGPX=fn=>pickFiles(fs=>fs.length===1?fn(fs[0]):importMany(fs));
 function pickFile(accept,fn){const i=document.createElement('input');i.type='file';i.accept=accept;i.onchange=()=>{const f=i.files&&i.files[0];if(f)fn(f)};i.click()}
+/* ---------- 雲端（第二階段）：Google 登入、紀錄／行程／裝備同步。手機資料永遠先存本機，有網路再同步 ---------- */
+const SB_URL='https://vqaacvacjlzecfuaoges.supabase.co',SB_KEY='sb_publishable_XIPCTwkt125tlm8pJFdOmg_kklZrgjg',SB_JS='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.99.3/dist/umd/supabase.js';
+const CL={sb:null,user:null,profile:null,state:'off',last:0,pulling:false,sent:{},timer:0,gearSent:''};
+const GEARK=['yueyue.gear.v1','yueyue.kits.v1','yueyue.body.v1'];
+function sbLoad(){return new Promise(res=>{if(window.supabase)return res(true);const s=document.createElement('script');s.src=SB_JS;s.async=true;s.onload=()=>res(!!window.supabase);s.onerror=()=>res(false);document.head.appendChild(s)})}
+const peakOfKey=k=>/^x\d+$/.test(k)?byNo[+k.slice(1)]:/^s\d+$/.test(k)?SH[+k.slice(1)-1]:byRank[+k];
+function rowOf(k,r){const v=r.verified;return{user_id:CL.user.id,peak_key:k,verified:v==='self'?'self':'pending',claim:v==='gps'||v==='checkin'?v:null,
+  climbed_on:/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')?r.date:null,summit_time:r.summitTime||null,distance_km:r.distanceKm!=null?+r.distanceKm:null,gain_m:r.gainM!=null?Math.round(r.gainM):null,
+  max_ele:r.maxEle!=null?Math.round(r.maxEle):null,duration_min:r.durationMin!=null?Math.round(r.durationMin):null,summit_d:r.summitD!=null?Math.round(r.summitD):null,
+  style:r.style||null,source:r.source||null,track:r.track||null,checkin:r.checkin||null,note:r.note||null}}
+function recOf(row,old){const p=peakOfKey(row.peak_key);if(!p)return null;const v=row.verified==='gps'||row.verified==='checkin'?row.verified:row.verified==='pending'?(row.claim||'self'):'self';
+  const r=Object.assign({},old||{},{name:p.name,date:row.climbed_on||'',verified:v});
+  const m={summit_time:'summitTime',distance_km:'distanceKm',gain_m:'gainM',max_ele:'maxEle',duration_min:'durationMin',summit_d:'summitD',style:'style',source:'source',track:'track',checkin:'checkin',note:'note'};
+  for(const [a,b] of Object.entries(m))if(row[a]!=null)r[b]=row[a];
+  if(p.set==='xiao'||p.set==='shan'){r.set=p.set;r.no=p.no}else r.rank=p.rank;if(row.verified==='pending')r.cloud='pending';else delete r.cloud;return r}
+const RANKV={gps:3,checkin:2,self:1};
+async function cloudInit(){
+  if(location.protocol==='file:')return;
+  const ok=await sbLoad();if(!ok){CL.state='offline';return}
+  CL.sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  CL.sb.auth.onAuthStateChange((ev,ses)=>{const u=ses&&ses.user;const was=CL.user&&CL.user.id;CL.user=u||null;
+    if(u&&was!==u.id)setTimeout(cloudLogin,0);if(!u){CL.state='off';CL.profile=null;cloudUI()}});
+  const {data}=await CL.sb.auth.getSession();if(data&&data.session&&!CL.user){CL.user=data.session.user;cloudLogin()}else cloudUI();
+}
+async function cloudLogin(){CL.state='sync';cloudUI();try{const bk=JSON.parse(sessionStorage.getItem('yy-back')||'null');if(bk){sessionStorage.removeItem('yy-back');if(bk.tab&&bk.tab!==S.tab)setTab(bk.tab)}}catch(e){}
+  try{await cloudPull();await cloudPushAll(true);CL.state='ok';CL.last=Date.now();
+    if(!localStorage.getItem('yy-cloud-hi')){localStorage.setItem('yy-cloud-hi','1');say('登入了。紀錄已經同步到雲端，換手機也不會掉。')}}
+  catch(e){console.warn('cloud',e);CL.state='err'}cloudUI();try{renderChar()}catch(e){}}
+async function cloudPull(){const sb=CL.sb,uid=CL.user.id;
+  const [{data:pf},{data:rows,error:e1},{data:tr},{data:gr}]=await Promise.all([
+    sb.from('profiles').select('*').eq('id',uid).maybeSingle(),sb.from('climbs').select('*').eq('user_id',uid),
+    sb.from('trips').select('*').eq('user_id',uid),sb.from('gear').select('*').eq('user_id',uid).maybeSingle()]);
+  if(e1)throw e1;CL.profile=pf||null;
+  CL.pulling=true;try{const raw=LDB.raw();let n=0;
+    for(const row of rows||[]){const old=raw[row.peak_key],rec=recOf(row,old);if(!rec)continue;
+      if(!old||(RANKV[rec.verified]||0)>(RANKV[old.verified]||0)||(row.verified!=='pending'&&old.cloud)){await LDB.doc('climbs/'+row.peak_key).set(rec);n++}
+      CL.sent[row.peak_key]=JSON.stringify(rowOf(row.peak_key,LDB.raw()[row.peak_key]||rec))}
+    // 行程：雲端有、手機沒有的補進來
+    if(tr&&tr.length){const ids=new Set(TRIPS.map(t=>t.id));let add=0;for(const r of tr){if(!ids.has(r.id)&&r.data&&r.data.start){TRIPS.push(Object.assign({},r.data,{id:r.id}));add++}}if(add)saveTrips()}
+    // 裝備：手機還是預設、雲端有資料 → 用雲端的
+    const fk='yy-cloud-dev-'+uid,first=!localStorage.getItem(fk);localStorage.setItem(fk,'1');
+    if(first&&gr&&gr.data){const diff=GEARK.some(k=>gr.data[k]&&gr.data[k]!==localStorage.getItem(k));
+      if(diff&&confirm('雲端有你的裝備資料。要換成雲端的裝備嗎？（這支手機目前的裝備會被取代）')){for(const k of GEARK)if(gr.data[k])localStorage.setItem(k,gr.data[k]);CL.gearSent=JSON.stringify(gr.data);say('裝備從雲端載入了。');setTimeout(()=>location.reload(),1200)}}
+  }finally{CL.pulling=false}}
+async function cloudPushAll(force){if(!CL.user||!CL.sb)return;const sb=CL.sb,raw=LDB.raw(),up=[],keys=Object.keys(raw);
+  for(const k of keys){const r=raw[k];const row=rowOf(k,r),s=JSON.stringify(row);if(force||CL.sent[k]!==s)up.push([k,row,s])}
+  // 雲端已經是金章／銀章的不能由手機改（權限會擋），跳過
+  if(up.length){const {data:cur}=await sb.from('climbs').select('peak_key,verified').eq('user_id',CL.user.id).in('peak_key',up.map(x=>x[0]));
+    const locked=new Set((cur||[]).filter(c=>c.verified==='gps'||c.verified==='checkin').map(c=>c.peak_key));
+    const rows=up.filter(x=>!locked.has(x[0]));
+    if(rows.length){const {error}=await sb.from('climbs').upsert(rows.map(x=>x[1]),{onConflict:'user_id,peak_key'});if(error)throw error}
+    up.forEach(x=>CL.sent[x[0]]=x[2])}
+  // 手機刪掉的，雲端也刪
+  const gone=Object.keys(CL.sent).filter(k=>!raw[k]);if(gone.length){await sb.from('climbs').delete().eq('user_id',CL.user.id).in('peak_key',gone);gone.forEach(k=>delete CL.sent[k])}
+  // 行程、裝備、個人等級
+  const trips=TRIPS.map(t=>({id:t.id,user_id:CL.user.id,data:t}));const ts=JSON.stringify(trips);
+  if(force||CL.tripSent!==ts){if(trips.length){const {error}=await sb.from('trips').upsert(trips,{onConflict:'user_id,id'});if(error)throw error}
+    const {data:rt}=await sb.from('trips').select('id').eq('user_id',CL.user.id);const keep=new Set(trips.map(t=>t.id)),del=(rt||[]).map(r=>r.id).filter(id=>!keep.has(id));if(del.length)await sb.from('trips').delete().eq('user_id',CL.user.id).in('id',del);CL.tripSent=ts}
+  const gd={};for(const k of GEARK){const v=localStorage.getItem(k);if(v)gd[k]=v}const gs=JSON.stringify(gd);
+  if(Object.keys(gd).length&&(force||CL.gearSent!==gs)){const {error}=await sb.from('gear').upsert({user_id:CL.user.id,data:gd});if(error)throw error;CL.gearSent=gs}
+  const ps=G.lv+'|'+G.xp;if(force||CL.profSent!==ps){await sb.from('profiles').update({level:G.lv,xp:Math.round(G.xp)}).eq('id',CL.user.id);CL.profSent=ps}
+}
+function cloudQueue(){if(!CL.user||CL.pulling)return;clearTimeout(CL.timer);CL.timer=setTimeout(async()=>{if(!navigator.onLine){CL.state='wait';cloudUI();return}
+  CL.state='sync';cloudUI();try{await cloudPushAll(false);CL.state='ok';CL.last=Date.now()}catch(e){console.warn('cloud',e);CL.state='err'}cloudUI()},1500)}
+window.addEventListener('online',()=>cloudQueue());
+setInterval(()=>{if(CL.user){const gd=GEARK.map(k=>localStorage.getItem(k)||'').join('|');if(gd!==CL.gearPeek){CL.gearPeek=gd;cloudQueue()}}},10000);
+async function cloudSignIn(){try{sessionStorage.setItem('yy-back',JSON.stringify({tab:S.tab,hash:location.hash}))}catch(e){}if(!CL.sb){const ok=await sbLoad();if(!ok){say('現在連不上網路，等有網路再登入。',true);return}await cloudInit()}
+  const {error}=await CL.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)say('登入失敗：'+error.message,true)}
+async function cloudSignOut(){if(!CL.sb)return;try{await CL.sb.auth.signOut({scope:'local'})}catch(e){}try{for(const k of Object.keys(localStorage))if(/^sb-.*-auth-token/.test(k))localStorage.removeItem(k)}catch(e){}CL.user=null;CL.profile=null;CL.state='off';cloudUI();try{renderChar()}catch(e){}const m=$('meS');if(m)m.hidden=true;say('登出了。這支手機上的紀錄還在。')}
+function cloudBlock(){const st=CL.state,u=CL.user,pf=CL.profile;
+  if(!u)return '<div class="acct"><p class="dk">帳號</p><p class="acsay">登入後，紀錄會存到雲端，換手機也不會掉。之後也能看到誰跟你爬過同一座山。</p><button type="button" class="gbtn" id="acIn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>用 Google 登入</button></div>';
+  const name=(pf&&pf.nickname)||(u.user_metadata&&u.user_metadata.name)||'山友',av=(pf&&pf.avatar_url)||(u.user_metadata&&u.user_metadata.avatar_url)||'';
+  const tx=st==='sync'?'同步中…':st==='ok'?'已同步':st==='wait'?'沒有網路，等一下會自動同步':st==='err'?'同步失敗，等一下會再試':'';
+  return '<div class="acct on"><p class="dk">帳號</p><div class="acme">'+(av?'<img src="'+esc(av)+'" alt="" referrerpolicy="no-referrer">':'<i></i>')+'<div><b>'+esc(name)+'</b><span class="acst '+st+'">'+tx+'</span></div><button type="button" class="acout" id="acOut">帳號設定</button></div></div>'}
+function loginOpen(why){const m=$('loginS');if(!m)return;$('loginT').textContent=why==='first'?'第一座，存起來':'登入月岳';$('loginB').textContent=why==='first'?'登入後，這座山會存到雲端，換手機也不會掉。':'紀錄存到雲端，換手機也不會掉。';m.hidden=false;try{$('loginGo').focus({preventScroll:true})}catch(e){}}
+{const m=$('loginS');$('loginGo').onclick=()=>{m.hidden=true;cloudSignIn()};$('loginX').onclick=()=>{m.hidden=true};m.addEventListener('click',e=>{if(e.target===m)m.hidden=true})}
+$('meBtn').onclick=()=>{if(CL.user)meOpen();else loginOpen()};
+function meOpen(){const m=$('meS'),u=CL.user,pf=CL.profile||{},av=pf.avatar_url||(u.user_metadata&&u.user_metadata.avatar_url)||'',raw=LDB.raw();
+  const cnt={gps:0,checkin:0,self:0};Object.values(raw).forEach(r=>{if(cnt[r.verified]!=null)cnt[r.verified]++});
+  const st=CL.state==='sync'?'同步中…':CL.state==='ok'?'已同步':CL.state==='wait'?'沒有網路，連上後會自動同步':CL.state==='err'?'同步失敗，等一下會再試':'';
+  $('meIn').innerHTML='<div class="mehd">'+(av?'<img src="'+esc(av)+'" alt="" referrerpolicy="no-referrer">':'<i class="mei"></i>')+'<div><h2 id="meT">'+esc(pf.nickname||(u.user_metadata&&u.user_metadata.name)||'山友')+'</h2><p>第 '+G.lv+' 級・'+esc(titleOf(G.lv))+'</p></div></div>'+
+    '<div class="mecnt"><div><b class="au">'+cnt.gps+'</b><span>金章</span></div><div><b class="ag">'+cnt.checkin+'</b><span>銀章</span></div><div><b class="un">'+cnt.self+'</b><span>補登</span></div></div>'+
+    '<p class="mest '+CL.state+'">'+st+'</p>'+
+    '<label class="mesw"><span><b>讓山友看到我</b><small>「也爬過這座山」裡會出現你的名字和等級，不會出現軌跡和照片</small></span><input type="checkbox" id="mePub"'+(pf.is_public!==false?' checked':'')+'><i aria-hidden="true"></i></label>'+
+    '<div class="meact"><button type="button" class="meout" id="meOut">登出</button></div>';
+  $('meIn').insertAdjacentHTML('afterbegin','<button type="button" class="mex" id="meX" aria-label="關閉">×</button>');
+  m.hidden=false;try{$('meX').focus({preventScroll:true})}catch(e){}
+  $('meX').onclick=()=>{m.hidden=true};
+  $('mePub').onchange=async e=>{const v=e.target.checked;try{const {error}=await CL.sb.from('profiles').update({is_public:v}).eq('id',u.id);if(error)throw error;if(CL.profile)CL.profile.is_public=v;say(v?'山友看得到你了':'已隱藏，山友看不到你')}catch(err){e.target.checked=!v;say('沒改成功，請再試一次。',true)}};
+  const o=$('meOut');o.onclick=()=>{if(o.dataset.sure){cloudSignOut();return}o.dataset.sure='1';o.textContent='確定登出？再按一次';o.classList.add('sure');setTimeout(()=>{if(o.isConnected){delete o.dataset.sure;o.textContent='登出';o.classList.remove('sure')}},4000)}}
+{const m=$('meS');m.addEventListener('click',e=>{if(e.target===m)m.hidden=true})}
+function meUI(){const b=$('meBtn');if(!b)return;const u=CL.user,pf=CL.profile,av=u&&((pf&&pf.avatar_url)||(u.user_metadata&&u.user_metadata.avatar_url));
+  b.classList.toggle('in',!!u);b.setAttribute('aria-label',u?'我的帳號：'+((pf&&pf.nickname)||'山友')+(CL.state==='err'?'，同步失敗':''):'登入');
+  b.innerHTML=u?(av?'<img src="'+esc(av)+'" alt="" referrerpolicy="no-referrer">':'<i class="mei"></i>')+(CL.state==='sync'?'<b class="mesync" aria-hidden="true"></b>':CL.state==='err'||CL.state==='wait'?'<b class="mewarn" aria-hidden="true"></b>':''):'<i class="mei"></i><span>登入</span>'}
+function cloudUI(){meUI();const el=$('acct');if(el)el.innerHTML=cloudBlock();const a=$('acIn');if(a)a.onclick=cloudSignIn;const o=$('acOut');if(o)o.onclick=()=>meOpen()}
 async function load(){
   try{const all=await IDB.all();for(const [k,v] of Object.entries(all))PH[k]=URL.createObjectURL(v)}catch(e){}
   DBH=LDB;ASSETS=LASSETS;
   LDB.collection('climbs').onSnapshot(snap=>applySnapshot(snap));
+  LDB.collection('climbs').onSnapshot(()=>cloudQueue());cloudInit();
   if(localStorage.getItem(MKEY))backupNag();else setTimeout(migrateNag,600);
 }
 
@@ -3434,9 +3592,9 @@ if('serviceWorker' in navigator&&location.protocol!=='file:')window.addEventList
 // gear tab: a chibi of him wearing today's kit; three.js loads only when the tab first opens
 let G3=null,want=false;
 const GV=document.getElementById('gearView');GV.tabIndex=-1;GV.addEventListener('scroll',()=>GV.classList.toggle('scrolled',GV.scrollTop>8),{passive:true});
-window.__gearKits=()=>GS.kits.map(k=>{const all=GS.items.filter(i=>i.kits.includes(k.id));return{id:k.id,name:k.name,n:all.length,done:PK.kit===k.id?all.filter(i=>PK.ids.includes(i.id)).length:0}});
-window.__gearUseKit=id=>{if(GS.kits.some(k=>k.id===id)&&GS.kit!==id){GS.kit=id;PK.on=false;kSave();try{gearRender()}catch(_){}}};
-window.__gearOpen=async()=>{want=true;if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
+window.__gearKits=tid=>GS.kits.map(k=>{const all=GS.items.filter(i=>i.kits.includes(k.id)),pk=PKS[tid||'_'];return{id:k.id,name:k.name,n:all.length,done:pk&&pk.kit===k.id?all.filter(i=>(pk.ids||[]).includes(i.id)).length:0}});
+window.__gearUseKit=(id,trip)=>{if(trip)pkUse(trip.id,trip.label);if(GS.kits.some(k=>k.id===id)&&GS.kit!==id){GS.kit=id;kSave()}PK.on=false;try{gearRender()}catch(_){}};
+window.__gearOpen=async()=>{want=true;try{const live=(window.__tripsLive&&window.__tripsLive())||[],L=upT();if(PKT==='_'||!live.includes(PKT)){if(L.length)tripPick(L[0]);else if(PKT!=='_')tripPick(null)}}catch(_){}if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
     G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){console.warn('gear3d',e);const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；背包照常可以打開';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
 if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
@@ -3491,8 +3649,15 @@ const inKit=i=>i.kits.includes(GS.kit),kitName=()=>(GS.kits.find(k=>k.id===GS.ki
 const place=i=>!inKit(i)?'store':i.worn?'body':'pack';
 const PLACE={body:'身上',pack:'背包',store:'沒帶的'};
 // packing checklist: ticks are kept for 12 hours, then start fresh
-let PK={on:false,kit:null,ids:[],t:0};try{const p=JSON.parse(localStorage.getItem(PKEY)||'null');if(p&&Date.now()-p.t<12*3600e3)PK={on:false,kit:p.kit,ids:p.ids||[],t:p.t}}catch(e){}
-const pSave=()=>{PK.t=Date.now();try{localStorage.setItem(PKEY,JSON.stringify({kit:PK.kit,ids:PK.ids,t:PK.t}))}catch(e){}};
+// 打包進度跟著行程走：每一趟一張打包單；沒排行程的用 '_'（12 小時後失效）
+let PKS={},PKT='_',PKL='';try{const p=JSON.parse(localStorage.getItem(PKEY)||'null');if(p&&p.v===2&&p.m)PKS=p.m;else if(p&&p.t)PKS={_:{kit:p.kit,ids:p.ids||[],ready:!!p.ready,t:p.t}}}catch(e){}
+{const live=window.__tripsLive&&window.__tripsLive();if(live)for(const k of Object.keys(PKS))if(k!=='_'&&!live.includes(k))delete PKS[k];if(PKS._&&Date.now()-(PKS._.t||0)>12*3600e3)delete PKS._}
+let PK=PKS._||(PKS._={kit:null,ids:[],t:0});PK.on=false;
+const pkUse=(key,label)=>{PKT=key||'_';PKL=label||'';PK=PKS[PKT]||(PKS[PKT]={kit:null,ids:[],t:0});PK.on=false};
+const upT=()=>{const L=(window.__upTrips&&window.__upTrips())||[];if(PKT!=='_'&&!L.some(t=>t.id===PKT))L.unshift({id:PKT,label:PKL});return L};
+function tripPick(t){if(t){pkUse(t.id,t.label);if(t.kit&&GS.kits.some(k=>k.id===t.kit)&&GS.kit!==t.kit){GS.kit=t.kit;kSave()}}else pkUse('_');try{gearRender()}catch(_){}}
+document.getElementById('gearView').addEventListener('click',e=>{const b=e.target.closest('[data-trip]');if(!b)return;const t=upT().find(x=>x.id===b.dataset.trip);if(t&&t.id!==PKT){tripPick(t);window.YY&&window.YY.say('換成打包 '+t.label)}});
+const pSave=()=>{PK.t=Date.now();PKS[PKT]=PK;try{localStorage.setItem(PKEY,JSON.stringify({v:2,m:PKS},(k,v)=>k==='on'?undefined:v))}catch(e){}};
 const GPH={};const gPhoto=async()=>{try{const all=await window.YY.IDB.all();for(const k in all)if(k.startsWith('gear:'))GPH[k]=URL.createObjectURL(all[k])}catch(e){}};
 const GEAR=new Proxy({},{get:(_,z)=>ZONES[z]?{k:ZONES[z],items:GS.items.filter(i=>i.zone===z&&inKit(i)).map(i=>({n:i.name,d:[i.brand,i.note].filter(Boolean).join(' · '),s:i.borrow?'borrow':'own'}))}:undefined});
 const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3543,8 +3708,8 @@ function gearRender(){
   document.getElementById('gSub').innerHTML=T.weighed?'共 <b>'+kg(T.carry+T.worn)+'</b> 公斤':'還沒秤重';
   document.getElementById('gW').innerHTML=(T.weighed?'<p class="gw1"><span>背的 <b>'+kg(T.carry)+'</b> 公斤</span><i>·</i><span>穿的 <b>'+(T.worn?kg(T.worn):'—')+'</b> 公斤</span></p>':'')+loadHTML(T.carry,'gBody');
   document.getElementById('gBody').onclick=bodyEdit;
-  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
-  {const rd=!!(PK.ready&&PK.kit===GS.kit&&T.all.length&&T.all.every(i=>PK.ids.includes(i.id))),g=document.getElementById('gReady');if(g){g.hidden=!rd;document.getElementById('gearView').classList.toggle('ready',rd);if(rd)document.getElementById('gReadyN').textContent=T.all.length}window.__gearReady&&window.__gearReady(rd)}
+  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);{const tl=document.getElementById('gTripL'),L=upT();if(tl){tl.hidden=PKT==='_';tl.innerHTML=PKT==='_'?'':'<small>打包給</small>'+(L.length<2?'<span>'+E(PKL)+'</span>':L.map(t=>'<button type="button" data-trip="'+E(t.id)+'" aria-pressed="'+(t.id===PKT)+'">'+E(t.label)+'</button>').join(''))}}pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
+  {const rd=!!(PK.ready&&PK.kit===GS.kit&&T.all.length&&T.all.every(i=>PK.ids.includes(i.id))),g=document.getElementById('gReady');if(g){g.hidden=!rd;document.getElementById('gearView').classList.toggle('ready',rd);if(rd){const L=upT().filter(t=>t.id!==PKT);g.querySelector('small').textContent=(PKT!=='_'?PKL+' ・ ':'')+'都帶齊了 ・ '+T.all.length+' 件';let mo=g.querySelector('.grmore');if(!mo){mo=document.createElement('div');mo.className='grmore';g.appendChild(mo)}mo.innerHTML=L.map(t=>'<button type="button" class="glk" data-trip="'+E(t.id)+'">接著打包 '+E(t.label)+'<i aria-hidden="true">›</i></button>').join('')}}window.__gearReady&&window.__gearReady(rd)}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
   {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i?(i.color&&COL[i.color]?COL[i.color].c:PXC[iconOf(i)]||null):null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
   window.__gearLook&&window.__gearLook(window.__gearLookState);window.__gearTint&&window.__gearTint(window.__gearTintState);
