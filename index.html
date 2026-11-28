@@ -1231,7 +1231,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .mehd .mei{background:radial-gradient(circle at 50% 38%,rgba(200,211,226,.55) 0 9px,transparent 9.5px),radial-gradient(circle at 50% 100%,rgba(200,211,226,.55) 0 19px,transparent 19.5px)}
 .mehd h2{margin:0;font:600 28px/1.2 var(--display);word-break:break-all}.mehd p{margin:6px 0 0;font:400 14px var(--body);color:#C8D3E2}
 .mecnt{display:grid;grid-template-columns:repeat(3,1fr);margin:22px 0 4px;padding:14px 0;border-top:1px solid rgba(200,211,226,.12);border-bottom:1px solid rgba(200,211,226,.12)}
-.mecnt div{display:flex;flex-direction:column;align-items:center;gap:6px}.mecnt b{font:600 28px/1 var(--display);color:#C8D3E2}.mecnt b.au{color:var(--gold)}.mecnt b.ag{color:#E4EAF1}.mecnt span{font:500 11px/1 var(--body);letter-spacing:.32em;color:#8FA3BD}
+.mecnt div{display:flex;flex-direction:column;align-items:center;gap:6px}.mecnt b{font:600 28px/1 var(--display);color:#C8D3E2}.mecnt b.au{color:var(--gold)}.mecnt b.ag{color:#E4EAF1}.mecnt b.un{color:#7F8FA6!important}.mecnt b.au{color:var(--gold)!important}.mecnt b.ag{color:#E4EAF1!important}.mecnt span{font:500 11px/1 var(--body);letter-spacing:.32em;color:#8FA3BD}
 .mest{margin:12px 0 0;font:400 14px var(--body);color:#8FA3BD}.mest.ok{color:#8FD3A8}.mest.err{color:#F2A37B}
 .mesw{display:flex;align-items:center;gap:14px;margin-top:16px;cursor:pointer}.mesw>span{flex:1;display:flex;flex-direction:column;gap:4px}.mesw b{font:600 18px var(--display)}.mesw small{font:400 14px/1.5 var(--body);color:#8FA3BD}
 .mesw input{position:absolute;opacity:0;width:1px;height:1px}.mesw i{flex:none;width:48px;height:28px;border-radius:14px;background:rgba(200,211,226,.25);position:relative;transition:background .2s}
@@ -1603,9 +1603,9 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
   <div class="help" id="recs" role="dialog" aria-modal="true" aria-labelledby="recsT" hidden>
     <div class="hcard rcard">
       <p class="mkick">記錄登頂</p><h2 id="recsT">你想怎麼記錄？</h2>
-      <button type="button" class="rcopt" id="rcHere"><i class="ag">銀章</i><b>我在山頂，打卡</b><span>找到這座山、按住打卡、拍三角點</span><em aria-hidden="true">›</em></button>
-      <button type="button" class="rcopt" id="rcGpx"><i class="au">金章</i><b>上傳軌跡檔</b><span>手錶或登山 App 的 .gpx，可以一次選很多個</span><em aria-hidden="true">›</em></button>
-      <button type="button" class="rcopt" id="rcSelf"><i class="un">補登</i><b>補登以前爬的山</b><span>沒有軌跡也可以，先點亮成灰色</span><em aria-hidden="true">›</em></button>
+      <button type="button" class="rcopt" id="rcHere"><i class="ag">銀章</i><b>我在山頂，打卡</b><span>站在山頂，按住就能拿章</span><em aria-hidden="true">›</em></button>
+      <button type="button" class="rcopt" id="rcGpx"><i class="au">金章</i><b>上傳軌跡檔</b><span>手錶或登山 App 的 .gpx 檔</span><em aria-hidden="true">›</em></button>
+      <button type="button" class="rcopt" id="rcSelf"><i class="un">補登</i><b>補登以前爬的山</b><span>沒有軌跡也能先點亮</span><em aria-hidden="true">›</em></button>
       <details class="rchow"><summary>怎麼拿到 GPX？</summary><ul>
         <li><b>Garmin</b>：用電腦打開 Garmin Connect 網頁版 → 點那次活動 → 右上齒輪 → 匯出為 GPX。</li>
         <li><b>Strava</b>：電腦版網頁打開活動 → 「⋯」→ 匯出 GPX。</li>
@@ -3502,7 +3502,7 @@ function meOpen(){const m=$('meS'),u=CL.user,pf=CL.profile||{},av=pf.avatar_url|
   const cnt={gps:0,checkin:0,self:0};Object.values(raw).forEach(r=>{if(cnt[r.verified]!=null)cnt[r.verified]++});
   const st=CL.state==='sync'?'同步中…':CL.state==='ok'?'已同步':CL.state==='wait'?'沒有網路，連上後會自動同步':CL.state==='err'?'同步失敗，等一下會再試':'';
   $('meIn').innerHTML='<div class="mehd">'+(av?'<img src="'+esc(av)+'" alt="" referrerpolicy="no-referrer">':'<i class="mei"></i>')+'<div><h2 id="meT">'+esc(pf.nickname||(u.user_metadata&&u.user_metadata.name)||'山友')+'</h2><p>第 '+G.lv+' 級・'+esc(titleOf(G.lv))+'</p></div></div>'+
-    '<div class="mecnt"><div><b class="au">'+cnt.gps+'</b><span>金章</span></div><div><b class="ag">'+cnt.checkin+'</b><span>銀章</span></div><div><b>'+cnt.self+'</b><span>補登</span></div></div>'+
+    '<div class="mecnt"><div><b class="au">'+cnt.gps+'</b><span>金章</span></div><div><b class="ag">'+cnt.checkin+'</b><span>銀章</span></div><div><b class="un">'+cnt.self+'</b><span>補登</span></div></div>'+
     '<p class="mest '+CL.state+'">'+st+'</p>'+
     '<label class="mesw"><span><b>讓山友看到我</b><small>「也爬過這座山」裡會出現你的名字和等級，不會出現軌跡和照片</small></span><input type="checkbox" id="mePub"'+(pf.is_public!==false?' checked':'')+'><i aria-hidden="true"></i></label>'+
     '<div class="meact"><button type="button" class="meout" id="meOut">登出</button><button type="button" class="dbtn" id="meX">好</button></div>';
