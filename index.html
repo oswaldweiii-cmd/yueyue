@@ -637,7 +637,10 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .glk{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 4px 0 0;background:none;border:0;font:500 14px var(--body);color:var(--t1);cursor:pointer}.glk svg{width:28px;height:28px;overflow:visible}.glk i{font-style:normal;font-size:18px;color:var(--t2);margin-left:2px}
 .glk:hover i{color:#F4C152}
 .ggo{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 24px;border:0;border-radius:12px;background:#F4C152;color:#0B1626;font:700 14px var(--body);letter-spacing:.08em;cursor:pointer;box-shadow:0 8px 24px rgba(244,193,82,.18)}.ggo i{font-style:normal}
-.g3off .gact{position:static;order:3;margin:16px 24px 34px}.gtrip{margin:10px 0 0;font:500 11px/1.4 var(--body);letter-spacing:.32em;color:var(--gold);text-align:center}.g3off .ghd{position:relative}
+.g3off .gact{position:static;order:3;margin:16px 24px 34px}.gtrip{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0 18px;margin:8px 16px 0;pointer-events:auto;font:500 14px/1.4 var(--body);color:var(--gold)}
+.gtrip small{flex-basis:100%;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--t2);margin-bottom:2px}
+.gtrip button{min-height:44px;padding:0 2px;background:none;border:0;font:inherit;color:var(--t2);cursor:pointer}.gtrip button[aria-pressed=true]{color:var(--gold);text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1.5px}
+.gearv.ready .gtrip{display:none}.grmore{display:flex;flex-direction:column;align-items:center;margin-top:8px}.grmore .glk{min-height:44px;font:400 14px var(--body);color:var(--t2);background:none;border:0}.grmore .glk i{margin-left:6px;color:var(--gold);font-style:normal}.g3off .ghd{position:relative}
 .gtip.dock{left:24px;right:24px;top:auto;bottom:90px;width:auto;text-align:center}.gtip.dock ul{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 16px;margin-top:8px}.gtip.dock li small{display:none}.gtip.dock li b{font-size:14px;line-height:1.5}
 @media (min-width:900px){.gact{left:50%;right:auto;width:480px;margin-left:-240px}.gkn2{font-size:56px;line-height:1.1}.gkn2 .gkn-in{font-size:56px}.gka{font-size:28px}}
 .ghint{transition:opacity .4s}.ghint.bye{opacity:0}.ggo{min-width:148px;justify-content:center;padding:0 18px}.ggo .num{font:600 11px var(--display);margin-left:.4em;letter-spacing:0;opacity:.7}
@@ -744,7 +747,7 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .gready{position:absolute;left:0;right:0;top:60px;z-index:4;text-align:center;pointer-events:none}.gready>*{pointer-events:auto}
 .gready small{display:block;font:500 11px var(--body);letter-spacing:.32em;color:#F4C152}.gready b{display:block;margin-top:6px;font:600 28px/1.2 var(--display);color:var(--t1);text-shadow:0 2px 18px rgba(244,193,82,.35)}
 .gready p{margin:4px 0 0;font:400 14px var(--body);color:var(--t2)}.gready button{margin-top:2px;min-height:44px}
-.gearv.ready .gwt2,.gearv.ready .ghint,.gearv.ready .ghd .gsub,.gearv.ready .gdots{display:none}
+.gearv.ready .gwt2,.gearv.ready .ghint,.gearv.ready .ghd .gsub,.gearv.ready .gdots,.gearv.ready .gtrip{display:none}
 .ggo.cancel{background:rgba(11,22,38,.62);color:#F4C152;box-shadow:inset 0 0 0 1.5px #F4C152;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}.gearv.ready .glk{text-shadow:0 1px 8px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8)}
 .gearv.ready .gready{animation:gReadyIn .5s cubic-bezier(.2,.8,.2,1) both}@keyframes gReadyIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.gearv.ready .gready{animation:none}}
@@ -3203,7 +3206,7 @@ const todayS=()=>ymd(new Date());
 const WK='日一二三四五六';
 function tripInfo(t){const p=planOf(t),d=pymd(t.start),nm=t.ranks.map(r=>byRank[r]).filter(Boolean).map(x=>x.name);return{id:t.id,kit:p.kit,label:(d.getMonth()+1)+'/'+d.getDate()+' '+(nm[0]||'')+(nm.length>1?' 等 '+nm.length+' 座':'')}}
 window.__tripsLive=()=>{const T=todayS();return TRIPS.filter(t=>t.end>=T).map(t=>t.id)};
-window.__nextTrip=()=>{const T=todayS(),t=TRIPS.filter(t=>t.end>=T&&dDiff(T,t.start)<=7).sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0)[0];return t?tripInfo(t):null};
+window.__upTrips=()=>{const T=todayS();return TRIPS.filter(t=>t.end>=T&&dDiff(T,t.start)<=7).sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0).map(tripInfo)};
 const mdTxt=s=>{const d=pymd(s);return (d.getMonth()+1)+'/'+d.getDate()};
 const mdw=s=>mdTxt(s)+'（'+WK[pymd(s).getDay()]+'）';
 const rngH=(a,b)=>!b||b===a?mdTxt(a)+'<small>週'+WK[pymd(a).getDay()]+'・1 天</small>':mdTxt(a)+'–'+mdTxt(b)+'<small>週'+WK[pymd(a).getDay()]+'到週'+WK[pymd(b).getDay()]+'・'+(dDiff(a,b)+1)+' 天</small>';
@@ -3591,7 +3594,7 @@ let G3=null,want=false;
 const GV=document.getElementById('gearView');GV.tabIndex=-1;GV.addEventListener('scroll',()=>GV.classList.toggle('scrolled',GV.scrollTop>8),{passive:true});
 window.__gearKits=tid=>GS.kits.map(k=>{const all=GS.items.filter(i=>i.kits.includes(k.id)),pk=PKS[tid||'_'];return{id:k.id,name:k.name,n:all.length,done:pk&&pk.kit===k.id?all.filter(i=>(pk.ids||[]).includes(i.id)).length:0}});
 window.__gearUseKit=(id,trip)=>{if(trip)pkUse(trip.id,trip.label);if(GS.kits.some(k=>k.id===id)&&GS.kit!==id){GS.kit=id;kSave()}PK.on=false;try{gearRender()}catch(_){}};
-window.__gearOpen=async()=>{want=true;try{const nt=window.__nextTrip&&window.__nextTrip();if(nt){if(PKT!==nt.id){pkUse(nt.id,nt.label);if(GS.kits.some(k=>k.id===nt.kit)){GS.kit=nt.kit;kSave()}gearRender()}}else if(PKT!=='_'){pkUse('_');gearRender()}}catch(_){}if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
+window.__gearOpen=async()=>{want=true;try{const live=(window.__tripsLive&&window.__tripsLive())||[],L=upT();if(PKT==='_'||!live.includes(PKT)){if(L.length)tripPick(L[0]);else if(PKT!=='_')tripPick(null)}}catch(_){}if(matchMedia('(min-width:900px)').matches)try{GV.focus({preventScroll:true})}catch(_){}try{if(!G3){const THREE=await import('three');const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');const {RoundedBoxGeometry}=await import('three/addons/geometries/RoundedBoxGeometry.js');
     G3=build(THREE,OrbitControls,RoundedBoxGeometry)}if(want)G3.start()}catch(e){console.warn('gear3d',e);const l=document.getElementById('gload');if(l){l.textContent='沒有網路，角色先休息；背包照常可以打開';l.classList.add('off')}document.getElementById('gearView').classList.add('g3off')}};
 window.__gearClose=()=>{want=false;if(G3)G3.stop()};
 if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
@@ -3651,6 +3654,9 @@ let PKS={},PKT='_',PKL='';try{const p=JSON.parse(localStorage.getItem(PKEY)||'nu
 {const live=window.__tripsLive&&window.__tripsLive();if(live)for(const k of Object.keys(PKS))if(k!=='_'&&!live.includes(k))delete PKS[k];if(PKS._&&Date.now()-(PKS._.t||0)>12*3600e3)delete PKS._}
 let PK=PKS._||(PKS._={kit:null,ids:[],t:0});PK.on=false;
 const pkUse=(key,label)=>{PKT=key||'_';PKL=label||'';PK=PKS[PKT]||(PKS[PKT]={kit:null,ids:[],t:0});PK.on=false};
+const upT=()=>{const L=(window.__upTrips&&window.__upTrips())||[];if(PKT!=='_'&&!L.some(t=>t.id===PKT))L.unshift({id:PKT,label:PKL});return L};
+function tripPick(t){if(t){pkUse(t.id,t.label);if(t.kit&&GS.kits.some(k=>k.id===t.kit)&&GS.kit!==t.kit){GS.kit=t.kit;kSave()}}else pkUse('_');try{gearRender()}catch(_){}}
+document.getElementById('gearView').addEventListener('click',e=>{const b=e.target.closest('[data-trip]');if(!b)return;const t=upT().find(x=>x.id===b.dataset.trip);if(t&&t.id!==PKT){tripPick(t);window.YY&&window.YY.say('換成打包 '+t.label)}});
 const pSave=()=>{PK.t=Date.now();PKS[PKT]=PK;try{localStorage.setItem(PKEY,JSON.stringify({v:2,m:PKS},(k,v)=>k==='on'?undefined:v))}catch(e){}};
 const GPH={};const gPhoto=async()=>{try{const all=await window.YY.IDB.all();for(const k in all)if(k.startsWith('gear:'))GPH[k]=URL.createObjectURL(all[k])}catch(e){}};
 const GEAR=new Proxy({},{get:(_,z)=>ZONES[z]?{k:ZONES[z],items:GS.items.filter(i=>i.zone===z&&inKit(i)).map(i=>({n:i.name,d:[i.brand,i.note].filter(Boolean).join(' · '),s:i.borrow?'borrow':'own'}))}:undefined});
@@ -3702,8 +3708,8 @@ function gearRender(){
   document.getElementById('gSub').innerHTML=T.weighed?'共 <b>'+kg(T.carry+T.worn)+'</b> 公斤':'還沒秤重';
   document.getElementById('gW').innerHTML=(T.weighed?'<p class="gw1"><span>背的 <b>'+kg(T.carry)+'</b> 公斤</span><i>·</i><span>穿的 <b>'+(T.worn?kg(T.worn):'—')+'</b> 公斤</span></p>':'')+loadHTML(T.carry,'gBody');
   document.getElementById('gBody').onclick=bodyEdit;
-  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);{const tl=document.getElementById('gTripL');if(tl){tl.hidden=PKT==='_';tl.textContent=PKT==='_'?'':'打包給 '+PKL}}pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
-  {const rd=!!(PK.ready&&PK.kit===GS.kit&&T.all.length&&T.all.every(i=>PK.ids.includes(i.id))),g=document.getElementById('gReady');if(g){g.hidden=!rd;document.getElementById('gearView').classList.toggle('ready',rd);if(rd)document.getElementById('gReadyN').textContent=T.all.length}window.__gearReady&&window.__gearReady(rd)}
+  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);{const tl=document.getElementById('gTripL'),L=upT();if(tl){tl.hidden=PKT==='_';tl.innerHTML=PKT==='_'?'':'<small>打包給</small>'+(L.length<2?'<span>'+E(PKL)+'</span>':L.map(t=>'<button type="button" data-trip="'+E(t.id)+'" aria-pressed="'+(t.id===PKT)+'">'+E(t.label)+'</button>').join(''))}}pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
+  {const rd=!!(PK.ready&&PK.kit===GS.kit&&T.all.length&&T.all.every(i=>PK.ids.includes(i.id))),g=document.getElementById('gReady');if(g){g.hidden=!rd;document.getElementById('gearView').classList.toggle('ready',rd);if(rd){const L=upT().filter(t=>t.id!==PKT);g.querySelector('small').textContent=(PKT!=='_'?PKL+' ・ ':'')+'都帶齊了 ・ '+T.all.length+' 件';let mo=g.querySelector('.grmore');if(!mo){mo=document.createElement('div');mo.className='grmore';g.appendChild(mo)}mo.innerHTML=L.map(t=>'<button type="button" class="glk" data-trip="'+E(t.id)+'">接著打包 '+E(t.label)+'<i aria-hidden="true">›</i></button>').join('')}}window.__gearReady&&window.__gearReady(rd)}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
   {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i?(i.color&&COL[i.color]?COL[i.color].c:PXC[iconOf(i)]||null):null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
   window.__gearLook&&window.__gearLook(window.__gearLookState);window.__gearTint&&window.__gearTint(window.__gearTintState);
