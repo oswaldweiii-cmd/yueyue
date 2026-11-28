@@ -1075,7 +1075,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .tdin{width:100%;max-width:520px;margin:0 auto;padding:0 28px calc(env(safe-area-inset-bottom,0px) + 36px);text-align:center;animation:dueRise .9s .15s cubic-bezier(.2,.8,.2,1) backwards}
 @keyframes dueRise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
 .tdue .tk{margin:0;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--gold)}
-.tdue h2{margin:18px 0 0;font:900 56px/1.1 var(--display);letter-spacing:.06em;text-shadow:0 4px 40px rgba(244,193,82,.25)}
+.tdue h2{margin:18px 0 0;font:900 56px/1.1 var(--display);letter-spacing:.06em;text-shadow:0 4px 40px rgba(244,193,82,.25)}.tdue h2.long{font-size:28px;line-height:1.4;letter-spacing:.02em}
 .tdue .tq{margin:14px 0 0;font:600 28px/1.3 var(--display)}.tdue .td{margin:10px 0 0;font:400 14px/1.6 var(--body);color:#C8D3E2}
 .tdue .dbtn{width:100%;min-height:52px;margin-top:32px}.tdue .mlater{margin-top:6px}
 @media (prefers-reduced-motion:reduce){.app{transition:none}body.dueexit .app,.cloudpass,.tdue,.tdin{animation:none}.cloudpass{display:none}}
@@ -1124,12 +1124,40 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .calk{margin:0;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--gold)}
 .calhd{display:flex;align-items:center;justify-content:space-between;margin:10px 0 18px}.calhd h2{margin:0;font:600 28px/1.2 var(--display);letter-spacing:.04em}
 .calnav{width:44px;height:44px;background:none;border:0;color:#C8D3E2;font:400 28px/1 var(--display);cursor:pointer}
-.calwk,.calgr{display:grid;grid-template-columns:repeat(7,1fr)}.calwk span{text-align:center;font:500 11px/1 var(--body);letter-spacing:.2em;color:#8FA3BD;padding-bottom:10px;border-bottom:1px solid rgba(200,211,226,.14)}
+.calwk,.calgr{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.calwk span{text-align:center;font:500 11px/1 var(--body);letter-spacing:.2em;color:#8FA3BD;padding-bottom:10px;border-bottom:1px solid rgba(200,211,226,.14)}
 .calgr{row-gap:4px;padding-top:8px}
-.cd{position:relative;height:48px;display:grid;place-items:center;background:none;border:0;color:#C8D3E2;font:400 18px/1 var(--display);font-variant-numeric:tabular-nums;padding:0}
+.calgr{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.cd{position:relative;height:58px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;padding:9px 0 0;background:none;border:0;color:#C8D3E2;font:400 18px/1 var(--display);font-variant-numeric:tabular-nums;cursor:pointer}
+.cd>span{position:relative;z-index:1}.cd small{position:relative;z-index:1;font:700 11px/1 var(--body);color:#F4C152;white-space:nowrap;max-width:100%;overflow:hidden}.cd small i{font-style:normal;font-weight:500;opacity:.8;margin-left:1px}
+.cd:disabled{cursor:default}
+.cd.ct::before{content:'';position:absolute;left:0;right:0;top:4px;bottom:4px;background:rgba(244,193,82,.14);border-top:1px solid rgba(244,193,82,.35);border-bottom:1px solid rgba(244,193,82,.35)}
+.cd.ct.s::before{left:4px;border-left:1px solid rgba(244,193,82,.35);border-radius:14px 0 0 14px}.cd.ct.e::before{right:4px;border-right:1px solid rgba(244,193,82,.35);border-radius:0 14px 14px 0}.cd.ct.s.e::before{border-radius:14px}
+.cd.sel{color:#0B1626;font-weight:700}.cd.sel::before{content:'';position:absolute;left:0;right:0;top:4px;bottom:4px;background:linear-gradient(180deg,#F8D27A,#E0A93A)}
+.cd.sel.s::before{left:4px;border-radius:14px 0 0 14px}.cd.sel.e::before{right:4px;border-radius:0 14px 14px 0}.cd.sel.s.e::before{border-radius:14px}
+.cd.pop{animation:cdPop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes cdPop{50%{transform:scale(1.18)}}
+.calfoot{margin-top:18px;padding:18px 0 4px;border-top:1px solid rgba(244,193,82,.3)}.calfoot[hidden]{display:none}
+.cfk{margin:0;font:500 11px/1 var(--body);letter-spacing:.32em;color:var(--gold)}.cfd{margin:10px 0 0;font:600 28px/1.25 var(--display)}.cfd small{display:block;margin-top:6px;font:400 14px var(--body);color:#C8D3E2}.cfd .mutet{font:400 18px var(--body);color:#8FA3BD}
+.cfh{margin:6px 0 0;font:400 14px/1.6 var(--body);color:#8FA3BD}
+.cfp{display:flex;flex-direction:column;margin-top:12px}.cfpk{display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.12);color:var(--ink);font:600 18px var(--display);text-align:left;cursor:pointer}.cfpk i{font-style:normal;color:#8FA3BD}.cfpk.static{cursor:default}
+.calfoot .dbtn{width:100%;margin-top:18px}.calfoot .dbtn:disabled{opacity:.45}
+.cfa{display:flex;flex-wrap:wrap;gap:4px 24px;margin-top:10px}.cfa button{min-height:44px;padding:0;background:none;border:0;color:#C8D3E2;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px;cursor:pointer}.cfa .del{color:#F2A37B}.cfa #cfX{margin-left:auto;color:var(--gold);font-weight:700}
+.pick{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;background:linear-gradient(180deg,#0B1626,#050A12);animation:calIn .28s cubic-bezier(.2,.8,.2,1)}.pick[hidden]{display:none}
+.pickin{flex:1;overflow-y:auto;max-width:520px;width:100%;margin:0 auto;padding:calc(var(--top) + 64px) 24px 24px;position:relative}
+.pickin h2{margin:10px 0 18px;font:600 28px/1.25 var(--display)}
+.pickq{display:block}.pickq input{width:100%;min-height:48px;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.4);border-radius:0;color:var(--ink);font:400 18px var(--body);padding:0;-webkit-appearance:none;appearance:none}.pickq input::placeholder{color:#5D6E84}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.picktabs{display:flex;gap:24px;margin:14px 0 6px}.picktabs button{min-height:44px;padding:0;background:none;border:0;border-bottom:2px solid transparent;color:#8FA3BD;font:500 14px var(--body);letter-spacing:.12em}.picktabs button[aria-pressed="true"]{color:var(--ink);border-color:var(--gold)}
+.pkr{display:grid;grid-template-columns:minmax(0,1fr) auto 28px;align-items:center;column-gap:14px;width:100%;min-height:56px;padding:0;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.1);color:var(--ink);text-align:left;cursor:pointer}
+.pkr b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pkr span{font:400 14px var(--body);color:#8FA3BD;white-space:nowrap}
+.pkr i{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(200,211,226,.4);display:grid;place-items:center}
+.pkr.on b{color:var(--gold)}.pkr.on i{background:var(--gold);border-color:var(--gold)}.pkr.on i::after{content:'';width:10px;height:6px;border-left:2px solid #0B1626;border-bottom:2px solid #0B1626;transform:translateY(-1px) rotate(-45deg)}
+.pickbar{max-width:520px;width:100%;margin:0 auto;padding:12px 24px calc(env(safe-area-inset-bottom,0px) + 16px);background:linear-gradient(180deg,rgba(5,10,18,0),#050A12 30%)}
+.pickchips{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:10px}.pickchips:empty{display:none}.pickchips button{min-height:32px;padding:0;background:none;border:0;color:var(--gold);font:500 14px var(--body)}
+.pickbar .dbtn{width:100%}.pickbar .dbtn:disabled{opacity:.45}
+.mcard .mbig{font:600 18px/1.6 var(--display);color:var(--ink)}
 .cd.mute{visibility:hidden}.cd.past{color:#5D6E84}
 .cd.today::after{content:'';position:absolute;inset:6px 9px;border:1px solid rgba(200,211,226,.45);border-radius:50%}
-.cd.on{color:#0B1626;font-weight:700;cursor:pointer}.cd.on::before{content:'';position:absolute;left:0;right:0;top:8px;bottom:8px;background:linear-gradient(180deg,#F8D27A,#E0A93A);z-index:-1}
+.cd.on{color:#0B1626;font-weight:700}.cd.on::before{content:'';position:absolute;left:0;right:0;top:8px;bottom:8px;background:linear-gradient(180deg,#F8D27A,#E0A93A);z-index:-1}
 .cd.on.s::before{left:6px;border-radius:16px 0 0 16px}.cd.on.e::before{right:6px;border-radius:0 16px 16px 0}.cd.on.s.e::before{border-radius:16px}
 .calgr{position:relative;z-index:0}
 .callist{margin-top:28px;border-top:1px solid rgba(200,211,226,.14)}
@@ -1469,15 +1497,26 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
       <div class="calhd"><button type="button" class="calnav" id="calPrev" aria-label="上個月">‹</button><h2 id="calT"></h2><button type="button" class="calnav" id="calNext" aria-label="下個月">›</button></div>
       <div class="calwk" aria-hidden="true"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
       <div class="calgr" id="calGr"></div>
+      <div class="calfoot" id="calFoot" aria-live="polite" hidden></div>
       <div class="callist" id="calList"></div>
+    </div>
+    <div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickT" hidden>
+      <div class="pickin">
+        <button type="button" class="calx" id="pickX" aria-label="返回月曆"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+        <p class="calk">挑山</p><h2 id="pickT">這趟要爬哪幾座？</h2>
+        <label class="pickq"><span class="sr">搜尋山名</span><input type="search" id="pickQ" placeholder="搜尋山名，例如 雪山" autocomplete="off" enterkeyhint="search"></label>
+        <div class="picktabs" id="pickTabs"><button type="button" data-set="bai">百岳</button><button type="button" data-set="xiao">小百岳</button><button type="button" data-set="shan">小山</button></div>
+        <div class="pickl" id="pickL"></div>
+      </div>
+      <div class="pickbar"><div class="pickchips" id="pickChips"></div><button type="button" class="dbtn" id="pickGo" disabled>先點要爬的山</button></div>
     </div>
   </div>
   <div class="help" id="migr" role="dialog" aria-modal="true" aria-labelledby="migrT" hidden>
     <div class="hcard mcard">
       <p class="mkick">規則更新</p><h2 id="migrT">登頂要驗證了</h2>
-      <p>從現在起，只有兩種算登頂：<b class="ag">山頂打卡</b>（定位＋拍三角點，銀章），和<b>上傳手錶軌跡</b>（經過山頂 50 公尺內，金章）。手動補登不再算。</p>
-      <p>手機上這 <b id="migrN">0</b> 筆舊紀錄會清空重來。清空前，先存一份備份檔。以前的手錶軌跡，之後可以重新上傳。</p>
-      <button type="button" class="dbtn" id="migrGo">備份並清空</button>
+      <p class="mbig">以後要在山頂<b>打卡</b>，或上傳<b>手錶軌跡</b>，才算登頂。</p>
+      <p>舊的 <b id="migrN">0</b> 筆紀錄，會先存一份備份，再清空。</p>
+      <button type="button" class="dbtn" id="migrGo">好，備份並清空</button>
       <button type="button" class="mlater" id="migrLater">之後再說</button>
     </div>
   </div>
@@ -2425,7 +2464,7 @@ function renderDPage(p){
   h+='<div class="dlead2">';
   if(r){const bits=[];if(+r.distanceKm)bits.push('走了 '+(+r.distanceKm).toFixed(1)+' 公里');if(+r.durationMin)bits.push('花了 '+durTxt(+r.durationMin));h+='<p>'+(bits.length?'你那次'+bits.join('，')+'。':'你在 '+esc(r.date||'')+' 登頂了這座山。')+'</p>'}
   else h+='<p>'+(bai?reason(p):sh?'不上鎖，出發前先確認路況和交通。':'郊山暖身，不上鎖，隨時可以去。')+'</p>';
-  if(!r)h+=tripBlock(p,parseInt(days,10)||1);
+  if(!r)h+=tripBlock(p);
   if(!r&&DBH)h+='<div class="dverify"><div class="hold" id="vHold"><button type="button" class="holdb" id="vChk" aria-label="山頂打卡，按住直到金圈填滿">'+
     '<svg class="holdr" viewBox="0 0 132 132" aria-hidden="true"><circle cx="66" cy="66" r="62" class="hr0"/><circle cx="66" cy="66" r="62" class="hr1" id="vRing"/></svg>'+
     '<b>山頂打卡</b><small id="vHint">按住</small></button></div><div class="vstep" id="vStep" aria-live="polite"></div>'+
@@ -2902,7 +2941,7 @@ async function importBackup(file){
   const n=Object.keys(d.climbs).length,cur=Object.keys(LDB.raw()).length;
   if(cur&&!confirm('匯入會用備份裡的 '+n+' 筆紀錄，取代手機上現有的 '+cur+' 筆。要繼續嗎？'))return;
   for(const [id,u] of Object.entries(d.photos||{})){try{const blob=await (await fetch(u)).blob();await IDB.put(id,blob);PH[id]=URL.createObjectURL(blob)}catch(e){}}
-  if(Array.isArray(d.trips)){TRIPS=d.trips;try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}
+  if(Array.isArray(d.trips)){TRIPS=d.trips.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created}));try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}
   LDB.replace(d.climbs);say('匯入完成：'+n+' 筆紀錄');
 }
 function backupNag(){try{const n=Object.keys(LDB.raw()).length,t=+localStorage.getItem(BKEY)||0;if(n&&Date.now()-t>30*864e5)setTimeout(()=>say('已經超過一個月沒備份紀錄了，到「數據」頁按一下「備份紀錄」。',true),4000)}catch(e){}}
@@ -3013,20 +3052,27 @@ function wireCheckin(p,key){ // 長按蓄力：按住的這 1.6 秒同時在定�
     if(p.set==='bai')rec.rank=p.rank;else{rec.set=p.set;rec.no=p.no}
     const prevG=snapG();try{if(s)s.disabled=true;await DBH.doc('climbs/'+key).set(rec);await uploadPhoto(key,f,s||b);setTimeout(()=>celebrate([byRank[p.rank]||p],prevG),120)}catch(e){if(s)s.disabled=false;say('存檔失敗，請再試一次。',true)}};
 }
-/* ---------- 行程：日期＋山。只存手機，格式照雲端設計（第二階段直接上 Supabase） ---------- */
+/* ---------- 行程：日期＋一座或多座山。只存手機，格式照雲端設計（第二階段直接上 Supabase） ---------- */
 const TKEY='yueyue.trips.v1';let TRIPS=[];try{TRIPS=JSON.parse(localStorage.getItem(TKEY)||'[]')||[]}catch(e){TRIPS=[]}
+TRIPS=TRIPS.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created}));
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const pymd=s=>{const a=String(s).split('-');return new Date(+a[0],+a[1]-1,+a[2])};
 const dAdd=(s,n)=>{const d=pymd(s);d.setDate(d.getDate()+n);return ymd(d)};
 const dDiff=(a,b)=>Math.round((pymd(b)-pymd(a))/864e5);
 const todayS=()=>ymd(new Date());
+const WK='日一二三四五六';
 const mdTxt=s=>{const d=pymd(s);return (d.getMonth()+1)+'/'+d.getDate()};
+const mdw=s=>mdTxt(s)+'（'+WK[pymd(s).getDay()]+'）';
+const rngH=(a,b)=>!b||b===a?mdTxt(a)+'<small>週'+WK[pymd(a).getDay()]+'・1 天</small>':mdTxt(a)+'–'+mdTxt(b)+'<small>週'+WK[pymd(a).getDay()]+'到週'+WK[pymd(b).getDay()]+'・'+(dDiff(a,b)+1)+' 天</small>';
 const trTxt=t=>t.start===t.end?mdTxt(t.start):mdTxt(t.start)+'–'+mdTxt(t.end);
+const tNames=(t,max)=>{const n=t.ranks.map(r=>byRank[r]).filter(Boolean).map(p=>p.name);return max&&n.length>max?n.slice(0,max).join('、')+' 等 '+n.length+' 座':n.join('、')};
+const short=n=>n.replace('主峰','').slice(0,3);
 function saveTrips(){try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){say('手機的儲存空間不夠，行程沒有存到。',true)}tripRender();if(!$('cal').hidden)calRender()}
-const tripOf=rank=>TRIPS.filter(t=>t.rank===rank&&t.end>=dAdd(todayS(),-30)).sort((a,b)=>a.start<b.start?-1:1)[0];
-function tripPrune(){ // 行程結束後，上傳軌跡通過驗證就自動收掉
-  const n=TRIPS.length;TRIPS=TRIPS.filter(t=>{const p=byRank[t.rank];if(!p)return false;const r=REC(p);return !(r&&isVerified(r)&&(r.date||'')>=dAdd(t.start,-1))});
-  if(TRIPS.length!==n){try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}}
+const tripOf=rank=>TRIPS.filter(t=>t.ranks.includes(rank)&&t.end>=dAdd(todayS(),-30)).sort((a,b)=>a.start<b.start?-1:1)[0];
+function tripPrune(){ // 山一座一座驗證掉，全部驗證完行程就收掉
+  const before=JSON.stringify(TRIPS);
+  TRIPS=TRIPS.map(t=>({...t,ranks:t.ranks.filter(rk=>{const p=byRank[rk];if(!p)return false;const r=REC(p);return !(r&&isVerified(r)&&(r.date||'')>=dAdd(t.start,-1))})})).filter(t=>t.ranks.length);
+  if(JSON.stringify(TRIPS)!==before){try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}}
 function tripState(){
   const T=todayS(),L=TRIPS.slice().sort((a,b)=>a.start<b.start?-1:1);
   const due=L.filter(t=>t.end<T).sort((a,b)=>a.end<b.end?-1:1)[0];if(due)return{k:'due',t:due};
@@ -3034,67 +3080,124 @@ function tripState(){
   const nx=L.find(t=>t.start>T);if(nx){const n=dDiff(T,nx.start);return{k:n<=3?'pack':'next',t:nx,n}}
   return{k:'none'};
 }
+let calM=null,calFocus=null,dueSkip=false,SEL=null,EDIT=null;
+function dueClose(){const d=$('tdue');if(!d||d.classList.contains('out'))return;d.classList.add('out');document.body.classList.remove('duefocus');
+  const c=document.createElement('div');c.className='cloudpass';c.setAttribute('aria-hidden','true');document.body.appendChild(c);document.body.classList.add('dueexit');
+  setTimeout(()=>{d.remove();c.remove();document.body.classList.remove('dueexit')},1100)}
 function tripRender(){try{
-  tripPrune();const el=$('trip');if(!el)return;const st=tripState(),p=st.t&&byRank[st.t.rank];let h='';
+  tripPrune();const el=$('trip');if(!el)return;const st=tripState();let h='';
   if(st.k==='none')h='<button type="button" class="tline none" id="tripOpen"><span class="tk">行程</span><b>排一趟行程</b></button>';
-  else if(st.k==='on')h='<button type="button" class="tline" id="tripOpen"><span class="tk">出發中</span><b>'+esc(p.name)+'</b><span class="tn">注意安全</span></button>';
-  else if(st.k==='next'||st.k==='pack')h='<button type="button" class="tline" id="tripOpen"><span class="tk">下一趟</span><b>'+esc(p.name)+'</b><span class="tn">還有<em>'+st.n+'</em>天</span></button>'+(st.k==='pack'?'<button type="button" class="tpack" id="tripPack">開始打包</button>':'');
-  else h='';
+  else if(st.k==='on')h='<button type="button" class="tline" id="tripOpen"><span class="tk">出發中</span><b>'+esc(tNames(st.t,1))+'</b><span class="tn">注意安全</span></button>';
+  else if(st.k==='next'||st.k==='pack')h='<button type="button" class="tline" id="tripOpen"><span class="tk">下一趟</span><b>'+esc(tNames(st.t,1))+'</b><span class="tn">還有<em>'+st.n+'</em>天</span></button>'+(st.k==='pack'?'<button type="button" class="tpack" id="tripPack">開始打包</button>':'');
   el.innerHTML=h;
   let due=$('tdue');
-  if(st.k==='due'&&!dueSkip){const fresh=!due;if(fresh){due=document.createElement('div');due.id='tdue';due.className='tdue';due.setAttribute('role','dialog');due.setAttribute('aria-modal','true');due.setAttribute('aria-labelledby','tdT');document.body.appendChild(due);document.body.classList.add('duefocus')}
+  if(st.k==='due'&&!dueSkip){const fresh=!due,nm=tNames(st.t);if(fresh){due=document.createElement('div');due.id='tdue';due.className='tdue';due.setAttribute('role','dialog');due.setAttribute('aria-modal','true');due.setAttribute('aria-labelledby','tdT');document.body.appendChild(due);document.body.classList.add('duefocus')}
     due.innerHTML='<button type="button" class="calx" id="tdX" aria-label="之後再說"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5 5 15"/></svg></button>'+
-      '<div class="tdin"><p class="tk">'+trTxt(st.t)+' 的行程</p><h2 id="tdT">'+esc(p.name)+'</h2><p class="tq">爬完了嗎？</p><p class="td">上傳這次的手錶軌跡，通過就拿金章。</p>'+
+      '<div class="tdin"><p class="tk">'+trTxt(st.t)+' 的行程</p><h2 id="tdT"'+(nm.length>5?' class="long"':'')+'>'+esc(nm)+'</h2><p class="tq">爬完了嗎？</p><p class="td">上傳這次的手錶軌跡，通過就拿金章。</p>'+
       '<button type="button" class="dbtn" id="tripGpx">上傳這次的 GPX</button><button type="button" class="mlater" id="tripNo">沒去成</button></div>';
-    $('tripGpx').onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',f=>importGPX(f,p));
-    $('tripNo').onclick=()=>{TRIPS=TRIPS.filter(x=>x.id!==st.t.id);saveTrips();say('收掉了。下次再去 '+p.name+'。')};
+    $('tripGpx').onclick=()=>pickFile('.gpx,application/gpx+xml,application/xml,text/xml',f=>importGPX(f));
+    $('tripNo').onclick=()=>{TRIPS=TRIPS.filter(x=>x.id!==st.t.id);saveTrips();say('收掉了，下次再去。')};
     $('tdX').onclick=()=>{dueSkip=true;dueClose()};
     if(fresh)try{$('tripGpx').focus({preventScroll:true})}catch(e){}}
   else if(due)dueClose();
   const to=$('tripOpen');if(to)to.onclick=()=>calOpen();
   const pk=$('tripPack');if(pk)pk.onclick=()=>{setTab('gear');setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},350)};
 }catch(e){}}
-let calM=null,calFocus=null,dueSkip=false;
-function dueClose(){const d=$('tdue');if(!d||d.classList.contains('out'))return;d.classList.add('out');document.body.classList.remove('duefocus');
-  const c=document.createElement('div');c.className='cloudpass';c.setAttribute('aria-hidden','true');document.body.appendChild(c);document.body.classList.add('dueexit');
-  setTimeout(()=>{d.remove();c.remove();document.body.classList.remove('dueexit')},1100)}
-function calOpen(){calFocus=document.activeElement;const st=tripState(),base=st.t?pymd(st.t.start):new Date();calM=new Date(base.getFullYear(),base.getMonth(),1);$('cal').hidden=false;calRender();try{$('calX').focus({preventScroll:true})}catch(e){}}
-function calClose(){$('cal').hidden=true;try{calFocus&&calFocus.focus({preventScroll:true})}catch(e){}}
+/* ---------- 月曆：點一天、或按住往右滑選好幾天 → 挑山（可複選）→ 排好了 ---------- */
+function calOpen(o){o=o||{};calFocus=document.activeElement;EDIT=null;SEL=null;
+  if(o.trip){EDIT=o.trip}else if(o.ranks){SEL={start:null,end:null,ranks:o.ranks.slice()}}
+  const st=tripState(),base=o.trip?pymd(o.trip.start):st.t?pymd(st.t.start):new Date();calM=new Date(base.getFullYear(),base.getMonth(),1);
+  $('cal').hidden=false;$('pick').hidden=true;calRender();try{$('calX').focus({preventScroll:true})}catch(e){}}
+function calClose(){$('cal').hidden=true;SEL=null;EDIT=null;try{calFocus&&calFocus.focus({preventScroll:true})}catch(e){}}
 function calRender(){
   const y=calM.getFullYear(),m=calM.getMonth(),T=todayS(),first=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate();
   $('calT').textContent=y+' 年 '+(m+1)+' 月';
   const L=TRIPS.slice().sort((a,b)=>a.start<b.start?-1:1);let h='';
+  const sa=SEL&&SEL.start,sb=SEL&&(SEL.end||SEL.start);
   for(let i=0;i<first;i++)h+='<span class="cd mute"></span>';
-  for(let d=1;d<=nd;d++){const s=ymd(new Date(y,m,d)),t=L.find(x=>x.start<=s&&s<=x.end),p=t&&byRank[t.rank];
-    const c='cd'+(s<T?' past':'')+(s===T?' today':'')+(t?' on'+(s===t.start?' s':'')+(s===t.end?' e':''):'');
-    h+=t?'<button type="button" class="'+c+'" data-rank="'+t.rank+'" aria-label="'+(m+1)+' 月 '+d+' 日，'+esc(p?p.name:'')+'">'+d+'</button>':'<span class="'+c+'">'+d+'</span>'}
+  for(let d=1;d<=nd;d++){const s=ymd(new Date(y,m,d)),t=L.find(x=>x.start<=s&&s<=x.end&&!(EDIT&&SEL&&x.id===EDIT.id)),sel=sa&&s>=sa&&s<=sb;
+    let c='cd'+(s<T?' past':'')+(s===T?' today':'');
+    if(sel)c+=' sel'+(s===sa?' s':'')+(s===sb?' e':'');else if(t)c+=' ct'+(s===t.start?' s':'')+(s===t.end?' e':'');
+    const lab=t&&!sel&&(s===t.start||new Date(y,m,d).getDay()===0||d===1)?'<small>'+esc(short(byRank[t.ranks[0]]?byRank[t.ranks[0]].name:''))+(t.ranks.length>1?'<i>+'+(t.ranks.length-1)+'</i>':'')+'</small>':'';
+    h+='<button type="button" class="'+c+'" data-d="'+s+'"'+(s<T?' disabled':'')+' aria-label="'+(m+1)+' 月 '+d+' 日'+(t?'，'+esc(tNames(t)):'')+'"><span>'+d+'</span>'+lab+'</button>'}
   $('calGr').innerHTML=h;
-  const up=L.filter(t=>t.end>=T);let lh='';
-  up.forEach(t=>{const p=byRank[t.rank];if(!p)return;const n=dDiff(T,t.start);lh+='<button type="button" class="ctr" data-rank="'+t.rank+'"><small>'+trTxt(t)+'</small><b>'+esc(p.name)+'</b><span>'+(n>0?'還有 <em>'+n+'</em> 天':'出發中')+'</span></button>'});
-  if(!up.length)lh='<p class="cempty">還沒有排行程。到山頭頁，挑一座想去的山，按「排進行程」。</p>';
-  lh+='<button type="button" class="dghost" id="calPick">挑一座山</button>';
+  calFoot();calList();
+}
+function calFoot(){const f=$('calFoot');let h='';
+  if(EDIT&&!SEL){const t=EDIT;h='<p class="cfk">行程</p><p class="cfd">'+rngH(t.start,t.end)+'</p>'+
+      '<div class="cfp">'+t.ranks.map(r=>byRank[r]?'<button type="button" class="cfpk" data-rank="'+r+'">'+esc(byRank[r].name)+'<i>›</i></button>':'').join('')+'</div>'+
+      '<div class="cfa"><button type="button" id="cfDate">改日期</button><button type="button" id="cfPeak">改山</button><button type="button" id="cfDel" class="del">刪除行程</button><button type="button" id="cfX">完成</button></div>'}
+  else if(SEL){const has=SEL.ranks.length,dt=SEL.start;
+    h='<p class="cfk">'+(EDIT?'改這趟行程':'新的行程')+'</p><p class="cfd">'+(dt?rngH(SEL.start,SEL.end):'<span class="mutet">在日曆上點出發日</span>')+'</p>'+
+      (dt&&(!SEL.end||SEL.end===SEL.start)?'<p class="cfh">好幾天？再點最後一天，或按住往右滑。</p>':'')+
+      (has?'<div class="cfp">'+SEL.ranks.map(r=>byRank[r]?'<span class="cfpk static">'+esc(byRank[r].name)+'</span>':'').join('')+'</div>':'')+
+      '<button type="button" class="dbtn" id="cfGo"'+(has&&!dt?' disabled':'')+'>'+(!has?'挑山':!dt?'先選日期':'排好了')+'</button>'+
+      '<div class="cfa">'+(has?'<button type="button" id="cfPeak">改山</button>':'')+'<button type="button" id="cfX">取消</button></div>'}
+  f.innerHTML=h;f.hidden=!h;
+  const on=(id,fn)=>{const b=$(id);if(b)b.onclick=fn};
+  on('cfX',()=>{SEL=null;EDIT=null;calRender()});
+  on('cfDate',()=>{SEL={start:null,end:null,ranks:EDIT.ranks.slice(),len:dDiff(EDIT.start,EDIT.end)+1};calRender();say('在日曆上點新的出發日')});
+  on('cfPeak',()=>pickOpen(SEL?SEL.ranks:EDIT.ranks));
+  on('cfDel',()=>{if(!confirm('刪除 '+trTxt(EDIT)+' 的行程？'))return;TRIPS=TRIPS.filter(x=>x.id!==EDIT.id);EDIT=null;saveTrips();say('行程刪除了')});
+  on('cfGo',()=>{if(!SEL.ranks.length){pickOpen([]);return}if(!SEL.start)return;tripCommit()});
+  f.querySelectorAll('[data-rank]').forEach(b=>b.onclick=()=>{calClose();openPeak(+b.dataset.rank,true)});
+}
+function calList(){const T=todayS(),up=TRIPS.filter(t=>t.end>=T).sort((a,b)=>a.start<b.start?-1:1);let lh='';
+  up.forEach(t=>{const n=dDiff(T,t.start);lh+='<button type="button" class="ctr" data-id="'+t.id+'"><small>'+trTxt(t)+'</small><b>'+esc(tNames(t,2))+'</b><span>'+(n>0?'還有 <em>'+n+'</em> 天':'出發中')+'</span></button>'});
+  if(!up.length&&!SEL)lh='<p class="cempty">點一天，或按住往右滑選好幾天，再挑要爬的山。</p>';
+  if(!SEL)lh+='<button type="button" class="dghost" id="calPick">挑山</button>';
   $('calList').innerHTML=lh;
-  document.querySelectorAll('#cal [data-rank]').forEach(b=>b.onclick=()=>{calClose();openPeak(+b.dataset.rank,true)});
-  $('calPick').onclick=()=>{calClose();setTab('list')};
+  $('calList').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{EDIT=TRIPS.find(x=>x.id===b.dataset.id);SEL=null;const d=pymd(EDIT.start);calM=new Date(d.getFullYear(),d.getMonth(),1);calRender();$('calFoot').scrollIntoView({block:'nearest',behavior:'smooth'})});
+  const cp=$('calPick');if(cp)cp.onclick=()=>{SEL={start:null,end:null,ranks:[]};EDIT=null;pickOpen([])};
 }
+function tripCommit(){const old=EDIT,t={id:old?old.id:'t'+Date.now().toString(36),start:SEL.start,end:SEL.end&&SEL.end>SEL.start?SEL.end:SEL.start,ranks:SEL.ranks.slice(),created:old?old.created:new Date().toISOString()};
+  TRIPS=TRIPS.filter(x=>x.id!==t.id);TRIPS.push(t);SEL=null;EDIT=t;saveTrips();const n=dDiff(todayS(),t.start);say('排好了'+(n>0?'，還有 '+n+' 天':''));
+  const g=$('calGr').querySelector('[data-d="'+t.start+'"]');if(g){g.classList.add('pop')}}
+function calDay(s){ // 點一下：有行程就打開，沒有就開始選日期；已選一天再點後面的日子 = 選範圍
+  if(SEL&&SEL.start&&(!SEL.end||SEL.end===SEL.start)&&s>SEL.start){SEL.end=s;calRender();return}
+  if(!SEL){const t=TRIPS.find(x=>x.start<=s&&s<=x.end);if(t){EDIT=t;calRender();$('calFoot').scrollIntoView({block:'nearest',behavior:'smooth'});return}SEL={start:null,end:null,ranks:[]};EDIT=null}
+  SEL.start=s;SEL.end=SEL.len>1?dAdd(s,SEL.len-1):null;calRender()}
+(function(){ // 按住往右滑選範圍
+  const g=$('calGr');let lp=0,drag=false,a=null,moved=false,sx=0,sy=0;
+  const dayAt=(x,y)=>{const el=document.elementFromPoint(x,y),b=el&&el.closest('.cd[data-d]');return b&&!b.disabled?b.dataset.d:null};
+  g.addEventListener('pointerdown',e=>{const b=e.target.closest('.cd[data-d]');if(!b||b.disabled)return;try{g.setPointerCapture(e.pointerId)}catch(_){}a=b.dataset.d;moved=false;drag=false;sx=e.clientX;sy=e.clientY;
+    clearTimeout(lp);lp=setTimeout(()=>{drag=true;try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}
+      if(!SEL){SEL={start:null,end:null,ranks:[]};EDIT=null}else if(EDIT&&!SEL.ranks.length)SEL.ranks=EDIT.ranks.slice();SEL.start=a;SEL.end=a;calRender()},320)});
+  g.addEventListener('pointermove',e=>{if(!a)return;if(!drag){if(Math.hypot(e.clientX-sx,e.clientY-sy)>10){clearTimeout(lp);moved=true}return}
+    e.preventDefault();const d=dayAt(e.clientX,e.clientY);if(!d)return;const s=d<a?d:a,en=d<a?a:d;if(SEL.start!==s||SEL.end!==en){SEL.start=s;SEL.end=en;calRender()}});
+  const up=e=>{clearTimeout(lp);if(!a)return;const d=a;a=null;if(drag){drag=false;if(!SEL.ranks.length)pickOpen([]);return}if(!moved&&e.type==='pointerup')calDay(d)};
+  g.addEventListener('pointerup',up);g.addEventListener('pointercancel',up);g.addEventListener('contextmenu',e=>e.preventDefault());
+  g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const b=e.target.closest('.cd[data-d]');if(b){e.preventDefault();calDay(b.dataset.d)}}});
+})();
+/* ---------- 挑山：可複選，點了就加入 ---------- */
+let PK2={set:'bai',q:'',sel:[]};
+function pickOpen(ranks){PK2.sel=ranks.slice();PK2.q='';$('pickQ').value='';const r0=ranks[0];PK2.set=r0>=2000?'shan':r0>=1000?'xiao':'bai';$('pick').hidden=false;pickRender();try{$('pickQ').focus({preventScroll:true})}catch(e){}}
+function pickRender(){
+  const pool=PK2.set==='bai'?P:PK2.set==='xiao'?XB:SH,q=PK2.q.trim(),src=q?[...P,...XB,...SH]:pool;
+  const L=src.filter(p=>!q||p.name.includes(q)).slice(0,q?60:200);
+  document.querySelectorAll('#pickTabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.set===PK2.set&&!q)));
+  $('pickL').innerHTML=L.map(p=>{const on=PK2.sel.includes(p.rank),r=REC(p);return '<button type="button" class="pkr'+(on?' on':'')+'" data-rank="'+p.rank+'" aria-pressed="'+on+'"><b>'+esc(p.name)+'</b><span>'+(r&&isVerified(r)?'已登頂・':'')+fmt(p.h)+' m</span><i aria-hidden="true"></i></button>'}).join('')||'<p class="cempty">找不到「'+esc(q)+'」。</p>';
+  const n=PK2.sel.length;$('pickGo').textContent=n?'就這 '+n+' 座':'先點要爬的山';$('pickGo').disabled=!n;
+  $('pickChips').innerHTML=PK2.sel.map(r=>byRank[r]?'<button type="button" data-rank="'+r+'" aria-label="移除 '+esc(byRank[r].name)+'">'+esc(byRank[r].name)+' ×</button>':'').join('');
+}
+$('pickL').addEventListener('click',e=>{const b=e.target.closest('[data-rank]');if(!b)return;const r=+b.dataset.rank,i=PK2.sel.indexOf(r);if(i>=0)PK2.sel.splice(i,1);else PK2.sel.push(r);pickRender()});
+$('pickChips').addEventListener('click',e=>{const b=e.target.closest('[data-rank]');if(!b)return;PK2.sel=PK2.sel.filter(x=>x!==+b.dataset.rank);pickRender()});
+$('pickTabs').addEventListener('click',e=>{const b=e.target.closest('[data-set]');if(!b)return;PK2.set=b.dataset.set;PK2.q='';$('pickQ').value='';pickRender()});
+$('pickQ').addEventListener('input',e=>{PK2.q=e.target.value;pickRender()});
+$('pickX').onclick=()=>{$('pick').hidden=true;if(SEL&&!SEL.ranks.length&&!SEL.start)SEL=null;calRender()};
+$('pickGo').onclick=()=>{if(!PK2.sel.length)return;$('pick').hidden=true;
+  if(!SEL)SEL={start:null,end:null,ranks:[]};SEL.ranks=PK2.sel.slice();
+  if(EDIT&&!SEL.start){SEL.start=EDIT.start;SEL.end=EDIT.end;tripCommit();return}
+  if(SEL.start){tripCommit();return}
+  calRender();say('在日曆上點出發日')};
 $('calX').onclick=calClose;$('calPrev').onclick=()=>{calM=new Date(calM.getFullYear(),calM.getMonth()-1,1);calRender()};$('calNext').onclick=()=>{calM=new Date(calM.getFullYear(),calM.getMonth()+1,1);calRender()};
-function tripBlock(p,defDays){
+/* 山頭頁的行程列：點了直接打開月曆，這座山已經帶進去 */
+function tripBlock(p){
   const t=tripOf(p.rank),T=todayS();
-  if(t){const n=dDiff(T,t.start);return '<button type="button" class="dtrow" id="tEdit" aria-expanded="false"><span class="dtk">行程</span><b>'+trTxt(t)+'</b><span class="dtn">'+(n>0?'還有 <em>'+n+'</em> 天':t.end>=T?'出發中':'結束了')+'</span><i aria-hidden="true">›</i></button>'+tripForm(t.start,dDiff(t.start,t.end)+1,true)}
-  return '<button type="button" class="dtrow none" id="tEdit" aria-expanded="false"><span class="dtk">行程</span><b>選日期</b><i aria-hidden="true">›</i></button>'+tripForm(dAdd(T,7),defDays,false);
+  if(t){const n=dDiff(T,t.start);return '<button type="button" class="dtrow" id="tEdit"><span class="dtk">行程</span><b>'+trTxt(t)+'</b><span class="dtn">'+(n>0?'還有 <em>'+n+'</em> 天':t.end>=T?'出發中':'結束了')+'</span><i aria-hidden="true">›</i></button>'}
+  return '<button type="button" class="dtrow none" id="tEdit"><span class="dtk">行程</span><b>排進行程</b><i aria-hidden="true">›</i></button>';
 }
-function tripForm(start,days,has){return '<div class="tform" id="tForm" hidden><div class="tfr"><label>出發日<input type="date" id="tStart" value="'+start+'" min="'+todayS()+'"></label>'+
-  '<label>天數<span class="tstep"><button type="button" id="tMinus" aria-label="少一天">−</button><output id="tDays">'+Math.max(1,days)+'</output><button type="button" id="tPlus" aria-label="多一天">＋</button></span></label></div>'+
-  '<button type="button" class="dbtn" id="tSave">排好了</button>'+(has?'<button type="button" class="mlater" id="tDel">取消這個行程</button>':'')+'</div>'}
-function wireTrip(p){
-  const f=$('tForm');if(!f)return;const ed=$('tEdit'),del=$('tDel'),out=$('tDays');
-  if(ed)ed.onclick=()=>{f.hidden=!f.hidden;ed.setAttribute('aria-expanded',String(!f.hidden));ed.classList.toggle('open',!f.hidden)};
-  $('tMinus').onclick=()=>{out.textContent=Math.max(1,+out.textContent-1)};$('tPlus').onclick=()=>{out.textContent=Math.min(14,+out.textContent+1)};
-  if(del)del.onclick=()=>{if(!confirm('取消 '+p.name+' 的行程？'))return;TRIPS=TRIPS.filter(x=>x.rank!==p.rank);saveTrips();renderSheet();say('行程取消了')};
-  $('tSave').onclick=()=>{const v=$('tStart').value;if(!/^\d{4}-\d{2}-\d{2}$/.test(v)){say('先選出發日。',true);return}
-    const days=+out.textContent||1,old=tripOf(p.rank),t={id:old?old.id:'t'+Date.now().toString(36),rank:p.rank,set:p.set,name:p.name,start:v,end:dAdd(v,days-1),created:old?old.created:new Date().toISOString()};
-    TRIPS=TRIPS.filter(x=>x.id!==t.id);TRIPS.push(t);saveTrips();renderSheet();const n=dDiff(todayS(),v);say(p.name+' 排好了'+(n>0?'，還有 '+n+' 天':''))};
-}
+function wireTrip(p){const ed=$('tEdit');if(!ed)return;ed.onclick=()=>{const t=tripOf(p.rank);closeSheet();setTimeout(()=>{calOpen(t?{trip:t}:{ranks:[p.rank]});if(!t)say('在日曆上點出發日')},200)}}
 /* ---------- 規則更新：舊紀錄先備份，再清空重來（只跑一次） ---------- */
 const MKEY='yy-verify-v1';
 function migrateNag(){try{if(localStorage.getItem(MKEY))return;const n=Object.keys(LDB.raw()).length;if(!n){localStorage.setItem(MKEY,'1');return}
