@@ -17,7 +17,10 @@
 
 <meta name="claude:viewport-fit-sides" content="cover">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 字型不擋畫面：山上訊號差時先用系統字顯示，字型到了再換上 -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap"></noscript>
 <style>
 /* Layout: one-screen game world map. Taiwan lies under a sea of clouds (雲海); each climbed peak breaks through and lights the terrain around it.
    Phone: map fills the screen, slim player bar on top, three tabs below (地圖 / 山頭 / 能力), details rise as a sheet.
@@ -104,6 +107,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
   font:500 11px/1.3 var(--body);color:var(--mute);background:rgba(15,26,43,.9);border:1px solid var(--line);transition:opacity .5s;pointer-events:none}
 .toast.hide{opacity:0;pointer-events:none}
 body>.toast{position:fixed;z-index:130;left:16px;right:auto;bottom:calc(var(--tabs-h) + 96px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 32px);pointer-events:auto;cursor:pointer;font-size:14px;padding:10px 16px}
+body>.toast.top{top:calc(var(--top) + 12px);bottom:auto}
 body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1px 0 #F2A37B,0 12px 30px rgba(0,0,0,.45)}
 
 /* ---------- player bar ---------- */
@@ -160,7 +164,7 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .rs{display:flex;align-items:center;gap:8px;font:500 11px/1 var(--mono);color:var(--mute);white-space:nowrap;overflow:hidden}
 .rs em{font:400 11px/1 var(--body);font-style:normal;overflow:hidden;text-overflow:ellipsis}
 .tag{flex:none;font:700 11px/1 var(--body);padding:6px 9px;border-radius:99px;white-space:nowrap}
-.tag.done{color:var(--gold);background:rgba(244,193,82,.14)}
+.tag.done{color:var(--gold);background:rgba(244,193,82,.14)}.tag.done.ag{color:#E4EAF1;background:rgba(213,221,230,.14)}.tag.done.un{color:#C8D3E2;background:none;box-shadow:inset 0 0 0 1px rgba(154,167,182,.5)}
 .tag.ok{color:var(--ok);background:rgba(94,158,120,.13)}
 .tag.stretch{color:var(--stretch);background:rgba(240,163,94,.13)}
 .tag.far{color:var(--far);background:rgba(124,138,160,.13)}
@@ -1154,7 +1158,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .picktabs{display:flex;gap:24px;margin:14px 0 6px}.picktabs button{min-height:44px;padding:0;background:none;border:0;border-bottom:2px solid transparent;color:#8FA3BD;font:500 14px var(--body);letter-spacing:.12em}.picktabs button[aria-pressed="true"]{color:var(--ink);border-color:var(--gold)}
 .pkr{display:grid;grid-template-columns:minmax(0,1fr) auto 28px;align-items:center;column-gap:14px;width:100%;min-height:56px;padding:0;background:none;border:0;border-bottom:1px solid rgba(200,211,226,.1);color:var(--ink);text-align:left;cursor:pointer}
-.pkr b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pkr span{font:400 14px var(--body);color:#8FA3BD;white-space:nowrap}
+.pkr b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pkr b .pkmain{margin-left:8px;font:500 11px var(--body);letter-spacing:.32em;color:var(--gold);vertical-align:middle}.pkr span{font:400 14px var(--body);color:#8FA3BD;white-space:nowrap}
 .pkr i{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(200,211,226,.4);display:grid;place-items:center}
 .pkr.on b{color:var(--gold)}.pkr.on i{background:var(--gold);border-color:var(--gold)}.pkr.on i::after{content:'';width:10px;height:6px;border-left:2px solid #0B1626;border-bottom:2px solid #0B1626;transform:translateY(-1px) rotate(-45deg)}
 .pickbar{max-width:520px;width:100%;margin:0 auto;padding:12px 24px calc(env(safe-area-inset-bottom,0px) + 16px);background:linear-gradient(180deg,rgba(5,10,18,0),#050A12 30%)}
@@ -1216,6 +1220,8 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .gsok{font:600 18px/1.6 var(--display);color:var(--gold)}.gsdup{font:400 14px/1.6 var(--body);color:#C8D3E2}.gsk{margin:14px 0 4px;font:500 11px/1 var(--body);letter-spacing:.32em;color:#F2A37B}
 .gsbad{list-style:none;margin:0;padding:0;max-height:40vh;overflow-y:auto}.gsbad li{padding:8px 0;border-bottom:1px solid rgba(200,211,226,.1)}.gsbad b{display:block;font:500 14px var(--body);word-break:break-all}.gsbad span{font:400 14px/1.5 var(--body);color:#F2A37B}
 .mk.done.self{color:#9AA7B6}.mk.done.self .lb{color:#C8D3E2;font-weight:500}.mk.done.self::before{background:radial-gradient(circle,rgba(200,211,226,.22),rgba(200,211,226,0) 68%)}.mk.done.self::after{animation:none;opacity:0}
+.mk.done.ag{color:#D5DDE6}.mk.done.ag .lb{color:#E4EAF1}.mk.done.ag::before{background:radial-gradient(circle,rgba(213,221,230,.36),rgba(213,221,230,0) 68%)}.mk.done.ag::after{border-color:#D5DDE6}.mk.done.ag .ph{border-color:#D5DDE6}.mk.done.self .ph{border:2px dashed #7F8FA6}
+.mk.cl.has-self span{border:1.5px dashed #9AA7B6;color:#C8D3E2;background:rgba(20,28,40,.9)}
 .dmedal.un{color:#9AA7B6}.dupg{margin:4px 0 0;font:400 14px/1.6 var(--body);color:#C8D3E2;text-align:center}
 .acct{margin:0 0 20px;padding:18px 0 20px;border-top:1px solid rgba(244,193,82,.3);border-bottom:1px solid rgba(200,211,226,.12)}
 .acct .dk{margin:0 0 8px}.acsay{margin:0 0 14px;font:400 14px/1.7 var(--body);color:#C8D3E2}
@@ -1224,11 +1230,12 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .acme div{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.acme b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .acst{font:400 14px var(--body);color:#8FA3BD}.acst.ok{color:#8FD3A8}.acst.err{color:#F2A37B}.acst.ok::before{content:'● ';font-size:10px;vertical-align:2px}
 .acout{min-height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px}
-.me{position:absolute;z-index:8;top:calc(var(--top) + 18px);right:max(16px,env(safe-area-inset-right,0px));min-width:48px;height:56px;padding:0;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;color:#C8D3E2;cursor:pointer}
-.me img,.me .mei{width:36px;height:36px;border-radius:50%;object-fit:cover}.me .mei{box-shadow:inset 0 0 0 1.25px rgba(200,211,226,.55);background:radial-gradient(circle at 50% 38%,rgba(200,211,226,.55) 0 5.5px,transparent 6px),radial-gradient(circle at 50% 100%,rgba(200,211,226,.55) 0 11px,transparent 11.5px)}
-.me span{font:500 11px/1 var(--body);letter-spacing:.2em;color:var(--gold)}.me:not(.in) .mei{box-shadow:inset 0 0 0 1.25px rgba(244,193,82,.8),0 0 12px rgba(244,193,82,.2)}
-.me.in img,.me.in .mei{box-shadow:0 0 0 1.5px rgba(244,193,82,.7)}.me{position:absolute}.me b{position:absolute;top:0;right:4px;width:10px;height:10px;border-radius:50%;border:2px solid #0B1626}.me .mesync{background:#8FA3BD;animation:holdPulse 1s ease-in-out infinite}.me .mewarn{background:#F2A37B}
-.app:not([data-tab="map"]) .me{display:none}@media (min-width:900px){.me{top:16px;right:16px}}
+.avb{position:absolute;z-index:8;top:calc(var(--top) + 18px);right:max(16px,env(safe-area-inset-right,0px));min-width:48px;height:56px;padding:0;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;color:#C8D3E2;cursor:pointer}
+.avb img,.avb .mei{width:36px;height:36px;border-radius:50%;object-fit:cover}.avb .mei{box-shadow:inset 0 0 0 1.25px rgba(200,211,226,.55);background:radial-gradient(circle at 50% 38%,rgba(200,211,226,.55) 0 5.5px,transparent 6px),radial-gradient(circle at 50% 100%,rgba(200,211,226,.55) 0 11px,transparent 11.5px)}
+.avb span{font:500 11px/1 var(--body);letter-spacing:.2em;color:var(--gold)}.avb:not(.in) .mei{box-shadow:inset 0 0 0 1.25px rgba(244,193,82,.8),0 0 12px rgba(244,193,82,.2)}
+.avb.in img,.avb.in .mei{box-shadow:0 0 0 1.5px rgba(244,193,82,.7)}.avb{position:absolute}.avb b{position:absolute;top:0;right:4px;width:10px;height:10px;border-radius:50%;border:2px solid #0B1626}.avb .mesync{background:#8FA3BD;animation:holdPulse 1s ease-in-out infinite}.avb .mewarn{background:#F2A37B}
+.app:not([data-tab="map"]) .avb{display:none}
+.offl{position:fixed;z-index:9;top:calc(var(--top) + 6px);left:50%;transform:translateX(-50%);margin:0;padding:0 0 4px;font:500 11px/1.4 var(--body);letter-spacing:.32em;color:#C8D3E2;border-bottom:1px solid rgba(244,193,82,.6);white-space:nowrap;pointer-events:none}.celog.off{color:var(--t2);text-decoration:none;cursor:default}@media (min-width:900px){.avb{top:16px;right:16px}}
 .lcard .gbtn{margin-top:18px}.lcard>p:not(.mkick){margin:6px 0 0}
 .celog{display:block;margin:14px auto 0;min-height:44px;padding:0;background:none;border:0;color:var(--gold);font:500 14px var(--body)}
 .mehd{display:flex;align-items:center;gap:16px;padding-right:32px}.mehd img,.mehd .mei{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px rgba(244,193,82,.7)}
@@ -1498,7 +1505,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
     <canvas id="st" aria-hidden="true"></canvas>
     <div class="legend" id="legend"><ul aria-label="圖例"><li class="c-done"><i></i><span>已登頂</span></li><li class="c-ok"><i></i><span>可以挑戰</span></li><li class="c-stretch"><i></i><span>有點勉強</span></li><li class="c-far"><i></i><span>還太早</span></li><li><b class="cn">6</b><span>山的數量</span></li></ul></div>
     <div class="markers" id="markers" role="group" aria-label="百岳地圖，金色是已登頂的山"></div>
-    <div class="toast" id="toast" role="status">讀取紀錄中…</div>
+    <div class="toast hide" id="toast" role="status"></div>
     <button class="quest" id="quest" type="button" hidden>
       <span class="qdot" id="qDot"></span><span class="qi"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 18V2.5M5 3.5h10l-2.5 3.5L15 10.5H5"/></svg></span>
       <span class="qt"><small>下一關<em class="tag ok" id="qSt"></em></small><b id="qName"></b><span class="qm" id="qMeta"></span></span>
@@ -1514,7 +1521,8 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
     </div>
   </div>
 
-  <button type="button" class="me" id="meBtn" aria-label="登入"><i class="mei"></i><span>登入</span></button>
+  <p class="offl" id="offl" role="status" hidden>離線中・紀錄先存在手機</p>
+  <button type="button" class="avb" id="meBtn" aria-label="登入"><i class="mei"></i><span>登入</span></button>
   <button class="player" id="player" type="button" aria-label="看等級與數據">
     <span class="moonav"><svg aria-hidden="true" viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" fill="#F4E3B4" opacity=".08"/><circle cx="36" cy="36" r="30" fill="none" stroke="#2A3B55" stroke-width="3"/><circle id="pRing" cx="36" cy="36" r="30" fill="none" stroke="#A9C3E6" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 188.5" transform="rotate(-90 36 36)"/><circle cx="36" cy="36" r="23" fill="#24344E"/><path id="pMoon" d="" fill="#F4E3B4"/></svg><span class="lvb"><b id="pLv">1</b> 級</span></span>
     <span class="ptxt"><span class="ptitle" id="pTitle">山腳新手</span><span class="pxp" id="pXpTxt">0 / 100 XP</span></span>
@@ -1839,13 +1847,13 @@ function routeBlock(p){
   if(ks.length>1)h+='<div class="rtabs" role="tablist" aria-label="選擇路線">'+ks.map((k,i)=>{const t=ROUTES[k];return'<button type="button" role="tab" aria-selected="'+(i===0)+'" data-rt="'+i+'"><b>'+esc(t.n)+'</b><small>'+(t.km?t.km+' km':t.d+' 天')+(t.tm?' · '+esc(t.tm):'')+(i===0?' · 最常見':'')+'</small></button>'}).join('')+'</div>';
   ks.forEach((k,i)=>{const t=ROUTES[k];
     h+='<div class="rtc" role="tabpanel" data-rp="'+i+'"'+(i?' hidden':'')+'><h4>'+esc(t.n)+(bai?'<small>'+(t.pk.length>1?'一趟 '+t.pk.length+' 座百岳':'單座')+'</small>':'')+'</h4><div class="chips">'+
-      (t.tm?'<span>約 <b>'+esc(t.tm)+'</b></span>':'<span><b>'+t.d+'</b> 天</span>')+(t.km?'<span><b>'+t.km+'</b> km '+t.kt+'</span>':'')+(t.gain?'<span>總爬升約 <b>'+t.gain+'</b> m</span>':'')+(t.g?'<span>'+(t.src==='參考'?'這趟分級（參考）':'這趟分級（官方）')+' <b>'+t.g+'</b> 級</span>':'')+'</div>';
+      (t.tm?'<span>約 <b>'+esc(t.tm)+'</b></span>':'<span><b>'+t.d+'</b> 天</span>')+(t.km?'<span><b>'+t.km+'</b> km '+t.kt+'</span>':'')+(t.gain?'<span>總爬升約 <b>'+t.gain+'</b> m</span>':'')+'</div>';
     if(t.rprof){h+=profChartB(t,p.rank);h+='<details class="rfold"><summary><b>各站海拔與爬升</b>示意<small>點開看每一站</small></summary><div class="rtc">'+rtProfile(t,p.rank)+'</div></details>'}
     else h+=t.prof&&t.auto?profChart(t,p.rank):rtProfile(t,p.rank);
     if(t.prof&&!t.auto)h+='<details class="rfold"><summary><b>真實海拔剖面</b>依步道與地形資料<small>點開看實際距離的爬升圖</small></summary><div class="rtc">'+profChart(t,p.rank)+'<p class="rsrc">'+esc(t.pnote||'')+'</p></div></details>';
     if(t.auto)h+='<p class="rsrc">路線取自 OpenStreetMap 步道（從登山口到山頂的最短步道），海拔取自內政部 20 m 數值地形模型（政府資料開放授權）並對齊山頂高度。小起伏仍會被抹平，爬升可能略為少算；時間依 DIN 33466 健行公式估算（平路 4 km/h、上坡 300 m/h、下坡 500 m/h），不含休息。</p>';
     if(t.note)h+='<p class="rsrc">'+esc(t.note)+'</p>';
-    h+='<p class="rsrc">'+(t.refs?'資料來源：'+t.refs.map(r=>'<a href="'+esc(r[1])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a>').join('、')+(t.auto?'。':'。數字依各篇紀錄整理，各篇略有出入，現場以指標為準。'):SRC_TXT[t.src])+'</p></div>';
+    h+='<p class="rsrc">'+(t.g?(t.src==='參考'?'步道分級（參考）':'國家公園步道分級')+' '+t.g+' 級（0–6 級，數字越大越難）。':'')+(t.refs?'資料來源：'+t.refs.map(r=>'<a href="'+esc(r[1])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a>').join('、')+(t.auto?'。':'。數字依各篇紀錄整理，各篇略有出入，現場以指標為準。'):SRC_TXT[t.src])+'</p></div>';
   });
   if(bai)h+='<p class="rnote">兩個分級都是國家公園署的步道分級（0–6 級，越高越難）：標題旁的<b>山頭分級</b>是走最常見路線上這座山的等級；這裡的<b>這趟分級</b>是整條走法的等級，縱走通常比較高。<br>怎麼看剖面：只把各站海拔連起來，水平不按實際距離；站與站之間的小起伏沒算進去，所以爬升寫「至少」。登山口、山屋海拔為約值。</p>';
   else if(ks.some(k=>!ROUTES[k].auto))h+='<p class="rnote">怎麼看剖面：只把各站海拔連起來，水平不按實際距離；站與站之間的小起伏沒算進去。登山口與山屋海拔為約值。</p>';
@@ -1934,7 +1942,7 @@ function chState(g){const all=P.filter(p=>p.grade===g),dn=all.filter(p=>RECS[p.r
   return{g,all,dn,s,st:dn===all.length?'clear':G.lv>=s||provedGrade()>=g?'open':G.lv>=s-3?'near':'lock'}}
 function reason(p){
   const st=statusOf(p),s=SUGGEST_LV[p.grade],r=RECS[p.rank];
-  if(st==='done')return'這一關已經拿下'+(r&&r.date?'（'+esc(r.date)+'）':'')+'，獲得 +'+XP_BY_GRADE[p.grade]+' XP。';
+  if(st==='done')return'這一關已經拿下'+(r&&r.date?'（'+esc(r.date)+'）':'')+'，獲得 +'+Math.round(xw(r)*XP_BY_GRADE[p.grade])+' 點'+(r&&r.verified==='self'?'（補登 30%，補傳軌跡可拿滿 '+XP_BY_GRADE[p.grade]+' 點）':'')+'。';
   if(st==='ok')return G.lv>=s?'你的等級夠了，可以排進行程。':'你已經登頂過難度 '+provedGrade()+' 的山，這一關的難度你走得來。';
   return'離建議等級還差 '+(s-G.lv)+' 級，再 '+fmt(LV[s-1]-G.xp)+' XP。'+(st==='far'?'先把前面的章節走完。':'體能和經驗要再準備。');
 }
@@ -2185,12 +2193,13 @@ function layout(force){
       if(!el){el=document.createElement('button');el.type='button';el.style.setProperty('--tw-d',(-Math.random()*4).toFixed(2)+'s');el.style.setProperty('--tw-t',(2.4+Math.random()*2.4).toFixed(2)+'s');el.style.setProperty('--in-d',(Math.random()*.7).toFixed(2)+'s');mkBox.appendChild(el);mkEls.set(c.key,el);el._c=c}
       el._c=c;
       if(c.m.length===1){const p=c.m[0],st=statusOf(p),isNext=first&&first.rank===p.rank;
-        el.className='mk '+st+(isNext?' next':'')+(S.sel===p.rank?' sel':'')+(st==='done'&&REC(p)&&REC(p).verified==='self'?' self':'');
+        el.className='mk '+st+(isNext?' next':'')+(S.sel===p.rank?' sel':'')+(st==='done'&&REC(p)?(REC(p).verified==='self'?' self':REC(p).verified==='checkin'?' ag':''):'');
         const th=st==='done'&&REC(p)&&safeUrl(REC(p).thumb);el.classList.toggle('hasph',!!th);
         el.innerHTML=(th?'<span class="ph" style="background-image:url(&quot;'+esc(th)+'&quot;)"></span>':p.set==='xiao'?(st==='done'?ICO.xdone:ICO.xdot):p.set==='shan'?(st==='done'?ICO.sdone:ICO.sdot):st==='done'?ICO.done:ICO.peak)+'<span class="lb">'+esc(p.name)+'</span>';
-        el.setAttribute('aria-label',p.name+'，'+fmt(p.h)+' 公尺，'+stTxt(p,st)+(isNext?'，下一關':''));
+        el.setAttribute('aria-label',p.name+'，'+fmt(p.h)+' 公尺，'+stTxt(p,st)+(st==='done'&&REC(p)?'，'+(REC(p).verified==='gps'?'金章':REC(p).verified==='checkin'?'銀章':'補登'):'')+(isNext?'，下一關':''));
       }else{const sts=c.m.map(statusOf);
-        el.className='mk cl'+(c.dn?' has-done':sts.includes('ok')?' has-ok':sts.includes('stretch')?' has-stretch':'');
+        const vf=c.m.map(p=>statusOf(p)==='done'&&REC(p)?REC(p).verified:'').filter(Boolean),real=vf.some(v=>v==='gps'||v==='checkin');
+        el.className='mk cl'+(c.dn?(real?' has-done':' has-self'):sts.includes('ok')?' has-ok':sts.includes('stretch')?' has-stretch':'');
         el.innerHTML='<span>'+c.m.length+'</span>';
         el.setAttribute('aria-label',c.m.length+(c.dn?' 座已登頂的山：':' 座山：')+c.m.slice(0,4).map(p=>p.name).join('、')+(c.m.length>4?'…':'')+'，點一下放大');}
     }
@@ -2559,12 +2568,12 @@ function celeCard(p,r,prev,ps){
   if(bai){const t=mainRoute(p,r),hs=t?(t.rsk||t.ch||[]).map(c=>c[0]).filter(n=>/山莊|山屋/.test(n)):[];if(hs[0])lines.push(['山屋',esc(hs[0])+' 已開放','帳號上線後可以進去'])}
   if(bai)BADGES.forEach(([nm,rs])=>{if(rs.includes(p.rank)){const d=rs.filter(x=>RECS[x]).length;lines.push(['成就',nm+' '+d+' / '+rs.length,d===rs.length?'全部集滿！':'再 '+(rs.length-d)+' 座'])}});
   if(bai&&NXT[0])lines.push(['下一關',esc(NXT[0].name),'難度 '+NXT[0].grade+' / 5']);
-  if(ps.length>1)lines.push(['同一趟',ps.filter(x=>x!==p).map(x=>esc(x.name)).join('、'),'也一起點亮了']);
+  if(ps.length>1){const src=x=>{const q=(!x.set||x.set==='bai')?RECS[x.rank]:REC(x);return q&&q.source||''},s0=src(p),one=!!s0&&ps.every(x=>src(x)===s0);lines.push([one?'同一趟':'這次也',ps.filter(x=>x!==p).map(x=>esc(x.name)).join('、'),'也一起點亮了'])}
   return '<div class="ce-card yytex"><button type="button" class="ce-snd" id="ceSnd"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="on" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button><p class="ce-k">登頂成功・'+(r.verified==='checkin'?'銀章':'金章')+'</p><h2 class="ce-n">'+esc(p.name)+'</h2><p class="ce-d">'+esc(r.date||'')+'・海拔 '+fmt(p.h)+' 公尺</p>'+
     '<div class="ce-xp"><b data-cnt="'+gain+'">+0</b><span>點</span></div>'+
     '<div class="ce-lv"><span>'+(lvUp?'升級！':'')+'第 '+G.lv+' 級・'+titleOf(G.lv)+'</span><span>'+(top?'已滿級':'再 '+fmt(b-G.xp)+' 點升級')+'</span></div><div class="ce-bar"><i style="width:'+(from*100).toFixed(1)+'%" data-to="'+(to*100).toFixed(1)+'%"></i></div>'+
     (lines.length?'<div class="ce-lines">'+lines.map(l=>'<p><small>'+l[0]+'</small><b>'+l[1]+'</b><em>'+l[2]+'</em></p>').join('')+'</div>':'')+
-    '<div class="dpair"><button type="button" class="dghost" id="ceMap">回到地圖</button><button type="button" class="dbtn" id="ceGo">看這座山</button></div>'+(CL.user?'':'<button type="button" class="celog" id="ceLog">登入，把這座山存到雲端 ›</button>')+'</div>'}
+    '<div class="dpair"><button type="button" class="dghost" id="ceMap">回到地圖</button><button type="button" class="dbtn" id="ceGo">看這座山</button></div>'+(CL.user?'':!navigator.onLine?'<p class="celog off">有網路時再登入，把這座山存到雲端</p>':'<button type="button" class="celog" id="ceLog">登入，把這座山存到雲端 ›</button>')+'</div>'}
 
 function renderDPage(p){
   const bai=p.set==='bai',sh=p.set==='shan',r=bai?RECS[p.rank]:REC(p),st=r?'done':statusOf(p),isNext=bai&&NXT[0]&&NXT[0].rank===p.rank,t=mainRoute(p,r);
@@ -2723,7 +2732,7 @@ function row(p,n,badge,idx){
   const st=statusOf(p),x=p.set!=='bai';
   return '<button type="button" class="row '+st+'" data-rank="'+p.rank+'"><span class="ri'+(n||idx?' qn':'')+'">'+(n?String(n).padStart(2,'0'):idx?String(idx).padStart(2,'0'):p.set==='shan'?(st==='done'?ICO.srowDone:ICO.srow):x?(st==='done'?ICO.xrowDone:ICO.xrow):st==='done'?ICO.rowDone:ICO.rowPeak)+'</span>'+
     '<span class="rt"><span class="rn">'+(badge?'<em class="sb">'+SETN[p.set]+'</em>':'')+esc(p.name)+'</span><span class="rs">'+fmt(p.h)+' m '+(x?'<em>'+esc(p.area)+'</em>':(S.group==='route'||n?pips(p.grade):'')+'<em>'+(S.group==='route'&&!n?'':esc(p.route))+'</em>')+'</span></span>'+
-    '<span class="tag '+st+'">'+stTxt(p,st)+'</span></button>';
+    (()=>{const r=st==='done'&&REC(p),v=r&&r.verified;return '<span class="tag '+st+(v==='checkin'?' ag':v==='self'?' un':'')+'">'+(r?(v==='gps'?'金章':v==='checkin'?'銀章':'補登'):stTxt(p,st))+'</span></button>'})();
 }
 function renderList(){
   if(S.q){renderSearch();return}
@@ -2815,9 +2824,9 @@ $('sets').addEventListener('click',e=>{const b=e.target.closest('button');if(b)s
 /* ---------- search ---------- */
 const nz=t=>String(t||'').toLowerCase().replace(/[\s・·、,，]/g,'').replace(/臺/g,'台');
 function searchPeaks(q){
-  const k=nz(q);if(!k)return[];const out=[];
+  const k=nz(q);if(!k)return[];const out=[],k2=k.replace(/主峰$/,'');
   for(const p of P){let sc=0,why='';const nm=nz(p.name);
-    if(nm===k)sc=100;else if(nm.startsWith(k))sc=80;else if(nm.includes(k))sc=60;
+    if(nm===k)sc=100;else if(k2!==k&&nm===k2)sc=95;else if(nm.startsWith(k))sc=80;else if(nm.includes(k))sc=60;
     else if(String(p.rank)===k){sc=70;why='百岳第 '+p.rank+' 高'}
     else if(nz(p.route).includes(k)){sc=40;why='路線群：'+p.route}
     else if(p.park!=='無'&&nz(p.park+'國家公園').includes(k)){sc=30;why=p.park+'國家公園'}
@@ -2920,7 +2929,7 @@ function s2Count(){const els=[...document.querySelectorAll('.s2kpi b')];const va
 function renderChar(){
   const ab=abilities(),a=LV[G.lv-1]||0,b=LV[G.lv],n=G.n,top=b==null||n>=P.length,fr=top?1:clamp((G.xp-a)/(b-a),0,1);
   const list=Object.keys(RECS).map(k=>({p:byRank[k],r:RECS[k]})).sort((x,y)=>String(y.r.date||'').localeCompare(String(x.r.date||''))||x.p.rank-y.p.rank);
-  const all=[...Object.values(RECS),...Object.values(XRECS),...Object.values(SRECS)],sum=f=>all.reduce((s,x)=>s+(+x[f]||0),0),km=sum('distanceKm'),gain=sum('gainM'),mins=sum('durationMin');
+  const all=[...Object.values(RECS),...Object.values(XRECS),...Object.values(SRECS)],trips=(()=>{const seen=new Set();return all.filter(x=>{if(!(+x.distanceKm))return true;const k=(x.source||'')+'|'+(x.date||'')+'|'+x.distanceKm+'|'+(x.durationMin||'');if(seen.has(k))return false;seen.add(k);return true})})(),sum=f=>trips.reduce((s,x)=>s+(+x[f]||0),0),km=sum('distanceKm'),gain=sum('gainM'),mins=sum('durationMin');
   let h='<div class="dp sp2">'+[[8,12],[22,58],[71,9],[88,31],[46,22],[13,78],[64,66],[93,84],[33,90]].map(([x,y],i)=>'<i class="s2tw" style="left:'+x+'%;top:'+y+'%;--d:'+(3.6+i*.7).toFixed(1)+'s;--o:-'+i*.9+'s"></i>').join('')+'<i class="s2shoot"></i>';
   // summary
   h+='<div class="s2top"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true" style="overflow:visible"><circle class="s2glow" cx="28" cy="28" r="28" fill="#F4E3B4"/><circle cx="28" cy="28" r="22" fill="#24344E"/><path d="'+moonPath(28,28,22,n/100)+'" fill="#F4E3B4"/></svg>'+
@@ -2950,7 +2959,7 @@ function renderChar(){
   if(n){more+='<h3 class="s-sub">百岳登頂紀錄 '+n+' 筆</h3>'+cumChart(list);
     const show=S.histAll?list:list.slice(0,5);
     more+='<div class="hist">'+show.map(({p,r})=>{const m=[];if(r.style)m.push(esc(r.style));if(+r.durationMin)m.push(durTxt(+r.durationMin));if(+r.distanceKm)m.push((+r.distanceKm).toFixed(1)+' km');if(+r.gainM)m.push('爬升 '+fmt(+r.gainM)+' m');
-      return '<button type="button" class="hrow" data-rank="'+p.rank+'"><span class="hn">'+esc(p.name)+'<small>'+esc(r.date||'')+'</small></span><span class="hx">+'+XP_BY_GRADE[p.grade]+'</span>'+(m.length?'<span class="hm">'+m.join(' · ')+'</span>':'')+'</button>'}).join('')+'</div>';
+      return '<button type="button" class="hrow" data-rank="'+p.rank+'"><span class="hn">'+esc(p.name)+'<small>'+esc(r.date||'')+'</small></span><span class="hx">+'+Math.round(xw(r)*XP_BY_GRADE[p.grade])+(r.verified==='self'?'<small>補登</small>':'')+'</span>'+(m.length?'<span class="hm">'+m.join(' · ')+'</span>':'')+'</button>'}).join('')+'</div>';
     if(list.length>5)more+='<button type="button" class="more" id="histMore">'+(S.histAll?'只看最近 5 筆':'看全部 '+list.length+' 筆')+'</button>'}
   more+='<h3 class="s-sub">稱號</h3><ol class="ladder">'+TITLES.map(([m,t],i)=>{const last=i===TITLES.length-1,nx=TITLES[i+1],al=n>=P.length;
     const got=last?al:G.lv>=m,cur=last?al:!al&&G.lv>=m&&(!nx||G.lv<nx[0]);
@@ -2983,7 +2992,7 @@ $('charBody').addEventListener('click',e=>{
 /* ---------- tabs ---------- */
 const HASH={map:'map',list:'peaks',char:'stats',gear:'gear'};
 function setTab(t,fromHash){
-  S.tab=t;$('app').dataset.tab=t;
+  S.tab=t;$('app').dataset.tab=t;$('app').scrollTop=0;
   try{if(t==='gear')window.__gearOpen&&window.__gearOpen();else window.__gearClose&&window.__gearClose()}catch(_){}
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   if(t==='map'){requestAnimationFrame(resize);startStars()}
@@ -3008,7 +3017,10 @@ window.addEventListener('hashchange',readHash);
 
 /* ---------- data ---------- */
 const toast=$('toast');let toastT=0;
-function say(msg,err){const hp=document.getElementById('help');if(hp&&!hp.hidden&&!err){S.pend=msg;return}S.msg=msg;toast.textContent=msg;toast.classList.toggle('err',!!err);toast.classList.remove('hide');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.add('hide'),err?7000:3200)}
+function say(msg,err){const hp=document.getElementById('help');if(hp&&!hp.hidden&&!err){S.pend=msg;return}S.msg=msg;toast.textContent=msg;toast.classList.toggle('err',!!err);
+  // 有對話框或全頁面板開著時，提示改到畫面上方，不蓋住按鈕
+  toast.classList.toggle('top',!!document.querySelector('[role=dialog]:not([hidden]):not(#gbag):not(#gedit)')||document.body.classList.contains('bagopen')||(S.sel!=null&&!isDesk()));
+  toast.classList.remove('hide');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.add('hide'),err?7000:Math.max(3200,String(msg).length*160))}
 document.body.appendChild(toast);toast.onclick=()=>{clearTimeout(toastT);toast.classList.add('hide')};
 setSet(S.set,true);
 function refresh(){
@@ -3068,7 +3080,9 @@ async function importBackup(file){
   if(Array.isArray(d.trips)){TRIPS=d.trips.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created,plan:t.plan}));try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}
   LDB.replace(d.climbs);say('匯入完成：'+n+' 筆紀錄');
 }
-function backupNag(){try{const n=Object.keys(LDB.raw()).length,t=+localStorage.getItem(BKEY)||0;if(n&&Date.now()-t>30*864e5)setTimeout(()=>!CL.user&&say('已經超過一個月沒備份紀錄了，到「數據」頁按一下「備份紀錄」。',true),4000)}catch(e){}}
+function backupNag(){try{const n=Object.keys(LDB.raw()).length;if(!n||!navigator.onLine)return;let t=+localStorage.getItem(BKEY)||0;
+  if(!t){t=+localStorage.getItem('yy-first')||0;if(!t){localStorage.setItem('yy-first',String(Date.now()));return}} // 從沒備份過：從第一次有紀錄那天起算
+  if(Date.now()-t>30*864e5)setTimeout(()=>!CL.user&&say('紀錄只存在這支手機。登入，或到「數據」頁備份一份，換手機才不會不見。'),4000)}catch(e){}}
 
 /* ---------- GPX: find every peak the track passes and record it ---------- */
 const hav=(a,b,c,d)=>{const t=Math.PI/180,x=Math.sin((c-a)*t/2)**2+Math.cos(a*t)*Math.cos(c*t)*Math.sin((d-b)*t/2)**2;return 12742000*Math.asin(Math.sqrt(x))};
@@ -3320,11 +3334,12 @@ function calDay(s){ // 點一下：有行程就打開，沒有就開始選日期
 /* ---------- 挑山：可複選，點了就加入 ---------- */
 let PK2={set:'bai',q:'',sel:[]};
 function pickOpen(ranks,mode){PK2.mode=mode||'trip';$('pickT').textContent=PK2.mode==='log'?'以前爬過哪幾座？':'這趟要爬哪幾座？';PK2.sel=ranks.slice();PK2.q='';$('pickQ').value='';const r0=ranks[0];PK2.set=r0>=2000?'shan':r0>=1000?'xiao':'bai';$('pick').hidden=false;pickRender();try{$('pickQ').focus({preventScroll:true})}catch(e){}}
+const isMainPk=p=>{if(p.set&&p.set!=='bai')return false;const b=p.name.replace(/山$/,'');return b.length>0&&P.some(o=>o!==p&&o.name.startsWith(b)&&/^山?[東西南北]峰/.test(o.name.slice(b.length)))};
 function pickRender(){
   const pool=PK2.set==='bai'?P:PK2.set==='xiao'?XB:SH,q=PK2.q.trim(),src=q?[...P,...XB,...SH]:pool;
-  const L=src.filter(p=>!q||p.name.includes(q)).slice(0,q?60:200);
+  const L=(q?searchPeaks(q).filter(x=>x.sc>=60).map(x=>x.p):src).slice(0,q?60:200);
   document.querySelectorAll('#pickTabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.set===PK2.set&&!q)));
-  $('pickL').innerHTML=L.map(p=>{const on=PK2.sel.includes(p.rank),r=REC(p);return '<button type="button" class="pkr'+(on?' on':'')+'" data-rank="'+p.rank+'" aria-pressed="'+on+'"><b>'+esc(p.name)+'</b><span>'+(r&&isVerified(r)?'已登頂・':'')+fmt(p.h)+' m</span><i aria-hidden="true"></i></button>'}).join('')||'<p class="cempty">找不到「'+esc(q)+'」。</p>';
+  $('pickL').innerHTML=L.map(p=>{const on=PK2.sel.includes(p.rank),r=REC(p);return '<button type="button" class="pkr'+(on?' on':'')+'" data-rank="'+p.rank+'" aria-pressed="'+on+'"><b>'+esc(p.name)+(isMainPk(p)?'<small class="pkmain">主峰</small>':'')+'</b><span>'+(p.set==='xiao'?'小百岳・':p.set==='shan'?'小山・':'')+(r&&isVerified(r)?'已登頂・':'')+fmt(p.h)+' m</span><i aria-hidden="true"></i></button>'}).join('')||'<p class="cempty">找不到「'+esc(q)+'」。試試只打山名的前兩個字，例如「'+esc(q.slice(0,2))+'」。</p>';
   const n=PK2.sel.length;$('pickGo').textContent=n?(PK2.mode==='log'?'補登這 '+n+' 座':'就這 '+n+' 座'):(PK2.mode==='log'?'先點爬過的山':'先點要爬的山');$('pickGo').disabled=!n;
   $('pickChips').innerHTML=PK2.sel.map(r=>byRank[r]?'<button type="button" data-rank="'+r+'" aria-label="移除 '+esc(byRank[r].name)+'">'+esc(byRank[r].name)+' ×</button>':'').join('');
 }
@@ -3354,7 +3369,7 @@ function planOf(t){if(!t.plan)t.plan={};const p=t.plan;if(!Array.isArray(p.todo)
   if(!p.go)p.go='05:00';if(!p.kit){const ks=(window.__gearKits&&window.__gearKits())||[],multi=dDiff(t.start,t.end)>0;p.kit=(ks.find(k=>k.name===(multi?'過夜':'單攻'))||ks[0]||{}).id||'k1'}return p}
 const dueOf=(t,x)=>dAdd(t.start,-x.days);
 function todoDue(t){const p=planOf(t),T=todayS();return p.todo.filter(x=>!x.done&&x.kind!=='pack'&&dueOf(t,x)<=T).sort((a,b)=>b.days-a.days)[0]}
-function goPack(t){const p=t?planOf(t):null;$('cal').hidden=true;setTab('gear');setTimeout(()=>{if(p&&window.__gearUseKit)window.__gearUseKit(p.kit,tripInfo(t));setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},120)},350)}
+function goPack(t){const p=t?planOf(t):null;if(!$('plan').hidden)planClose();calClose();if(S.sel!=null)closeSheet();setTab('gear');setTimeout(()=>{if(p&&window.__gearUseKit)window.__gearUseKit(p.kit,tripInfo(t));setTimeout(()=>{const b=document.getElementById('gPackB');if(b&&!b.classList.contains('cancel'))b.click()},120)},350)}
 const hhmm=m=>{m=Math.round(m);return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
 const toMin=s=>{const a=String(s).split(':');return(+a[0])*60+(+a[1]||0)};
 function walkH(km,up,down){return (km/4+up/400+down/800)*1.15} // 平路 4 km/h、上坡每小時 400 m、下坡 800 m，再加休息
@@ -3383,9 +3398,9 @@ function planRender(){const t=TRIPS.find(x=>x.id===PLAN);if(!t){planClose();retu
   h+='<div class="pladd"><input type="text" id="plNew" placeholder="＋ 自己加一項，例如 借冰爪" maxlength="20" enterkeyhint="done"><button type="button" id="plAdd">加入</button></div></section>';
   // 時程
   const sc=schedOf(t);h+='<section class="pls"><div class="plh"><h3>時程</h3><label class="plgo">出發<input type="time" id="plGo" value="'+p.go+'"></label></div>';
-  if(sc&&sc.days<=1){const dark=sc.back>17.5*60;h+='<ol class="pltl"><li><time>'+hhmm(sc.go)+'</time><b>'+esc(sc.trail)+'出發</b></li><li class="pk"><time>'+hhmm(sc.summit)+'</time><b>抵達'+esc(sc.p.name)+'</b><span>單程約 '+(Math.round((sc.summit-sc.go)/30)/2)+' 小時</span></li>'+
-      '<li class="turn"><time>'+hhmm(sc.turn)+'</time><b>折返時間</b><span>這時候還沒到山頂，就下撤</span></li><li><time>'+hhmm(sc.back)+'</time><b>回到'+esc(sc.trail)+'</b>'+(dark?'<span class="warn">會摸黑，建議提早出發</span>':'')+'</li></ol>'}
-  else if(sc){h+='<ol class="pltl"><li><time>'+hhmm(sc.go)+'</time><b>第 1 天　'+esc(sc.trail)+'出發</b>'+(sc.huts[0]?'<span>今晚住 '+esc(sc.huts[0])+'</span>':'')+'</li><li class="pk"><time>第 2 天</time><b>攻頂'+esc(sc.p.name)+'</b><span>整條路線 '+sc.km+' 公里、'+sc.days+' 天</span></li></ol>'}
+  if(sc&&sc.days<=1){const dark=sc.back>17.5*60;h+='<ol class="pltl"><li><time>'+hhmm(sc.go)+'</time><b>'+esc(sc.trail)+'出發</b></li><li class="pk"><time>'+hhmm(sc.summit)+'</time><b>抵達'+esc(sc.p.name)+'</b><span>單程約 '+(Math.round((sc.summit-sc.go)/30)/2)+' 小時。最晚 '+hhmm(sc.turn)+' 要到，沒到就下撤</span></li>'+
+      '<li><time>'+hhmm(sc.back)+'</time><b>回到'+esc(sc.trail)+'</b>'+(dark?'<span class="warn">會摸黑，建議提早出發</span>':'')+'</li></ol>'}
+  else if(sc){h+='<ol class="pltl"><li><time>'+hhmm(sc.go)+'</time><b>第 1 天　'+esc(sc.trail)+'出發</b>'+(sc.huts[0]?'<span>今晚住 '+esc(sc.huts[0])+'</span>':'')+'</li><li class="pk"><time>第 2 天</time><b>攻頂'+esc(sc.p.name)+'</b><span>整條路線 '+sc.km+' 公里，這趟排 '+(dDiff(t.start,t.end)+1)+' 天</span></li></ol>'}
   else h+='<p class="plnote">這座山還沒有路線資料，時間先自己抓。</p>';
   if(sc)h+='<p class="plnote">依路線距離和爬升估算，實際要看體力和天氣。</p>';
   h+='</section>';
@@ -3438,6 +3453,29 @@ $('planX').onclick=planClose;
     b.addEventListener('contextmenu',e=>e.preventDefault());
     b.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();start()}});b.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stop()});
     $('recFab').addEventListener('click',()=>{reset();b.classList.remove('bad')})}}
+{const o=$('offl'),f=()=>{o.hidden=navigator.onLine};addEventListener('online',()=>{f();try{if(!CL.user&&Object.keys(LDB.raw()).length)say('有網路了。登入就能把紀錄存到雲端。')}catch(e){}});addEventListener('offline',f);f()}
+/* ---------- 手機返回鍵：只關最上層的畫面，不會整個離開 App ---------- */
+{const H=id=>{const e=$(id);return!!e&&!e.hidden},click=sel=>{const e=document.querySelector(sel);if(e)e.click()};
+  const LAYERS=[
+    [()=>H('gedit'),()=>click('#gedit .ge-x')],
+    [()=>document.body.classList.contains('bagopen'),()=>click('#gbX')],
+    [()=>!!document.querySelector('.tdue:not(.out)'),()=>click('.tdue:not(.out) .calx')],
+    [()=>H('gsum'),()=>click('#gsumOk')],
+    [()=>H('meS'),()=>{$('meS').hidden=true}],
+    [()=>H('loginS'),()=>{$('loginS').hidden=true}],
+    [()=>H('recs'),()=>{$('recs').hidden=true}],
+    [()=>H('plan'),()=>planClose()],
+    [()=>H('pick'),()=>click('#pickX')],
+    [()=>H('cal'),()=>calClose()],
+    [()=>H('help'),()=>{try{closeHelp()}catch(e){}}],
+    [()=>S.sel!=null&&!isDesk(),()=>closeSheet()]];
+  const depth=()=>LAYERS.reduce((n,[o])=>n+(o()?1:0),0);
+  let pushed=0,ignore=0;
+  const sync=()=>{const d=depth();if(d>pushed){for(;pushed<d;pushed++)history.pushState({yy:pushed+1},'')}else if(d<pushed&&!ignore){ignore=pushed-d;pushed=d;history.go(-ignore)}};
+  addEventListener('popstate',()=>{if(ignore){ignore--;return}pushed=Math.max(0,pushed-1);const top=LAYERS.find(([o])=>o());if(top){top[1]();setTimeout(sync,0)}});
+  const mo=new MutationObserver(()=>{clearTimeout(mo._t);mo._t=setTimeout(sync,60)});
+  ['gedit','gbag','gsum','meS','loginS','recs','plan','pick','cal','help','sheet'].forEach(id=>{const e=$(id)||document.getElementById(id);if(e)mo.observe(e,{attributes:true,attributeFilter:['hidden','class']})});
+  mo.observe(document.body,{attributes:true,attributeFilter:['class'],childList:true})}
 /* ---------- 規則更新：舊紀錄先備份，再清空重來（只跑一次） ---------- */
 const MKEY='yy-verify-v1';
 function migrateNag(){try{if(localStorage.getItem(MKEY))return;const raw=LDB.raw();let n=0;
@@ -3512,7 +3550,7 @@ function cloudQueue(){if(!CL.user||CL.pulling)return;clearTimeout(CL.timer);CL.t
   CL.state='sync';cloudUI();try{await cloudPushAll(false);CL.state='ok';CL.last=Date.now()}catch(e){console.warn('cloud',e);CL.state='err'}cloudUI()},1500)}
 window.addEventListener('online',()=>cloudQueue());
 setInterval(()=>{if(CL.user){const gd=GEARK.map(k=>localStorage.getItem(k)||'').join('|');if(gd!==CL.gearPeek){CL.gearPeek=gd;cloudQueue()}}},10000);
-async function cloudSignIn(){try{sessionStorage.setItem('yy-back',JSON.stringify({tab:S.tab,hash:location.hash}))}catch(e){}if(!CL.sb){const ok=await sbLoad();if(!ok){say('現在連不上網路，等有網路再登入。',true);return}await cloudInit()}
+async function cloudSignIn(){if(!navigator.onLine){say('現在沒有網路。紀錄已經存在手機裡，等有網路再登入就好。');return}try{sessionStorage.setItem('yy-back',JSON.stringify({tab:S.tab,hash:location.hash}))}catch(e){}if(!CL.sb){const ok=await sbLoad();if(!ok){say('現在連不上網路，等有網路再登入。',true);return}await cloudInit()}
   const {error}=await CL.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)say('登入失敗：'+error.message,true)}
 async function cloudSignOut(){if(!CL.sb)return;try{await CL.sb.auth.signOut({scope:'local'})}catch(e){}try{for(const k of Object.keys(localStorage))if(/^sb-.*-auth-token/.test(k))localStorage.removeItem(k)}catch(e){}CL.user=null;CL.profile=null;CL.state='off';cloudUI();try{renderChar()}catch(e){}const m=$('meS');if(m)m.hidden=true;say('登出了。這支手機上的紀錄還在。')}
 function cloudBlock(){const st=CL.state,u=CL.user,pf=CL.profile;
@@ -3602,16 +3640,31 @@ if(document.getElementById('app').dataset.tab==='gear')window.__gearOpen();
 // three places, like a game inventory: 身上 (worn), 背包 (carried), 沒帶的 (owned, not in this set)
 const ZONES={head:'頭部',eyes:'眼部',torso:'上身',pack:'背包類',cam:'攝影',wrist:'手腕',hands:'手部',legs:'腿部',feet:'腳部'};
 const WORN_BY_ZONE={head:1,eyes:1,torso:1,wrist:1,hands:1,legs:1,feet:1,pack:0,cam:0};
-const SEED=[ // [zone,name,brand,note,borrowed,worn]
-  ['torso','Storm Cruiser','mont-bell','外層 Gore‑Tex 硬殼',0,1],['torso','Superior Down','mont-bell','保暖層羽絨',0,0],['torso','刷毛背心','','中層',0,1],
-  ['pack','10L 越野背心包','','單攻用 · 前面兩個水壺袋',0,1],['pack','大背包','','多天用',1,1],
-  ['cam','Insta360','','運動相機',0,0],['cam','Sony A7C II + 40mm','Sony','',0,0],
-  ['wrist','Garmin Forerunner','Garmin','軌跡紀錄',0,1],['feet','冰爪','','雪季',1,0]];
+// 預設清單：依國家公園「個人裝備檢查表」、消防署登山建議與國際通行的「十大必備」交叉整理，只列通用品名，不放品牌
+// 套裝：A＝單攻／過夜／雪季都要，O＝過夜與雪季，S＝雪季，D＝只有單攻
+const KA=['k1','k2','k3'],KO=['k2','k3'],KS=['k3'],KD=['k1'],KN=['k1','k2'];
+const SEED=[ // [zone,name,brand,note,borrowed,worn,kits,icon]
+  ['head','遮陽帽','','',0,1,KN],['head','保暖帽','','山頂和清晨很冷',0,0,KA],
+  ['eyes','太陽眼鏡','','',0,1,KN],['eyes','雪鏡','','雪地反光會傷眼',0,0,KS],
+  ['torso','排汗衣','','不要穿棉質，濕了容易失溫',0,1,KA,'shirt'],['torso','保暖中層','','刷毛或羽絨，休息、山頂時加穿',0,0,KA,'fleece'],['torso','防水透氣外套','','擋風也擋雨，雨衣要上下分開的兩件式',0,0,KA,'jacket'],
+  ['legs','登山褲','','快乾、非棉質',0,1,KA],['legs','雨褲','','',0,0,KA],
+  ['hands','手套','','保暖防水，抓岩石也不怕割',0,0,KA],['hands','登山杖','','下坡保護膝蓋',0,0,KA,'poles'],
+  ['feet','登山鞋','','鞋底要止滑',0,1,KA],['feet','排汗襪','','另外帶一雙備用',0,1,KA],['feet','冰爪','','雪季必備，出發前看國家公園公告',0,0,KS],['feet','雪套','','防止雪灌進鞋子',0,0,KS],
+  ['pack','攻頂背包＋背包套','','20–30 公升',0,1,KD],['pack','大背包＋背包套','','依天數 45–65 公升',0,1,KO],
+  ['pack','頭燈＋備用電池','','單攻多半天還沒亮就出發',0,0,KA,'lamp'],['pack','水（至少 2 公升）','','依路上有沒有水源調整',0,0,KA,'bottle'],
+  ['pack','行動糧＋備用糧','','多帶一餐的量',0,0,KA],['pack','急救包＋個人藥品','','含彈性繃帶、水泡貼',0,0,KA],
+  ['pack','救生毯','','受困時保住體溫',0,0,KA,'aid'],['pack','備用乾衣物','','用防水袋裝好',0,0,KA,'pouch'],
+  ['pack','手機＋離線地圖','','出發前先下載離線地圖',0,0,KA],['pack','行動電源','','',0,0,KA],
+  ['pack','哨子','','求救用，比喊叫省力',0,0,KA,'pouch'],['pack','打火機','','',0,0,KA,'pouch'],
+  ['pack','防曬乳＋護唇膏','','',0,0,KA,'pouch'],['pack','證件與入山入園證','','身分證、健保卡',0,0,KA,'pouch'],['pack','垃圾袋','','垃圾帶下山',0,0,KA,'pouch'],
+  ['pack','睡袋','','',0,0,KO],['pack','睡墊','','',0,0,KO],['pack','帳篷或露宿袋','','住山屋可只帶露宿袋',0,0,KO],
+  ['pack','爐具＋瓦斯','','',0,0,KO],['pack','炊具與餐具','','',0,0,KO,'stove'],['pack','正餐','','依天數準備',0,0,KO,'food'],['pack','保溫瓶','','',0,0,KO],
+  ['pack','冰斧','','依路線與雪季公告攜帶',0,0,KS,'pouch']];
 const GKEY='yueyue.gear.v1',BKEY='yueyue.body.v1',KKEY='yueyue.kits.v1',PKEY='yueyue.pack.v1',KMAX=3;
 const GS={items:[],body:null,kits:[{id:'k1',name:'單攻'},{id:'k2',name:'過夜'},{id:'k3',name:'雪季'}],kit:'k1'};
 try{GS.items=JSON.parse(localStorage.getItem(GKEY)||'null')||null}catch(e){GS.items=null}
 const fresh=!Array.isArray(GS.items);
-if(fresh)GS.items=SEED.map(([zone,name,brand,note,b,w],i)=>({id:'g'+(i+1),zone,name,brand,note,borrow:!!b,g:null,worn:!!w,date:'',photo:''}));
+if(fresh)GS.items=SEED.map(([zone,name,brand,note,b,w,k,ic],i)=>({id:'g'+(i+1),zone,name,brand,note,borrow:!!b,g:null,worn:!!w,date:'',photo:'',kits:k.slice(),...(ic?{icon:ic}:{})}));
 try{GS.body=+localStorage.getItem(BKEY)||null}catch(e){}
 try{const k=JSON.parse(localStorage.getItem(KKEY)||'null');if(k&&Array.isArray(k.kits)&&k.kits.length){GS.kits=k.kits.slice(0,KMAX);GS.kit=GS.kits.some(x=>x.id===k.cur)?k.cur:GS.kits[0].id}}catch(e){}
 // how it looks on the 3D character
@@ -3642,6 +3695,15 @@ const iconOf=i=>i.icon||(IRULES.find(([,re])=>re.test(i.name+' '+(i.brand||'')))
 // migrate older data: own/borrow/none → just a borrowed tag; drop untouched placeholders
 GS.items=GS.items.filter(i=>!(i.status==='none'&&!i.g&&!i.photo&&!i.date&&!(i.brand||'').trim()));
 GS.items.forEach(i=>{if(i.borrow===undefined)i.borrow=i.status==='borrow';delete i.status;if(i.look===undefined)i.look=lookOf(i);if(!Array.isArray(i.kits))i.kits=i.look==='vest'?['k1']:i.look==='pack'?['k2','k3']:i.look==='crampon'?['k3']:GS.kits.map(k=>k.id)});
+// 舊使用者：把還沒有的基本裝備放進道具欄（不進背包、不進打包清單；只補一次；已經有同一種東西就不加）
+const BKEY2='yy-gear-base-v1';
+if(!fresh)try{if(!localStorage.getItem(BKEY2)){const have=GS.items,add=[];let n=Date.now();
+  SEED.forEach(([zone,name,brand,note,b,w,k,ic])=>{const kind=ic||(IRULES.find(([,re])=>re.test(name))||[ZICON[zone]||'pouch'])[0];
+    const dup=have.some(i=>i.name===name||(kind!=='pouch'&&iconOf(i)===kind&&(i.zone===zone||kind==='poles')));if(dup)return;
+    add.push({id:'g'+(n++).toString(36),zone,name,brand,note,borrow:false,g:null,worn:false,date:'',photo:'',kits:[],...(ic?{icon:ic}:{}),base:1})});
+  if(add.length){GS.items=have.concat(add);try{localStorage.setItem(GKEY,JSON.stringify(GS.items))}catch(e){}setTimeout(()=>window.YY&&window.YY.say('幫你把 '+add.length+' 件登山基本裝備放進道具欄。需要哪件，到「整理裝備」拖進背包。'),2500)}
+  localStorage.setItem(BKEY2,'1')}}catch(e){}
+else try{localStorage.setItem(BKEY2,'1')}catch(e){}
 const gSave=()=>{try{localStorage.setItem(GKEY,JSON.stringify(GS.items))}catch(e){}};
 const kSave=()=>{try{localStorage.setItem(KKEY,JSON.stringify({kits:GS.kits,cur:GS.kit}))}catch(e){}};
 if(fresh)gSave();
@@ -3708,7 +3770,7 @@ function gearRender(){
   document.getElementById('gSub').innerHTML=T.weighed?'共 <b>'+kg(T.carry+T.worn)+'</b> 公斤':'還沒秤重';
   document.getElementById('gW').innerHTML=(T.weighed?'<p class="gw1"><span>背的 <b>'+kg(T.carry)+'</b> 公斤</span><i>·</i><span>穿的 <b>'+(T.worn?kg(T.worn):'—')+'</b> 公斤</span></p>':'')+loadHTML(T.carry,'gBody');
   document.getElementById('gBody').onclick=bodyEdit;
-  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);{const tl=document.getElementById('gTripL'),L=upT();if(tl){tl.hidden=PKT==='_';tl.innerHTML=PKT==='_'?'':'<small>打包給</small>'+(L.length<2?'<span>'+E(PKL)+'</span>':L.map(t=>'<button type="button" data-trip="'+E(t.id)+'" aria-pressed="'+(t.id===PKT)+'">'+E(t.label)+'</button>').join(''))}}pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
+  {const n=T.all.length,d=PK.kit===GS.kit?T.all.filter(i=>PK.ids.includes(i.id)).length:0;const rdy=!!(PK.ready&&d&&d===n);const pb=document.getElementById('gPackB');pb.classList.toggle('cancel',rdy);{const tl=document.getElementById('gTripL'),L=upT();if(tl){tl.hidden=PKT==='_';tl.innerHTML=PKT==='_'?'':'<small>打包給</small>'+(L.length<2?'<span>'+E(PKL)+'</span>':L.map(t=>'<button type="button" data-trip="'+E(t.id)+'" aria-pressed="'+(t.id===PKT)+'">'+E(t.label)+'</button>').join(''))}requestAnimationFrame(()=>{try{const g=document.getElementById('gearView'),hd=g.querySelector('.ghd'),gs=g.querySelector('.gsub');const v=tl&&!tl.hidden&&!g.classList.contains('ready')?tl.offsetHeight+16:0;window.__gearYOffV=v;window.__gearYOff&&window.__gearYOff(v)}catch(_){}})}pb.innerHTML=rdy?'取消準備':'<i aria-hidden="true">✓</i>'+(d&&d<n?'繼續打包<span class="num">'+d+'/'+n+'</span>':d&&d===n?'已帶齊':'開始打包')}
   {const rd=!!(PK.ready&&PK.kit===GS.kit&&T.all.length&&T.all.every(i=>PK.ids.includes(i.id))),g=document.getElementById('gReady');if(g){g.hidden=!rd;document.getElementById('gearView').classList.toggle('ready',rd);if(rd){const L=upT().filter(t=>t.id!==PKT);g.querySelector('small').textContent=(PKT!=='_'?PKL+' ・ ':'')+'都帶齊了 ・ '+T.all.length+' 件';let mo=g.querySelector('.grmore');if(!mo){mo=document.createElement('div');mo.className='grmore';g.appendChild(mo)}mo.innerHTML=L.map(t=>'<button type="button" class="glk" data-trip="'+E(t.id)+'">接著打包 '+E(t.label)+'<i aria-hidden="true">›</i></button>').join('')}}window.__gearReady&&window.__gearReady(rd)}
   window.__gearLookState={pack:T.all.some(i=>i.look==='pack')?'pack':T.all.some(i=>i.look==='vest')?'vest':null,crampon:T.all.some(i=>i.look==='crampon')};
   {const top=f=>slotSort(T.all.filter(i=>i.worn&&f(i)))[0],tc=i=>i?(i.color&&COL[i.color]?COL[i.color].c:PXC[iconOf(i)]||null):null;window.__gearTintState={torso:tc(top(i=>i.zone==='torso')),legs:tc(top(i=>i.zone==='legs')),feet:tc(top(i=>i.zone==='feet'&&i.look!=='crampon')),back:tc(top(i=>i.zone==='pack'&&i.look))}}
@@ -3985,10 +4047,12 @@ controls.enablePan=false;controls.enableDamping=true;controls.dampingFactor=0.08
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 // turn left/right only; vertical drags scroll the page (OrbitControls writes touch-action:none, so put pan-y back)
 controls.minPolarAngle=controls.maxPolarAngle=Math.PI*0.45;controls.enableZoom=false;controls.autoRotate=!RM;controls.autoRotateSpeed=1.1;renderer.domElement.style.touchAction='pan-y';
+let YOFF=window.__gearYOffV||0;const ZB=()=>YOFF?0.8:1; // 標題下多一行行程時：角色縮小一點、往下讓，不被字蓋到
+window.__gearYOff=v=>{v=Math.round(v)||0;window.__gearYOffV=v;if(v!==YOFF){YOFF=v;frame()}};
 function frame(){const portrait=H()>W(),asp=W()/H();
   // keep the same side-to-side framing however tall the stage is (a tall desktop column would otherwise zoom him in)
   cam.fov=portrait?Math.max(33,2*Math.atan(Math.tan(14.5*Math.PI/180)/asp)*180/Math.PI):27;cam.aspect=asp;
-  cam.clearViewOffset();cam.updateProjectionMatrix();
+  cam.clearViewOffset();cam.zoom=ZB();if(YOFF)cam.setViewOffset(W(),H(),0,-YOFF*0.45,W(),H());cam.updateProjectionMatrix();
   cam.position.set(0,1.0,portrait?4.4:5.2);controls.target.set(0,portrait?0.64:0.72,0);controls.update()}
 frame();
 scene.add(new THREE.HemisphereLight(0xb9cbe6,0x241a12,1.0));
@@ -4137,7 +4201,7 @@ const moon=new THREE.Mesh(new THREE.SphereGeometry(MR,128,64),new THREE.MeshStan
 function fxTick(t,dt,e){const on=e>0.02;MOON.visible=on;MOON.scale.setScalar(Math.max(0.001,e));(scene.userData.floor||[]).forEach(m=>m.visible=e<0.35);if(on&&!RM)moon.rotation.x-=dt*0.16}
 let readyTo=0,rk=0;window.__gearReady=on=>{readyTo=on?1:0;if(on&&!RM)hop=0.5;if(RM){rk=readyTo;poseReady(0)}};let hop=0;
 // game-style 'ready': camera leans in, feet set wide, one fist up, the other at the chest, eyes narrowed
-function poseReady(t,dt=0.016){const k=rk;fxTick(t,dt,k<=0.001?0:k*k*(3-2*k));if(k<=0.001&&cam.zoom===1&&!R.torso.rotation.x)return;const e=k<=0.001?0:k*k*(3-2*k);cam.zoom=1-0.04*e;if(e>0)cam.setViewOffset(W(),H(),0,-H()*0.02*e,W(),H());else cam.clearViewOffset();cam.updateProjectionMatrix();R.torso.rotation.x=0.07*e;if(e===0)return;
+function poseReady(t,dt=0.016){const k=rk;fxTick(t,dt,k<=0.001?0:k*k*(3-2*k));if(k<=0.001&&cam.zoom===ZB()&&!R.torso.rotation.x)return;const e=k<=0.001?0:k*k*(3-2*k);cam.zoom=ZB()-0.04*e;if(e>0||YOFF)cam.setViewOffset(W(),H(),0,-H()*0.02*e-YOFF*0.45,W(),H());else cam.clearViewOffset();cam.updateProjectionMatrix();R.torso.rotation.x=0.07*e;if(e===0)return;
   const L=THREE.MathUtils.lerp,ph=RM?0.6:Math.sin(t*5.2),ph2=RM?0.6:Math.abs(Math.sin(t*5.2));
   for(const s of[-1,1]){R['leg'+s].rotation.x=0.5*ph*s*e;R['arm'+s].rotation.x=L(R['arm'+s].rotation.x,-0.55*ph*s,e);R['elb'+s].rotation.x=L(R['elb'+s].rotation.x,-0.7,e)}
   R.head.rotation.x+=0.05*e;R.hips.position.y+=0.025*ph2*e}
