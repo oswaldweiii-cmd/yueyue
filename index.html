@@ -108,6 +108,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cu
 .toast.hide{opacity:0;pointer-events:none}
 body>.toast{position:fixed;z-index:130;left:16px;right:auto;bottom:calc(var(--tabs-h) + 96px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 32px);pointer-events:auto;cursor:pointer;font-size:14px;padding:10px 16px}
 body>.toast.top{top:calc(var(--top) + 12px);bottom:auto}
+@media (max-width:899px){.app[data-tab="map"]~.toast:not(.top),body:has(.app[data-tab="map"])>.toast:not(.top){bottom:calc(var(--tabs-h) + 6px + env(safe-area-inset-bottom,0px))}} /* 地圖上：提示蓋在「下一關」那一列，不擋到山 */
 body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1px 0 #F2A37B,0 12px 30px rgba(0,0,0,.45)}
 
 /* ---------- player bar ---------- */
@@ -257,8 +258,8 @@ body>.toast.err{color:#FFE2D2;background:rgba(60,26,16,.94);box-shadow:inset 0 1
 .hl li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start}
 .hl .hi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--panel-2);border:1px solid var(--line)}
 .hl .hi .cn{width:22px;height:22px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;font:700 11px/1 var(--mono)}
-.hl b{display:block;font:700 14px/1.3 var(--body)}
-.hl small{display:block;margin-top:3px;font:400 11px/1.55 var(--body);color:var(--mute)}
+.hl b{display:block;font:700 18px/1.4 var(--body)}.hlead{font:400 18px/1.6 var(--body)!important;color:var(--ink)!important}.hmore .hl{margin-top:12px}
+.hl small{display:block;margin-top:4px;font:400 14px/1.6 var(--body);color:var(--t2)}
 .hl small em{font-style:normal;font-weight:700}
 .hok{margin-top:18px;width:100%;min-height:46px;border-radius:12px;display:grid;place-items:center;font:700 14px/1 var(--body);color:var(--abyss);background:var(--gold)}
 .hok:hover{filter:brightness(1.08)}
@@ -1493,7 +1494,7 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 @keyframes ceLine{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .ce-lines small{grid-row:1/3;font:500 11px var(--body);letter-spacing:.2em;color:var(--t2);padding-top:5px}.ce-lines b{font:600 18px var(--display)}.ce-lines em{font:400 14px var(--body);font-style:normal;color:var(--t2)}
 .ce-snd{position:absolute;top:14px;right:12px;width:48px;height:48px;display:grid;place-items:center;background:none;border:0;color:rgba(238,241,236,.55);cursor:pointer}.ce-snd .off{display:none}.ce-snd[aria-pressed="false"] .on{display:none}.ce-snd[aria-pressed="false"] .off{display:inline}
-.ce-card .dpair{margin-top:22px}
+.ce-card .dpair{position:sticky;bottom:-24px;z-index:1;margin:22px -24px -24px;padding:16px 24px 24px;background:linear-gradient(180deg,rgba(14,26,46,0),#0E1A2E 35%)}
 @media (prefers-reduced-motion:reduce){.cele,.ce-burst i,.ce-burst svg,.ce-stamp,.ce-lines p{animation:none!important;opacity:1}.ce-card,.ce-bar i{transition:none}}
 @media (min-width:900px){.tabs .ic{display:none}.moonav{width:46px;height:46px}}
 </style>
@@ -1651,22 +1652,24 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
   </div>
   <div class="help" id="help" role="dialog" aria-modal="true" aria-labelledby="helpT" hidden>
     <div class="hcard">
-      <h2 id="helpT">怎麼看這張地圖</h2>
-      <p>台灣百岳共 100 座。登頂一座，就點亮一座。上方可以切換百岳、小百岳和小山，三套的經驗值合在一起算等級。</p>
+      <h2 id="helpT">爬過的山，點亮它</h2>
+      <p class="hlead">把你爬過的山記下來，地圖就會一座座亮起來。</p>
       <ul class="hl">
         <li><span class="hi c-done"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M2.5 21L12 6.5 21.5 21z"/><path d="M12 6.5V1.2h5.2l-1.5 1.9 1.5 1.9H12" fill="none" stroke-width="1.4"/></svg></span>
           <div><b>金色旗子是你登頂過的山</b><small>每登頂一座，周圍的雲海就會散開。</small></div></li>
+        <li><span class="hi c-ok"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="10" r="4.5" fill="currentColor"/></svg></span>
+          <div><b>按「＋ 記錄」記下登頂</b><small>人在山頂就按住打卡；有手錶軌跡就上傳；以前爬的先補登成灰色。</small></div></li>
+        <li><span class="hi c-ok"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 18V2.5M5 3.5h10l-2.5 3.5L15 10.5H5"/></svg></span>
+          <div><b>不知道爬哪座，跟著「下一關」</b><small>綠色的山現在就能去，越爬等級越高，能去的山越多。</small></div></li>
+      </ul>
+      <details class="hsrc hmore"><summary>看懂地圖上的符號</summary><ul class="hl">
         <li><span class="hi c-ok"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2.5 16.5L10 3.5l7.5 13z"/></svg></span>
           <div><b>三角形的顏色，是現在適不適合去</b><small><em class="c-ok">綠色</em> 可以挑戰　<em class="c-stretch">橘色</em> 有點勉強　<em class="c-far">灰色</em> 還太早。用你的等級對照山的難度（1 到 5）判斷；爬過同難度（或更難）的山，也算可以挑戰。</small></div></li>
         <li><span class="hi"><span class="cn num">6</span></span>
           <div><b>圓圈裡的數字，是那一帶有幾座山</b><small>點一下就會放大。</small></div></li>
-        <li><span class="hi c-ok"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 18V2.5M5 3.5h10l-2.5 3.5L15 10.5H5"/></svg></span>
-          <div><b>跟著「下一關」走</b><small>登頂拿經驗值（XP），越難的山給越多。XP 累積會升級，等級越高，能挑戰的山越多。</small></div></li>
         <li><span class="hi c-ok"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3 9 9H1Z" fill="currentColor"/><circle cx="14" cy="6" r="3.2" fill="currentColor"/><path d="M10 12.5 13 15.5 10 18.5 7 15.5Z" fill="currentColor"/></svg></span>
           <div><b>形狀代表山的種類</b><small>三角形是百岳、圓點是小百岳、菱形是小山。小百岳和小山只分「登頂過」（金色）和「還沒去」。上方標題點一下就能切換。</small></div></li>
-        <li><span class="hi c-ok"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="10" r="4.5" fill="currentColor"/></svg></span>
-          <div><b>怎麼記錄登頂</b><small>按下方中間金色的「＋ 記錄」。上傳手錶或手機 App 的軌跡拿金章；在山頂打卡並拍三角點拿銀章；以前爬過、沒有軌跡的，可以先補登成灰色。</small></div></li>
-      </ul>
+      </ul></details>
       <details class="hsrc"><summary>資料來源</summary><ul>
         <li><b>百岳名單、海拔、難度分級</b>：中文維基百科「台灣百岳列表」，分級為國家公園署 2021 年步道分級（0–6 級）。</li>
         <li><b>座標</b>：依內政部 20 m 數值地形逐座核對；偏離山頂的 39 座百岳、19 座小百岳已改用 OpenStreetMap 山頂點或地形最高點。百岳海拔是三角點高度，少數山（如志佳陽大山最高點約 3,340 m、三角點 3,287 m）的三角點不在最高處，座標以三角點為準。</li>
@@ -1942,6 +1945,7 @@ function chState(g){const all=P.filter(p=>p.grade===g),dn=all.filter(p=>RECS[p.r
   return{g,all,dn,s,st:dn===all.length?'clear':G.lv>=s||provedGrade()>=g?'open':G.lv>=s-3?'near':'lock'}}
 function reason(p){
   const st=statusOf(p),s=SUGGEST_LV[p.grade],r=RECS[p.rank];
+  if(S.atTop===p.rank&&st!=='done')return'你人在山頂了，往下按住打卡，拿這座的銀章。';
   if(st==='done')return'這一關已經拿下'+(r&&r.date?'（'+esc(r.date)+'）':'')+'，獲得 +'+Math.round(xw(r)*XP_BY_GRADE[p.grade])+' 點'+(r&&r.verified==='self'?'（補登 30%，補傳軌跡可拿滿 '+XP_BY_GRADE[p.grade]+' 點）':'')+'。';
   if(st==='ok')return G.lv>=s?'你的等級夠了，可以排進行程。':'你已經登頂過難度 '+provedGrade()+' 的山，這一關的難度你走得來。';
   return'離建議等級還差 '+(s-G.lv)+' 級，再 '+fmt(LV[s-1]-G.xp)+' XP。'+(st==='far'?'先把前面的章節走完。':'體能和經驗要再準備。');
@@ -2304,7 +2308,7 @@ function openPeak(rank,fly){
   try{$('sx').focus({preventScroll:true})}catch(e){}
 }
 function closeSheet(){
-  if(S.sel==null)return;S.sel=null;sheet.classList.remove('open');layout(true);draw();
+  if(S.sel==null)return;S.sel=null;S.atTop=null;sheet.classList.remove('open');layout(true);draw();
   if(lastFocus&&document.contains(lastFocus)){try{lastFocus.focus({preventScroll:true})}catch(e){}}lastFocus=null;
 }
 function durTxt(min){const h=Math.floor(min/60),m=Math.round(min%60);return (h?h+' 小時':'')+(h&&m?' ':'')+(m||!h?m+' 分':'')}
@@ -3182,7 +3186,7 @@ function wireCheckin(p,key){ // 長按蓄力：按住的這 1.6 秒同時在定�
     full=true;box.classList.add('wait');hint.textContent='定位中…';buzz(25);const id0=req;setTimeout(()=>{if(full&&!res&&req===id0){hint.textContent='再等一下';st.innerHTML='<p class="vmsg">山上沒網路時，定位會比較慢，最多等一分鐘。</p>'}},8000);settle()};
   const start=e=>{if(holding||full||fix)return;if(e&&e.cancelable)e.preventDefault();holding=true;
     box.classList.remove('bad');box.classList.add('charging');hint.textContent='繼續按住';st.innerHTML='';t0=performance.now();buzz(10);locate();raf=requestAnimationFrame(tick)};
-  const stop=()=>{if(!holding)return;holding=false;box.classList.remove('charging');if(!full){const quick=performance.now()-t0<450;cancelAnimationFrame(raf);req++;setP(0);hint.textContent=quick?'要按住喔':'按住';if(quick){st.innerHTML='<p class="vmsg">手指按著不要放，等金圈繞滿一圈。</p>';clearTimeout(box._ht);box._ht=setTimeout(()=>{if(!full&&!holding){hint.textContent='按住';if(st.querySelector('.vmsg:only-child'))st.innerHTML=''}},3000)}}};
+  const stop=()=>{if(!holding)return;holding=false;box.classList.remove('charging');if(!full){const quick=performance.now()-t0<450;cancelAnimationFrame(raf);req++;setP(0);hint.textContent=quick?'要按住喔':'差一點，再按久一點';if(quick){st.innerHTML='<p class="vmsg">手指按著不要放，等金圈繞滿一圈。</p>';clearTimeout(box._ht);box._ht=setTimeout(()=>{if(!full&&!holding){hint.textContent='按住';if(st.querySelector('.vmsg:only-child'))st.innerHTML=''}},3000)}}};
   const fail=(why,r)=>{full=false;holding=false;box.classList.remove('charging','wait','bad');void box.offsetWidth;box.classList.add('bad');hint.textContent=r&&!r.near?'到山頂再按':'再按一次';buzz([60,40,60,40,120]);
     const R=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(!R){let sh='';for(let i=0;i<12;i++)sh+='<i class="shard" style="--a:'+(i*30+Math.random()*20)+'deg;--d:'+(80+Math.random()*70)+'px;--r:'+(Math.random()*540-270)+'deg"></i>';
@@ -3438,8 +3442,8 @@ $('planX').onclick=planClose;
     const settle=()=>{if(!full||!res)return;b.classList.remove('wait');
       if(res.err){reset();b.classList.add('bad');sp.textContent=res.err;return}
       const c=res.pos.coords;let best=null,bd=1e12;for(const p of [...P,...XB,...SH]){const d=hav(p.lat,p.lon,c.latitude,c.longitude);if(d<bd){bd=d;best=p}}
-      if(!best||bd>2000){const r=roast({d:bd},best);reset();b.classList.add('bad');sp.textContent=r.big+' '+r.small;buzz([60,40,120]);const sc=b.closest('.hcard');if(sc&&!matchMedia('(prefers-reduced-motion: reduce)').matches){sc.classList.remove('nshake');void sc.offsetWidth;sc.classList.add('nshake')}return}
-      const pos=res.pos;reset();close();toast.classList.add('hide');openPeak(best.rank,true);
+      if(!best||bd>2000){const r={big:pick(['你騙得了我，騙不了山。','這裡不是山頂喔。','山在那邊，你在這邊。']),small:'附近 2 公里內沒有任何一座山，到山頂再按。'};reset();b.classList.add('bad');sp.textContent=r.big+' '+r.small;buzz([60,40,120]);const sc=b.closest('.hcard');if(sc&&!matchMedia('(prefers-reduced-motion: reduce)').matches){sc.classList.remove('nshake');void sc.offsetWidth;sc.classList.add('nshake')}return}
+      const pos=res.pos;reset();close();toast.classList.add('hide');S.atTop=best.rank;openPeak(best.rank,true);
       setTimeout(()=>{const h=$('vChk');if(h){h.scrollIntoView({block:'center'});if(h._auto)h._auto(pos)}},500)};
     const tick=()=>{const k=Math.min(1,(performance.now()-t0)/HOLD);fill.style.width=(k*100)+'%';
       if(k<1){if(holding)raf=requestAnimationFrame(tick);return}
@@ -3448,7 +3452,7 @@ $('planX').onclick=planClose;
       const id=++req;res=null;if(!navigator.geolocation)res={err:'這支手機沒辦法定位。'};
       else navigator.geolocation.getCurrentPosition(pos=>{if(id===req){res={pos};settle()}},e=>{if(id===req){res={err:e&&e.code===1?'沒有定位權限，到手機設定打開定位。':'定位失敗，到看得到天空的地方再試。'};settle()}},{enableHighAccuracy:true,timeout:60000,maximumAge:0});
       raf=requestAnimationFrame(tick)};
-    const stop=()=>{if(!holding)return;const quick=performance.now()-t0<450;reset(quick?'要按住喔，等金色跑滿':DEF)};
+    const stop=()=>{if(!holding)return;const quick=performance.now()-t0<450;reset(quick?'要按住喔，等金色跑滿':'差一點！再按久一點，等金色跑滿')};
     b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));
     b.addEventListener('contextmenu',e=>e.preventDefault());
     b.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();start()}});b.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stop()});
