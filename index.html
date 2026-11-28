@@ -1211,6 +1211,13 @@ body.dueexit .app{animation:dueBack 1s cubic-bezier(.2,.8,.2,1)}
 .gsbad{list-style:none;margin:0;padding:0;max-height:40vh;overflow-y:auto}.gsbad li{padding:8px 0;border-bottom:1px solid rgba(200,211,226,.1)}.gsbad b{display:block;font:500 14px var(--body);word-break:break-all}.gsbad span{font:400 14px/1.5 var(--body);color:#F2A37B}
 .mk.done.self{color:#9AA7B6}.mk.done.self .lb{color:#C8D3E2;font-weight:500}.mk.done.self::before{background:radial-gradient(circle,rgba(200,211,226,.22),rgba(200,211,226,0) 68%)}.mk.done.self::after{animation:none;opacity:0}
 .dmedal.un{color:#9AA7B6}.dupg{margin:4px 0 0;font:400 14px/1.6 var(--body);color:#C8D3E2;text-align:center}
+.acct{margin:0 0 20px;padding:18px 0 20px;border-top:1px solid rgba(244,193,82,.3);border-bottom:1px solid rgba(200,211,226,.12)}
+.acct .dk{margin:0 0 8px}.acsay{margin:0 0 14px;font:400 14px/1.7 var(--body);color:#C8D3E2}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:52px;border:0;border-radius:26px;background:#fff;color:#1F1F1F;font:500 16px var(--body);cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.acme{display:flex;align-items:center;gap:14px}.acme img,.acme>i{width:48px;height:48px;border-radius:50%;flex:none;object-fit:cover;background:rgba(200,211,226,.15);box-shadow:0 0 0 2px rgba(244,193,82,.5)}
+.acme div{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.acme b{font:600 18px var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acst{font:400 14px var(--body);color:#8FA3BD}.acst.ok{color:#8FD3A8}.acst.err{color:#F2A37B}.acst.ok::before{content:'● ';font-size:10px;vertical-align:2px}
+.acout{min-height:44px;padding:0;background:none;border:0;color:#8FA3BD;font:400 14px var(--body);text-decoration:underline;text-underline-offset:4px}
 .mcard .mbig{font:600 18px/1.6 var(--display);color:var(--ink)}
 .cd.mute{visibility:hidden}.cd.past{color:#5D6E84}
 .cd.today::after{content:'';position:absolute;inset:6px 9px;border:1px solid rgba(200,211,226,.45);border-radius:50%}
@@ -2836,10 +2843,10 @@ function cumChart(list){
     (n<=40?pts.map((t,i)=>'<circle cx="'+x(t).toFixed(1)+'" cy="'+y(i+1).toFixed(1)+'" r="2.6" fill="#f4c152"/>').join(''):'')+
     '<text x="'+ml+'" y="'+(Hd-6)+'" '+F+'>'+ymd(t0)+'</text><text x="'+(Wd-mr)+'" y="'+(Hd-6)+'" text-anchor="end" '+F+'>'+ymd(t1)+'</text></svg></div>';
 }
-function wireData(){const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickGPX(f=>importGPX(f));if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
+function wireData(){cloudUI();const a=$('gpxIn'),b=$('bkOut'),c=$('bkIn');if(a)a.onclick=()=>pickGPX(f=>importGPX(f));if(b)b.onclick=exportBackup;if(c)c.onclick=()=>pickFile('.json,application/json',importBackup)}
 function dataSec(){let t=0;try{t=+localStorage.getItem(BKEY)||0}catch(e){}
   const n=Object.keys(LDB.raw()).length,old=!t||Date.now()-t>30*864e5,when=t?new Date(t).toLocaleDateString('zh-TW'):'還沒備份過';
-  return '<div class="dsec"><h3 class="dh">我的紀錄</h3><p class="dsay">共 '+n+' 筆紀錄，上次備份：'+when+'。'+(old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
+  return '<div class="dsec"><div id="acct">'+cloudBlock()+'</div><h3 class="dh">我的紀錄</h3><p class="dsay">共 '+n+' 筆紀錄，'+(CL.user?'已同步到雲端，換手機登入就會回來。':'上次備份：'+when+'。')+(!CL.user&&old&&n?'<b class="dwarn">建議現在備份到 iCloud 雲碟。</b>':'')+'</p>'+
     '<button type="button" class="dbtn" id="gpxIn">上傳手錶 GPX 軌跡</button><p class="dnote">軌跡經過山頂 50 公尺內、速度像是走路，就算登頂，拿金章。舊的軌跡也可以傳。</p>'+
     '<div class="dpair"><button type="button" class="dghost" id="bkOut">備份紀錄</button><button type="button" class="dghost" id="bkIn">匯入備份</button></div></div>'}
 function statTrail(fr){const W=334,pts=[];for(let i=0;i<=40;i++){const x=i/40*W;pts.push([x,52-30*Math.pow(i/40,1.4)+3*Math.sin(i/40*9)])}
@@ -2896,7 +2903,7 @@ function renderChar(){
   h+='<section class="s2sec"><div class="s2hd"><h3>百岳進度</h3><span>依難度</span></div><div class="s2gr">'+[1,2,3,4,5].map(g=>{const c=chState(g);return'<button type="button" data-gr="'+g+'"><span class="k">'+CH[g]+'<em>第 '+g+' 章</em></span><span class="bar"><i style="width:'+(c.dn/c.all.length*100).toFixed(1)+'%"></i></span><b>'+c.dn+'<i>/</i>'+c.all.length+'</b></button>'}).join('')+'</div>'+
     (NXT[0]?'<button type="button" class="dbtn" id="sNext">下一座推薦：'+esc(NXT[0].name)+'</button>':'')+'</section>';
   // my data
-  h+=dataSec().replace('<div class="dsec">','<section class="s2sec">').replace('<h3 class="dh">我的紀錄</h3>','<div class="s2hd"><h3>我的紀錄</h3><span>存在這支手機</span></div>').replace(/<\/div>$/,'</section>');
+  h+=dataSec().replace('<div class="dsec">','<section class="s2sec">').replace('<h3 class="dh">我的紀錄</h3>','<div class="s2hd"><h3>我的紀錄</h3><span>'+(CL.user?'手機＋雲端':'存在這支手機')+'</span></div>').replace(/<\/div>$/,'</section>');
   // folded
   let more='<h3 class="s-sub">登頂一座拿到的點數</h3><div class="xprule">'+[1,2,3,4,5].map(g=>'<div><small>難度 '+g+'</small><b>+'+XP_BY_GRADE[g]+'</b></div>').join('')+'</div>'+
     '<p class="hint">小百岳每座 +'+XP_XIAO+'，小山每座 +'+XP_SHAN+'。點數來源：百岳 '+fmt(G.xpB)+'・小百岳 '+fmt(G.xpX)+'・小山 '+fmt(G.xpS)+'。等級是遊戲規則，實際出發前，體能、天氣和路況還是要自己評估。</p>';
@@ -3026,7 +3033,7 @@ async function importBackup(file){
   if(Array.isArray(d.trips)){TRIPS=d.trips.filter(t=>t&&t.start).map(t=>({id:t.id,start:t.start,end:t.end||t.start,ranks:Array.isArray(t.ranks)?t.ranks:[t.rank],created:t.created,plan:t.plan}));try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){}}
   LDB.replace(d.climbs);say('匯入完成：'+n+' 筆紀錄');
 }
-function backupNag(){try{const n=Object.keys(LDB.raw()).length,t=+localStorage.getItem(BKEY)||0;if(n&&Date.now()-t>30*864e5)setTimeout(()=>say('已經超過一個月沒備份紀錄了，到「數據」頁按一下「備份紀錄」。',true),4000)}catch(e){}}
+function backupNag(){try{const n=Object.keys(LDB.raw()).length,t=+localStorage.getItem(BKEY)||0;if(n&&Date.now()-t>30*864e5)setTimeout(()=>!CL.user&&say('已經超過一個月沒備份紀錄了，到「數據」頁按一下「備份紀錄」。',true),4000)}catch(e){}}
 
 /* ---------- GPX: find every peak the track passes and record it ---------- */
 const hav=(a,b,c,d)=>{const t=Math.PI/180,x=Math.sin((c-a)*t/2)**2+Math.cos(a*t)*Math.cos(c*t)*Math.sin((d-b)*t/2)**2;return 12742000*Math.asin(Math.sqrt(x))};
@@ -3167,7 +3174,7 @@ const rngH=(a,b)=>!b||b===a?mdTxt(a)+'<small>週'+WK[pymd(a).getDay()]+'・1 天
 const trTxt=t=>t.start===t.end?mdTxt(t.start):mdTxt(t.start)+'–'+mdTxt(t.end);
 const tNames=(t,max)=>{const n=t.ranks.map(r=>byRank[r]).filter(Boolean).map(p=>p.name);return max&&n.length>max?n.slice(0,max).join('、')+' 等 '+n.length+' 座':n.join('、')};
 const short=n=>n.replace('主峰','').slice(0,3);
-function saveTrips(){try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){say('手機的儲存空間不夠，行程沒有存到。',true)}tripRender();if(!$('cal').hidden)calRender()}
+function saveTrips(){try{setTimeout(cloudQueue,0)}catch(e){}try{localStorage.setItem(TKEY,JSON.stringify(TRIPS))}catch(e){say('手機的儲存空間不夠，行程沒有存到。',true)}tripRender();if(!$('cal').hidden)calRender()}
 const tripOf=rank=>TRIPS.filter(t=>t.ranks.includes(rank)&&t.end>=dAdd(todayS(),-30)).sort((a,b)=>a.start<b.start?-1:1)[0];
 function tripPrune(){ // 山一座一座驗證掉，全部驗證完行程就收掉
   const before=JSON.stringify(TRIPS);
@@ -3384,10 +3391,86 @@ function migrateNag(){try{if(localStorage.getItem(MKEY))return;const raw=LDB.raw
 function pickFiles(fn){const i=document.createElement('input');i.type='file';i.multiple=true;i.onchange=()=>{const f=[...(i.files||[])];if(f.length)fn(f)};i.click()}
 const pickGPX=fn=>pickFiles(fs=>fs.length===1?fn(fs[0]):importMany(fs));
 function pickFile(accept,fn){const i=document.createElement('input');i.type='file';i.accept=accept;i.onchange=()=>{const f=i.files&&i.files[0];if(f)fn(f)};i.click()}
+/* ---------- 雲端（第二階段）：Google 登入、紀錄／行程／裝備同步。手機資料永遠先存本機，有網路再同步 ---------- */
+const SB_URL='https://vqaacvacjlzecfuaoges.supabase.co',SB_KEY='sb_publishable_XIPCTwkt125tlm8pJFdOmg_kklZrgjg',SB_JS='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.99.3/dist/umd/supabase.js';
+const CL={sb:null,user:null,profile:null,state:'off',last:0,pulling:false,sent:{},timer:0,gearSent:''};
+const GEARK=['yueyue.gear.v1','yueyue.kits.v1','yueyue.body.v1'];
+function sbLoad(){return new Promise(res=>{if(window.supabase)return res(true);const s=document.createElement('script');s.src=SB_JS;s.async=true;s.onload=()=>res(!!window.supabase);s.onerror=()=>res(false);document.head.appendChild(s)})}
+const peakOfKey=k=>/^x\d+$/.test(k)?byNo[+k.slice(1)]:/^s\d+$/.test(k)?SH[+k.slice(1)-1]:byRank[+k];
+function rowOf(k,r){const v=r.verified;return{user_id:CL.user.id,peak_key:k,verified:v==='self'?'self':'pending',claim:v==='gps'||v==='checkin'?v:null,
+  climbed_on:/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')?r.date:null,summit_time:r.summitTime||null,distance_km:r.distanceKm!=null?+r.distanceKm:null,gain_m:r.gainM!=null?Math.round(r.gainM):null,
+  max_ele:r.maxEle!=null?Math.round(r.maxEle):null,duration_min:r.durationMin!=null?Math.round(r.durationMin):null,summit_d:r.summitD!=null?Math.round(r.summitD):null,
+  style:r.style||null,source:r.source||null,track:r.track||null,checkin:r.checkin||null,note:r.note||null}}
+function recOf(row,old){const p=peakOfKey(row.peak_key);if(!p)return null;const v=row.verified==='gps'||row.verified==='checkin'?row.verified:row.verified==='pending'?(row.claim||'self'):'self';
+  const r=Object.assign({},old||{},{name:p.name,date:row.climbed_on||'',verified:v});
+  const m={summit_time:'summitTime',distance_km:'distanceKm',gain_m:'gainM',max_ele:'maxEle',duration_min:'durationMin',summit_d:'summitD',style:'style',source:'source',track:'track',checkin:'checkin',note:'note'};
+  for(const [a,b] of Object.entries(m))if(row[a]!=null)r[b]=row[a];
+  if(p.set==='xiao'||p.set==='shan'){r.set=p.set;r.no=p.no}else r.rank=p.rank;if(row.verified==='pending')r.cloud='pending';else delete r.cloud;return r}
+const RANKV={gps:3,checkin:2,self:1};
+async function cloudInit(){
+  if(location.protocol==='file:')return;
+  const ok=await sbLoad();if(!ok){CL.state='offline';return}
+  CL.sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  CL.sb.auth.onAuthStateChange((ev,ses)=>{const u=ses&&ses.user;const was=CL.user&&CL.user.id;CL.user=u||null;
+    if(u&&was!==u.id)setTimeout(cloudLogin,0);if(!u){CL.state='off';CL.profile=null;cloudUI()}});
+  const {data}=await CL.sb.auth.getSession();if(data&&data.session&&!CL.user){CL.user=data.session.user;cloudLogin()}else cloudUI();
+}
+async function cloudLogin(){CL.state='sync';cloudUI();
+  try{await cloudPull();await cloudPushAll(true);CL.state='ok';CL.last=Date.now();
+    if(!localStorage.getItem('yy-cloud-hi')){localStorage.setItem('yy-cloud-hi','1');say('登入了。紀錄已經同步到雲端，換手機也不會掉。')}}
+  catch(e){console.warn('cloud',e);CL.state='err'}cloudUI();try{renderChar()}catch(e){}}
+async function cloudPull(){const sb=CL.sb,uid=CL.user.id;
+  const [{data:pf},{data:rows,error:e1},{data:tr},{data:gr}]=await Promise.all([
+    sb.from('profiles').select('*').eq('id',uid).maybeSingle(),sb.from('climbs').select('*').eq('user_id',uid),
+    sb.from('trips').select('*').eq('user_id',uid),sb.from('gear').select('*').eq('user_id',uid).maybeSingle()]);
+  if(e1)throw e1;CL.profile=pf||null;
+  CL.pulling=true;try{const raw=LDB.raw();let n=0;
+    for(const row of rows||[]){const old=raw[row.peak_key],rec=recOf(row,old);if(!rec)continue;
+      if(!old||(RANKV[rec.verified]||0)>(RANKV[old.verified]||0)||(row.verified!=='pending'&&old.cloud)){await LDB.doc('climbs/'+row.peak_key).set(rec);n++}
+      CL.sent[row.peak_key]=JSON.stringify(rowOf(row.peak_key,LDB.raw()[row.peak_key]||rec))}
+    // 行程：雲端有、手機沒有的補進來
+    if(tr&&tr.length){const ids=new Set(TRIPS.map(t=>t.id));let add=0;for(const r of tr){if(!ids.has(r.id)&&r.data&&r.data.start){TRIPS.push(Object.assign({},r.data,{id:r.id}));add++}}if(add)saveTrips()}
+    // 裝備：手機還是預設、雲端有資料 → 用雲端的
+    const fk='yy-cloud-dev-'+uid,first=!localStorage.getItem(fk);localStorage.setItem(fk,'1');
+    if(first&&gr&&gr.data){const diff=GEARK.some(k=>gr.data[k]&&gr.data[k]!==localStorage.getItem(k));
+      if(diff&&confirm('雲端有你的裝備資料。要換成雲端的裝備嗎？（這支手機目前的裝備會被取代）')){for(const k of GEARK)if(gr.data[k])localStorage.setItem(k,gr.data[k]);CL.gearSent=JSON.stringify(gr.data);say('裝備從雲端載入了。');setTimeout(()=>location.reload(),1200)}}
+  }finally{CL.pulling=false}}
+async function cloudPushAll(force){if(!CL.user||!CL.sb)return;const sb=CL.sb,raw=LDB.raw(),up=[],keys=Object.keys(raw);
+  for(const k of keys){const r=raw[k];const row=rowOf(k,r),s=JSON.stringify(row);if(force||CL.sent[k]!==s)up.push([k,row,s])}
+  // 雲端已經是金章／銀章的不能由手機改（權限會擋），跳過
+  if(up.length){const {data:cur}=await sb.from('climbs').select('peak_key,verified').eq('user_id',CL.user.id).in('peak_key',up.map(x=>x[0]));
+    const locked=new Set((cur||[]).filter(c=>c.verified==='gps'||c.verified==='checkin').map(c=>c.peak_key));
+    const rows=up.filter(x=>!locked.has(x[0]));
+    if(rows.length){const {error}=await sb.from('climbs').upsert(rows.map(x=>x[1]),{onConflict:'user_id,peak_key'});if(error)throw error}
+    up.forEach(x=>CL.sent[x[0]]=x[2])}
+  // 手機刪掉的，雲端也刪
+  const gone=Object.keys(CL.sent).filter(k=>!raw[k]);if(gone.length){await sb.from('climbs').delete().eq('user_id',CL.user.id).in('peak_key',gone);gone.forEach(k=>delete CL.sent[k])}
+  // 行程、裝備、個人等級
+  const trips=TRIPS.map(t=>({id:t.id,user_id:CL.user.id,data:t}));const ts=JSON.stringify(trips);
+  if(force||CL.tripSent!==ts){if(trips.length){const {error}=await sb.from('trips').upsert(trips,{onConflict:'user_id,id'});if(error)throw error}
+    const {data:rt}=await sb.from('trips').select('id').eq('user_id',CL.user.id);const keep=new Set(trips.map(t=>t.id)),del=(rt||[]).map(r=>r.id).filter(id=>!keep.has(id));if(del.length)await sb.from('trips').delete().eq('user_id',CL.user.id).in('id',del);CL.tripSent=ts}
+  const gd={};for(const k of GEARK){const v=localStorage.getItem(k);if(v)gd[k]=v}const gs=JSON.stringify(gd);
+  if(Object.keys(gd).length&&(force||CL.gearSent!==gs)){const {error}=await sb.from('gear').upsert({user_id:CL.user.id,data:gd});if(error)throw error;CL.gearSent=gs}
+  const ps=G.lv+'|'+G.xp;if(force||CL.profSent!==ps){await sb.from('profiles').update({level:G.lv,xp:Math.round(G.xp)}).eq('id',CL.user.id);CL.profSent=ps}
+}
+function cloudQueue(){if(!CL.user||CL.pulling)return;clearTimeout(CL.timer);CL.timer=setTimeout(async()=>{if(!navigator.onLine){CL.state='wait';cloudUI();return}
+  CL.state='sync';cloudUI();try{await cloudPushAll(false);CL.state='ok';CL.last=Date.now()}catch(e){console.warn('cloud',e);CL.state='err'}cloudUI()},1500)}
+window.addEventListener('online',()=>cloudQueue());
+setInterval(()=>{if(CL.user){const gd=GEARK.map(k=>localStorage.getItem(k)||'').join('|');if(gd!==CL.gearPeek){CL.gearPeek=gd;cloudQueue()}}},10000);
+async function cloudSignIn(){if(!CL.sb){const ok=await sbLoad();if(!ok){say('現在連不上網路，等有網路再登入。',true);return}await cloudInit()}
+  const {error}=await CL.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)say('登入失敗：'+error.message,true)}
+async function cloudSignOut(){if(!CL.sb)return;if(!confirm('登出後，這支手機上的紀錄還在，但不會再同步。確定登出？'))return;await CL.sb.auth.signOut();CL.user=null;CL.state='off';cloudUI();try{renderChar()}catch(e){}say('登出了')}
+function cloudBlock(){const st=CL.state,u=CL.user,pf=CL.profile;
+  if(!u)return '<div class="acct"><p class="dk">帳號</p><p class="acsay">登入後，紀錄會存到雲端，換手機也不會掉。之後也能看到誰跟你爬過同一座山。</p><button type="button" class="gbtn" id="acIn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>用 Google 登入</button></div>';
+  const name=(pf&&pf.nickname)||(u.user_metadata&&u.user_metadata.name)||'山友',av=(pf&&pf.avatar_url)||(u.user_metadata&&u.user_metadata.avatar_url)||'';
+  const tx=st==='sync'?'同步中…':st==='ok'?'已同步':st==='wait'?'沒有網路，等一下會自動同步':st==='err'?'同步失敗，等一下會再試':'';
+  return '<div class="acct on"><p class="dk">帳號</p><div class="acme">'+(av?'<img src="'+esc(av)+'" alt="" referrerpolicy="no-referrer">':'<i></i>')+'<div><b>'+esc(name)+'</b><span class="acst '+st+'">'+tx+'</span></div><button type="button" class="acout" id="acOut">登出</button></div></div>'}
+function cloudUI(){const el=$('acct');if(el)el.innerHTML=cloudBlock();const a=$('acIn');if(a)a.onclick=cloudSignIn;const o=$('acOut');if(o)o.onclick=cloudSignOut}
 async function load(){
   try{const all=await IDB.all();for(const [k,v] of Object.entries(all))PH[k]=URL.createObjectURL(v)}catch(e){}
   DBH=LDB;ASSETS=LASSETS;
   LDB.collection('climbs').onSnapshot(snap=>applySnapshot(snap));
+  LDB.collection('climbs').onSnapshot(()=>cloudQueue());cloudInit();
   if(localStorage.getItem(MKEY))backupNag();else setTimeout(migrateNag,600);
 }
 

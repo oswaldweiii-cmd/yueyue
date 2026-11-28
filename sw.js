@@ -1,5 +1,5 @@
 /* 月岳離線快取：第一次有網路打開時把整個 App 存進手機，山上沒網路也能開 */
-const V='yy-v1';
+const V='yy-v2';
 const CORE=['./','index.html','lit.jpg','veil.jpg',
 "tiles/index.json",
 "tiles/l0_4.jpg",
@@ -106,7 +106,8 @@ const CORE=['./','index.html','lit.jpg','veil.jpg',
 "tiles/v5_3.jpg",
 "tiles/v5_4.jpg",
 "tiles/v6_1.jpg"];
-const EXT=['https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js',
+const EXT=['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.99.3/dist/umd/supabase.js',
+'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js',
 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js',
 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/geometries/RoundedBoxGeometry.js'];
 self.addEventListener('install',e=>{e.waitUntil((async()=>{const c=await caches.open(V);await c.addAll(CORE);
